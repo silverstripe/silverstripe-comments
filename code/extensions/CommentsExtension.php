@@ -10,16 +10,35 @@ class CommentsExtension extends DataObjectDecorator {
 	
 	/**
 	 * Adds a relationship between this {@link DataObject} and its
-	 * {@link Comment} objects
+	 * {@link Comment} objects. If the owner class is a sitetree class
+	 * it also enables a checkbox allowing comments to be turned off and off
 	 * 
 	 * @return array
 	 */
 	function extraStatics() {
-		return array(
+		$fields = array();
+		
+		$relationships = array(
 			'has_many' => array(
 				'Comments' => 'Comment'
 			)
 		);
+
+		// if it is attached to the SiteTree then we need to add ProvideComments
+		// cannot check $this->owner as this in intialised via call_user_func
+		$args = func_get_args();
+		
+		if($args && ($owner = array_shift($args))) {
+			if(ClassInfo::is_subclass_of($owner, 'SiteTree') || $owner == "SiteTree") {
+				$fields = array(
+					'db' => array(
+						'ProvideComments' => 'Boolean'
+					)
+				);
+			}
+		}
+		
+		return array_merge($fields, $relationships);
 	}
 	
 	/**
@@ -65,19 +84,52 @@ class CommentsExtension extends DataObjectDecorator {
 	 *
 	 * @see docs/en/Extending
 	 */
-	function CommentsForm() {
+	public function CommentsForm() {
 		$interface = new SSViewer('CommentsInterface');
 		
 		return $interface->process(new ArrayData(array(
+			'AddCommentForm' => $this->AddCommentForm(),
 			'Comments' => $this->Comments()
 		)));
 	}
 	
 	/**
+	 * Add Comment Form. 
+	 *
+	 * @see CommentForm
+	 * @return Form|bool
+	 */
+	public function AddCommentForm() {
+		
+		// detect whether we comments are enabled. By default if $CommentsForm is included
+		// on a {@link DataObject} then it is enabled, however {@link SiteTree} objects can
+		// trigger comments on / off via ProvideComments
+		if($this->attachedToSiteTree() && !$this->owner->ProvideComments)  return false;
+		
+		$form = new CommentForm(Controller::curr(), 'CommentsForm');
+		
+		// hook to allow further extensions to alter the comments form
+		$this->extend('alterAddCommentForm', $form);
+		
+		return $form;
+	}
+	
+	/**
+	 * Returns whether this extension instance is attached to a {@link SiteTree} object
+	 *
+	 * @return bool
+	 */
+	public function attachedToSiteTree() {
+		return ClassInfo::is_subclass_of($this->ownerBaseClass, 'SiteTree');
+	}
+	
+	
+	
+	/**
 	 * @deprecated 1.0 Please use {@link CommentsExtension->CommentsForm()}
 	 */
 	function PageComments() {
-		user_error('$PageComments is deprecated. Please use $CommentsForm');
+		user_error('$PageComments is deprecated. Please use $CommentsForm', E_USER_WARNING);
 		
 		return $this->CommentsForm();
 	}

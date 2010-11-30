@@ -1,13 +1,14 @@
 <?php
+
 /**
  * Represents an interface for viewing and adding page comments
  * Create one, passing the page discussed to the constructor.  It can then be
  * inserted into a template.
  *
- * @package cms
- * @subpackage comments
+ * @package comments
  */
 class CommentInterface extends RequestHandler {
+	
 	static $url_handlers = array(
 		'$Item!' => '$Item',
 	);
@@ -24,7 +25,7 @@ class CommentInterface extends RequestHandler {
 	 * 
 	 * @var bool
 	 */
-	static $comments_require_login = false;
+	private static $comments_require_login = false;
 	
 	/**
 	 * If this is a valid permission code, you must be logged in 
@@ -33,7 +34,7 @@ class CommentInterface extends RequestHandler {
 	 * 
 	 * @var string 
 	 */
-	static $comments_require_permission = "";
+	private static $comments_require_permission = "";
 	
 	/**
 	 * If this is true it will include the javascript for AJAX 
@@ -42,7 +43,7 @@ class CommentInterface extends RequestHandler {
 	 * 
 	 * @var bool
 	 */
-	static $use_ajax_commenting = true;
+	private static $use_ajax_commenting = true;
 	
 	/**
 	 * If this is true then we should show the existing comments on 
@@ -51,9 +52,8 @@ class CommentInterface extends RequestHandler {
 	 * If this is false the form + existing comments will be hidden
 	 * 
 	 * @var bool
-	 * @since 2.4 - Always show them by default
 	 */
-	static $show_comments_when_disabled = true;
+	private static $show_comments_when_disabled = true;
 	
 	/**
 	 * Define how you want to order page comments by. By default order by newest
@@ -126,25 +126,28 @@ class CommentInterface extends RequestHandler {
 		self::$use_ajax_commenting = $state;
 	}
 	
-	function forTemplate() {
-		return $this->renderWith('CommentInterface');
-	}
-	
 	/**
 	 * @return boolean true if the currently logged in user can post a comment,
 	 * false if they can't. Users can post comments by default, enforce 
 	 * security by using 
+	 *
 	 * @link CommentInterface::set_comments_require_login() and 
 	 * @link {CommentInterface::set_comments_require_permission()}.
 	 */
-	static function CanPostComment() {
+	public static function canPost() {
 		$member = Member::currentUser();
+		
 		if(self::$comments_require_permission && $member && Permission::check(self::$comments_require_permission)) {
-			return true; // Comments require a certain permission, and the user has the correct permission
+			// Comments require a certain permission, and the user has the correct permission
+			return true; 
+			
 		} elseif(self::$comments_require_login && $member && !self::$comments_require_permission) {
-			return true; // Comments only require that a member is logged in
+			// Comments only require that a member is logged in
+			return true;
+			
 		} elseif(!self::$comments_require_permission && !self::$comments_require_login) {
-			return true; // Comments don't require anything - anyone can add a comment
+			// Comments don't require anything - anyone can add a comment
+			return true; 
 		}
 		
 		return false;
@@ -166,55 +169,8 @@ class CommentInterface extends RequestHandler {
 	}
 	
 	function PostCommentForm() {
-		if(!$this->page->ProvideComments){ 
-			return false;
-		}
-		$fields = new FieldSet(
-			new HiddenField("ParentID", "ParentID", $this->page->ID)
-		);
-		
-		$member = Member::currentUser();
-		
-		if((self::$comments_require_login || self::$comments_require_permission) && $member && $member->FirstName) {
-			// note this was a ReadonlyField - which displayed the name in a span as well as the hidden field but
-			// it was not saving correctly. Have changed it to a hidden field. It passes the data correctly but I 
-			// believe the id of the form field is wrong.
-			$fields->push(new ReadonlyField("NameView", _t('CommentInterface.YOURNAME', 'Your name'), $member->getName()));
-			$fields->push(new HiddenField("Name", "", $member->getName()));
-		} else {
-			$fields->push(new TextField("Name", _t('CommentInterface.YOURNAME', 'Your name')));
-		}
-				
-		// optional commenter URL
-		$fields->push(new TextField("CommenterURL", _t('CommentInterface.COMMENTERURL', "Your website URL")));
-		
-		if(MathSpamProtection::isEnabled()){
-			$fields->push(new TextField("Math", sprintf(_t('CommentInterface.SPAMQUESTION', "Spam protection question: %s"), MathSpamProtection::getMathQuestion())));
-		}				
-		
-		$fields->push(new TextareaField("Comment", _t('CommentInterface.YOURCOMMENT', "Comments")));
-		
-		$form = new CommentInterface_Form($this, "PostCommentForm", $fields, new FieldSet(
-			new FormAction("postcomment", _t('CommentInterface.POST', 'Post'))
-		));
-		
-		// Set it so the user gets redirected back down to the form upon form fail
-		$form->setRedirectToFormOnValidationError(true);
-		
-		// Optional Spam Protection.
-		if(class_exists('SpamProtectorManager')) {
-			SpamProtectorManager::update_form($form, null, array('Name' => 'author_name', 'CommenterURL' => 'author_url', 'Comment' => 'post_body'));
-			self::set_use_ajax_commenting(false);
-		}
-		
-		// Shall We use AJAX?
-		if(self::$use_ajax_commenting) {
-			Requirements::javascript(SAPPHIRE_DIR . '/thirdparty/behaviour/behaviour.js');
-			Requirements::javascript(SAPPHIRE_DIR . '/thirdparty/prototype/prototype.js');
-			Requirements::javascript(THIRDPARTY_DIR . '/scriptaculous/effects.js');
-			Requirements::javascript(CMS_DIR . '/javascript/CommentInterface.js');
-		}
-		
+
+	
 		// Load the data from Session
 		$form->loadDataFrom(array(
 			"Name" => Cookie::get("CommentInterface_Name"),
@@ -263,107 +219,14 @@ class CommentInterface extends RequestHandler {
 }
 
 /**
- * @package cms
- * @subpackage comments
+ * @package comments
  */
 class CommentInterface_Form extends Form {
-	function postcomment($data) {
-		// Spam filtering
-		Cookie::set("CommentInterface_Name", $data['Name']);
-		Cookie::set("CommentInterface_CommenterURL", $data['CommenterURL']);
-		Cookie::set("CommentInterface_Comment", $data['Comment']);
-
-		if(SSAkismet::isEnabled()) {
-			try {
-				$akismet = new SSAkismet();
-				
-				$akismet->setCommentAuthor($data['Name']);
-				$akismet->setCommentContent($data['Comment']);
-				
-				if($akismet->isCommentSpam()) {
-					if(SSAkismet::getSaveSpam()) {
-						$comment = Object::create('Comment');
-						$this->saveInto($comment);
-						$comment->setField("IsSpam", true);
-						$comment->write();
-					}
-					echo "<b>"._t('CommentInterface_Form.SPAMDETECTED', 'Spam detected!!') . "</b><br /><br />";
-					printf("If you believe this was in error, please email %s.", ereg_replace("@", " _(at)_", Email::getAdminEmail()));
-					echo "<br /><br />"._t('CommentInterface_Form.MSGYOUPOSTED', 'The message you posted was:'). "<br /><br />";
-					echo $data['Comment'];
-					
-					return;
-				}
-			} catch (Exception $e) {
-				// Akismet didn't work, continue without spam check
-			}
-		}
-		
-		//check if spam question was right.
-		if(MathSpamProtection::isEnabled()){
-			if(!MathSpamProtection::correctAnswer($data['Math'])){
-				if(!Director::is_ajax()) {				
-					Director::redirectBack();
-				}
-				return "spamprotectionfailed"; //used by javascript for checking if the spam question was wrong
-			}
-		}
-		
-		// If commenting can only be done by logged in users, make sure the user is logged in
-		$member = Member::currentUser();
-		if(CommentInterface::CanPostComment() && $member) {
-			$this->Fields()->push(new HiddenField("AuthorID", "Author ID", $member->ID));
-		} elseif(!CommentInterface::CanPostComment()) {
-			echo "You're not able to post comments to this page. Please ensure you are logged in and have an appropriate permission level.";
-			return;
-		}
-
-		$comment = Object::create('Comment');
-		$this->saveInto($comment);
-		
-		// Store the Session ID if needed for Spamprotection
-		if($session = Session::get('mollom_user_session_id')) {
-			$comment->SessionID = $session;
-			Session::clear('mollom_user_session_id');	
-		}
-		$comment->IsSpam = false;
-		$comment->NeedsModeration = Comment::moderationEnabled();
-		$comment->write();
-		
-		Cookie::set("CommentInterface_Comment", '');
-		
-		$moderationMsg = _t('CommentInterface_Form.AWAITINGMODERATION', "Your comment has been submitted and is now awaiting moderation.");
-		
-		if(Director::is_ajax()) {
-			if($comment->NeedsModeration){
-				echo $moderationMsg;
-			} else{
-				echo $comment->renderWith('CommentInterface_singlecomment');
-			}
-		} else {		
-			if($comment->NeedsModeration){
-				$this->sessionMessage($moderationMsg, 'good');
-			}
-			
-			if($comment->ParentID) {
-				$page = DataObject::get_by_id("Page", $comment->ParentID);
-				if($page) {
-					// if it needs moderation then it won't appear in the list. Therefore
-					// we need to link to the comment holder rather than the individual comment
-					$url = ($comment->NeedsModeration) ? $page->Link() . '#Comments_holder' : $page->Link() . '#Comment_' . $comment->ID;
-					
-					return Director::redirect($url);
-				}
-			}
-			
-			return Director::redirectBack();
-		}
-	}
+	
 }
 
 /**
- * @package cms
- * @subpackage comments
+ * @package comments
  */
 class CommentInterface_Controller extends ContentController {
 	function __construct() {
@@ -376,5 +239,3 @@ class CommentInterface_Controller extends ContentController {
 		}
 	}
 }
-
-?>
