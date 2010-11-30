@@ -3,10 +3,11 @@
  * Represents an interface for viewing and adding page comments
  * Create one, passing the page discussed to the constructor.  It can then be
  * inserted into a template.
+ *
  * @package cms
  * @subpackage comments
  */
-class PageCommentInterface extends RequestHandler {
+class CommentInterface extends RequestHandler {
 	static $url_handlers = array(
 		'$Item!' => '$Item',
 	);
@@ -66,7 +67,7 @@ class PageCommentInterface extends RequestHandler {
 	/**
 	 * Create a new page comment interface
 	 * @param controller The controller that the interface is used on
-	 * @param methodName The method to return this PageCommentInterface object
+	 * @param methodName The method to return this CommentInterface object
 	 * @param page The page that we're commenting on
 	 */
 	function __construct($controller, $methodName, $page) {
@@ -81,7 +82,7 @@ class PageCommentInterface extends RequestHandler {
 	}
 	
 	/**
-	 * See {@link PageCommentInterface::$comments_require_login}
+	 * See {@link CommentInterface::$comments_require_login}
 	 *
 	 * @param boolean state The new state of this static field
 	 */
@@ -90,7 +91,7 @@ class PageCommentInterface extends RequestHandler {
 	}
 	
 	/**
-	 * See {@link PageCommentInterface::$comments_require_permission}
+	 * See {@link CommentInterface::$comments_require_permission}
 	 *
 	 * @param string permission The permission to check against.
 	 */
@@ -99,7 +100,7 @@ class PageCommentInterface extends RequestHandler {
 	}
 	
 	/**
-	 * See {@link PageCommentInterface::$show_comments_when_disabled}
+	 * See {@link CommentInterface::$show_comments_when_disabled}
 	 * 
 	 * @param bool - show / hide the existing comments when disabled
 	 */
@@ -108,7 +109,7 @@ class PageCommentInterface extends RequestHandler {
 	}
 	
 	/**
-	 * See {@link PageCommentInterface::$order_comments_by}
+	 * See {@link CommentInterface::$order_comments_by}
 	 *
 	 * @param String
 	 */
@@ -117,7 +118,7 @@ class PageCommentInterface extends RequestHandler {
 	}
 	
 	/**
-	 * See {@link PageCommentInterface::$use_ajax_commenting}
+	 * See {@link CommentInterface::$use_ajax_commenting}
 	 *
 	 * @param bool
 	 */
@@ -126,15 +127,15 @@ class PageCommentInterface extends RequestHandler {
 	}
 	
 	function forTemplate() {
-		return $this->renderWith('PageCommentInterface');
+		return $this->renderWith('CommentInterface');
 	}
 	
 	/**
 	 * @return boolean true if the currently logged in user can post a comment,
 	 * false if they can't. Users can post comments by default, enforce 
 	 * security by using 
-	 * @link PageCommentInterface::set_comments_require_login() and 
-	 * @link {PageCommentInterface::set_comments_require_permission()}.
+	 * @link CommentInterface::set_comments_require_login() and 
+	 * @link {CommentInterface::set_comments_require_permission()}.
 	 */
 	static function CanPostComment() {
 		$member = Member::currentUser();
@@ -178,23 +179,23 @@ class PageCommentInterface extends RequestHandler {
 			// note this was a ReadonlyField - which displayed the name in a span as well as the hidden field but
 			// it was not saving correctly. Have changed it to a hidden field. It passes the data correctly but I 
 			// believe the id of the form field is wrong.
-			$fields->push(new ReadonlyField("NameView", _t('PageCommentInterface.YOURNAME', 'Your name'), $member->getName()));
+			$fields->push(new ReadonlyField("NameView", _t('CommentInterface.YOURNAME', 'Your name'), $member->getName()));
 			$fields->push(new HiddenField("Name", "", $member->getName()));
 		} else {
-			$fields->push(new TextField("Name", _t('PageCommentInterface.YOURNAME', 'Your name')));
+			$fields->push(new TextField("Name", _t('CommentInterface.YOURNAME', 'Your name')));
 		}
 				
 		// optional commenter URL
-		$fields->push(new TextField("CommenterURL", _t('PageCommentInterface.COMMENTERURL', "Your website URL")));
+		$fields->push(new TextField("CommenterURL", _t('CommentInterface.COMMENTERURL', "Your website URL")));
 		
 		if(MathSpamProtection::isEnabled()){
-			$fields->push(new TextField("Math", sprintf(_t('PageCommentInterface.SPAMQUESTION', "Spam protection question: %s"), MathSpamProtection::getMathQuestion())));
+			$fields->push(new TextField("Math", sprintf(_t('CommentInterface.SPAMQUESTION', "Spam protection question: %s"), MathSpamProtection::getMathQuestion())));
 		}				
 		
-		$fields->push(new TextareaField("Comment", _t('PageCommentInterface.YOURCOMMENT', "Comments")));
+		$fields->push(new TextareaField("Comment", _t('CommentInterface.YOURCOMMENT', "Comments")));
 		
-		$form = new PageCommentInterface_Form($this, "PostCommentForm", $fields, new FieldSet(
-			new FormAction("postcomment", _t('PageCommentInterface.POST', 'Post'))
+		$form = new CommentInterface_Form($this, "PostCommentForm", $fields, new FieldSet(
+			new FormAction("postcomment", _t('CommentInterface.POST', 'Post'))
 		));
 		
 		// Set it so the user gets redirected back down to the form upon form fail
@@ -211,14 +212,14 @@ class PageCommentInterface extends RequestHandler {
 			Requirements::javascript(SAPPHIRE_DIR . '/thirdparty/behaviour/behaviour.js');
 			Requirements::javascript(SAPPHIRE_DIR . '/thirdparty/prototype/prototype.js');
 			Requirements::javascript(THIRDPARTY_DIR . '/scriptaculous/effects.js');
-			Requirements::javascript(CMS_DIR . '/javascript/PageCommentInterface.js');
+			Requirements::javascript(CMS_DIR . '/javascript/CommentInterface.js');
 		}
 		
 		// Load the data from Session
 		$form->loadDataFrom(array(
-			"Name" => Cookie::get("PageCommentInterface_Name"),
-			"Comment" => Cookie::get("PageCommentInterface_Comment"),
-			"CommenterURL" => Cookie::get("PageCommentInterface_CommenterURL")	
+			"Name" => Cookie::get("CommentInterface_Name"),
+			"Comment" => Cookie::get("CommentInterface_Comment"),
+			"CommenterURL" => Cookie::get("CommentInterface_CommenterURL")	
 		));
 		
 		return $form;
@@ -228,12 +229,12 @@ class PageCommentInterface extends RequestHandler {
 		// Comment limits
 		$limit = array();
 		$limit['start'] = isset($_GET['commentStart']) ? (int)$_GET['commentStart'] : 0;
-		$limit['limit'] = PageComment::$comments_per_page;
+		$limit['limit'] = Comment::$comments_per_page;
 		
 		$spamfilter = isset($_GET['showspam']) ? '' : "AND \"IsSpam\" = 0";
 		$unmoderatedfilter = Permission::check('CMS_ACCESS_CommentAdmin') ? '' : "AND \"NeedsModeration\" = 0";
 		$order = self::$order_comments_by;
-		$comments =  DataObject::get("PageComment", "\"ParentID\" = '" . Convert::raw2sql($this->page->ID) . "' $spamfilter $unmoderatedfilter", $order, "", $limit);
+		$comments =  DataObject::get("Comment", "\"ParentID\" = '" . Convert::raw2sql($this->page->ID) . "' $spamfilter $unmoderatedfilter", $order, "", $limit);
 		
 		if(is_null($comments)) {
 			return;
@@ -246,16 +247,16 @@ class PageCommentInterface extends RequestHandler {
 	}
 	
 	function CommentRssLink() {
-		return Director::absoluteBaseURL() . "PageComment/rss?pageid=" . $this->page->ID;
+		return Director::absoluteBaseURL() . "Comment/rss?pageid=" . $this->page->ID;
 	}
 	
 	/**
-	 * A link to PageComment_Controller.deleteallcomments() which deletes all
+	 * A link to Comment_Controller.deleteallcomments() which deletes all
 	 * comments on a page referenced by the url param pageid
 	 */
 	function DeleteAllLink() {
 		if(Permission::check('CMS_ACCESS_CommentAdmin')) {
-			return Director::absoluteBaseURL() . "PageComment/deleteallcomments?pageid=" . $this->page->ID;
+			return Director::absoluteBaseURL() . "Comment/deleteallcomments?pageid=" . $this->page->ID;
 		}
 	}
 	
@@ -265,12 +266,12 @@ class PageCommentInterface extends RequestHandler {
  * @package cms
  * @subpackage comments
  */
-class PageCommentInterface_Form extends Form {
+class CommentInterface_Form extends Form {
 	function postcomment($data) {
 		// Spam filtering
-		Cookie::set("PageCommentInterface_Name", $data['Name']);
-		Cookie::set("PageCommentInterface_CommenterURL", $data['CommenterURL']);
-		Cookie::set("PageCommentInterface_Comment", $data['Comment']);
+		Cookie::set("CommentInterface_Name", $data['Name']);
+		Cookie::set("CommentInterface_CommenterURL", $data['CommenterURL']);
+		Cookie::set("CommentInterface_Comment", $data['Comment']);
 
 		if(SSAkismet::isEnabled()) {
 			try {
@@ -281,14 +282,14 @@ class PageCommentInterface_Form extends Form {
 				
 				if($akismet->isCommentSpam()) {
 					if(SSAkismet::getSaveSpam()) {
-						$comment = Object::create('PageComment');
+						$comment = Object::create('Comment');
 						$this->saveInto($comment);
 						$comment->setField("IsSpam", true);
 						$comment->write();
 					}
-					echo "<b>"._t('PageCommentInterface_Form.SPAMDETECTED', 'Spam detected!!') . "</b><br /><br />";
+					echo "<b>"._t('CommentInterface_Form.SPAMDETECTED', 'Spam detected!!') . "</b><br /><br />";
 					printf("If you believe this was in error, please email %s.", ereg_replace("@", " _(at)_", Email::getAdminEmail()));
-					echo "<br /><br />"._t('PageCommentInterface_Form.MSGYOUPOSTED', 'The message you posted was:'). "<br /><br />";
+					echo "<br /><br />"._t('CommentInterface_Form.MSGYOUPOSTED', 'The message you posted was:'). "<br /><br />";
 					echo $data['Comment'];
 					
 					return;
@@ -310,14 +311,14 @@ class PageCommentInterface_Form extends Form {
 		
 		// If commenting can only be done by logged in users, make sure the user is logged in
 		$member = Member::currentUser();
-		if(PageCommentInterface::CanPostComment() && $member) {
+		if(CommentInterface::CanPostComment() && $member) {
 			$this->Fields()->push(new HiddenField("AuthorID", "Author ID", $member->ID));
-		} elseif(!PageCommentInterface::CanPostComment()) {
+		} elseif(!CommentInterface::CanPostComment()) {
 			echo "You're not able to post comments to this page. Please ensure you are logged in and have an appropriate permission level.";
 			return;
 		}
 
-		$comment = Object::create('PageComment');
+		$comment = Object::create('Comment');
 		$this->saveInto($comment);
 		
 		// Store the Session ID if needed for Spamprotection
@@ -326,18 +327,18 @@ class PageCommentInterface_Form extends Form {
 			Session::clear('mollom_user_session_id');	
 		}
 		$comment->IsSpam = false;
-		$comment->NeedsModeration = PageComment::moderationEnabled();
+		$comment->NeedsModeration = Comment::moderationEnabled();
 		$comment->write();
 		
-		Cookie::set("PageCommentInterface_Comment", '');
+		Cookie::set("CommentInterface_Comment", '');
 		
-		$moderationMsg = _t('PageCommentInterface_Form.AWAITINGMODERATION', "Your comment has been submitted and is now awaiting moderation.");
+		$moderationMsg = _t('CommentInterface_Form.AWAITINGMODERATION', "Your comment has been submitted and is now awaiting moderation.");
 		
 		if(Director::is_ajax()) {
 			if($comment->NeedsModeration){
 				echo $moderationMsg;
 			} else{
-				echo $comment->renderWith('PageCommentInterface_singlecomment');
+				echo $comment->renderWith('CommentInterface_singlecomment');
 			}
 		} else {		
 			if($comment->NeedsModeration){
@@ -349,7 +350,7 @@ class PageCommentInterface_Form extends Form {
 				if($page) {
 					// if it needs moderation then it won't appear in the list. Therefore
 					// we need to link to the comment holder rather than the individual comment
-					$url = ($comment->NeedsModeration) ? $page->Link() . '#PageComments_holder' : $page->Link() . '#PageComment_' . $comment->ID;
+					$url = ($comment->NeedsModeration) ? $page->Link() . '#Comments_holder' : $page->Link() . '#Comment_' . $comment->ID;
 					
 					return Director::redirect($url);
 				}
@@ -364,14 +365,14 @@ class PageCommentInterface_Form extends Form {
  * @package cms
  * @subpackage comments
  */
-class PageCommentInterface_Controller extends ContentController {
+class CommentInterface_Controller extends ContentController {
 	function __construct() {
 		parent::__construct(null);
 	}
 	
 	function newspamquestion() {
 		if(Director::is_ajax()) {
-			echo Convert::raw2xml(sprintf(_t('PageCommentInterface_Controller.SPAMQUESTION', "Spam protection question: %s"),MathSpamProtection::getMathQuestion()));
+			echo Convert::raw2xml(sprintf(_t('CommentInterface_Controller.SPAMQUESTION', "Spam protection question: %s"),MathSpamProtection::getMathQuestion()));
 		}
 	}
 }

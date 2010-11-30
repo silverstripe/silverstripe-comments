@@ -8,16 +8,17 @@
 class Comment extends DataObject {
 	
 	static $db = array(
-		"Name" => "Varchar(200)",
-		"Comment" => "Text",
-		"Email" => "Varchar(200)"
-		"URL" => "Varchar(255)",
-		"SessionID" => "Varchar(255)",
+		"Name"			=> "Varchar(200)",
+		"Comment"		=> "Text",
+		"Email"			=> "Varchar(200)",
+		"URL"			=> "Varchar(255)",
+		"SessionID"		=> "Varchar(255)",
+		"ParentClass"	=> "Varchar(200)"
 	);
 
 	static $has_one = array(
-		"Parent" => "DataObject",
-		"Author" => "Member"
+		"Parent"		=> "DataObject",
+		"Author"		=> "Member"
 	);
 	
 	static $has_many = array();
