@@ -87,7 +87,15 @@ class CommentsExtension extends DataObjectDecorator {
 	public function CommentsForm() {
 		$interface = new SSViewer('CommentsInterface');
 		
+		
+		// detect whether we comments are enabled. By default if $CommentsForm is included
+		// on a {@link DataObject} then it is enabled, however {@link SiteTree} objects can
+		// trigger comments on / off via ProvideComments
+		$enabled = (!$this->attachedToSiteTree() || $this->owner->ProvideComments) ? true : false;
+		
+		// if comments are turned off then 
 		return $interface->process(new ArrayData(array(
+			'CommentsEnabled' => $enabled,
 			'AddCommentForm' => $this->AddCommentForm(),
 			'Comments' => $this->Comments()
 		)));
@@ -100,17 +108,12 @@ class CommentsExtension extends DataObjectDecorator {
 	 * @return Form|bool
 	 */
 	public function AddCommentForm() {
-		
-		// detect whether we comments are enabled. By default if $CommentsForm is included
-		// on a {@link DataObject} then it is enabled, however {@link SiteTree} objects can
-		// trigger comments on / off via ProvideComments
-		if($this->attachedToSiteTree() && !$this->owner->ProvideComments)  return false;
-		
+
 		$form = new CommentForm(Controller::curr(), 'CommentsForm');
 		
 		// hook to allow further extensions to alter the comments form
 		$this->extend('alterAddCommentForm', $form);
-		
+
 		return $form;
 	}
 	

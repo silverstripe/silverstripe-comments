@@ -39,6 +39,7 @@ class Comment extends DataObject {
 
 	/**
 	 * Return a link to this comment
+	 *
 	 * @return string link to this comment.
 	 */
 	function Link() {
@@ -165,9 +166,24 @@ class Comment extends DataObject {
 	 * @return Boolean
 	 */
 	function canCreate($member = null) {
-		return true;
+		$member = Member::currentUser();
+		
+		if(self::$comments_require_permission && $member && Permission::check(self::$comments_require_permission)) {
+			// Comments require a certain permission, and the user has the correct permission
+			return true; 
+			
+		} elseif(self::$comments_require_login && $member && !self::$comments_require_permission) {
+			// Comments only require that a member is logged in
+			return true;
+			
+		} elseif(!self::$comments_require_permission && !self::$comments_require_login) {
+			// Comments don't require anything - anyone can add a comment
+			return true; 
+		}
+		
+		return false;
 	}
-	
+
 	/**
 	 * Checks for association with a page,
 	 * and {@link SiteTree->ProvidePermission} flag being set to TRUE.

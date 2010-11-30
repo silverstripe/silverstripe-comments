@@ -18,52 +18,7 @@ class CommentInterface extends RequestHandler {
 	
 	protected $controller, $methodName, $page;
 	
-	/**
-	 * If this is true, you must be logged in to post a comment 
-	 * (and therefore, you don't need to specify a 'Your name' field unless 
-	 * your name is blank)
-	 * 
-	 * @var bool
-	 */
-	private static $comments_require_login = false;
-	
-	/**
-	 * If this is a valid permission code, you must be logged in 
-	 * and have the appropriate permission code on your account before you can 
-	 * post a comment.
-	 * 
-	 * @var string 
-	 */
-	private static $comments_require_permission = "";
-	
-	/**
-	 * If this is true it will include the javascript for AJAX 
-	 * commenting. If it is set to false then it will not load
-	 * the files required and it will fall back
-	 * 
-	 * @var bool
-	 */
-	private static $use_ajax_commenting = true;
-	
-	/**
-	 * If this is true then we should show the existing comments on 
-	 * the page even when we have disabled the comment form. 
-	 *
-	 * If this is false the form + existing comments will be hidden
-	 * 
-	 * @var bool
-	 */
-	private static $show_comments_when_disabled = true;
-	
-	/**
-	 * Define how you want to order page comments by. By default order by newest
-	 * to oldest. 
-	 * 
-	 * @var String - used as $orderby in DB query
-	 * @since 2.4 
-	 */
-	static $order_comments_by = "\"Created\" DESC";
-	
+
 	/**
 	 * Create a new page comment interface
 	 * @param controller The controller that the interface is used on
@@ -81,78 +36,8 @@ class CommentInterface extends RequestHandler {
 		return Controller::join_links($this->controller->Link(), $this->methodName);
 	}
 	
-	/**
-	 * See {@link CommentInterface::$comments_require_login}
-	 *
-	 * @param boolean state The new state of this static field
-	 */
-	static function set_comments_require_login($state) {
-		self::$comments_require_login = (boolean) $state;
-	}
-	
-	/**
-	 * See {@link CommentInterface::$comments_require_permission}
-	 *
-	 * @param string permission The permission to check against.
-	 */
-	static function set_comments_require_permission($permission) {
-		self::$comments_require_permission = $permission;
-	}
-	
-	/**
-	 * See {@link CommentInterface::$show_comments_when_disabled}
-	 * 
-	 * @param bool - show / hide the existing comments when disabled
-	 */
-	static function set_show_comments_when_disabled($state) {
-		self::$show_comments_when_disabled = $state;
-	}
-	
-	/**
-	 * See {@link CommentInterface::$order_comments_by}
-	 *
-	 * @param String
-	 */
-	static function set_order_comments_by($order) {
-		self::$order_comments_by = $order;
-	}
-	
-	/**
-	 * See {@link CommentInterface::$use_ajax_commenting}
-	 *
-	 * @param bool
-	 */
-	static function set_use_ajax_commenting($state) {
-		self::$use_ajax_commenting = $state;
-	}
-	
-	/**
-	 * @return boolean true if the currently logged in user can post a comment,
-	 * false if they can't. Users can post comments by default, enforce 
-	 * security by using 
-	 *
-	 * @link CommentInterface::set_comments_require_login() and 
-	 * @link {CommentInterface::set_comments_require_permission()}.
-	 */
-	public static function canPost() {
-		$member = Member::currentUser();
-		
-		if(self::$comments_require_permission && $member && Permission::check(self::$comments_require_permission)) {
-			// Comments require a certain permission, and the user has the correct permission
-			return true; 
-			
-		} elseif(self::$comments_require_login && $member && !self::$comments_require_permission) {
-			// Comments only require that a member is logged in
-			return true;
-			
-		} elseif(!self::$comments_require_permission && !self::$comments_require_login) {
-			// Comments don't require anything - anyone can add a comment
-			return true; 
-		}
-		
-		return false;
-	}
-	
+
+
 	/**
 	 * if this page comment form requires users to have a
 	 * valid permission code in order to post (used to customize the error 

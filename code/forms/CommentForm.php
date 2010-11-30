@@ -7,7 +7,7 @@
  */
 
 class CommentForm extends Form {
-	
+
 	/**
 	 * Returns a create comment form
 	 *
@@ -28,7 +28,7 @@ class CommentForm extends Form {
 		}
 
 		$fields->push(new TextField("URL", _t('CommentForm.COMMENTERURL', "Your website URL")));
-		$fields->push(new EmailField("Email", _t('CommentForm', "Your email address (will not be published)")))
+		$fields->push(new EmailField("Email", _t('CommentForm', "Your email address (will not be published)")));
 		$fields->push(new TextareaField("Comment", _t('CommentInterface.YOURCOMMENT', "Comments")));
 	
 		$actions = new FieldSet(
@@ -126,12 +126,11 @@ class CommentForm extends Form {
 					// we need to link to the comment holder rather than the individual comment
 					$url = ($comment->NeedsModeration) ? $page->Link() . '#Comments_holder' : $page->Link() . '#Comment_' . $comment->ID;
 					
-					return Director::redirect($url);
+					return $this->controller->redirect($url);
 				}
 			}
 			
-			return Director::redirectBack();
+			return $this->controller->redirectBack();
 		}
-	}
 	}
 }
