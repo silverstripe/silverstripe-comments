@@ -3,14 +3,24 @@
 /**
  * Comments Default Configuration
  *
- * To enable comments on your own {@link DataObject}'s then
- * add the extension 'CommentsExtension' to your object
+ * To enable comments on your own {@link DataObject}'s you need to 
+ * call Commenting::add_comments($object_name, $settings);
+ *
+ * Where $object_name is the name of the subclass of DataObject you want
+ * to add the comments to and $settings is a map of configuration options
+ * and values
  *
  * Example: mysite/_config.php
  *
  * <code>
- *	Object::add_extension('Page', 'CommentsExtension');
+ *	// uses the default values
+ *	Commenting::add('SiteTree');
+ * 
+ *	// set configuration
+ *	Commenting::add('SiteTree', array(
+ *		'require_login' => true
+ *	));
  * </code>
  */
 
-Object::add_extension('Page', 'CommentsExtension');
+Commenting::add('Page');
