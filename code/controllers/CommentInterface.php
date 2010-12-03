@@ -65,27 +65,7 @@ class CommentInterface extends RequestHandler {
 		
 		return $form;
 	}
-	
-	function Comments() {
-		// Comment limits
-		$limit = array();
-		$limit['start'] = isset($_GET['commentStart']) ? (int)$_GET['commentStart'] : 0;
-		$limit['limit'] = Comment::$comments_per_page;
-		
-		$spamfilter = isset($_GET['showspam']) ? '' : "AND \"IsSpam\" = 0";
-		$unmoderatedfilter = Permission::check('CMS_ACCESS_CommentAdmin') ? '' : "AND \"NeedsModeration\" = 0";
-		$order = self::$order_comments_by;
-		$comments =  DataObject::get("Comment", "\"ParentID\" = '" . Convert::raw2sql($this->page->ID) . "' $spamfilter $unmoderatedfilter", $order, "", $limit);
-		
-		if(is_null($comments)) {
-			return;
-		}
-		
-		// This allows us to use the normal 'start' GET variables as well (In the weird circumstance where you have paginated comments AND something else paginated)
-		$comments->setPaginationGetVar('commentStart');
-		
-		return $comments;
-	}
+
 	
 	function CommentRssLink() {
 		return Director::absoluteBaseURL() . "Comment/rss?pageid=" . $this->page->ID;
@@ -98,29 +78,6 @@ class CommentInterface extends RequestHandler {
 	function DeleteAllLink() {
 		if(Permission::check('CMS_ACCESS_CommentAdmin')) {
 			return Director::absoluteBaseURL() . "Comment/deleteallcomments?pageid=" . $this->page->ID;
-		}
-	}
-	
-}
-
-/**
- * @package comments
- */
-class CommentInterface_Form extends Form {
-	
-}
-
-/**
- * @package comments
- */
-class CommentInterface_Controller extends ContentController {
-	function __construct() {
-		parent::__construct(null);
-	}
-	
-	function newspamquestion() {
-		if(Director::is_ajax()) {
-			echo Convert::raw2xml(sprintf(_t('CommentInterface_Controller.SPAMQUESTION', "Spam protection question: %s"),MathSpamProtection::getMathQuestion()));
 		}
 	}
 }

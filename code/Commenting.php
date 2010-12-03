@@ -36,8 +36,14 @@ class Commenting {
 	 * @param string classname to add commenting to
 	 * @param array $setting Settings. See {@link self::$default_config} for
 	 *			available settings
+	 * 
+	 * @throws InvalidArgumentException
 	 */
-	public static function add($class, array $settings) {
+	public static function add($class, $settings = false) {
+		if($settings && !is_array($settings)) {
+			throw new InvalidArgumentException('$settings needs to be an array or null', E_USER_ERROR);
+		}
+		
 		self::$enabled_classes[$class] = $settings;
 		
 		Object::add_extension($class, 'CommentsExtension');
