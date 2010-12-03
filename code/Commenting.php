@@ -65,14 +65,25 @@ class Commenting {
 	}
 	
 	/**
-	 * Sets a value of a given config setting 
+	 * Sets a value for a class of a given config setting. Passing 'all' as the class
+	 * sets it for everything
 	 *
-	 * @param string $class
+	 * @param string $class Class to set the value on. Passing 'all' will set it to all 
+	 *			active mappings
 	 * @param string $key setting to change
 	 * @param mixed $value value of the setting
 	 */
 	public static function set_config_value($class, $key, $value = false) {
-		if(isset(self::$enabled_classes[$class])) {
+		if($class == "all") {
+			if($enabledClasses = self::$enabled_classes) {
+				foreach($enabledClasses as $enabled) {
+					if(!is_array($enabled)) $enabled = array();
+					
+					$enabled[$key] = $value;
+				}
+			}
+		}
+		else if(isset(self::$enabled_classes[$class])) {
 			if(!is_array(self::$enabled_classes[$class])) self::$enabled_classes[$class] = array();
 			
 			self::$enabled_classes[$class][$key] = $value;
