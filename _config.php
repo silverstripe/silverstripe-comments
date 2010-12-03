@@ -23,4 +23,4 @@
  * </code>
  */
 
-Commenting::add('Page');
+Commenting::add('SiteTree');
