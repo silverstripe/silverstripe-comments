@@ -42,29 +42,6 @@ class CommentsExtension extends DataObjectDecorator {
 	}
 	
 	/**
-	 * @var int Number of comments to show per page
-	 */
-	private static $comments_per_page = 10;
-	
-	/**
-	 * Set the number of comments displayed per page
-	 *
-	 * @param int Number of comments to show per page
-	 */
-	public static function set_comments_per_page($num) {
-		self::$comments_per_page = (int)$num;
-	}
-	
-	/**
-	 * Returns the number of comments per page
-	 *
-	 * @return int
-	 */
-	public static function comments_per_page() {
-		return self::$comments_per_page;
-	}
-	
-	/**
 	 * Returns a list of all the comments attached to this record.
 	 *
 	 * @todo pagination
@@ -93,28 +70,14 @@ class CommentsExtension extends DataObjectDecorator {
 		// trigger comments on / off via ProvideComments
 		$enabled = (!$this->attachedToSiteTree() || $this->owner->ProvideComments) ? true : false;
 		
+		$form = ($enabled) ? new CommentForm(Controller::curr(), 'CommentsForm', $this->owner) : false;
+		
 		// if comments are turned off then 
 		return $interface->process(new ArrayData(array(
 			'CommentsEnabled' => $enabled,
-			'AddCommentForm' => $this->AddCommentForm(),
+			'AddCommentForm' => $form,
 			'Comments' => $this->Comments()
 		)));
-	}
-	
-	/**
-	 * Add Comment Form. 
-	 *
-	 * @see CommentForm
-	 * @return Form|bool
-	 */
-	public function AddCommentForm() {
-
-		$form = new CommentForm(Controller::curr(), 'CommentsForm');
-		
-		// hook to allow further extensions to alter the comments form
-		$this->extend('alterAddCommentForm', $form);
-
-		return $form;
 	}
 	
 	/**
@@ -125,8 +88,6 @@ class CommentsExtension extends DataObjectDecorator {
 	public function attachedToSiteTree() {
 		return ClassInfo::is_subclass_of($this->ownerBaseClass, 'SiteTree');
 	}
-	
-	
 	
 	/**
 	 * @deprecated 1.0 Please use {@link CommentsExtension->CommentsForm()}

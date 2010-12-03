@@ -36,32 +36,8 @@ class CommentInterface extends RequestHandler {
 		return Controller::join_links($this->controller->Link(), $this->methodName);
 	}
 	
-
-
-	/**
-	 * if this page comment form requires users to have a
-	 * valid permission code in order to post (used to customize the error 
-	 * message).
-	 * 
-	 * @return bool
-	 */
-	function PostingRequiresPermission() {
-		return self::$comments_require_permission;
-	}
-	
-	function Page() {
-		return $this->page;
-	}
-	
 	function PostCommentForm() {
 
-	
-		// Load the data from Session
-		$form->loadDataFrom(array(
-			"Name" => Cookie::get("CommentInterface_Name"),
-			"Comment" => Cookie::get("CommentInterface_Comment"),
-			"CommenterURL" => Cookie::get("CommentInterface_CommenterURL")	
-		));
 		
 		return $form;
 	}

@@ -13,11 +13,15 @@ class CommentForm extends Form {
 	 *
 	 * @return Form
 	 */
-	function __construct($controller, $name) {
+	function __construct($controller, $name, $class) {
 
 		$member = Member::currentUser();
-
-		if((self::$comments_require_login || self::$comments_require_permission) && $member && $member->FirstName) {
+		$class = (is_object($class)) ? $class->ClassName : $class;
+		$fields = new FieldSet();
+		
+		if((Commenting::get_config_value($class, 'require_login') 
+			|| Commenting::get_config_value($class, 'required_permission'))
+			&& ($member && $member->FirstName)) {
 			// note this was a ReadonlyField - which displayed the name in a span as well as the hidden field but
 			// it was not saving correctly. Have changed it to a hidden field. It passes the data correctly but I 
 			// believe the id of the form field is wrong.
@@ -38,7 +42,28 @@ class CommentForm extends Form {
 		// Set it so the user gets redirected back down to the form upon form fail
 		$this->setRedirectToFormOnValidationError(true);
 		
-		$required = new RequiredFields();
+		// Required fields for server side
+		$required = new RequiredFields(array(
+			'Name',
+			'Email',
+			'Comment'
+		));
+		
+		// load any data from the cookies
+		if($data = Cookie::get('CommentsForm_UserData')) {
+			$data = unserialize($data); 
+			
+			$form->loadDataFrom(array(
+				"Name"		=> isset($data['Name']) ? $data['Name'] : '',
+				"URL"		=> isset($data['URL']) ? $data['URL'] : '',
+				"Email"		=> isset($data['Email']) ? $data['Email'] : '',
+				"Comment"	=> Cookie::get('CommentsForm_Comment')
+			));			
+		}
+		
+		
+		// hook to allow further extensions to alter the comments form
+		$this->extend('alterCommentForm', $form);
 
 		parent::__construct($controller, $name, $fields, $actions, $required);
 	}
@@ -52,10 +77,9 @@ class CommentForm extends Form {
 	function doPostComment($data, $form) {
 		
 		// cache users data
-		Cookie::set("CommentInterface_Name", $data['Name']);
-		Cookie::set("CommentInterface_CommenterURL", $data['CommenterURL']);
-		Cookie::set("CommentInterface_Comment", $data['Comment']);
-
+		Cookie::set("CommentsForm_UserData", serialize($data));
+		Cookie::set("CommentsForm_Comment", $data['Comment']);
+		
 		// @todo turn this into an extension 
 		if(SSAkismet::isEnabled()) {
 			try {
@@ -104,9 +128,10 @@ class CommentForm extends Form {
 		$comment->NeedsModeration = Comment::moderationEnabled();
 		$comment->write();
 		
-		Cookie::set("CommentInterface_Comment", '');
-		
 		$moderationMsg = _t('CommentInterface_Form.AWAITINGMODERATION', "Your comment has been submitted and is now awaiting moderation.");
+		
+		// clear the users comment since it passed validation
+		Cookie::set('CommentsForm_Comment', false);
 		
 		if(Director::is_ajax()) {
 			if($comment->NeedsModeration){

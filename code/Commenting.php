@@ -27,7 +27,8 @@ class Commenting {
 		'required_permission' 			=> '',  // required permission to comment (or array of permissions)
 		'use_ajax_commenting' 			=> true, // use ajax to post comments.
 		'show_comments_when_disabled' 	=> false, // when comments are disabled should we show older comments (if available)
-		'order_comments_by'				=> "\"Created\" DESC"
+		'order_comments_by'				=> "\"Created\" DESC",
+		'comments_per_page'				=> 10
 	);
 	
 	/**
