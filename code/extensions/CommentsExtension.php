@@ -37,7 +37,7 @@ class CommentsExtension extends DataObjectDecorator {
 				);
 			}
 		}
-		
+
 		return array_merge($fields, $relationships);
 	}
 	
@@ -49,8 +49,9 @@ class CommentsExtension extends DataObjectDecorator {
 	 * @return DataObjectSet
 	 */
 	function Comments() {
-		return DataObject::get('Comment', "\"ParentID\" = '". $this->owner->ID ."' AND \"ParentClass\" = '". $this->ownerBaseClass ."'");
+		return DataObject::get('Comment', "\"ParentID\" = '". $this->owner->ID ."' AND \"BaseClass\" = '". $this->ownerBaseClass ."'");
 	}
+	
 	
 	/**
 	 * Comments interface for the front end. Includes the CommentAddForm and the composition
@@ -59,24 +60,36 @@ class CommentsExtension extends DataObjectDecorator {
 	 * To customize the html see templates/CommentInterface.ss or extend this function with
 	 * your own extension.
 	 *
+	 * @todo Cleanup the passing of all this state based functionality
+	 *
 	 * @see docs/en/Extending
 	 */
 	public function CommentsForm() {
 		$interface = new SSViewer('CommentsInterface');
 		
-		
 		// detect whether we comments are enabled. By default if $CommentsForm is included
 		// on a {@link DataObject} then it is enabled, however {@link SiteTree} objects can
 		// trigger comments on / off via ProvideComments
 		$enabled = (!$this->attachedToSiteTree() || $this->owner->ProvideComments) ? true : false;
+
+		$controller = new CommentingController();
 		
-		$form = ($enabled) ? new CommentForm(Controller::curr(), 'CommentsForm', $this->owner) : false;
+		// tad bit messy but needed to ensure all datas available
+		$controller->setOwnerRecord($this->owner);
+		$controller->setBaseClass($this->ownerBaseClass);
+		$controller->setOwnerController(Controller::curr());
 		
-		// if comments are turned off then 
+		$form = ($enabled) ? $controller->CommentsForm() : false;
+		
+		// a little bit all over the show but to ensure a slightly easier upgrade for users
+		// return back the same variables as previously done in comments
 		return $interface->process(new ArrayData(array(
-			'CommentsEnabled' => $enabled,
-			'AddCommentForm' => $form,
-			'Comments' => $this->Comments()
+			'CommentHolderID' 			=> Commenting::get_config_value($this->ownerBaseClass, 'comments_holder_id'),
+			'PostingRequiresPermission' => Commenting::get_config_value($this->ownerBaseClass, 'required_permission'),
+			'CanPost' 					=> Commenting::can_member_post($this->ownerBaseClass),
+			'CommentsEnabled' 			=> $enabled,
+			'AddCommentForm'			=> $form,
+			'Comments'					=> $this->Comments()
 		)));
 	}
 	

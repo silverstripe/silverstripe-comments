@@ -15,8 +15,7 @@
  *
  * See the Akismet class documentation page linked to below for usage information.
  *
- * @package cms
- * @subpackage comments
+ * @package comments
  * @author Alex Potsides, {@link http://www.achingbrain.net http://www.achingbrain.net}
  * @version 0.1
  * @copyright Alex Potsides, {@link http://www.achingbrain.net http://www.achingbrain.net}

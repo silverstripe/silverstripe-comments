@@ -1,10 +1,10 @@
 <% if CommentsEnabled %>
-	<div id="PageComments_holder" class="typography">
+	<div id="$CommentHolderID">
 
 		<h4><% _t('POSTCOM','Post your comment') %></h4>
 		
 		<% if AddCommentForm %>
-			<% if canPost %>
+			<% if CanPost %>
 				$AddCommentForm
 			<% else %>
 				<p><% _t('COMMENTLOGINERROR', 'You cannot post comments until you have logged in') %><% if PostingRequiresPermission %>,<% _t('COMMENTPERMISSIONERROR', 'and that you have an appropriate permission level') %><% end_if %>. 
@@ -17,9 +17,9 @@
 
 		<h4><% _t('COMMENTS','Comments') %></h4>
 	
-		<div id="CommentHolder">
+		<div class="comments-holder">
 			<% if Comments %>
-				<ul id="PageComments">
+				<ul class="comments-list">
 					<% control Comments %>
 						<li class="$EvenOdd<% if FirstLast %> $FirstLast <% end_if %> $SpamClass">
 							<% include CommentsInterface_singlecomment %>

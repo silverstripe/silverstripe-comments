@@ -12,8 +12,8 @@ class Comment extends DataObject {
 		"Comment"		=> "Text",
 		"Email"			=> "Varchar(200)",
 		"URL"			=> "Varchar(255)",
-		"SessionID"		=> "Varchar(255)",
-		"ParentClass"	=> "Varchar(200)"
+		"BaseClass"		=> "Varchar(200)",
+		"Moderated"		=> "Boolean"
 	);
 
 	static $has_one = array(
@@ -42,8 +42,20 @@ class Comment extends DataObject {
 	 *
 	 * @return string link to this comment.
 	 */
-	function Link() {
-		return $this->Parent()->Link() . '#PageComment_'. $this->ID;
+	function Link($action = "") {
+		return $this->Parent()->Link($action) . '#' . $this->Permalink();
+	}
+	
+	/**
+	 * Returns the permalink for this {@link Comment}. Inserted into
+	 * the ID tag of the comment
+	 *
+	 * @return string
+	 */
+	function Permalink() {
+		$prefix = Commenting::get_config_value($this->ownerBaseClass, 'comment_permalink_prefix');
+		
+		return $prefix . '-' . $id;
 	}
 	
 	function getRSSName() {
@@ -107,14 +119,6 @@ class Comment extends DataObject {
 		return $this->Parent()->Title;
 	}
 	
-	static function enableModeration() {
-		self::$moderate = true;
-	}	
-
-	static function moderationEnabled() {
-		return self::$moderate;
-	}
-	
 	static function enableBBCode() {
 		self::$bbcode = true;
 	}	
@@ -158,29 +162,11 @@ class Comment extends DataObject {
 	}
 	
 	/**
-	 * This always returns true, and should be handled by {@link PageCommentInterface->CanPostComment()}.
-	 * 
-	 * @todo Integrate with PageCommentInterface::$comments_require_permission and $comments_require_login
-	 * 
-	 * @param Member $member
+	 * @todo needs to compare to the new {@link Commenting} configuration API
+	 *
 	 * @return Boolean
 	 */
 	function canCreate($member = null) {
-		$member = Member::currentUser();
-		
-		if(self::$comments_require_permission && $member && Permission::check(self::$comments_require_permission)) {
-			// Comments require a certain permission, and the user has the correct permission
-			return true; 
-			
-		} elseif(self::$comments_require_login && $member && !self::$comments_require_permission) {
-			// Comments only require that a member is logged in
-			return true;
-			
-		} elseif(!self::$comments_require_permission && !self::$comments_require_login) {
-			// Comments don't require anything - anyone can add a comment
-			return true; 
-		}
-		
 		return false;
 	}
 

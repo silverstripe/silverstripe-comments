@@ -24,11 +24,14 @@ class Commenting {
 	 */
 	private static $default_config = array(
 		'require_login' 				=> false, // boolean, whether a user needs to login
-		'required_permission' 			=> '',  // required permission to comment (or array of permissions)
+		'required_permission' 			=> false,  // required permission to comment (or array of permissions)
 		'use_ajax_commenting' 			=> true, // use ajax to post comments.
 		'show_comments_when_disabled' 	=> false, // when comments are disabled should we show older comments (if available)
 		'order_comments_by'				=> "\"Created\" DESC",
-		'comments_per_page'				=> 10
+		'comments_per_page'				=> 10,
+		'comments_holder_id'			=> "comments-holder", // id for the comments holder
+		'comment_permalink_prefix'		=> "comment-", // id prefix for each comment. If needed make this different
+		'require_moderation'			=> false
 	);
 	
 	/**
@@ -46,7 +49,7 @@ class Commenting {
 		}
 		
 		self::$enabled_classes[$class] = $settings;
-		
+
 		Object::add_extension($class, 'CommentsExtension');
 	}
 	
@@ -137,5 +140,26 @@ class Commenting {
 		catch(Exception $e) {}
 		
 		return false;
+	}
+	
+	/**
+	 * Return whether a user can post on a given commenting instance
+	 *
+	 * @param string $class
+	 */
+	public static function can_member_post($class) {
+		$member = Member::currentUser();
+		
+		try {
+			$login = self::get_config_value($class, 'require_login');
+			$permission = self::get_config_value($class, 'required_permission');
+			
+			if($permission && !Permission::check($permission)) return false;
+			
+			if($login && !$member) return false;
+		}
+		catch(Exception $e) {}
+		
+		return true;
 	}
 }
