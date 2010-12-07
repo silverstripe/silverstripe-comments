@@ -30,19 +30,13 @@ class Comment extends DataObject {
 	static $casting = array(
 		"RSSTitle" => "Varchar",
 	);
-
-	static $comments_per_page = 10;
 	
-	static $moderate = false;
-	
-	static $bbcode = false;
-
 	/**
 	 * Return a link to this comment
 	 *
 	 * @return string link to this comment.
 	 */
-	function Link($action = "") {
+	public function Link($action = "") {
 		return $this->Parent()->Link($action) . '#' . $this->Permalink();
 	}
 	
@@ -52,94 +46,32 @@ class Comment extends DataObject {
 	 *
 	 * @return string
 	 */
-	function Permalink() {
-		$prefix = Commenting::get_config_value($this->ownerBaseClass, 'comment_permalink_prefix');
+	public function Permalink() {
+		$prefix = Commenting::get_config_value($this->BaseClass, 'comment_permalink_prefix');
 		
-		return $prefix . '-' . $id;
-	}
-	
-	function getRSSName() {
-		if($this->Name) {
-			return $this->Name;
-		} elseif($this->Author()) {
-			return $this->Author()->getName();
-		}
-	}
-	
-	function ParsedBBCode(){
-		$parser = new BBCodeParser($this->Comment);
-		return $parser->parse();		
-	}
-
-	function DeleteLink() {
-		return ($this->canDelete()) ? "PageComment_Controller/deletecomment/$this->ID" : false;
-	}
-	
-	function CommentTextWithLinks() {
-		$pattern = '|([a-zA-Z]+://)([a-zA-Z0-9?&%.;:/=+_-]*)|is';
-		$replace = '<a rel="nofollow" href="$1$2">$1$2</a>';
-		return preg_replace($pattern, $replace, $this->Comment);
-	}
-	
-	function SpamLink() {
-		return ($this->canEdit() && !$this->IsSpam) ? "PageComment_Controller/reportspam/$this->ID" : false;
-	}
-	
-	function HamLink() {
-		return ($this->canEdit() && $this->IsSpam) ? "PageComment_Controller/reportham/$this->ID" : false;
-	}
-	
-	function ApproveLink() {
-		return ($this->canEdit() && $this->NeedsModeration) ? "PageComment_Controller/approve/$this->ID" : false;
-	}
-	
-	function SpamClass() {
-		if($this->getField('IsSpam')) {
-			return 'spam';
-		} else if($this->getField('NeedsModeration')) {
-			return 'unmoderated';
-		} else {
-			return 'notspam';
-		}
-	}
-	
-	
-	function RSSTitle() {
-		return sprintf(
-			_t('PageComment.COMMENTBY', "Comment by '%s' on %s", PR_MEDIUM, 'Name, Page Title'),
-			Convert::raw2xml($this->getRSSName()),
-			$this->Parent()->Title
-		);
-	}
-	
-
-
-	
-	function PageTitle() {
-		return $this->Parent()->Title;
-	}
-	
-	static function enableBBCode() {
-		self::$bbcode = true;
-	}	
-
-	static function bbCodeEnabled() {
-		return self::$bbcode;
+		return $prefix . $this->ID;
 	}
 	
 	/**
-	 *
 	 * @param boolean $includerelations a boolean value to indicate if the labels returned include relation fields
-	 * 
 	 */
 	function fieldLabels($includerelations = true) {
 		$labels = parent::fieldLabels($includerelations);
-		$labels['Name'] = _t('PageComment.Name', 'Author Name');
-		$labels['Comment'] = _t('PageComment.Comment', 'Comment');
-		$labels['IsSpam'] = _t('PageComment.IsSpam', 'Spam?');
-		$labels['NeedsModeration'] = _t('PageComment.NeedsModeration', 'Needs Moderation?');
+		$labels['Name'] = _t('Comment.NAME', 'Author Name');
+		$labels['Comment'] = _t('Comment.COMMENT', 'Comment');
+		$labels['IsSpam'] = _t('Comment.ISSPAM', 'Spam?');
+		$labels['NeedsModeration'] = _t('Comment.NEEDSMODERATION', 'Needs Moderation?');
 		
 		return $labels;
+	}
+	
+	/**
+	 * Returns the parent {@link DataObject} this comment is attached too
+	 *
+	 * @return DataObject
+	 */
+	public function getParent() {
+		return DataObject::get_by_id($this->BaseClass, $this->ParentID);
 	}
 	
 	/**
@@ -186,7 +118,7 @@ class Comment extends DataObject {
 		$extended = $this->extendedCan('canView', $member);
 		if($extended !== null) return $extended;
 		
-		$page = $this->Parent();
+		$page = $this->getParent();
 		return (
 			($page && $page->ProvideComments)
 			|| (bool)Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin')
@@ -227,5 +159,56 @@ class Comment extends DataObject {
 		if($extended !== null) return $extended;
 		
 		return $this->canEdit($member);
+	}
+	
+	
+	/************************************ Review the following */
+	function getRSSName() {
+		if($this->Name) {
+			return $this->Name;
+		} elseif($this->Author()) {
+			return $this->Author()->getName();
+		}
+	}
+
+	function DeleteLink() {
+		return ($this->canDelete()) ? "PageComment_Controller/deletecomment/$this->ID" : false;
+	}
+	
+	function CommentTextWithLinks() {
+		$pattern = '|([a-zA-Z]+://)([a-zA-Z0-9?&%.;:/=+_-]*)|is';
+		$replace = '<a rel="nofollow" href="$1$2">$1$2</a>';
+		return preg_replace($pattern, $replace, $this->Comment);
+	}
+	
+	function SpamLink() {
+		return ($this->canEdit() && !$this->IsSpam) ? "PageComment_Controller/reportspam/$this->ID" : false;
+	}
+	
+	function HamLink() {
+		return ($this->canEdit() && $this->IsSpam) ? "PageComment_Controller/reportham/$this->ID" : false;
+	}
+	
+	function ApproveLink() {
+		return ($this->canEdit() && $this->NeedsModeration) ? "PageComment_Controller/approve/$this->ID" : false;
+	}
+	
+	function SpamClass() {
+		if($this->getField('IsSpam')) {
+			return 'spam';
+		} else if($this->getField('NeedsModeration')) {
+			return 'unmoderated';
+		} else {
+			return 'notspam';
+		}
+	}
+	
+	
+	function RSSTitle() {
+		return sprintf(
+			_t('PageComment.COMMENTBY', "Comment by '%s' on %s", PR_MEDIUM, 'Name, Page Title'),
+			Convert::raw2xml($this->getRSSName()),
+			$this->Parent()->Title
+		);
 	}
 }

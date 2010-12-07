@@ -181,10 +181,13 @@ class CommentingController extends Controller {
 		if($comment->NeedsModeration){
 			$this->sessionMessage($moderationMsg, 'good');
 		}
-			
-		$hash = ($comment->NeedsModeration) ? '#Comments_holder' : '#Comment_' . $comment->ID;
+		
+		// build up the return link. Ideally redirect to 
+		$holder = Commenting::get_config_value($comment->BaseClass, 'comments_holder_id');
+
+		$hash = ($comment->NeedsModeration) ? $holder : $comment->Permalink();
 		$url = (isset($data['ReturnURL'])) ? $data['ReturnURL'] : false;
 			
-		return ($url) ? $this->redirect($url . $hash) : $this->redirectBack();
+		return ($url) ? $this->redirect($url .'#'. $hash) : $this->redirectBack();
 	}
 }

@@ -49,7 +49,11 @@ class CommentsExtension extends DataObjectDecorator {
 	 * @return DataObjectSet
 	 */
 	function Comments() {
-		return DataObject::get('Comment', "\"ParentID\" = '". $this->owner->ID ."' AND \"BaseClass\" = '". $this->ownerBaseClass ."'");
+		return DataObject::get(
+			'Comment', 
+			"\"ParentID\" = '". $this->owner->ID ."' AND \"BaseClass\" = '". $this->ownerBaseClass ."'",
+			Commenting::get_config_value($this->ownerBaseClass, 'order_comments_by')
+		);
 	}
 	
 	

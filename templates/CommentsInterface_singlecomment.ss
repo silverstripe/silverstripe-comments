@@ -1,4 +1,4 @@
-<p class="comment" id="{$CommentPermalinkPrefix}-$ID">
+<p class="comment" id="$Permalink">
 	<% if bbCodeEnabled %>
 		$ParsedBBCode	
 	<% else %>
