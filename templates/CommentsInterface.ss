@@ -1,5 +1,5 @@
 <% if CommentsEnabled %>
-	<div id="$CommentHolderID">
+	<div id="$CommentHolderID" class="comments-holder-container">
 
 		<h4><% _t('POSTCOM','Post your comment') %></h4>
 		
@@ -21,7 +21,7 @@
 			<% if Comments %>
 				<ul class="comments-list">
 					<% control Comments %>
-						<li class="$EvenOdd<% if FirstLast %> $FirstLast <% end_if %> $SpamClass">
+						<li class="comment $EvenOdd<% if FirstLast %> $FirstLast <% end_if %> $SpamClass">
 							<% include CommentsInterface_singlecomment %>
 						</li>
 					<% end_control %>
@@ -51,12 +51,12 @@
 					</div>
 				<% end_if %>
 			<% else %>
-				<p id="NoComments"><% _t('NOCOMMENTSYET','No one has commented on this page yet.') %></p>
+				<p class="no-comments-yet"><% _t('NOCOMMENTSYET','No one has commented on this page yet.') %></p>
 			<% end_if %>
 		</div>
 		
 		<% if DeleteAllLink %>
-			<p id="DeleteComments">
+			<p class="delete-comments">
 				<a href="$DeleteAllLink"><% _t('PageCommentInterface.DELETEALLCOMMENTS','Delete all comments on this page') %></a>
 			</p>
 		<% end_if %>
