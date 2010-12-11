@@ -23,15 +23,15 @@ class Commenting {
 	 * @var array default configuration values
 	 */
 	private static $default_config = array(
-		'require_login' 				=> false, // boolean, whether a user needs to login
-		'required_permission' 			=> false,  // required permission to comment (or array of permissions)
-		'use_ajax_commenting' 			=> true, // use ajax to post comments.
-		'show_comments_when_disabled' 	=> false, // when comments are disabled should we show older comments (if available)
-		'order_comments_by'				=> "\"Created\" DESC",
-		'comments_per_page'				=> 10,
-		'comments_holder_id'			=> "comments-holder", // id for the comments holder
-		'comment_permalink_prefix'		=> "comment-", // id prefix for each comment. If needed make this different
-		'require_moderation'			=> false
+		'require_login' => false, // boolean, whether a user needs to login
+		'required_permission' => false,  // required permission to comment (or array of permissions)
+		'use_ajax_commenting' => true, // use ajax to post comments.
+		'show_comments_when_disabled' => false, // when comments are disabled should we show older comments (if available)
+		'order_comments_by' => "\"Created\" DESC",
+		'comments_per_page' => 10,
+		'comments_holder_id' => "comments-holder", // id for the comments holder
+		'comment_permalink_prefix' => "comment-", // id prefix for each comment. If needed make this different
+		'require_moderation' => false
 	);
 	
 	/**

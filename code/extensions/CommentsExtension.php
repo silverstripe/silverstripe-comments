@@ -88,7 +88,6 @@ class CommentsExtension extends DataObjectDecorator {
 		
 		$form = ($enabled) ? $controller->CommentsForm() : false;
 		
-		Debug::show(Controller::curr()->ID);
 		// a little bit all over the show but to ensure a slightly easier upgrade for users
 		// return back the same variables as previously done in comments
 		return $interface->process(new ArrayData(array(
