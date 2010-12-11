@@ -25,12 +25,41 @@ class Comment extends DataObject {
 	
 	static $many_many = array();
 	
-	static $defaults = array();
+	static $defaults = array(
+		"Moderated" => true
+	);
 	
 	static $casting = array(
 		"RSSTitle" => "Varchar",
 	);
 	
+	/**
+	 * Migrates the old {@link PageComment} objects to {@link Comment}
+	 */
+	public function requireDefaultRecords() {
+		parent::requireDefaultRecords();
+		
+		if(DB::getConn()->hasTable('PageComment')) {
+			$comments = DB::query("SELECT * FROM \"PageComment\"");
+			
+			if($comments) {
+				while($pageComment = $comments->numRecord()) {
+					// create a new comment from the older page comment
+					$comment = new Comment($pageComment);
+					
+					// set the variables which have changed
+					$comment->BaseClass = 'SiteTree';
+					$comment->URL = (isset($pageComment['CommenterURL'])) ? $pageComment['CommenterURL'] : "";
+					
+					$comment->write();
+				}
+			}
+			
+			DB::alterationMessage("Migrated PageComment to Comment""changed");
+			DB::getConn()->dontRequireTable('PageComment');
+		}
+	}
+	 
 	/**
 	 * Return a link to this comment
 	 *
