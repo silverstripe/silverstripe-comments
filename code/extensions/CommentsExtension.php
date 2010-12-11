@@ -75,7 +75,10 @@ class CommentsExtension extends DataObjectDecorator {
 		// on a {@link DataObject} then it is enabled, however {@link SiteTree} objects can
 		// trigger comments on / off via ProvideComments
 		$enabled = (!$this->attachedToSiteTree() || $this->owner->ProvideComments) ? true : false;
-
+		
+		// do not include the comments on pages which don't have id's such as security pages
+		if($this->owner->ID < 0) return false;
+		
 		$controller = new CommentingController();
 		
 		// tad bit messy but needed to ensure all datas available
@@ -85,6 +88,7 @@ class CommentsExtension extends DataObjectDecorator {
 		
 		$form = ($enabled) ? $controller->CommentsForm() : false;
 		
+		Debug::show(Controller::curr()->ID);
 		// a little bit all over the show but to ensure a slightly easier upgrade for users
 		// return back the same variables as previously done in comments
 		return $interface->process(new ArrayData(array(

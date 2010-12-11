@@ -1,62 +1,72 @@
 Member:
-   commentadmin:
-      FirstName: admin
-   visitor:
-      FirstName: visitor
+	commentadmin:
+		FirstName: admin
+	visitor:
+		FirstName: visitor
 
 Group:
-   commentadmins:
-      Title: Admin
-      Members: =>Member.commentadmin
+	commentadmins:
+		Title: Admin
+		Members: =>Member.commentadmin
 
 Permission:
-   admin:
-      Code: CMS_ACCESS_CommentAdmin
-      Group: =>Group.commentadmins
+	admin:
+		Code: CMS_ACCESS_CommentAdmin
+		Group: =>Group.commentadmins
 
 Page:
-    first:
-        Title: First page
-        URLSegment: first-page
-        ProvideComments: 1
-    second:
-        Title: Second page
-        URLSegment: second-page
-        ProvideComments: 1
-    third:
-        Title: Third page
-        URLSegment:third-page
-        ProvideComments: 1
-    pageNoComments:
-        Title: No comments
-        URLSegment: no-comments
-        ProvideComments: 0
+	first:
+		Title: First page
+		URLSegment: first-page
+		ProvideComments: 1
+	second:
+		Title: Second page
+		URLSegment: second-page
+ 		ProvideComments: 1
+	third:
+		Title: Third page
+		URLSegment:third-page
+		ProvideComments: 1
+	pageNoComments:
+		Title: No comments
+		URLSegment: no-comments
+		ProvideComments: 0
 
 Comment:
-    firstComA:
-        ParentID: =>Page.first
-        Name: FA
-        Comment: textFA
-    secondComA:
-        ParentID: =>Page.second
-        Name: SA
-        Comment: textSA
-    secondComB:
-        ParentID: =>Page.second
-        Name: SB
-        Comment: textSB
-    thirdComA:
-        ParentID: =>Page.third
-        Name: TA
-        Comment: textTA
-    thirdComB:
-        ParentID: =>Page.third
-        Name: TB
-        Comment: textTB
-    thirdComC:
-        ParentID: =>Page.third
-        Name: TC
-        Comment: textTC
-    disabledCom:
-        ParentID: =>Page.pageNoComments
-        Name: Disabled
+	firstComA:
+		ParentID: =>Page.first
+		Name: FA
+		Comment: textFA
+		Moderated: 1
+	secondComA:
+		ParentID: =>Page.second
+		Name: SA
+		Comment: textSA
+		Moderated: 1
+	secondComB:
+		ParentID: =>Page.second
+		Name: SB
+		Comment: textSB
+		Moderated: 1
+	thirdComA:
+		ParentID: =>Page.third
+		Name: TA
+		Comment: textTA
+		Moderated: 1
+		IsSpam: 1
+	thirdComB:
+		ParentID: =>Page.third
+		Name: TB
+		Comment: textTB
+		Moderated: 0
+	thirdComC:
+		ParentID: =>Page.third
+		Name: TC
+		Comment: textTC
+		Moderated: 0
+		
+	disabledCom:
+		ParentID: =>Page.pageNoComments
+		Name: Disabled
+		Moderated: 0
+		IsSpam: 1

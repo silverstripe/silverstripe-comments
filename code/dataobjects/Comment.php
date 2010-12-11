@@ -13,7 +13,8 @@ class Comment extends DataObject {
 		"Email"			=> "Varchar(200)",
 		"URL"			=> "Varchar(255)",
 		"BaseClass"		=> "Varchar(200)",
-		"Moderated"		=> "Boolean"
+		"Moderated"		=> "Boolean",
+		"IsSpam"		=> "Boolean"
 	);
 
 	static $has_one = array(

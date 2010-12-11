@@ -27,7 +27,7 @@ class CommentAdmin extends LeftAndMain {
 	/**
 	 * @var int The number of comments per page for the {@link CommentTable} in this admin.
 	 */
-	static $comments_per_page = '20';
+	static $comments_per_page = 20;
 
 	public function init() {
 		parent::init();
@@ -78,18 +78,18 @@ class CommentAdmin extends LeftAndMain {
 			"Name" => _t('CommentAdmin.AUTHOR', 'Author'),
 			"Comment" => _t('CommentAdmin.COMMENT', 'Comment'),
 			"Parent.Title" => _t('CommentAdmin.PAGE', 'Page'),
-			"CommenterURL" => _t('CommentAdmin.COMMENTERURL', 'URL'),
+			"URL" => _t('CommentAdmin.COMMENTERURL', 'URL'),
 			"Created" => _t('CommentAdmin.DATEPOSTED', 'Date Posted')
 		);
 
 		$popupFields = new FieldSet(
 			new TextField('Name', _t('CommentAdmin.NAME', 'Name')),
-			new TextField('CommenterURL', _t('CommentAdmin.COMMENTERURL', 'URL')),
+			new TextField('URL', _t('CommentAdmin.URL', 'URL')),
 			new TextareaField('Comment', _t('CommentAdmin.COMMENT', 'Comment'))
 		);
 
 		$idField = new HiddenField('ID', '', $section);
-		$table = new CommentTableField($this, "Comments", "PageComment", $section, $tableFields, $popupFields, array($filter), 'Created DESC');
+		$table = new CommentTableField($this, "Comments", "Comment", $section, $tableFields, $popupFields, array($filter), 'Created DESC');
 		
 		$table->setParentClass(false);
 		$table->setFieldCasting(array(
@@ -133,38 +133,40 @@ class CommentAdmin extends LeftAndMain {
 	}
 
 	function deletemarked() {
-			$numComments = 0;
-			$folderID = 0;
-			$deleteList = '';
+		$numComments = 0;
+		$folderID = 0;
+		$deleteList = '';
 
-			if($_REQUEST['Comments']) {
-				foreach($_REQUEST['Comments'] as $commentid) {
-					$comment = DataObject::get_by_id('PageComment', $commentid);
-					if($comment) {
-						$comment->delete();
-						$numComments++;
-					}
+		if($_REQUEST['Comments']) {
+			foreach($_REQUEST['Comments'] as $commentid) {
+				$comment = DataObject::get_by_id('Comment', $commentid);
+				if($comment && $comment->canDelete()) {
+					$comment->delete();
+					$numComments++;
 				}
-			} else {
-				user_error("No comments in $commentList could be found!", E_USER_ERROR);
 			}
+		} else {
+			user_error("No comments in $commentList could be found!", E_USER_ERROR);
+		}
 
-			echo <<<JS
-				$deleteList
-				$('Form_EditForm').getPageFromServer($('Form_EditForm_ID').value);
-				statusMessage("Deleted $numComments comments.");
+		echo <<<JS
+			$deleteList
+			$('Form_EditForm').getPageFromServer($('Form_EditForm_ID').value);
+			statusMessage("Deleted $numComments comments.");
 JS;
 	}
 
 	function deleteall() {
 		$numComments = 0;
-		$spam = DataObject::get('PageComment', '"PageComment"."IsSpam" = 1');
+		$spam = DataObject::get('Comment', "\"Comment\".\"IsSpam\" = '1'");
 
 		if($spam) {
 			$numComments = $spam->Count();
 
 			foreach($spam as $comment) {
-				$comment->delete();
+				if($comment->canDelete()) {
+					$comment->delete();
+				}
 			}
 		}
 
@@ -177,134 +179,118 @@ JS;
 	}
 
 	function spammarked() {
-			$numComments = 0;
-			$folderID = 0;
-			$deleteList = '';
+		$numComments = 0;
+		$folderID = 0;
+		$deleteList = '';
 
-			if($_REQUEST['Comments']) {
-				foreach($_REQUEST['Comments'] as $commentid) {
-					$comment = DataObject::get_by_id('PageComment', $commentid);
-					if($comment) {
-						$comment->IsSpam = true;
-						$comment->NeedsModeration = false;
-						$comment->write();
+		if($_REQUEST['Comments']) {
+			foreach($_REQUEST['Comments'] as $commentid) {
+				$comment = DataObject::get_by_id('Comment', $commentid);
+				if($comment) {
+					$comment->IsSpam = true;
+					$comment->Moderated = true;
+					$comment->write();
 
-						if(SSAkismet::isEnabled()) {
-							try {
-								$akismet = new SSAkismet();
-								$akismet->setCommentAuthor($comment->getField('Name'));
-								$akismet->setCommentContent($comment->getField('Comment'));
-
-								$akismet->submitSpam();
-							} catch (Exception $e) {
-								// Akismet didn't work, most likely the service is down.
-							}
-						}
-						$numComments++;
-					}
+					$numComments++;
 				}
-			} else {
-				user_error("No comments in $commentList could be found!", E_USER_ERROR);
 			}
+		} else {
+			user_error("No comments in $commentList could be found!", E_USER_ERROR);
+		}
 
-			$msg = sprintf(_t('CommentAdmin.MARKEDSPAM', 'Marked %s comments as spam.'), $numComments);
-			echo <<<JS
-				$deleteList
-				$('Form_EditForm').getPageFromServer($('Form_EditForm_ID').value);
-				statusMessage("$msg");
+		$msg = sprintf(_t('CommentAdmin.MARKEDSPAM', 'Marked %s comments as spam.'), $numComments);
+		echo <<<JS
+			$deleteList
+			$('Form_EditForm').getPageFromServer($('Form_EditForm_ID').value);
+			statusMessage("$msg");
 JS;
 	}
 
 	function hammarked() {
-			$numComments = 0;
-			$folderID = 0;
-			$deleteList = '';
+		$numComments = 0;
+		$folderID = 0;
+		$deleteList = '';
 
-			if($_REQUEST['Comments']) {
-				foreach($_REQUEST['Comments'] as $commentid) {
-					$comment = DataObject::get_by_id('PageComment', $commentid);
-					if($comment) {
-						$comment->IsSpam = false;
-						$comment->NeedsModeration = false;
-						$comment->write();
+		if($_REQUEST['Comments']) {
+			foreach($_REQUEST['Comments'] as $commentid) {
+				$comment = DataObject::get_by_id('Comment', $commentid);
 
-						if(SSAkismet::isEnabled()) {
-							try {
-								$akismet = new SSAkismet();
-								$akismet->setCommentAuthor($comment->getField('Name'));
-								$akismet->setCommentContent($comment->getField('Comment'));
+				if($comment) {
+					$comment->IsSpam = false;
+					$comment->Moderated = true;
+					$comment->write();
 
-								$akismet->submitSpam();
-							} catch (Exception $e) {
-								// Akismet didn't work, most likely the service is down.
-							}
-						}
-
-						$numComments++;
-					}
+					$numComments++;
 				}
-			} else {
-				user_error("No comments in $commentList could be found!", E_USER_ERROR);
 			}
+		} else {
+			user_error("No comments in $commentList could be found!", E_USER_ERROR);
+		}
 
-			$msg = sprintf(_t('CommentAdmin.MARKEDNOTSPAM', 'Marked %s comments as not spam.'), $numComments);
-			echo <<<JS
-				$deleteList
-				$('Form_EditForm').getPageFromServer($('Form_EditForm_ID').value);
-				statusMessage("$msg");
+		$msg = sprintf(_t('CommentAdmin.MARKEDNOTSPAM', 'Marked %s comments as not spam.'), $numComments);
+		echo <<<JS
+			$deleteList
+			$('Form_EditForm').getPageFromServer($('Form_EditForm_ID').value);
+			statusMessage("$msg");
 JS;
 	}
 
 	function acceptmarked() {
-			$numComments = 0;
-			$folderID = 0;
-			$deleteList = '';
+		$numComments = 0;
+		$folderID = 0;
+		$deleteList = '';
 
-			if($_REQUEST['Comments']) {
-				foreach($_REQUEST['Comments'] as $commentid) {
-					$comment = DataObject::get_by_id('PageComment', $commentid);
-					if($comment) {
-						$comment->IsSpam = false;
-						$comment->NeedsModeration = false;
-						$comment->write();
-						$numComments++;
-					}
+		if($_REQUEST['Comments']) {
+			foreach($_REQUEST['Comments'] as $commentid) {
+				$comment = DataObject::get_by_id('Comment', $commentid);
+				if($comment) {
+					$comment->IsSpam = false;
+					$comment->Moderated = true;
+					$comment->write();
+					$numComments++;
 				}
-			} else {
-				user_error("No comments in $commentList could be found!", E_USER_ERROR);
 			}
+		} else {
+			user_error("No comments in $commentList could be found!", E_USER_ERROR);
+		}
 
-			$msg = sprintf(_t('CommentAdmin.APPROVED', 'Accepted %s comments.'), $numComments);
-			echo <<<JS
-				$deleteList
-				$('Form_EditForm').getPageFromServer($('Form_EditForm_ID').value);
-				statusMessage("Accepted $numComments comments.");
+		$msg = sprintf(_t('CommentAdmin.APPROVED', 'Accepted %s comments.'), $numComments);
+		echo <<<JS
+			$deleteList
+			$('Form_EditForm').getPageFromServer($('Form_EditForm_ID').value);
+			statusMessage("Accepted $numComments comments.");
 JS;
 	}
 
 	/**
 	 * Return the number of moderated comments
+	 *
+	 * @return int
 	 */
 	function NumModerated() {
-		return DB::query("SELECT COUNT(*) FROM \"PageComment\" WHERE \"IsSpam\"=0 AND \"NeedsModeration\"=0")->value();
+		return DB::query("SELECT COUNT(*) FROM \"Comment\" WHERE \"Moderated\" = 1")->value();
 	}
 
 	/**
 	 * Return the number of unmoderated comments
+	 *
+	 * @return int
 	 */
 	function NumUnmoderated() {
-		return DB::query("SELECT COUNT(*) FROM \"PageComment\" WHERE \"IsSpam\"=0 AND \"NeedsModeration\"=1")->value();
+		return DB::query("SELECT COUNT(*) FROM \"Comment\" WHERE \"Moderated\" = 0")->value();
 	}
 
 	/**
 	 * Return the number of comments marked as spam
+	 *
+	 * @return int
 	 */
 	function NumSpam() {
-		return DB::query("SELECT COUNT(*) FROM \"PageComment\" WHERE \"IsSpam\"=1")->value();
+		return DB::query("SELECT COUNT(*) FROM \"Comment\" WHERE \"IsSpam\" = 1")->value();
 	}
 	
 	/**
-	 * @param $num int
+	 * @param int
 	 */	
 	function set_comments_per_page($num){
 		self::$comments_per_page = $num;
@@ -317,5 +303,3 @@ JS;
 		return self::$comments_per_page;
 	}
 }
-
-?>
