@@ -10,7 +10,7 @@ class CommentsTest extends FunctionalTest {
 	function testCanView() {
 		$visitor = $this->objFromFixture('Member', 'visitor');
 		$admin = $this->objFromFixture('Member', 'commentadmin');
-		$comment = $this->objFromFixture('PageComment', 'firstComA');
+		$comment = $this->objFromFixture('Comment', 'firstComA');
 		
 		$this->assertTrue($comment->canView($visitor), 
 			'Unauthenticated members can view comments associated to a page with ProvideComments=1'
@@ -19,7 +19,7 @@ class CommentsTest extends FunctionalTest {
 			'Admins with CMS_ACCESS_CommentAdmin permissions can view comments associated to a page with ProvideComments=1'
 		);
 		
-		$disabledComment = $this->objFromFixture('PageComment', 'disabledCom');
+		$disabledComment = $this->objFromFixture('Comment', 'disabledCom');
 		
 		$this->assertFalse($disabledComment->canView($visitor),
 		'Unauthenticated members can not view comments associated to a page with ProvideComments=0'
@@ -32,7 +32,7 @@ class CommentsTest extends FunctionalTest {
 	function testCanEdit() {
 		$visitor = $this->objFromFixture('Member', 'visitor');
 		$admin = $this->objFromFixture('Member', 'commentadmin');
-		$comment = $this->objFromFixture('PageComment', 'firstComA');
+		$comment = $this->objFromFixture('Comment', 'firstComA');
 		
 		$this->assertFalse($comment->canEdit($visitor));
 		$this->assertTrue($comment->canEdit($admin));
@@ -41,7 +41,7 @@ class CommentsTest extends FunctionalTest {
 	function testCanDelete() {
 		$visitor = $this->objFromFixture('Member', 'visitor');
 		$admin = $this->objFromFixture('Member', 'commentadmin');
-		$comment = $this->objFromFixture('PageComment', 'firstComA');
+		$comment = $this->objFromFixture('Comment', 'firstComA');
 		
 		$this->assertFalse($comment->canEdit($visitor));
 		$this->assertTrue($comment->canEdit($admin));
@@ -52,38 +52,16 @@ class CommentsTest extends FunctionalTest {
 		$this->autoFollowRedirection = false;
 		$this->logInAs('commentadmin');
 		
-		$firstComment = $this->objFromFixture('PageComment', 'firstComA');
+		$firstComment = $this->objFromFixture('Comment', 'firstComA');
 		$firstCommentID = $firstComment->ID;
 		Director::test($firstPage->RelativeLink(), null, $this->session());
-		Director::test('PageComment/deletecomment/'.$firstComment->ID, null, $this->session());
-		
-		$this->assertFalse(DataObject::get_by_id('PageComment', $firstCommentID));
-	}
+		$delete = $this->get('CommentingController/delete/'.$firstComment->ID);
 	
-	function testDeleteAllCommentsOnPage() {
-		$second = $this->objFromFixture('Page', 'second');
-		$this->autoFollowRedirection = false;
-		$this->logInAs('commentadmin');
-		
-		Director::test('second-page', null, $this->session());
-		Director::test('PageComment/deleteallcomments?pageid='.$second->ID,
-			null, $this->session());
-		Director::test('second-page', null, $this->session());
-		
-		$secondComments = DataObject::get('PageComment', '"ParentID" = '.$second->ID);
-		$this->assertNull($secondComments);
-		
-		$first = $this->objFromFixture('Page', 'first');
-		$firstComments = DataObject::get('PageComment', '"ParentID" = '.$first->ID);
-		$this->assertNotNull($firstComments);
-		
-		$third = $this->objFromFixture('Page', 'third');
-		$thirdComments = DataObject::get('PageComment', '"ParentID" = '.$third->ID);
-		$this->assertEquals($thirdComments->Count(), 3);
+		$this->assertFalse(DataObject::get_by_id('Comment', $firstCommentID));
 	}
 	
 	function testCommenterURLWrite() {
-		$comment = new PageComment();
+		$comment = new Comment();
 		// We only care about the CommenterURL, so only set that
 		// Check a http and https URL. Add more test urls here as needed.
 		$protocols = array(

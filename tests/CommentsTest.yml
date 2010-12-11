@@ -32,7 +32,7 @@ Page:
         URLSegment: no-comments
         ProvideComments: 0
 
-PageComment:
+Comment:
     firstComA:
         ParentID: =>Page.first
         Name: FA
