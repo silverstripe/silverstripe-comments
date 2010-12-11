@@ -55,7 +55,7 @@ class Comment extends DataObject {
 				}
 			}
 			
-			DB::alterationMessage("Migrated PageComment to Comment""changed");
+			DB::alterationMessage("Migrated PageComment to Comment","changed");
 			DB::getConn()->dontRequireTable('PageComment');
 		}
 	}
@@ -100,6 +100,8 @@ class Comment extends DataObject {
 	 * @return DataObject
 	 */
 	public function getParent() {
+		if(!$this->BaseClass) $this->BaseClass = "SiteTree";
+		
 		return DataObject::get_by_id($this->BaseClass, $this->ParentID);
 	}
 	

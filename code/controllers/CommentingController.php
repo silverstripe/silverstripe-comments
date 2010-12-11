@@ -6,6 +6,12 @@
 
 class CommentingController extends Controller {
 	
+	static $allowed_actions = array(
+		'delete',
+		'CommentsForm',
+		'doPostCommentz'
+	);
+	
 	private $baseClass = "";
 	private $ownerRecord = "";
 	private $ownerController = "";
@@ -42,6 +48,29 @@ class CommentingController extends Controller {
 	}
 	
 	/**
+	 * Performs the delete task for deleting {@link Comment}. 
+	 *
+	 * /delete/$ID deletes the $ID comment
+	 */
+	public function delete() {
+		$id = isset($this->urlParams['ID']) ? $this->urlParams['ID'] : false;
+
+		if($id) {
+			$comment = DataObject::get_by_id('Comment', $id);
+
+			if($comment && $comment->canDelete()) {
+				$comment->delete();
+				
+				return ($this->isAjax()) ? true : $this->redirectBack();
+			}
+		}
+
+		return ($this->isAjax()) ? false : $this->httpError('404');
+	}
+	
+	/**
+	 * Post a comment form
+	 *
 	 * @return Form
 	 */
 	function CommentsForm() {

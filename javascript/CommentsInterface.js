@@ -5,10 +5,21 @@
 (function($) {
 	$(document).ready(function () {
 		
-		
-		// @todo finish
+		/**
+		 * Please note this functionality has not been finished
+		 * this file is not loaded on your site. It is simply here
+		 * to provide a starting point for someone to take it over
+		 *
+		 * @todo finish
+		 */
 		
 		return false;
+		
+		
+		
+		
+		
+		
 		
 		$('.comments-holder-container form').submit(function (e) {
 
