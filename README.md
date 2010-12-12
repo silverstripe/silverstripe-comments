@@ -1,9 +1,3 @@
-# NOTE!!!!
-
-*This module is under development and not completely finished yet. The code is released
-simply for developers to check out the new API's and suggest improvements*
-
-
 # Comments
 
 ## Maintainers
@@ -25,3 +19,6 @@ For more documentation about the module see the docs/ folder.
 ## Installation
 
 See docs/en/Installing.md
+
+If you are upgrading from 2.4 or older releases please run a /dev/build after installing
+the module
