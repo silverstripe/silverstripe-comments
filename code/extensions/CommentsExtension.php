@@ -15,7 +15,7 @@ class CommentsExtension extends DataObjectDecorator {
 	 * 
 	 * @return array
 	 */
-	function extraStatics() {
+	public function extraStatics() {
 		$fields = array();
 		
 		$relationships = array(
@@ -42,17 +42,36 @@ class CommentsExtension extends DataObjectDecorator {
 	}
 	
 	/**
+	 * If this extension is applied to a {@link SiteTree} record then
+	 * append a Provide Comments checkbox to allow authors to trigger
+	 * whether or not to display comments
+	 *
+	 * @todo Allow customization of other {@link Commenting} configuration
+	 *
+	 * @param FieldSet
+	 */
+	public function updateCMSFields(&$fields) {
+		if($this->attachedToSiteTree()) {
+			$fields->addFieldToTab('Root.Behaviour', 
+				new CheckboxField('ProvideComments', _t('Comment.ALLOWCOMMENTS', 'Allow Comments'))
+			);
+		}
+	}
+	
+	/**
 	 * Returns a list of all the comments attached to this record.
 	 *
 	 * @todo pagination
 	 *
 	 * @return DataObjectSet
 	 */
-	function Comments() {
+	public function Comments() {
+		$order = Commenting::get_config_value($this->ownerBaseClass, 'order_comments_by');
+		
 		return DataObject::get(
 			'Comment', 
 			"\"ParentID\" = '". $this->owner->ID ."' AND \"BaseClass\" = '". $this->ownerBaseClass ."'",
-			Commenting::get_config_value($this->ownerBaseClass, 'order_comments_by')
+			$order
 		);
 	}
 	
@@ -81,7 +100,7 @@ class CommentsExtension extends DataObjectDecorator {
 		
 		$controller = new CommentingController();
 		
-		// tad bit messy but needed to ensure all datas available
+		// tad bit messy but needed to ensure all data is available
 		$controller->setOwnerRecord($this->owner);
 		$controller->setBaseClass($this->ownerBaseClass);
 		$controller->setOwnerController(Controller::curr());
@@ -106,7 +125,9 @@ class CommentsExtension extends DataObjectDecorator {
 	 * @return bool
 	 */
 	public function attachedToSiteTree() {
-		return ClassInfo::is_subclass_of($this->ownerBaseClass, 'SiteTree');
+		$class = $this->ownerBaseClass;
+		
+		return (ClassInfo::is_subclass_of($class, 'SiteTree')) || ($class == 'SiteTree');
 	}
 	
 	/**
