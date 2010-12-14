@@ -56,7 +56,7 @@ class Comment extends DataObject {
 				}
 			}
 			
-			DB::alterationMessage("Migrated PageComment to Comment","changed");
+			DB::alteration_message("Migrated PageComment to Comment","changed");
 			DB::getConn()->dontRequireTable('PageComment');
 		}
 	}
