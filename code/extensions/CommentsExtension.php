@@ -134,7 +134,8 @@ class CommentsExtension extends DataObjectDecorator {
 	 * @deprecated 1.0 Please use {@link CommentsExtension->CommentsForm()}
 	 */
 	function PageComments() {
-		user_error('$PageComments is deprecated. Please use $CommentsForm', E_USER_WARNING);
+		// This method is very commonly used, don't throw a warning just yet
+		//user_error('$PageComments is deprecated. Please use $CommentsForm', E_USER_WARNING);
 		
 		return $this->CommentsForm();
 	}
