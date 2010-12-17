@@ -14,7 +14,8 @@ class Comment extends DataObject {
 		"URL"			=> "Varchar(255)",
 		"BaseClass"		=> "Varchar(200)",
 		"Moderated"		=> "Boolean",
-		"IsSpam"		=> "Boolean"
+		"IsSpam"		=> "Boolean",
+		'NeedsModeration' => 'Boolean',
 	);
 
 	static $has_one = array(
