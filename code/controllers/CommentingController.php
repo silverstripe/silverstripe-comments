@@ -9,7 +9,7 @@ class CommentingController extends Controller {
 	static $allowed_actions = array(
 		'delete',
 		'CommentsForm',
-		'doPostCommentz'
+		'doPostComment'
 	);
 	
 	private $baseClass = "";
