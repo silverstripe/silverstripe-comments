@@ -134,7 +134,7 @@ class CommentingController extends Controller {
 
 		// load any data from the cookies
 		if($data = Cookie::get('CommentsForm_UserData')) {
-			$data = unserialize($data); 
+			$data = Convert::json2array($data); 
 			
 			$form->loadDataFrom(array(
 				"Name"		=> isset($data['Name']) ? $data['Name'] : '',
@@ -164,7 +164,7 @@ class CommentingController extends Controller {
 		if(!$class) user_error("No OwnerClass set on CommentingController.", E_USER_ERROR);
 		
 		// cache users data
-		Cookie::set("CommentsForm_UserData", serialize($data));
+		Cookie::set("CommentsForm_UserData", Convert::raw2json($data));
 		Cookie::set("CommentsForm_Comment", $data['Comment']);
 		
 		// extend hook to allow extensions. Also see onAfterPostComment
