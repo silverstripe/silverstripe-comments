@@ -47,7 +47,8 @@ class Comment extends DataObject {
 			if($comments) {
 				while($pageComment = $comments->nextRecord()) {
 					// create a new comment from the older page comment
-					$comment = new Comment($pageComment);
+					$comment = new Comment();
+					$comment->update($pageComment);
 					
 					// set the variables which have changed
 					$comment->BaseClass = 'SiteTree';
