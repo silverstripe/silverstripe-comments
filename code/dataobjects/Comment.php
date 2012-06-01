@@ -34,6 +34,24 @@ class Comment extends DataObject {
 	static $casting = array(
 		"RSSTitle" => "Varchar",
 	);
+
+	static $searchable_fields = array(
+		'Name',
+		'Email',
+		'Comment',
+		'Created',
+		'BaseClass',
+	);
+	
+	static $summary_fields = array(
+		'Name' => 'Submitted By',
+		'Email' => 'Email',
+		'Comment' => 'Comment',
+		'Created' => 'Date Posted',
+		'ParentTitle' => 'Parent',
+	);
+
+
 	
 	/**
 	 * Migrates the old {@link PageComment} objects to {@link Comment}
@@ -106,6 +124,17 @@ class Comment extends DataObject {
 		if(!$this->BaseClass) $this->BaseClass = "SiteTree";
 		
 		return DataObject::get_by_id($this->BaseClass, $this->ParentID);
+	}
+
+
+	/**
+	 * Returns a string to help identify the parent of the comment
+	 *
+	 * @return string
+	 */
+	function getParentTitle(){
+		$parent = $this->getParent();
+		return ($parent->Title) ? $parent->Title : $parent->ClassName . " #" . $parent->ID;
 	}
 	
 	/**

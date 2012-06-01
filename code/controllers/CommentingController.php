@@ -76,7 +76,7 @@ class CommentingController extends Controller {
 	function CommentsForm() {
 		
 		$member = Member::currentUser();
-		$fields = new FieldSet(
+		$fields = new FieldList(
 			new TextField("Name", _t('CommentInterface.YOURNAME', 'Your name')),
 			new EmailField("Email", _t('CommentingController.EMAILADDRESS', "Your email address (will not be published)")),
 			new TextField("URL", _t('CommentingController.WEBSITEURL', "Your website URL")),
@@ -87,7 +87,7 @@ class CommentingController extends Controller {
 		);
 
 		// save actions
-		$actions = new FieldSet(
+		$actions = new FieldList(
 			new FormAction("doPostComment", _t('CommentInterface.POST', 'Post'))
 		);
 
