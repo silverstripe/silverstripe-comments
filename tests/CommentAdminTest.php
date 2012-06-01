@@ -27,13 +27,6 @@ class CommentAdminTest extends FunctionalTest {
 	}
 	
 	function testdeletemarked(){
-		$comm = $this->objFromFixture('Comment', 'firstComA');
-		$id = $comm->ID;
-		$this->logInWithPermission('CMS_ACCESS_CommentAdmin');
-		$result = $this->get("admin/comments/EditForm/field/Comments/item/$id/delete");
-		
-		$checkComm = DataObject::get_by_id('Comment',$id);
-
-		$this->assertFalse($checkComm);
+		$this->markTestIncomplete("TODO");
 	}	
 }

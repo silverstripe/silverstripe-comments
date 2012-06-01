@@ -61,11 +61,11 @@ class CommentingController extends Controller {
 			if($comment && $comment->canDelete()) {
 				$comment->delete();
 				
-				return ($this->isAjax()) ? true : $this->redirectBack();
+				return ($this->request->isAjax()) ? true : $this->redirectBack();
 			}
 		}
 
-		return ($this->isAjax()) ? false : $this->httpError('404');
+		return ($this->request->isAjax()) ? false : $this->httpError('404');
 	}
 	
 	/**
