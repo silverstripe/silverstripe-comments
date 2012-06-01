@@ -6,7 +6,7 @@
  * @package comments
  */
 
-class CommentsExtension extends DataObjectDecorator {
+class CommentsExtension extends DataExtension {
 	
 	/**
 	 * Adds a relationship between this {@link DataObject} and its
@@ -15,7 +15,7 @@ class CommentsExtension extends DataObjectDecorator {
 	 * 
 	 * @return array
 	 */
-	public function extraStatics() {
+	function extraStatics($class = null, $extension = null) {
 		$fields = array();
 		
 		$relationships = array(
@@ -29,7 +29,7 @@ class CommentsExtension extends DataObjectDecorator {
 		$args = func_get_args();
 		
 		if($args && ($owner = array_shift($args))) {
-			if(ClassInfo::is_subclass_of($owner, 'SiteTree') || $owner == "SiteTree") {
+			if(is_subclass_of($owner, 'SiteTree') || $owner == "SiteTree") {
 				$fields = array(
 					'db' => array(
 						'ProvideComments' => 'Boolean'
@@ -40,6 +40,7 @@ class CommentsExtension extends DataObjectDecorator {
 
 		return array_merge($fields, $relationships);
 	}
+
 	
 	/**
 	 * If this extension is applied to a {@link SiteTree} record then
@@ -50,7 +51,7 @@ class CommentsExtension extends DataObjectDecorator {
 	 *
 	 * @param FieldSet
 	 */
-	public function updateCMSFields(&$fields) {
+	public function updateCMSFields(FieldList $fields) {
 		if($this->attachedToSiteTree()) {
 			$fields->addFieldToTab('Root.Behaviour', 
 				new CheckboxField('ProvideComments', _t('Comment.ALLOWCOMMENTS', 'Allow Comments'))
@@ -127,7 +128,7 @@ class CommentsExtension extends DataObjectDecorator {
 	public function attachedToSiteTree() {
 		$class = $this->ownerBaseClass;
 		
-		return (ClassInfo::is_subclass_of($class, 'SiteTree')) || ($class == 'SiteTree');
+		return (is_subclass_of($class, 'SiteTree')) || ($class == 'SiteTree');
 	}
 	
 	/**

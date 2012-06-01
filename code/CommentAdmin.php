@@ -13,6 +13,8 @@ class CommentAdmin extends LeftAndMain {
 
 	static $menu_title = 'Comments';
 
+	static $template_path = null; // defaults to (project)/templates/email
+
 	static $allowed_actions = array(
 		'approvedmarked',
 		'deleteall',
@@ -32,8 +34,65 @@ class CommentAdmin extends LeftAndMain {
 	public function init() {
 		parent::init();
 
-		Requirements::javascript(CMS_DIR . '/javascript/CommentAdmin_right.js');
-		Requirements::css(CMS_DIR . '/css/CommentAdmin.css');
+		//Requirements::javascript(CMS_DIR . '/javascript/CommentAdmin_right.js');
+		//Requirements::css(CMS_DIR . '/css/CommentAdmin.css');
+	}
+
+	public function getEditForm($id = null, $fields = null) {
+		// TODO Duplicate record fetching (see parent implementation)
+		if(!$id) $id = $this->currentPageID();
+		$form = parent::getEditForm($id);
+		
+		// TODO Duplicate record fetching (see parent implementation)
+		$record = $this->getRecord($id);
+		if($record && !$record->canView()) return Security::permissionFailure($this);
+		
+		$commentList = GridField::create(
+			'Comments',
+			false,
+			Comment::get(),
+			$commentListConfig = GridFieldConfig_RecordViewer::create()
+				//->addComponent(new GridFieldExportButton())
+		)->addExtraClass("comments_grid");
+		//$commentListConfig->getComponentByType('GridFieldDetailForm')->setValidator(new Comment_Validator());
+		
+		$fields = new FieldList(
+			$root = new TabSet(
+				'Root',
+				$commentsTab = new Tab('Comments', _t('CommentAdmin.Comments', 'Comments'),
+					$commentList// ,
+					// new HeaderField(_t('CommentAdmin.IMPORTCOMMENTS', 'Import comments'), 3),
+					// new LiteralField(
+					// 	'CommentImportFormIframe',
+					// 	sprintf(
+					// 		'<iframe src="%s" id="CommentImportFormIframe" width="100%%" height="250px" border="0"></iframe>',
+					// 		$this->Link('commentimport')
+					// 	)
+					// )
+				)
+			),
+			// necessary for tree node selection in LeftAndMain.EditForm.js
+			new HiddenField('ID', false, 0)
+		);
+		
+		$root->setTemplate('CMSTabSet');
+
+		$actions = new FieldList();
+		
+		$form = new Form(
+			$this,
+			'EditForm',
+			$fields,
+			$actions
+		);
+		$form->addExtraClass('cms-edit-form');
+		$form->setTemplate($this->getTemplatesWithSuffix('_EditForm'));
+		if($form->Fields()->hasTabset()) $form->Fields()->findOrMakeTab('Root')->setTemplate('CMSTabSet');
+		$form->addExtraClass('center ss-tabset cms-tabset ' . $this->BaseCSSClasses());
+
+		$this->extend('updateEditForm', $form);
+
+		return $form;
 	}
 
 	public function showtable($params) {
@@ -58,79 +117,6 @@ class CommentAdmin extends LeftAndMain {
 		return $section;
 	}
 
-	public function EditForm() {
-		$section = $this->Section();
-
-		if($section == 'approved') {
-			$filter = "\"IsSpam\" = 0 AND \"NeedsModeration\" = 0";
-			$title = "<h2>". _t('CommentAdmin.APPROVEDCOMMENTS', 'Approved Comments')."</h2>";
-		} else if($section == 'unmoderated') {
-			$filter = '"NeedsModeration" = 1';
-			$title = "<h2>"._t('CommentAdmin.COMMENTSAWAITINGMODERATION', 'Comments Awaiting Moderation')."</h2>";
-		} else {
-			$filter = '"IsSpam" = 1';
-			$title = "<h2>"._t('CommentAdmin.SPAM', 'Spam')."</h2>";
-		}
-
-		$filter .= ' AND "ParentID">0';
-
-		$tableFields = array(
-			"Name" => _t('CommentAdmin.AUTHOR', 'Author'),
-			"Comment" => _t('CommentAdmin.COMMENT', 'Comment'),
-			"Parent.Title" => _t('CommentAdmin.PAGE', 'Page'),
-			"URL" => _t('CommentAdmin.COMMENTERURL', 'URL'),
-			"Created" => _t('CommentAdmin.DATEPOSTED', 'Date Posted')
-		);
-
-		$popupFields = new FieldSet(
-			new TextField('Name', _t('CommentAdmin.NAME', 'Name')),
-			new TextField('URL', _t('CommentAdmin.URL', 'URL')),
-			new TextareaField('Comment', _t('CommentAdmin.COMMENT', 'Comment'))
-		);
-
-		$idField = new HiddenField('ID', '', $section);
-		$table = new CommentTableField($this, "Comments", "Comment", $section, $tableFields, $popupFields, array($filter), 'Created DESC');
-		
-		$table->setParentClass(false);
-		$table->setFieldCasting(array(
-			'Created' => 'SSDatetime->Full',
-			'Comment' => array('HTMLText->LimitCharacters', 150)
-		));
-		
-		$table->setPageSize(self::get_comments_per_page());
-		$table->addSelectOptions(array('all'=>'All', 'none'=>'None'));
-		$table->Markable = true;
-		
-		$fields = new FieldSet(
-			new LiteralField("Title", $title),
-			$idField,
-			$table
-		);
-
-		$actions = new FieldSet();
-
-		if($section == 'unmoderated') {
-			$actions->push(new FormAction('acceptmarked', _t('CommentAdmin.ACCEPT', 'Accept')));
-		}
-
-		if($section == 'approved' || $section == 'unmoderated') {
-			$actions->push(new FormAction('spammarked', _t('CommentAdmin.SPAMMARKED', 'Mark as spam')));
-		}
-
-		if($section == 'spam') {
-			$actions->push(new FormAction('hammarked', _t('CommentAdmin.MARKASNOTSPAM', 'Mark as not spam')));
-		}
-
-		$actions->push(new FormAction('deletemarked', _t('CommentAdmin.DELETE', 'Delete')));
-
-		if($section == 'spam') {
-			$actions->push(new FormAction('deleteall', _t('CommentAdmin.DELETEALL', 'Delete All')));
-		}
-
-		$form = new Form($this, "EditForm", $fields, $actions);
-
-		return $form;
-	}
 
 	function deletemarked() {
 		$numComments = 0;
