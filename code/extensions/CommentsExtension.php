@@ -51,9 +51,9 @@ class CommentsExtension extends DataExtension {
 	 *
 	 * @param FieldSet
 	 */
-	public function updateCMSFields(FieldList $fields) {
+	public function updateSettingsFields(FieldList $fields) {
 		if($this->attachedToSiteTree()) {
-			$fields->addFieldToTab('Root.Behaviour', 
+			$fields->addFieldToTab('Root.Settings', 
 				new CheckboxField('ProvideComments', _t('Comment.ALLOWCOMMENTS', 'Allow Comments'))
 			);
 		}
