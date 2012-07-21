@@ -138,25 +138,6 @@ class Comment extends DataObject {
 	}
 	
 	/**
-	 * This method is called just before this object is
-	 * written to the database.
-	 * 
-	 * Specifically, make sure "http://" exists at the start
-	 * of the URL, if it doesn't have https:// or http://
-	 */
-	public function onBeforeWrite() {
-		parent::onBeforeWrite();
-		
-		$url = $this->CommenterURL;
-		
-		if($url) {
-			if(strtolower(substr($url, 0, 8)) != 'https://' && strtolower(substr($url, 0, 7)) != 'http://') { 
-				$this->CommenterURL = 'http://' . $url; 
-			}
-		}
-	}
-	
-	/**
 	 * @todo needs to compare to the new {@link Commenting} configuration API
 	 *
 	 * @return Boolean
