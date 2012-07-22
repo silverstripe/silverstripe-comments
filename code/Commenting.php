@@ -66,7 +66,16 @@ class Commenting {
 		
 		Object::remove_extension($class, 'CommentsExtension');
 	}
-	
+
+	/**
+	 * Returns whether a given class name has commenting enabled
+	 *
+	 * @return bool
+	 */
+	public static function has_commenting($class) {
+		return (isset(self::$enabled_classes[$class]));
+	}
+
 	/**
 	 * Sets a value for a class of a given config setting. Passing 'all' as the class
 	 * sets it for everything

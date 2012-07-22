@@ -15,7 +15,7 @@ class CommentsExtension extends DataExtension {
 	 * 
 	 * @return array
 	 */
-	function extraStatics($class = null, $extension = null) {
+	public function extraStatics($class = null, $extension = null) {
 		$fields = array();
 		
 		$relationships = array(
@@ -99,9 +99,7 @@ class CommentsExtension extends DataExtension {
 		// do not include the comments on pages which don't have id's such as security pages
 		if($this->owner->ID < 0) return false;
 		
-		$controller = new CommentingController();
-		
-		// tad bit messy but needed to ensure all data is available
+		$controller = new CommentingController();		
 		$controller->setOwnerRecord($this->owner);
 		$controller->setBaseClass($this->ownerBaseClass);
 		$controller->setOwnerController(Controller::curr());
@@ -114,6 +112,8 @@ class CommentsExtension extends DataExtension {
 			'CommentHolderID' 			=> Commenting::get_config_value($this->ownerBaseClass, 'comments_holder_id'),
 			'PostingRequiresPermission' => Commenting::get_config_value($this->ownerBaseClass, 'required_permission'),
 			'CanPost' 					=> Commenting::can_member_post($this->ownerBaseClass),
+			'RssLink'					=> "CommentingController/rss",
+			'RssLinkPage'				=> "CommentingController/rss/". $this->ownerBaseClass . '/'.$this->owner->ID,
 			'CommentsEnabled' 			=> $enabled,
 			'AddCommentForm'			=> $form,
 			'Comments'					=> $this->Comments()
@@ -134,7 +134,7 @@ class CommentsExtension extends DataExtension {
 	/**
 	 * @deprecated 1.0 Please use {@link CommentsExtension->CommentsForm()}
 	 */
-	function PageComments() {
+	public function PageComments() {
 		// This method is very commonly used, don't throw a warning just yet
 		//user_error('$PageComments is deprecated. Please use $CommentsForm', E_USER_WARNING);
 		

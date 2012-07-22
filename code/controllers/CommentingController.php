@@ -6,8 +6,12 @@
 
 class CommentingController extends Controller {
 	
-	static $allowed_actions = array(
+	public static $allowed_actions = array(
 		'delete',
+		'spam',
+		'ham',
+		'approve',
+		'rss',
 		'CommentsForm',
 		'doPostComment'
 	);
@@ -42,38 +46,194 @@ class CommentingController extends Controller {
 	
 	/**
 	 * Workaround for generating the link to this controller
+	 *
+	 * @return string
 	 */
-	public function Link($action = "") {
-		return __CLASS__ .'/'. $action;
+	public function Link($action = "", $id = '', $other = '') {
+		return Controller::join_links(__CLASS__ , $action, $id, $other);
 	}
 	
 	/**
-	 * Performs the delete task for deleting {@link Comment}. 
+	 * Return an RSS feed of comments for a given set of comments or all 
+	 * comments on the website.
 	 *
-	 * /delete/$ID deletes the $ID comment
+	 * To maintain backwards compatibility with 2.4 this supports mapping
+	 * of PageComment/rss?pageid= as well as the new RSS format for comments
+	 * of CommentingController/rss/{classname}/{id}
+	 *
+	 * @return RSS
 	 */
-	public function delete() {
+	public function rss() {
+		$link = $this->Link('rss');
+		$class = $this->urlParams['ID'];
+		$id = $this->urlParams['OtherID'];
+
+		if(isset($_GET['pageid'])) {
+			$id =  Convert::raw2sql($_GET['pageid']);
+
+			$comments = Comment::get()->where(sprintf(
+				"BaseClass = 'SiteTree' AND ParentID = '%s'", $id
+			));
+
+			$link = $this->Link('rss', 'SiteTree', $id);
+
+		} else if($class && $id) {
+			if(Commenting::has_commenting($class)) {
+				$comments = Comment::get()->where(sprintf(
+					"BaseClass = '%s' AND ParentID = '%s'", 
+					Convert::raw2sql($class),
+					Convert::raw2sql($id)
+				));
+
+				$link = $this->Link('rss', Convert::raw2xml($class), (int) $id);
+			} else {
+				return $this->httpError(404);
+			}
+		} else if($class) {
+			if(Commenting::has_commenting($class)) {
+				$comments = Comment::get()->where(sprintf(
+					"BaseClass = '%s'", Convert::raw2sql($class)
+				));
+			} else {
+				return $this->httpError(404);
+			}
+		} else {
+			$comments = Comment::get();
+		}
+
+		$title = _t('CommentingController.RSSTITLE', "Comments RSS Feed");
+
+		$feed = new RSSFeed($comments, $link, $title, $link, 'Title', 'Comment', 'AuthorName');
+		$feed->outputToBrowser();
+	}
+
+	/**
+	 * Deletes a given {@link Comment} via the URL.
+	 *
+	 * @param SS_HTTPRequest
+	 */
+	public function delete($request) {
+		if(!$this->checkSecurityToken($request)) {
+			return $this->httpError(400);
+		}
+
+		if(($comment = $this->getComment()) && $comment->canDelete()) {
+			$comment->delete();
+				
+			return ($this->request->isAjax()) ? true : $this->redirectBack();
+		}
+
+		return $this->httpError(404);
+	}
+
+	/**
+	 * Marks a given {@link Comment} as spam. Removes the comment from display
+	 *
+	 * @param SS_HTTPRequest
+	 */
+	public function spam() {
+		if(!$this->checkSecurityToken($request)) {
+			return $this->httpError(400);
+		}
+
+		$comment = $this->getComment();
+
+		if(($comment = $this->getComment()) && $comment->canEdit()) {
+			$comment->IsSpam = true;
+			$comment->Moderated = true;
+			$comment->write();
+				
+			return ($this->request->isAjax()) ? true : $this->redirectBack();
+		}
+
+		return $this->httpError(404);
+	}
+
+	/**
+	 * Marks a given {@link Comment} as ham (not spam).
+	 *
+	 * @param SS_HTTPRequest
+	 */
+	public function ham($request) {
+		if(!$this->checkSecurityToken($request)) {
+			return $this->httpError(400);
+		}
+
+		$comment = $this->getComment();
+
+		if(($comment = $this->getComment()) && $comment->canEdit()) {
+			$comment->IsSpam = false;
+			$comment->Moderated = true;
+			$comment->write();
+				
+			return ($this->request->isAjax()) ? true : $this->redirectBack();
+		}
+
+		return $this->httpError(404);
+	}
+
+	/**
+	 * Marks a given {@link Comment} as approved.
+	 *
+	 * @param SS_HTTPRequest
+	 */
+	public function approve($request) {
+		if(!$this->checkSecurityToken($request)) {
+			return $this->httpError(400);
+		}
+
+		$comment = $this->getComment();
+
+		if(($comment = $this->getComment()) && $comment->canEdit()) {
+			$comment->IsSpam = false;
+			$comment->Moderated = true;
+			$comment->write();
+				
+			return ($this->request->isAjax()) ? true : $this->redirectBack();
+		}
+
+		return $this->httpError(404);
+	}
+	
+	/**
+	 * Returns the comment referenced in the URL (by ID).
+	 *
+	 * @return Comment|false
+	 */
+	public function getComment() {
 		$id = isset($this->urlParams['ID']) ? $this->urlParams['ID'] : false;
 
 		if($id) {
 			$comment = DataObject::get_by_id('Comment', $id);
 
-			if($comment && $comment->canDelete()) {
-				$comment->delete();
-				
-				return ($this->request->isAjax()) ? true : $this->redirectBack();
+			if($comment) {
+				return $comment;
 			}
 		}
 
-		return ($this->request->isAjax()) ? false : $this->httpError('404');
+		return false;
 	}
-	
+
+	/**
+	 * Checks the security token given with the URL to prevent CSRF attacks 
+	 * against administrators allowing users to hijack comment moderation.
+	 *
+	 * @param SS_HTTPRequest
+	 *
+	 * @return boolean
+	 */
+	public function checkSecurityToken($req) {
+		$token = SecurityToken::inst();
+
+		return $token->checkRequest($req);
+	}
+
 	/**
 	 * Post a comment form
 	 *
 	 * @return Form
 	 */
-	function CommentsForm() {
+	public function CommentsForm() {
 		
 		$member = Member::currentUser();
 		$fields = new FieldList(
@@ -143,6 +303,10 @@ class CommentingController extends Controller {
 				"Comment"	=> Cookie::get('CommentsForm_Comment')
 			));			
 		}
+
+		if($member) {
+			$form->loadDataFrom($member);
+		}
 		
 		// hook to allow further extensions to alter the comments form
 		$this->extend('alterCommentForm', $form);
@@ -156,7 +320,7 @@ class CommentingController extends Controller {
 	 * @param array $data 
 	 * @param Form $form
 	 */
-	function doPostComment($data, $form) {
+	public function doPostComment($data, $form) {
 		$class = (isset($data['BaseClass'])) ? $data['BaseClass'] : $this->getBaseClass();
 		
 		// if no class then we cannot work out what controller or model they

@@ -7,7 +7,7 @@
  */
 class Comment extends DataObject {
 	
-	static $db = array(
+	public static $db = array(
 		"Name"			=> "Varchar(200)",
 		"Comment"		=> "Text",
 		"Email"			=> "Varchar(200)",
@@ -15,27 +15,29 @@ class Comment extends DataObject {
 		"BaseClass"		=> "Varchar(200)",
 		"Moderated"		=> "Boolean",
 		"IsSpam"		=> "Boolean",
-		'NeedsModeration' => 'Boolean',
+		"ParentID"		=> "Int"
 	);
 
-	static $has_one = array(
-		"Parent"		=> "DataObject",
+	public static $has_one = array(
 		"Author"		=> "Member"
 	);
 	
-	static $has_many = array();
+	public static $default_sort = "Created DESC";
 	
-	static $many_many = array();
+	public static $has_many = array();
 	
-	static $defaults = array(
+	public static $many_many = array();
+	
+	public static $defaults = array(
 		"Moderated" => true
 	);
 	
-	static $casting = array(
-		"RSSTitle" => "Varchar",
+	public static $casting = array(
+		'AuthorName' => 'Varchar',
+		'RSSName' => 'Varchar'
 	);
 
-	static $searchable_fields = array(
+	public static $searchable_fields = array(
 		'Name',
 		'Email',
 		'Comment',
@@ -43,12 +45,13 @@ class Comment extends DataObject {
 		'BaseClass',
 	);
 	
-	static $summary_fields = array(
+	public static $summary_fields = array(
 		'Name' => 'Submitted By',
 		'Email' => 'Email',
 		'Comment' => 'Comment',
 		'Created' => 'Date Posted',
 		'ParentTitle' => 'Parent',
+		'IsSpam' => 'Is Spam'
 	);
 
 
@@ -87,7 +90,7 @@ class Comment extends DataObject {
 	 * @return string link to this comment.
 	 */
 	public function Link($action = "") {
-		return $this->Parent()->Link($action) . '#' . $this->Permalink();
+		return $this->getParent()->Link($action) . '#' . $this->Permalink();
 	}
 	
 	/**
@@ -103,9 +106,11 @@ class Comment extends DataObject {
 	}
 	
 	/**
-	 * @param boolean $includerelations a boolean value to indicate if the labels returned include relation fields
+	 * Translate the form field labels for the CMS administration
+	 *
+	 * @param boolean $includerelations
 	 */
-	function fieldLabels($includerelations = true) {
+	public function fieldLabels($includerelations = true) {
 		$labels = parent::fieldLabels($includerelations);
 		$labels['Name'] = _t('Comment.NAME', 'Author Name');
 		$labels['Comment'] = _t('Comment.COMMENT', 'Comment');
@@ -132,8 +137,9 @@ class Comment extends DataObject {
 	 *
 	 * @return string
 	 */
-	function getParentTitle(){
+	public function getParentTitle(){
 		$parent = $this->getParent();
+
 		return ($parent->Title) ? $parent->Title : $parent->ClassName . " #" . $parent->ID;
 	}
 	
@@ -142,20 +148,18 @@ class Comment extends DataObject {
 	 *
 	 * @return Boolean
 	 */
-	function canCreate($member = null) {
+	public function canCreate($member = null) {
 		return false;
 	}
 
 	/**
-	 * Checks for association with a page,
-	 * and {@link SiteTree->ProvidePermission} flag being set to TRUE.
-	 * Note: There's an additional layer of permission control
-	 * in {@link PageCommentInterface}.
+	 * Checks for association with a page, and {@link SiteTree->ProvidePermission} 
+	 * flag being set to true.
 	 * 
 	 * @param Member $member
 	 * @return Boolean
 	 */
-	function canView($member = null) {
+	public function canView($member = null) {
 		if(!$member) $member = Member::currentUser();
 		
 		// Standard mechanism for accepting permission changes from decorators
@@ -170,13 +174,13 @@ class Comment extends DataObject {
 	}
 	
 	/**
-	 * Checks for "CMS_ACCESS_CommentAdmin" permission codes
-	 * and {@link canView()}. 
+	 * Checks for "CMS_ACCESS_CommentAdmin" permission codes and 
+	 * {@link canView()}. 
 	 * 
 	 * @param Member $member
 	 * @return Boolean
 	 */
-	function canEdit($member = null) {
+	public function canEdit($member = null) {
 		if(!$member) $member = Member::currentUser();
 		
 		// Standard mechanism for accepting permission changes from decorators
@@ -189,13 +193,13 @@ class Comment extends DataObject {
 	}
 	
 	/**
-	 * Checks for "CMS_ACCESS_CommentAdmin" permission codes
-	 * and {@link canEdit()}.
+	 * Checks for "CMS_ACCESS_CommentAdmin" permission codes and 
+	 * {@link canEdit()}.
 	 * 
 	 * @param Member $member
 	 * @return Boolean
 	 */
-	function canDelete($member = null) {
+	public function canDelete($member = null) {
 		if(!$member) $member = Member::currentUser();
 		
 		// Standard mechanism for accepting permission changes from decorators
@@ -204,40 +208,76 @@ class Comment extends DataObject {
 		
 		return $this->canEdit($member);
 	}
-	
-	
-	/************************************ Review the following */
-	function getRSSName() {
+
+	/**
+	 * Return the authors name for the comment
+	 *
+	 * @return string
+	 */
+	public function getAuthorName() {
 		if($this->Name) {
 			return $this->Name;
-		} elseif($this->Author()) {
+		} else if($this->Author()) {
 			return $this->Author()->getName();
 		}
 	}
 
-	function DeleteLink() {
-		return ($this->canDelete()) ? "PageComment_Controller/deletecomment/$this->ID" : false;
+	/**
+	 * @return string
+	 */
+	public function DeleteLink() {
+		if($this->canDelete()) {
+			$token = SecurityToken::inst();
+
+			return DBField::create_field("Varchar", $token->addToUrl(sprintf(
+				"CommentingController/delete/%s", (int) $this->ID
+			)));
+		}
 	}
 	
-	function CommentTextWithLinks() {
-		$pattern = '|([a-zA-Z]+://)([a-zA-Z0-9?&%.;:/=+_-]*)|is';
-		$replace = '<a rel="nofollow" href="$1$2">$1$2</a>';
-		return preg_replace($pattern, $replace, $this->Comment);
+	/**
+	 * @return string
+	 */
+	public function SpamLink() {
+		if($this->canEdit() && !$this->IsSpam) {
+			$token = SecurityToken::inst();
+
+			return DBField::create_field("Varchar", $token->addToUrl(sprintf(
+				"CommentingController/spam/%s", (int) $this->ID
+			)));
+		}
 	}
 	
-	function SpamLink() {
-		return ($this->canEdit() && !$this->IsSpam) ? "PageComment_Controller/reportspam/$this->ID" : false;
+	/**
+	 * @return string
+	 */
+	public function HamLink() {
+		if($this->canEdit() && $this->IsSpam) {
+			$token = SecurityToken::inst();
+
+			return DBField::create_field("Varchar", $token->addToUrl(sprintf(
+				"CommentingController/ham/%s", (int) $this->ID
+			)));
+		}
 	}
 	
-	function HamLink() {
-		return ($this->canEdit() && $this->IsSpam) ? "PageComment_Controller/reportham/$this->ID" : false;
+	/**
+	 * @return string
+	 */
+	public function ApproveLink() {
+		if($this->canEdit() && !$this->Moderated) {
+			$token = SecurityToken::inst();
+
+			return DBField::create_field("Varchar", $token->addToUrl(sprintf(
+				"CommentingController/approve/%s", (int) $this->ID
+			)));
+		}
 	}
 	
-	function ApproveLink() {
-		return ($this->canEdit() && $this->NeedsModeration) ? "PageComment_Controller/approve/$this->ID" : false;
-	}
-	
-	function SpamClass() {
+	/**
+	 * @return string
+	 */
+	public function SpamClass() {
 		if($this->getField('IsSpam')) {
 			return 'spam';
 		} else if($this->getField('NeedsModeration')) {
@@ -247,12 +287,18 @@ class Comment extends DataObject {
 		}
 	}
 	
-	
-	function RSSTitle() {
-		return sprintf(
-			_t('PageComment.COMMENTBY', "Comment by '%s' on %s", PR_MEDIUM, 'Name, Page Title'),
-			Convert::raw2xml($this->getRSSName()),
-			$this->Parent()->Title
-		);
+	/**
+	 * @return string
+	 */
+	public function getTitle() {
+		$title = sprintf(_t('Comment.COMMENTBY', "Comment by '%s'", 'Name'), $this->getAuthorName());
+
+		if($parent = $this->getParent()) {
+			if($parent->Title) {
+				$title .= sprintf(" %s %s", _t('Comment.ON', 'on'), $parent->Title);
+			}
+		}
+
+		return $title;
 	}
 }
