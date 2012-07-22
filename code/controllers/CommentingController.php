@@ -72,7 +72,7 @@ class CommentingController extends Controller {
 			$id =  Convert::raw2sql($_GET['pageid']);
 
 			$comments = Comment::get()->where(sprintf(
-				"BaseClass = 'SiteTree' AND ParentID = '%s'", $id
+				"BaseClass = 'SiteTree' AND ParentID = '%s' AND Moderated = 1 AND IsSpam = 0", $id
 			));
 
 			$link = $this->Link('rss', 'SiteTree', $id);
@@ -80,7 +80,7 @@ class CommentingController extends Controller {
 		} else if($class && $id) {
 			if(Commenting::has_commenting($class)) {
 				$comments = Comment::get()->where(sprintf(
-					"BaseClass = '%s' AND ParentID = '%s'", 
+					"BaseClass = '%s' AND ParentID = '%s' AND Moderated = 1 AND IsSpam = 0", 
 					Convert::raw2sql($class),
 					Convert::raw2sql($id)
 				));
@@ -92,7 +92,8 @@ class CommentingController extends Controller {
 		} else if($class) {
 			if(Commenting::has_commenting($class)) {
 				$comments = Comment::get()->where(sprintf(
-					"BaseClass = '%s'", Convert::raw2sql($class)
+					"BaseClass = '%s' AND Moderated = 1 AND IsSpam = 0", 
+					Convert::raw2sql($class)
 				));
 			} else {
 				return $this->httpError(404);
