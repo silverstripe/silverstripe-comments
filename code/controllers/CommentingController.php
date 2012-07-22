@@ -357,19 +357,17 @@ class CommentingController extends Controller {
 		$comment->Moderated = ($moderated) ? false : true;
 		$comment->write();
 		
-		$moderationMsg = _t('CommentInterface_Form.AWAITINGMODERATION', "Your comment has been submitted and is now awaiting moderation.");
-		
 		// clear the users comment since it passed validation
 		Cookie::set('CommentsForm_Comment', false);
 		
 		if(Director::is_ajax()) {
-			if($comment->NeedsModeration){
-				echo $moderationMsg;
-			} else{
+			if(!$comment->Moderated) {
+				echo $comment->renderWith('CommentInterface_pendingcomment');
+			} else {
 				echo $comment->renderWith('CommentInterface_singlecomment');
 			}
 			
-			return false;
+			return true;
 		}
 		
 		if($comment->NeedsModeration){

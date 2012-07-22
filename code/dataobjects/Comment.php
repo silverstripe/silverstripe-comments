@@ -115,7 +115,7 @@ class Comment extends DataObject {
 		$labels['Name'] = _t('Comment.NAME', 'Author Name');
 		$labels['Comment'] = _t('Comment.COMMENT', 'Comment');
 		$labels['IsSpam'] = _t('Comment.ISSPAM', 'Spam?');
-		$labels['NeedsModeration'] = _t('Comment.NEEDSMODERATION', 'Needs Moderation?');
+		$labels['Moderated'] = _t('Comment.MODERATED', 'Moderated?');
 		
 		return $labels;
 	}
