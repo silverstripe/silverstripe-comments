@@ -1,0 +1,9 @@
+---
+Name: commentroutes
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    # handle old 2.4 style urls
+    'PageComments/$Action/$ID': 'CommentingController'
+    'PageComments_Controller/$Action/$ID': 'CommentingController'
