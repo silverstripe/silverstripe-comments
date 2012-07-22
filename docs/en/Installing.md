@@ -24,13 +24,13 @@ where you want comments to appear.
 To enable commenting on other objects (such as your own subclasses of DataObject) add the following 
 to your `mysite/_config.php` file.
 
-	// Adds commenting to the class Foo
-	Commenting::add('Foo');
+	// Adds commenting to the class SiteTree (all Pages)
+	Commenting::add('SiteTree');
 	
 You can also pass configuration options to the add function to customize commenting on that object. Again
 in your `mysite/_config.php` file replace the previous line with the following
 
-	// Adds commenting to the class Foo but requires you login and comments
+	// Adds commenting to the class SiteTree (all Pages) but require the user to login and comments
 	// are moderated
 	Commenting::add('Foo', array(
 		'require_moderation' => true,
