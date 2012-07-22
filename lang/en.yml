@@ -1,0 +1,49 @@
+en:
+  Comment:
+    ALLOWCOMMENTS: 'Allow Comments'
+    COMMENT: Comment
+    COMMENTBY: 'Comment by ''%s'''
+    ISSPAM: 'Spam?'
+    MODERATED: 'Moderated?'
+    NAME: 'Author Name'
+    ON: on
+    PLURALNAME: Comments
+    SINGULARNAME: Comment
+  CommentAdmin:
+    Moderated: Moderated
+    NeedsModeration: 'Needs Moderation'
+    MENUTITLE: Comments
+  CommentInterface:
+    POST: Post
+    YOURNAME: 'Your name'
+  CommentingController:
+    COMMENTS: Comments
+    EMAILADDRESS: 'Your email address (will not be published)'
+    PERMISSIONFAILURE: 'You''re not able to post comments to this page. Please ensure you are logged in and have an appropriate permission level.'
+    RSSTITLE: 'Comments RSS Feed'
+    WEBSITEURL: 'Your website URL'
+  CommentsAdmin:
+    NeedsModeration: 'Needs Moderation'
+  CommentsInterface.ss:
+    COMMENTLOGINERROR: 'You cannot post comments until you have logged in'
+    COMMENTPERMISSIONERROR: 'and that you have an appropriate permission level'
+    COMMENTPOSTLOGIN: 'Login Here'
+    COMMENTS: Comments
+    COMMENTSDISABLED: 'Posting comments has been disabled'
+    LOGINTOPOSTCOMMENT: 'Login to post a comment'
+    NEXT: next
+    NOCOMMENTSYET: 'No one has commented on this page yet.'
+    POSTCOM: 'Post your comment'
+    PREV: previous
+    RSSFEEDALLCOMMENTS: 'RSS feed for all comments'
+    RSSFEEDCOMMENTS: 'RSS feed for comments on this page'
+  CommentsInterface_pendingcomment.ss:
+    AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
+  CommentsInterface_singlecomment.ss:
+    APPROVE: 'approve this comment'
+    ISNTSPAM: 'this comment is not spam'
+    ISSPAM: 'this comment is spam'
+    PBY: 'Posted by'
+    REMCOM: 'remove this comment'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Delete all comments on this page'
