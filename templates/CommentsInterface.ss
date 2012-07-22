@@ -28,24 +28,24 @@
 				</ul>
 			
 				<% if Comments.MoreThanOnePage %>
-					<div id="PageCommentsPagination">
+					<div class="comments-pagination">
 						<p>
 							<% if Comments.PrevLink %>
-								<a href="$Comments.PrevLink">&laquo; <% _t('PREV','previous') %></a>
+								<a href="$Comments.PrevLink" class="previous">&laquo; <% _t('PREV','previous') %></a>
 							<% end_if %>
 					
 							<% if Comments.Pages %>
-								<% control Comments.Pages %>
+								<% loop Comments.Pages %>
 									<% if CurrentBool %>
 										<strong>$PageNum</strong>
 									<% else %>
 										<a href="$Link">$PageNum</a>
 									<% end_if %>
-								<% end_control %>
+								<% end_loop %>
 							<% end_if %>
 	
 							<% if Comments.NextLink %>
-								<a href="$Comments.NextLink"><% _t('NEXT','next') %> &raquo;</a>
+								<a href="$Comments.NextLink" class="next"><% _t('NEXT','next') %> &raquo;</a>
 							<% end_if %>
 						</p>
 					</div>
@@ -61,9 +61,9 @@
 			</p>
 		<% end_if %>
 
-		<p id="CommentsRSSFeed">
-			<a class="commentrss" href="$CommentRssLink"><% _t('RSSFEEDCOMMENTS', 'RSS feed for comments on this page') %></a> | 
-			<a href="PageComment/rss" class="commentrss" title="<% _t('RSSVIEWALLCOMMENTS', 'View all Comments') %>"><% _t('RSSFEEDALLCOMMENTS', 'RSS feed for all comments') %></a>
+		<p class="commenting-rss-feed">
+			<a href="$RssLinkPage"><% _t('RSSFEEDCOMMENTS', 'RSS feed for comments on this page') %></a> | 
+			<a href="$RssLink"><% _t('RSSFEEDALLCOMMENTS', 'RSS feed for all comments') %></a>
 		</p>
 	</div>
 <% end_if %>
