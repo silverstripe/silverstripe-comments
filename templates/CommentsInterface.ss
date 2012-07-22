@@ -1,6 +1,5 @@
 <% if CommentsEnabled %>
 	<div id="$CommentHolderID" class="comments-holder-container">
-
 		<h4><% _t('POSTCOM','Post your comment') %></h4>
 		
 		<% if AddCommentForm %>
@@ -20,11 +19,11 @@
 		<div class="comments-holder">
 			<% if Comments %>
 				<ul class="comments-list">
-					<% control Comments %>
+					<% loop Comments %>
 						<li class="comment $EvenOdd<% if FirstLast %> $FirstLast <% end_if %> $SpamClass">
 							<% include CommentsInterface_singlecomment %>
 						</li>
-					<% end_control %>
+					<% end_loop %>
 				</ul>
 			
 				<% if Comments.MoreThanOnePage %>

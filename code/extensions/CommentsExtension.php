@@ -62,18 +62,22 @@ class CommentsExtension extends DataExtension {
 	/**
 	 * Returns a list of all the comments attached to this record.
 	 *
-	 * @todo pagination
-	 *
-	 * @return DataObjectSet
+	 * @return PaginatedList
 	 */
 	public function Comments() {
 		$order = Commenting::get_config_value($this->ownerBaseClass, 'order_comments_by');
 		
-		return DataObject::get(
-			'Comment', 
-			"\"ParentID\" = '". $this->owner->ID ."' AND \"BaseClass\" = '". $this->ownerBaseClass ."'",
-			$order
-		);
+		$list = new PaginatedList(Comment::get()->where(sprintf(
+			"ParentID = '%s' AND BaseClass = '%s'", $this->owner->ID, $this->ownerBaseClass
+		))->sort($order));
+
+		$list->setPageLength(Commenting::get_config_value(
+			$this->ownerBaseClass, 'comments_per_page'
+		));
+
+		$list->setPaginationGetVar("commentsstart". $this->owner->ID);
+
+		return $list;
 	}
 	
 	
@@ -84,7 +88,7 @@ class CommentsExtension extends DataExtension {
 	 * To customize the html see templates/CommentInterface.ss or extend this function with
 	 * your own extension.
 	 *
-	 * @todo Cleanup the passing of all this state based functionality
+	 * @todo Cleanup the passing of all this configuration based functionality
 	 *
 	 * @see docs/en/Extending
 	 */
