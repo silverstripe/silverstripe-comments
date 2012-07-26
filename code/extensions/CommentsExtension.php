@@ -75,7 +75,10 @@ class CommentsExtension extends DataExtension {
 			$this->ownerBaseClass, 'comments_per_page'
 		));
 
+		$controller = Controller::curr();		
+		$list->setPageStart($controller->request->getVar("commentsstart". $this->owner->ID));
 		$list->setPaginationGetVar("commentsstart". $this->owner->ID);
+		$list->MoreThanOnePage();
 
 		return $list;
 	}

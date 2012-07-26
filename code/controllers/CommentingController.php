@@ -274,6 +274,7 @@ class CommentingController extends Controller {
 				$fields->removeByName('Email');
 				$fields->insertBefore(new ReadonlyField("NameView", _t('CommentInterface.YOURNAME', 'Your name'), $member->getName()), 'URL');
 				$fields->push(new HiddenField("Name", "", $member->getName()));
+				$fields->push(new HiddenField("Email", "", $member->Email));
 				
 				$form->setFields($fields);
 			}
