@@ -11,6 +11,7 @@ The module provides a number of built in configuration settings below are the de
 		'show_comments_when_disabled' => false,
 		'order_comments_by' => "\"Created\" DESC",
 		'comments_per_page' => 10,
+		'rss_comments_per_page' => 10,
 		'comments_holder_id' => "comments-holder", 
 		'comment_permalink_prefix' => "comment-",
 		'require_moderation' => false
