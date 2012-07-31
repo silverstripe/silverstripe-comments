@@ -102,6 +102,9 @@ class CommentingController extends Controller {
 			$comments = Comment::get();
 		}
 
+		$rssItemNum = Commenting::get_config_value($class ? $class : 'SiteTree', 'rss_comments_per_page');
+		if($rssItemNum) $comments = $comments->limit($rssItemNum); 
+
 		$title = _t('CommentingController.RSSTITLE', "Comments RSS Feed");
 
 		$feed = new RSSFeed($comments, $link, $title, $link, 'Title', 'Comment', 'AuthorName');
