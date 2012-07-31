@@ -114,8 +114,8 @@ class Commenting {
 	 * @throws Exception 
 	 * @return mixed
 	 */
-	public static function get_config_value($class, $key) {
-		if(isset(self::$enabled_classes[$class])) {
+	public static function get_config_value($class = null, $key) {
+		if(!$class || isset(self::$enabled_classes[$class])) {
 			// custom configuration
 			if(isset(self::$enabled_classes[$class][$key])) return self::$enabled_classes[$class][$key];
 			

@@ -65,6 +65,8 @@ class CommentsExtension extends DataExtension {
 	 * @return PaginatedList
 	 */
 	public function Comments() {
+		$controller = Controller::curr();
+
 		$order = Commenting::get_config_value($this->ownerBaseClass, 'order_comments_by');
 		
 		$list = new PaginatedList(Comment::get()->where(sprintf(
@@ -75,14 +77,13 @@ class CommentsExtension extends DataExtension {
 			$this->ownerBaseClass, 'comments_per_page'
 		));
 
-		$controller = Controller::curr();		
+
+		$controller = Controller::curr();	
 		$list->setPageStart($controller->request->getVar("commentsstart". $this->owner->ID));
 		$list->setPaginationGetVar("commentsstart". $this->owner->ID);
-		$list->MoreThanOnePage();
 
 		return $list;
 	}
-	
 	
 	/**
 	 * Comments interface for the front end. Includes the CommentAddForm and the composition

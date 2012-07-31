@@ -29,7 +29,8 @@ class Comment extends DataObject {
 	public static $many_many = array();
 	
 	public static $defaults = array(
-		"Moderated" => true
+		"Moderated" => 1,
+		"IsSpam" => 0
 	);
 	
 	public static $casting = array(
@@ -167,10 +168,9 @@ class Comment extends DataObject {
 		if($extended !== null) return $extended;
 		
 		$page = $this->getParent();
-		return (
-			($page && $page->ProvideComments)
-			|| (bool)Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin')
-		);
+		$admin = (bool) Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin');
+
+		return (($page && $page->ProvideComments && $page->canView($member)) || $admin);
 	}
 	
 	/**
@@ -229,9 +229,9 @@ class Comment extends DataObject {
 		if($this->canDelete()) {
 			$token = SecurityToken::inst();
 
-			return DBField::create_field("Varchar", $token->addToUrl(sprintf(
+			return DBField::create_field("Varchar", Director::absoluteURL($token->addToUrl(sprintf(
 				"CommentingController/delete/%s", (int) $this->ID
-			)));
+			))));
 		}
 	}
 	
@@ -242,9 +242,9 @@ class Comment extends DataObject {
 		if($this->canEdit() && !$this->IsSpam) {
 			$token = SecurityToken::inst();
 
-			return DBField::create_field("Varchar", $token->addToUrl(sprintf(
+			return DBField::create_field("Varchar", Director::absoluteURL($token->addToUrl(sprintf(
 				"CommentingController/spam/%s", (int) $this->ID
-			)));
+			))));
 		}
 	}
 	
@@ -255,9 +255,9 @@ class Comment extends DataObject {
 		if($this->canEdit() && $this->IsSpam) {
 			$token = SecurityToken::inst();
 
-			return DBField::create_field("Varchar", $token->addToUrl(sprintf(
+			return DBField::create_field("Varchar", Director::absoluteURL($token->addToUrl(sprintf(
 				"CommentingController/ham/%s", (int) $this->ID
-			)));
+			))));
 		}
 	}
 	
@@ -268,9 +268,9 @@ class Comment extends DataObject {
 		if($this->canEdit() && !$this->Moderated) {
 			$token = SecurityToken::inst();
 
-			return DBField::create_field("Varchar", $token->addToUrl(sprintf(
+			return DBField::create_field("Varchar", Director::absoluteURL($token->addToUrl(sprintf(
 				"CommentingController/approve/%s", (int) $this->ID
-			)));
+			))));
 		}
 	}
 	
@@ -278,9 +278,9 @@ class Comment extends DataObject {
 	 * @return string
 	 */
 	public function SpamClass() {
-		if($this->getField('IsSpam')) {
+		if($this->IsSpam) {
 			return 'spam';
-		} else if($this->getField('NeedsModeration')) {
+		} else if(!$this->Moderated) {
 			return 'unmoderated';
 		} else {
 			return 'notspam';
@@ -291,7 +291,7 @@ class Comment extends DataObject {
 	 * @return string
 	 */
 	public function getTitle() {
-		$title = sprintf(_t('Comment.COMMENTBY', "Comment by '%s'", 'Name'), $this->getAuthorName());
+		$title = sprintf(_t('Comment.COMMENTBY', "Comment by %s", 'Name'), $this->getAuthorName());
 
 		if($parent = $this->getParent()) {
 			if($parent->Title) {

@@ -15,7 +15,7 @@ class CommentingController extends Controller {
 		'CommentsForm',
 		'doPostComment'
 	);
-	
+
 	private $baseClass = "";
 	private $ownerRecord = "";
 	private $ownerController = "";
@@ -54,19 +54,30 @@ class CommentingController extends Controller {
 	}
 	
 	/**
-	 * Return an RSS feed of comments for a given set of comments or all 
+	 * Outputs the RSS feed of comments
+	 *
+	 * @return XML
+	 */
+	public function rss() {
+		return $this->getFeed($this->request)->outputToBrowser();
+	}
+
+	/**
+	 * Return an RSSFeed of comments for a given set of comments or all 
 	 * comments on the website.
 	 *
 	 * To maintain backwards compatibility with 2.4 this supports mapping
 	 * of PageComment/rss?pageid= as well as the new RSS format for comments
 	 * of CommentingController/rss/{classname}/{id}
 	 *
-	 * @return RSS
+	 * @param SS_HTTPRequest
+	 *
+	 * @return RSSFeed
 	 */
-	public function rss() {
+	public function getFeed(SS_HTTPRequest $request) {
 		$link = $this->Link('rss');
-		$class = $this->urlParams['ID'];
-		$id = $this->urlParams['OtherID'];
+		$class = $request->param('ID');
+		$id = $request->param('OtherID');
 
 		if(isset($_GET['pageid'])) {
 			$id =  Convert::raw2sql($_GET['pageid']);
@@ -99,22 +110,22 @@ class CommentingController extends Controller {
 				return $this->httpError(404);
 			}
 		} else {
-			$comments = Comment::get();
+			$comments = Comment::get()->where("Moderated = 1 AND IsSpam = 0");
 		}
 
 		$title = _t('CommentingController.RSSTITLE', "Comments RSS Feed");
 
-		$feed = new RSSFeed($comments, $link, $title, $link, 'Title', 'Comment', 'AuthorName');
-		$feed->outputToBrowser();
+		$comments = new PaginatedList($comments, $request);
+		$comments->setPageLength(Commenting::get_config_value(null, 'comments_per_page'));
+
+		return new RSSFeed($comments, $link, $title, $link, 'Title', 'Comment', 'AuthorName');
 	}
 
 	/**
 	 * Deletes a given {@link Comment} via the URL.
-	 *
-	 * @param SS_HTTPRequest
 	 */
-	public function delete($request) {
-		if(!$this->checkSecurityToken($request)) {
+	public function delete() {
+		if(!$this->checkSecurityToken($this->request)) {
 			return $this->httpError(400);
 		}
 
@@ -129,11 +140,9 @@ class CommentingController extends Controller {
 
 	/**
 	 * Marks a given {@link Comment} as spam. Removes the comment from display
-	 *
-	 * @param SS_HTTPRequest
 	 */
 	public function spam() {
-		if(!$this->checkSecurityToken($request)) {
+		if(!$this->checkSecurityToken($this->request)) {
 			return $this->httpError(400);
 		}
 
@@ -152,11 +161,9 @@ class CommentingController extends Controller {
 
 	/**
 	 * Marks a given {@link Comment} as ham (not spam).
-	 *
-	 * @param SS_HTTPRequest
 	 */
-	public function ham($request) {
-		if(!$this->checkSecurityToken($request)) {
+	public function ham() {
+		if(!$this->checkSecurityToken($this->request)) {
 			return $this->httpError(400);
 		}
 
@@ -175,11 +182,9 @@ class CommentingController extends Controller {
 
 	/**
 	 * Marks a given {@link Comment} as approved.
-	 *
-	 * @param SS_HTTPRequest
 	 */
-	public function approve($request) {
-		if(!$this->checkSecurityToken($request)) {
+	public function approve() {
+		if(!$this->checkSecurityToken($this->request)) {
 			return $this->httpError(400);
 		}
 
@@ -197,7 +202,8 @@ class CommentingController extends Controller {
 	}
 	
 	/**
-	 * Returns the comment referenced in the URL (by ID).
+	 * Returns the comment referenced in the URL (by ID). Permission checking
+	 * should be done in the callee.
 	 *
 	 * @return Comment|false
 	 */
@@ -370,15 +376,10 @@ class CommentingController extends Controller {
 			
 			return true;
 		}
-		
-		if($comment->NeedsModeration){
-			$this->sessionMessage($moderationMsg, 'good');
-		}
-		
-		// build up the return link. Ideally redirect to 
+
 		$holder = Commenting::get_config_value($comment->BaseClass, 'comments_holder_id');
 
-		$hash = ($comment->NeedsModeration) ? $holder : $comment->Permalink();
+		$hash = ($moderated) ? $comment->Permalink() : $holder;
 		$url = (isset($data['ReturnURL'])) ? $data['ReturnURL'] : false;
 			
 		return ($url) ? $this->redirect($url .'#'. $hash) : $this->redirectBack();

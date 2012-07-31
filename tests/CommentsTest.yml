@@ -14,59 +14,127 @@ Permission:
 		Code: CMS_ACCESS_CommentAdmin
 		Group: =>Group.commentadmins
 
-Page:
+CommentableItem:
 	first:
-		Title: First page
-		URLSegment: first-page
+		Title: First
 		ProvideComments: 1
 	second:
-		Title: Second page
-		URLSegment: second-page
+		Title: Second
  		ProvideComments: 1
 	third:
-		Title: Third page
-		URLSegment:third-page
+		Title: Third
 		ProvideComments: 1
-	pageNoComments:
+	nocomments:
 		Title: No comments
-		URLSegment: no-comments
 		ProvideComments: 0
 
 Comment:
 	firstComA:
-		ParentID: =>Page.first
+		ParentID: =>CommentableItem.first
 		Name: FA
 		Comment: textFA
+		BaseClass: CommentableItem
 		Moderated: 1
+		IsSpam: 0
 	secondComA:
-		ParentID: =>Page.second
+		ParentID: =>CommentableItem.second
 		Name: SA
 		Comment: textSA
 		Moderated: 1
+		IsSpam: 0
+		BaseClass: CommentableItem
 	secondComB:
-		ParentID: =>Page.second
+		ParentID: =>CommentableItem.second
+		Name: SB
+		Comment: textSB
+		Moderated: 0
+		IsSpam: 0
+		BaseClass: CommentableItem
+	secondComC:
+		ParentID: =>CommentableItem.second
 		Name: SB
 		Comment: textSB
 		Moderated: 1
+		IsSpam: 1
+		BaseClass: CommentableItem
 	thirdComA:
-		ParentID: =>Page.third
+		ParentID: =>CommentableItem.third
 		Name: TA
 		Comment: textTA
 		Moderated: 1
-		IsSpam: 1
+		IsSpam: 0
+		BaseClass: CommentableItem
 	thirdComB:
-		ParentID: =>Page.third
+		ParentID: =>CommentableItem.third
 		Name: TB
 		Comment: textTB
-		Moderated: 0
+		Moderated: 1
+		IsSpam: 0
+		BaseClass: CommentableItem
 	thirdComC:
-		ParentID: =>Page.third
+		ParentID: =>CommentableItem.third
 		Name: TC
 		Comment: textTC
-		Moderated: 0
-		
+		Moderated: 1
+		IsSpam: 0
+		BaseClass: CommentableItem
+	thirdComD:
+		ParentID: =>CommentableItem.third
+		Name: TC
+		Comment: textTC
+		Moderated: 1
+		BaseClass: CommentableItem
+	thirdComE:
+		ParentID: =>CommentableItem.third
+		Name: TC
+		Comment: textTC
+		Moderated: 1
+		BaseClass: CommentableItem
+	thirdComF:
+		ParentID: =>CommentableItem.third
+		Name: TC
+		Comment: textTC
+		Moderated: 1
+		IsSpam: 0
+		BaseClass: CommentableItem
+	thirdComG:
+		ParentID: =>CommentableItem.third
+		Name: TC
+		Comment: textTC
+		Moderated: 1
+		IsSpam: 0
+		BaseClass: CommentableItem
+	thirdComH:
+		ParentID: =>CommentableItem.third
+		Name: TC
+		Comment: textTC
+		Moderated: 1
+		IsSpam: 0
+		BaseClass: CommentableItem
+	thirdComI:
+		ParentID: =>CommentableItem.third
+		Name: TC
+		Comment: textTC
+		Moderated: 1
+		IsSpam: 0
+		BaseClass: CommentableItem
+	thirdComJ:
+		ParentID: =>CommentableItem.third
+		Name: TC
+		Comment: textTC
+		Moderated: 1
+		IsSpam: 0
+		BaseClass: CommentableItem
+	thirdComK:
+		ParentID: =>CommentableItem.third
+		Name: TC
+		Comment: textTC
+		Moderated: 1
+		IsSpam: 0
+		BaseClass: CommentableItem						
 	disabledCom:
-		ParentID: =>Page.pageNoComments
+		ParentID: =>CommentableItem.nocomments
 		Name: Disabled
 		Moderated: 0
 		IsSpam: 1
+		BaseClass: CommentableItem
