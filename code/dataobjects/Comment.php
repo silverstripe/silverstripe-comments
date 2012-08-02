@@ -75,6 +75,7 @@ class Comment extends DataObject {
 					// set the variables which have changed
 					$comment->BaseClass = 'SiteTree';
 					$comment->URL = (isset($pageComment['CommenterURL'])) ? $pageComment['CommenterURL'] : "";
+					if((int)$pageComment['NeedsModeration'] == 0) $comment->Moderated = true;
 					
 					$comment->write();
 				}
