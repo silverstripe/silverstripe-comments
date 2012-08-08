@@ -357,6 +357,12 @@ class CommentingController extends Controller {
 
 		// is moderation turned on
 		$moderated = Commenting::get_config_value($class, 'require_moderation');
+
+		// we want to show a notification if comments are moderated
+		if ($moderated) {
+			Session::set('CommentsModerated', 1);
+		}
+
 		
 		$comment = new Comment();
 		$form->saveInto($comment);
