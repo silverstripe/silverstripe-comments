@@ -68,9 +68,19 @@ class CommentsExtension extends DataExtension {
 		$controller = Controller::curr();
 
 		$order = Commenting::get_config_value($this->ownerBaseClass, 'order_comments_by');
+
+		// has moderation been turned on if it has amend the sql query
+		$moderation = '';
+		if (Commenting::get_config_value($this->ownerBaseClass, 'require_moderation')) {
 		
+			$member = new Member();
+			if ($member->currentUser() == false) {
+				$moderation = 'Moderated = 1 AND ';
+			}
+		}
+
 		$list = new PaginatedList(Comment::get()->where(sprintf(
-			"ParentID = '%s' AND BaseClass = '%s'", $this->owner->ID, $this->ownerBaseClass
+			$moderation . "ParentID = '%s' AND BaseClass = '%s'", $this->owner->ID, $this->ownerBaseClass
 		))->sort($order));
 
 		$list->setPageLength(Commenting::get_config_value(
@@ -111,6 +121,9 @@ class CommentsExtension extends DataExtension {
 		$controller->setOwnerRecord($this->owner);
 		$controller->setBaseClass($this->ownerBaseClass);
 		$controller->setOwnerController(Controller::curr());
+
+		$moderatedSubmitted = Session::get('CommentsModerated');
+		Session::clear('CommentsModerated');
 		
 		$form = ($enabled) ? $controller->CommentsForm() : false;
 		
@@ -124,6 +137,7 @@ class CommentsExtension extends DataExtension {
 			'RssLinkPage'				=> "CommentingController/rss/". $this->ownerBaseClass . '/'.$this->owner->ID,
 			'CommentsEnabled' 			=> $enabled,
 			'AddCommentForm'			=> $form,
+			'ModeratedSubmitted'			=> $moderatedSubmitted,
 			'Comments'					=> $this->Comments()
 		)));
 	}
