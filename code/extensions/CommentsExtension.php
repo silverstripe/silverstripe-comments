@@ -12,33 +12,20 @@ class CommentsExtension extends DataExtension {
 	 * Adds a relationship between this {@link DataObject} and its
 	 * {@link Comment} objects. If the owner class is a sitetree class
 	 * it also enables a checkbox allowing comments to be turned off and off
-	 * 
-	 * @return array
 	 */
-	public function extraStatics($class = null, $extension = null) {
-		$fields = array();
-		
-		$relationships = array(
-			'has_many' => array(
-				'Comments' => 'Comment'
-			)
-		);
+	public static function add_to_class($class, $extensionClass, $args = null) {
+		Config::inst()->update($class, 'has_many', array(
+			'Comments' => 'Comment'
+		));
 
 		// if it is attached to the SiteTree then we need to add ProvideComments
-		// cannot check $this->owner as this in intialised via call_user_func
-		$args = func_get_args();
-		
-		if($args && ($owner = array_shift($args))) {
-			if(is_subclass_of($owner, 'SiteTree') || $owner == "SiteTree") {
-				$fields = array(
-					'db' => array(
-						'ProvideComments' => 'Boolean'
-					)
-				);
-			}
+		if(is_subclass_of($class, 'SiteTree') || $class == 'SiteTree') {
+			Config::inst()->update($class, 'db', array(
+				'ProvideComments' => 'Boolean'
+			));
 		}
 
-		return array_merge($fields, $relationships);
+		parent::add_to_class($class, $extensionClass, $args);
 	}
 
 	
