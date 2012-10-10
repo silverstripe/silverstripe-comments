@@ -19,8 +19,6 @@ class CommentingControllerTests extends FunctionalTest {
 	}
 
 	public function testRSS() {
-		$this->markTestIncomplete("Waiting for https://github.com/silverstripe/sapphire/pull/686 to land");
-
 		$item = $this->objFromFixture('CommentableItem', 'first');
 
 		// comments sitewide

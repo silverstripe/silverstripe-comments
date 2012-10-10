@@ -20,7 +20,7 @@ CommentableItem:
 		ProvideComments: 1
 	second:
 		Title: Second
- 		ProvideComments: 1
+		ProvideComments: 1
 	third:
 		Title: Third
 		ProvideComments: 1
@@ -131,7 +131,7 @@ Comment:
 		Comment: textTC
 		Moderated: 1
 		IsSpam: 0
-		BaseClass: CommentableItem						
+		BaseClass: CommentableItem
 	disabledCom:
 		ParentID: =>CommentableItem.nocomments
 		Name: Disabled
