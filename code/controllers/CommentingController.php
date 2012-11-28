@@ -369,6 +369,9 @@ class CommentingController extends Controller {
 
 		$comment->Moderated = ($moderated) ? false : true;
 		$comment->write();
+
+		// extend hook to allow extensions. Also see onBeforePostComment
+		$this->extend('onAfterPostComment', $comment);	
 		
 		// clear the users comment since it passed validation
 		Cookie::set('CommentsForm_Comment', false);
