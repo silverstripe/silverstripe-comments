@@ -1,0 +1,49 @@
+nl:
+  Comment:
+    ALLOWCOMMENTS: 'Reacties toestaan'
+    COMMENT: Reactie
+    COMMENTBY: 'Reactie door ''%s'''
+    ISSPAM: 'Spam?'
+    MODERATED: 'Gemodereerd?'
+    NAME: 'Auteur'
+    ON: op
+    PLURALNAME: Reacties
+    SINGULARNAME: Reactie
+  CommentAdmin:
+    Moderated: Gemodereerd
+    NeedsModeration: 'Wacht op moderatie'
+    MENUTITLE: Reacties
+  CommentInterface:
+    POST: Plaats reactie
+    YOURNAME: 'Naam'
+  CommentingController:
+    COMMENTS: Reacties
+    EMAILADDRESS: 'E-mail adres (wordt niet gepubliceerd)'
+    PERMISSIONFAILURE: 'Je mag geen reacties plaatsen op deze pagina. Log a.u.b. eerst in en controleer je gebruikersrechten.'
+    RSSTITLE: 'Reacties RSS feed'
+    WEBSITEURL: 'Website URL'
+  CommentsAdmin:
+    NeedsModeration: 'Wacht op moderatie'
+  CommentsInterface.ss:
+    COMMENTLOGINERROR: 'Je moet ingelogd zijn om reacties te kunnen plaatsen'
+    COMMENTPERMISSIONERROR: 'en controleer je gebruikersrechten'
+    COMMENTPOSTLOGIN: 'Inloggen'
+    COMMENTS: Reacties
+    COMMENTSDISABLED: 'Reacties plaatsen is uitgeschakeld'
+    LOGINTOPOSTCOMMENT: 'Log in om een reactie te plaatsen'
+    NEXT: volgende
+    NOCOMMENTSYET: 'Er zijn nog geen reacties.'
+    POSTCOM: 'Plaats reactie'
+    PREV: vorige
+    RSSFEEDALLCOMMENTS: 'RSS feed voor alle reacties'
+    RSSFEEDCOMMENTS: 'RSS feed voor reacties op deze pagina'
+  CommentsInterface_pendingcomment.ss:
+    AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
+  CommentsInterface_singlecomment.ss:
+    APPROVE: 'reactie goedkeuren'
+    ISNTSPAM: 'deze reactie is geen spam'
+    ISSPAM: 'deze reactie is spam'
+    PBY: 'Geplaatst door'
+    REMCOM: 'verwijder deze reactie'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Verwijder alle reacties op deze pagina'
