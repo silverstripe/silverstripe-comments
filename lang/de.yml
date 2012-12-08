@@ -1,0 +1,49 @@
+de:
+  Comment:
+    ALLOWCOMMENTS: 'Kommentare Erlauben'
+    COMMENT: Kommentar
+    COMMENTBY: 'Kommentar von ''%s'''
+    ISSPAM: 'Spam?'
+    MODERATED: 'Moderiert?'
+    NAME: 'Autor Name'
+    ON: on
+    PLURALNAME: Kommentare
+    SINGULARNAME: Kommentar
+  CommentAdmin:
+    Moderated: Moderiert
+    NeedsModeration: 'Benötigt Moderation'
+    MENUTITLE: Kommentare
+  CommentInterface:
+    POST: Absenden
+    YOURNAME: 'Name'
+  CommentingController:
+    COMMENTS: Kommentare
+    EMAILADDRESS: 'Email Adresse (wird nicht angezeigt)'
+    PERMISSIONFAILURE: 'Sie sind nicht berechtigt diese Seite zu kommentieren, bitte stellen Sie sicher das Sie eingeloggt sind und die nötige Berechtigung besitzen.'
+    RSSTITLE: 'Kommentare RSS Feed'
+    WEBSITEURL: 'Website URL'
+  CommentsAdmin:
+    NeedsModeration: 'Benötigt Moderation'
+  CommentsInterface.ss:
+    COMMENTLOGINERROR: 'Sie können diese Seite nur kommentieren wenn Sie eingeloggt sind'
+    COMMENTPERMISSIONERROR: 'und die nötige Berechtigung besitzen'
+    COMMENTPOSTLOGIN: 'Login'
+    COMMENTS: Kommentare
+    COMMENTSDISABLED: 'Kommentare sind deaktiviert'
+    LOGINTOPOSTCOMMENT: 'Login um zu kommentieren'
+    NEXT: weiter
+    NOCOMMENTSYET: 'Noch keine Kommentare auf diese Seite.'
+    POSTCOM: 'Kommentieren'
+    PREV: zurück
+    RSSFEEDALLCOMMENTS: 'RSS feed für alle Kommentare'
+    RSSFEEDCOMMENTS: 'RSS feed für Kommentare auf dieser Seite'
+  CommentsInterface_pendingcomment.ss:
+    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und erwartet Moderation.'
+  CommentsInterface_singlecomment.ss:
+    APPROVE: 'Dieses Kommetar akzeptieren'
+    ISNTSPAM: 'Dieses Kommentar ist kein Spam'
+    ISSPAM: 'Dieses Kommentar ist Spam'
+    PBY: 'Geschriebn von'
+    REMCOM: 'Dieses Kommentar entfernen'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite entfernen'
