@@ -41,8 +41,8 @@ de:
     AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
   CommentsInterface_singlecomment.ss:
     APPROVE: 'Diesen Kommetar akzeptieren'
-    ISNTSPAM: 'Diesen Kommentar ist kein Spam'
-    ISSPAM: 'Diesen Kommentar ist Spam'
+    ISNTSPAM: 'Dieser Kommentar ist kein Spam'
+    ISSPAM: 'Dieser Kommentar ist Spam'
     PBY: 'Geschrieben von'
     REMCOM: 'Diesen Kommentar entfernen'
   PageCommentInterface:
