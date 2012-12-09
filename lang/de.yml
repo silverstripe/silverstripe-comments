@@ -18,14 +18,14 @@ de:
     YOURNAME: 'Name'
   CommentingController:
     COMMENTS: Kommentare
-    EMAILADDRESS: 'Email Adresse (wird nicht angezeigt)'
-    PERMISSIONFAILURE: 'Sie sind nicht berechtigt diese Seite zu kommentieren, bitte stellen Sie sicher das Sie eingeloggt sind und die nötige Berechtigung besitzen.'
+    EMAILADDRESS: 'E-Mail Adresse (wird nicht angezeigt)'
+    PERMISSIONFAILURE: 'Sie sind nicht berechtigt diese Seite zu kommentieren. Bitte stellen Sie sicher das Sie eingeloggt sind und die nötige Berechtigung besitzen.'
     RSSTITLE: 'Kommentare RSS Feed'
     WEBSITEURL: 'Website URL'
   CommentsAdmin:
     NeedsModeration: 'Benötigt Moderation'
   CommentsInterface.ss:
-    COMMENTLOGINERROR: 'Sie können diese Seite nur kommentieren wenn Sie eingeloggt sind'
+    COMMENTLOGINERROR: 'Sie können diese Seite nur kommentieren, wenn Sie eingeloggt sind'
     COMMENTPERMISSIONERROR: 'und die nötige Berechtigung besitzen'
     COMMENTPOSTLOGIN: 'Login'
     COMMENTS: Kommentare
@@ -35,15 +35,15 @@ de:
     NOCOMMENTSYET: 'Noch keine Kommentare auf diese Seite.'
     POSTCOM: 'Kommentieren'
     PREV: zurück
-    RSSFEEDALLCOMMENTS: 'RSS feed für alle Kommentare'
-    RSSFEEDCOMMENTS: 'RSS feed für Kommentare auf dieser Seite'
+    RSSFEEDALLCOMMENTS: 'RSS Feed für alle Kommentare'
+    RSSFEEDCOMMENTS: 'RSS Feed für Kommentare auf dieser Seite'
   CommentsInterface_pendingcomment.ss:
-    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und erwartet Moderation.'
+    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
   CommentsInterface_singlecomment.ss:
-    APPROVE: 'Dieses Kommetar akzeptieren'
-    ISNTSPAM: 'Dieses Kommentar ist kein Spam'
-    ISSPAM: 'Dieses Kommentar ist Spam'
-    PBY: 'Geschriebn von'
-    REMCOM: 'Dieses Kommentar entfernen'
+    APPROVE: 'Diesen Kommetar akzeptieren'
+    ISNTSPAM: 'Dieser Kommentar ist kein Spam'
+    ISSPAM: 'Dieser Kommentar ist Spam'
+    PBY: 'Geschrieben von'
+    REMCOM: 'Diesen Kommentar entfernen'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite entfernen'
