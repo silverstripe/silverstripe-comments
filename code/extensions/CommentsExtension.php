@@ -123,6 +123,7 @@ class CommentsExtension extends DataExtension {
 			'RssLink'					=> "CommentingController/rss",
 			'RssLinkPage'				=> "CommentingController/rss/". $this->ownerBaseClass . '/'.$this->owner->ID,
 			'CommentsEnabled' 			=> $enabled,
+			'Parent'					=> $this->owner,
 			'AddCommentForm'			=> $form,
 			'ModeratedSubmitted'		=> $moderatedSubmitted,
 			'Comments'					=> $this->Comments()
