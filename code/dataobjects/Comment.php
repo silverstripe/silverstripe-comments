@@ -22,7 +22,7 @@ class Comment extends DataObject {
 		"Author"		=> "Member"
 	);
 	
-	public static $default_sort = "Created DESC";
+	public static $default_sort = '"Created" DESC';
 	
 	public static $has_many = array();
 	

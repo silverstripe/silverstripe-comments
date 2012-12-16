@@ -56,19 +56,20 @@ class CommentsExtension extends DataExtension {
 
 		$order = Commenting::get_config_value($this->ownerBaseClass, 'order_comments_by');
 
-		// has moderation been turned on if it has amend the sql query
-		$moderation = '';
+		$list = Comment::get()->filter(array(
+			'ParentID' => $this->owner->ID,
+			'BaseClass' => $this->ownerBaseClass
+		))->sort($order);
+
+		// has moderation been turned on if it has amend the DataList
 		if (Commenting::get_config_value($this->ownerBaseClass, 'require_moderation')) {
 		
-			$member = new Member();
-			if ($member->currentUser() == false) {
-				$moderation = 'Moderated = 1 AND ';
+			if (Member::currentUser() == false) {
+				$list = $list->filter('Moderated', 1);
 			}
 		}
 
-		$list = new PaginatedList(Comment::get()->where(sprintf(
-			$moderation . "ParentID = '%s' AND BaseClass = '%s'", $this->owner->ID, $this->ownerBaseClass
-		))->sort($order));
+		$list = new PaginatedList($list);
 
 		$list->setPageLength(Commenting::get_config_value(
 			$this->ownerBaseClass, 'comments_per_page'
