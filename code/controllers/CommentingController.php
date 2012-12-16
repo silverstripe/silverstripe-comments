@@ -79,38 +79,36 @@ class CommentingController extends Controller {
 		$class = $request->param('ID');
 		$id = $request->param('OtherID');
 
-		if(isset($_GET['pageid'])) {
-			$id =  Convert::raw2sql($_GET['pageid']);
+		$comments = Comment::get()->filter(array(
+			'Moderated' => 1,
+			'IsSpam' => 0,
+		));
 
-			$comments = Comment::get()->where(sprintf(
-				"BaseClass = 'SiteTree' AND ParentID = '%s' AND Moderated = 1 AND IsSpam = 0", $id
+		if($request->getVar('pageid')) {
+			$comments = $comments->filter(array(
+				'BaseClass' => 'SiteTree',
+				'ParentID' => $request->getVar('pageid'),
 			));
 
 			$link = $this->Link('rss', 'SiteTree', $id);
 
-		} else if($class && $id) {
+		} elseif($class && $id) {
 			if(Commenting::has_commenting($class)) {
-				$comments = Comment::get()->where(sprintf(
-					"BaseClass = '%s' AND ParentID = '%s' AND Moderated = 1 AND IsSpam = 0", 
-					Convert::raw2sql($class),
-					Convert::raw2sql($id)
+				$comments = $comments->filter(array(
+					'BaseClass' => $class,
+					'ParentID' => $id,
 				));
 
 				$link = $this->Link('rss', Convert::raw2xml($class), (int) $id);
 			} else {
 				return $this->httpError(404);
 			}
-		} else if($class) {
+		} elseif($class) {
 			if(Commenting::has_commenting($class)) {
-				$comments = Comment::get()->where(sprintf(
-					"BaseClass = '%s' AND Moderated = 1 AND IsSpam = 0", 
-					Convert::raw2sql($class)
-				));
+				$comments = $comments->filter('BaseClass', $class);
 			} else {
 				return $this->httpError(404);
 			}
-		} else {
-			$comments = Comment::get()->where("Moderated = 1 AND IsSpam = 0");
 		}
 
 		$title = _t('CommentingController.RSSTITLE', "Comments RSS Feed");
