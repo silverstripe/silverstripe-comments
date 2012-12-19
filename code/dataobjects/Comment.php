@@ -151,6 +151,10 @@ class Comment extends DataObject {
 	 * @return string
 	 */
 	public function getParentClassName() {
+		$default = 'SiteTree';
+		if(!$this->BaseClass) {
+			return $default;
+		}
 		return $this->BaseClass;
 	}
 	
