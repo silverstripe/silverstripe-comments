@@ -321,8 +321,8 @@ class Comment extends DataObject {
 	 */
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$parentClass = $this->getParentClassName();
-		$parentIDField = new DropDownField('ParentID', 'Parent', $parentClass::get()->map());
+		$parent = $this->getParent()->ID;
+		$parentIDField = new HiddenField('ParentID', 'Parent', $parent);
 		$authorIDField = new HiddenField('AuthorID');
 		$baseClassField = new HiddenField('BaseClass');
 		$fields->replaceField('ParentID', $parentIDField);
