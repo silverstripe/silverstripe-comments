@@ -52,8 +52,6 @@ class CommentsExtension extends DataExtension {
 	 * @return PaginatedList
 	 */
 	public function Comments() {
-		$controller = Controller::curr();
-
 		$order = Commenting::get_config_value($this->ownerBaseClass, 'order_comments_by');
 
 		$list = Comment::get()->filter(array(
@@ -61,11 +59,15 @@ class CommentsExtension extends DataExtension {
 			'BaseClass' => $this->ownerBaseClass
 		))->sort($order);
 
-		// has moderation been turned on if it has amend the DataList
-		if (Commenting::get_config_value($this->ownerBaseClass, 'require_moderation')) {
-		
-			if (Member::currentUser() == false) {
+		// Filter content for unauthorised users
+		if (!($member = Member::currentUser()) || !Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin')) {
+			
+			// Filter unmoderated comments for non-administrators if moderation is enabled
+			if (Commenting::get_config_value($this->ownerBaseClass, 'require_moderation')) {
 				$list = $list->filter('Moderated', 1);
+			} else {
+				// Filter spam comments for non-administrators if auto-moderted
+				$list = $list->filter('IsSpam', 0);
 			}
 		}
 
