@@ -1,0 +1,49 @@
+lt:
+  Comment:
+    ALLOWCOMMENTS: 'Įgalinti komentarus'
+    COMMENT: Komentaras
+    COMMENTBY: 'Komentarą parašė ''%s'''
+    ISSPAM: 'Šlamštas?'
+    MODERATED: 'Moderated?'
+    NAME: 'Autoriaus Vardas'
+    ON: puslapyje
+    PLURALNAME: Komentarai
+    SINGULARNAME: Komentaras
+  CommentAdmin:
+    Moderated: Patvirtinti
+    NeedsModeration: 'Laukia patvirtinimo'
+    MENUTITLE: Komentarai
+  CommentInterface:
+    POST: Skelbti
+    YOURNAME: 'Jūsų vardas'
+  CommentingController:
+    COMMENTS: Komentarai
+    EMAILADDRESS: 'Jūsų el.pašto adresas (nebus skelbiamas)'
+    PERMISSIONFAILURE: 'Jūs negalite skelbti komentarų šiame puslapyje. Įsitikinkite, kad esate prisijungęs ir turite atitinkamą teisių lygį.'
+    RSSTITLE: 'Komentarų RSS srautas'
+    WEBSITEURL: 'Jūsų svetainės nuoroda'
+  CommentsAdmin:
+    NeedsModeration: 'Laukia patvirtinimo'
+  CommentsInterface.ss:
+    COMMENTLOGINERROR: 'Negalite rašyti komentarų neprisijungęs'
+    COMMENTPERMISSIONERROR: 'ir neturėdamas atitinkamo teisių lygio'
+    COMMENTPOSTLOGIN: 'Prisijungti čia'
+    COMMENTS: Komentarai
+    COMMENTSDISABLED: 'Komentarų skelbimas išjungtas'
+    LOGINTOPOSTCOMMENT: 'Prisijunkite, norėdami parašyti komentarą'
+    NEXT: sekantys
+    NOCOMMENTSYET: 'Šio puslapio kol kas niekas nepakomentavo.'
+    POSTCOM: 'Parašykite komentarą'
+    PREV: ankstesni
+    RSSFEEDALLCOMMENTS: 'Visų komentarų RSS'
+    RSSFEEDCOMMENTS: 'Šio puslapio komentarų RSS'
+  CommentsInterface_pendingcomment.ss:
+    AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
+  CommentsInterface_singlecomment.ss:
+    APPROVE: 'patvirtinti šį komentarą'
+    ISNTSPAM: 'šis komentaras nėra šlamštas'
+    ISSPAM: 'šis komentaras yra šlamštas'
+    PBY: Parašė
+    REMCOM: 'ištrinti šį komentarą'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Ištrinti visus komentarus šiame puslapyje'
