@@ -151,7 +151,7 @@ class CommentingController extends Controller {
 			$comment->Moderated = true;
 			$comment->write();
 				
-			return ($this->request->isAjax()) ? true : $this->redirectBack();
+			return ($this->request->isAjax()) ? $comment->renderWith('CommentsInterface_singlecomment') : $this->redirectBack();
 		}
 
 		return $this->httpError(404);
@@ -172,7 +172,7 @@ class CommentingController extends Controller {
 			$comment->Moderated = true;
 			$comment->write();
 				
-			return ($this->request->isAjax()) ? true : $this->redirectBack();
+			return ($this->request->isAjax()) ? $comment->renderWith('CommentsInterface_singlecomment') : $this->redirectBack();
 		}
 
 		return $this->httpError(404);
@@ -193,7 +193,7 @@ class CommentingController extends Controller {
 			$comment->Moderated = true;
 			$comment->write();
 				
-			return ($this->request->isAjax()) ? true : $this->redirectBack();
+			return ($this->request->isAjax()) ? $comment->renderWith('CommentsInterface_singlecomment') : $this->redirectBack();
 		}
 
 		return $this->httpError(404);
@@ -376,12 +376,10 @@ class CommentingController extends Controller {
 		
 		if(Director::is_ajax()) {
 			if(!$comment->Moderated) {
-				echo $comment->renderWith('CommentInterface_pendingcomment');
+				return $comment->renderWith('CommentsInterface_pendingcomment');
 			} else {
-				echo $comment->renderWith('CommentInterface_singlecomment');
+				return $comment->renderWith('CommentsInterface_singlecomment');
 			}
-			
-			return true;
 		}
 
 		$holder = Commenting::get_config_value($comment->BaseClass, 'comments_holder_id');
