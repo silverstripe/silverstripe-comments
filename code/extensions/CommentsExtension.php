@@ -97,10 +97,12 @@ class CommentsExtension extends DataExtension {
 	 * @see docs/en/Extending
 	 */
 	public function CommentsForm() {
-		Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/lib/jquery.form.js');
-		Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/jquery.validate.pack.js');
-		Requirements::javascript('comments/javascript/CommentsInterface.js');
-
+		if (Commenting::has_commenting($this->owner->ClassName) && Commenting::get_config_value($this->owner->ClassName, 'use_ajax_commenting')) {
+			Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/lib/jquery.form.js');
+			Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/jquery.validate.pack.js');
+			Requirements::javascript('comments/javascript/CommentsInterface.js');
+		}
+		
 		$interface = new SSViewer('CommentsInterface');
 		
 		// detect whether we comments are enabled. By default if $CommentsForm is included
