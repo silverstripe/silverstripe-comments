@@ -52,9 +52,10 @@
 						</p>
 					</div>
 				<% end_if %>
-			<% else %>
-				<p class="no-comments-yet"><% _t('NOCOMMENTSYET','No one has commented on this page yet.') %></p>
 			<% end_if %>
+
+			<p class="no-comments-yet"<% if $Comments.Count %> style='display: none' <% end_if %> ><% _t('NOCOMMENTSYET','No one has commented on this page yet.') %></p>
+
 		</div>
 		
 		<% if DeleteAllLink %>

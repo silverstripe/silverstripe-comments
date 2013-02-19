@@ -10,11 +10,6 @@
 			form = $('#Form_CommentsForm'),
 			error = $('#Form_CommentsForm_error', form).hide()
 
-		// create the not comments message if it doesn't exist yet, but hide it (incase we need it)
-		if(!noCommentsYet.length){
-			noCommentsYet = $('<p class="no-comments-yet">No one has commented on this page yet.</p>').appendTo(commentsHolder).hide();
-		}
-
 
 		/**
 		 * Validate
