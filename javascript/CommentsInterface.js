@@ -159,6 +159,9 @@
 					commentsList.hide().html(html.find('.comments-list:first').html()).fadeIn();
 					pagination.hide().html(html.find('.comments-pagination:first').html()).fadeIn();
 					commentsList.removeClass('loading');
+					$('html, body').animate({
+	            		scrollTop: commentsList.offset().top - 30
+	        		}, 200);
 				},
 				failure: function(html) {
 					alert('Error loading comments');
