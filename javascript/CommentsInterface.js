@@ -22,6 +22,12 @@
 			}, 200);
 			},
 
+			showErrors: function(errorMap, errorList) {
+			this.defaultShowErrors();
+			// hack to add the extra classes we need to the validation message elements
+			form.find('span.error').addClass('message required');
+		},
+
 			errorElement: "span",
 			errorClass: "error",
 
@@ -42,17 +48,17 @@
 			},
 			messages: {
 				Name : {
-					required : 'Plaese enter your name'
+					required : form.find('[name="Name"]').data('message-required')
 				},
 				Email : {
-					required : 'Plaese enter your email address',
-					email : 'Plaese enter a valid email address'
+					required : form.find('[name="Email"]').data('message-required'),
+					email : form.find('[name="Email"]').data('message-email')
 				},
 				Comment: {
-					required : 'Plaese enter your comment'
+					required : form.find('[name="Comment"]').data('message-required')
 				},
 				URL: {
-					url : 'Please enter a valid URL'
+					url : form.find('[name="Comment"]').data('message-url')
 				}
 			}
 		});
@@ -64,12 +70,11 @@
 		 */
 		form.submit(function (e) {
 
-			// trigger validation, if there are errors add the error classes to the elements
+			// trigger validation
 			if(!form.validate().valid()){
-				form.find('span.error').addClass('message required');
 				return false;
 			}
-		
+
 			// submit the form
 			$(this).ajaxSubmit(function(response) {
 				noCommentsYet.hide();
@@ -89,10 +94,9 @@
 				}
 
 				commentsList.prepend(newComment.fadeIn());
-				
-				$(this).resetForm();
-				
 			});
+
+			$(this).resetForm();
 			
 			return false;
 		});
