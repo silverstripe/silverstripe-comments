@@ -152,8 +152,8 @@
 				cache: false,
 				success: function(html){
 					html = $(html);
-					commentsList.hide().html(html.find('.comments-list:first')).fadeIn();
-					pagination.hide().html(html.find('.comments-pagination:first')).fadeIn();
+					commentsList.hide().html(html.find('.comments-list:first').html()).fadeIn();
+					pagination.hide().html(html.find('.comments-pagination:first').html()).fadeIn();
 					commentsList.removeClass('loading');
 				},
 				failure: function(html) {
