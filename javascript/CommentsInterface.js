@@ -3,12 +3,13 @@
  */
 (function($) {
 	$(document).ready(function () {
-		
-		var commentsHolder = $('.comments-holder'),
+
+		var container = $('.comments-holder-container'),
+			commentsHolder = $('.comments-holder'),
 			commentsList = $('.comments-list', commentsHolder),
+			pagination = $('.comments-pagination'),
 			noCommentsYet = $('.no-comments-yet', commentsHolder),
-			form = $('#Form_CommentsForm'),
-			error = $('#Form_CommentsForm_error', form).hide()
+			form = $('form', container);
 
 
 		/**
@@ -104,7 +105,6 @@
 		$(".action-links a", commentsList).live('click', function(e) {
 			var link = $(this);
 			var comment = link.parents('.comment:first');
-			var commentsList = comment.parents('ul:first');
 			
 			$.ajax({
 				url: $(this).attr('href'),
@@ -130,17 +130,7 @@
 						});
 					}
 					else if(link.hasClass('spam')) {
-						if(html) {
-							comment.html(html).addClass('spam').hide().fadeIn();
-						} else {
-							comment.fadeOut(1000, function() {				// Fade out the comment
-								comment.remove();							// remove the comment
-							
-								if(comments.children().length == 0) {
-									noCommentsYet.show();
-								}
-							});
-						}
+						comment.html(html).addClass('spam').hide().fadeIn();
 					}
 				},
 				failure: function(html) {
@@ -149,6 +139,28 @@
 			});
 			
 			e.preventDefault();
-		})
+		});
+
+
+		/**
+		 * Ajax pagination
+		 */
+		pagination.find('a').live('click', function(){
+			commentsList.addClass('loading');
+			$.ajax({
+				url: $(this).attr('href'),
+				cache: false,
+				success: function(html){
+					html = $(html);
+					commentsList.hide().html(html.find('.comments-list:first')).fadeIn();
+					pagination.hide().html(html.find('.comments-pagination:first')).fadeIn();
+					commentsList.removeClass('loading');
+				},
+				failure: function(html) {
+					alert('Error loading comments');
+				}
+			});
+			return false;
+		});
 	});
 })(jQuery);
