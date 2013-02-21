@@ -31,7 +31,9 @@ class Commenting {
 		'comments_per_page' => 10,
 		'comments_holder_id' => "comments-holder", // id for the comments holder
 		'comment_permalink_prefix' => "comment-", // id prefix for each comment. If needed make this different
-		'require_moderation' => false
+		'require_moderation' => false,
+		'html_allowed' => false, // allow for sanitized HTML in comments
+		'html_allowed_elements' => array('p', 'br', 'a', 'img', 'i', 'b')
 	);
 	
 	/**

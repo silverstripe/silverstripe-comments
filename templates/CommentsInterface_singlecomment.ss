@@ -1,5 +1,9 @@
 <div class="comment" id="$Permalink">
-	<p>$Comment.XML</p>
+	<% if AllowHtml %>
+		$Comment.RAW
+	<% else %>
+		<p>$Comment.XML</p>
+	<% end_if %>
 </div>
 
 <p class="info">
