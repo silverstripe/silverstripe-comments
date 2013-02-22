@@ -30,6 +30,7 @@
 
 			errorElement: "span",
 			errorClass: "error",
+			ignore: '.hidden',
 
 			rules: {
 				Name : {
@@ -84,8 +85,9 @@
 					commentsList = $('.comments-list', commentsHolder);
 				}
 
+				var evenOdd = (commentsList.children('.first').removeClass('first').hasClass('even')) ? 'odd' : 'even';
 				var newComment = $('<li />')
-					.addClass('even first')
+					.addClass('comment first ' + evenOdd)
 					.html(response)
 					.hide();
 
