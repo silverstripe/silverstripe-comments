@@ -144,6 +144,19 @@ class Comment extends DataObject {
 
 		return ($parent->Title) ? $parent->Title : $parent->ClassName . " #" . $parent->ID;
 	}
+
+	/**
+	 * Comment-parent classnames obviousely vary, return the parent classname
+	 *
+	 * @return string
+	 */
+	public function getParentClassName() {
+		$default = 'SiteTree';
+		if(!$this->BaseClass) {
+			return $default;
+		}
+		return $this->BaseClass;
+	}
 	
 	/**
 	 * @todo needs to compare to the new {@link Commenting} configuration API
@@ -301,5 +314,20 @@ class Comment extends DataObject {
 		}
 
 		return $title;
+	}
+
+	/*
+	 * Modify the default fields shown to the user
+	 */
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+		$parent = $this->getParent()->ID;
+		$parentIDField = new HiddenField('ParentID', 'Parent', $parent);
+		$authorIDField = new HiddenField('AuthorID');
+		$baseClassField = new HiddenField('BaseClass');
+		$fields->replaceField('ParentID', $parentIDField);
+		$fields->replaceField('AuthorID', $authorIDField);
+		$fields->replaceField('BaseClass', $baseClassField);
+		return $fields;
 	}
 }

@@ -52,14 +52,14 @@ class CommentAdmin extends LeftAndMain {
 		$needs = new GridField(
 			'Comments', 
 			_t('CommentsAdmin.NeedsModeration', 'Needs Moderation'), 
-			Comment::get()->where('Moderated = 0'), 
+			Comment::get()->filter('Moderated',0),
 			$commentsConfig
 		);
 
 		$moderated = new GridField(
 			'CommentsModerated', 
 			_t('CommentsAdmin.CommentsModerated'),
-			Comment::get()->where('Moderated = 1'),
+			Comment::get()->filter('Moderated',1),
 			$commentsConfig
 		);
 
