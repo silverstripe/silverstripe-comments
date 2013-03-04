@@ -13,7 +13,8 @@ class CommentingController extends Controller {
 		'approve',
 		'rss',
 		'CommentsForm',
-		'doPostComment'
+		'doPostComment',
+		'doPreviewComment'
 	);
 
 	private $baseClass = "";
@@ -239,7 +240,7 @@ class CommentingController extends Controller {
 	 * @return Form
 	 */
 	public function CommentsForm() {
-		
+		$usePreview = Commenting::get_config_value($this->getBaseClass(), 'use_preview');
 		$member = Member::currentUser();
 		$fields = new FieldList(
 			TextField::create("Name", _t('CommentInterface.YOURNAME', 'Your name'))
@@ -263,10 +264,28 @@ class CommentingController extends Controller {
 			HiddenField::create("BaseClass")
 		);
 
+		// Preview formatted comment. Makes most sense when shortcodes or
+		// limited HTML is allowed. Populated by JS/Ajax.
+		if($usePreview) {
+			$fields->insertAfter(
+				ReadonlyField::create('PreviewComment', _t('CommentInterface.PREVIEWLABEL', 'Preview'))
+					->setAttribute('style', 'display: none'), // enable through JS
+				'Comment'
+			);
+		}
+	
+
 		// save actions
 		$actions = new FieldList(
 			new FormAction("doPostComment", _t('CommentInterface.POST', 'Post'))
 		);
+		if($usePreview) {
+			$actions->push(
+				FormAction::create('doPreviewComment', _t('CommentInterface.PREVIEW', 'Preview'))
+					->addExtraClass('action-minor')
+					->setAttribute('style', 'display: none') // enable through JS
+			);
+		}
 
 		// required fields for server side
 		$required = new RequiredFields(array(
@@ -340,6 +359,8 @@ class CommentingController extends Controller {
 	 */
 	public function doPostComment($data, $form) {
 		$class = (isset($data['BaseClass'])) ? $data['BaseClass'] : $this->getBaseClass();
+		$usePreview = Commenting::get_config_value($class, 'use_preview');
+		$isPreview = ($usePreview && isset($data['preview']) && $data['preview']);
 		
 		// if no class then we cannot work out what controller or model they
 		// are on so throw an error
@@ -378,7 +399,13 @@ class CommentingController extends Controller {
 		$form->saveInto($comment);
 
 		$comment->Moderated = ($moderated) ? false : true;
-		$comment->write();
+
+		// Save into DB, or call pre-save hooks to give accurate preview
+		if($isPreview) {
+			$comment->onBeforeWrite();	
+		} else {
+			$comment->write();	
+		}
 
 		// extend hook to allow extensions. Also see onBeforePostComment
 		$this->extend('onAfterPostComment', $comment);	
@@ -400,5 +427,10 @@ class CommentingController extends Controller {
 		$url = (isset($data['ReturnURL'])) ? $data['ReturnURL'] : false;
 			
 		return ($url) ? $this->redirect($url .'#'. $hash) : $this->redirectBack();
+	}
+
+	public function doPreviewComment($data, $form) {
+		$data['IsPreview'] = 1;
+		return $this->doPostComment($data, $form);
 	}
 }

@@ -9,8 +9,14 @@
 			commentsList = $('.comments-list', commentsHolder),
 			pagination = $('.comments-pagination'),
 			noCommentsYet = $('.no-comments-yet', commentsHolder),
-			form = $('form', container);
+			form = $('form', container),
+			previewEl = form.find('#PreviewComment');
 
+		/**
+		 * Init
+		 */
+		previewEl.hide();
+		$(':submit[name=action_doPreviewComment]').show();
 
 		/**
 		 * Validate
@@ -70,7 +76,6 @@
 		 * this inclues the spam and approve links
 		 */
 		form.submit(function (e) {
-
 			// trigger validation
 			if(!form.validate().valid()){
 				return false;
@@ -103,6 +108,36 @@
 			return false;
 		});
 
+		/**
+		 * Preview comment by fetching it from the server via ajax.
+		 */
+		$(':submit[name=action_doPreviewComment]', form).click(function(e) {
+			e.preventDefault();
+
+			if(!form.validate().valid()) return false;
+
+			previewEl.show().addClass('loading').find('.middleColumn').html(' ');
+			form.ajaxSubmit({
+				success: function(response) {
+					var responseEl = $(response);
+					if(responseEl.is('form')) {
+						// Validation failed, renders form instead of single comment
+						form.replaceWith(responseEl);
+					} else {
+						// Default behaviour
+						previewEl.removeClass('loading').find('.middleColumn').html(responseEl);
+					}
+				},
+				data: {'action_doPreviewComment': 1}
+			});
+		});
+
+		/**
+		 * Hide outdated preview on form changes
+		 */
+		$(':input', form).on('change keydown', function() {
+			previewEl.hide();
+		});
 		
 		/**
 		 * Clicking one of the metalinks performs the operation via ajax
