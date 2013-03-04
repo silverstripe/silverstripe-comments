@@ -33,7 +33,8 @@ class Commenting {
 		'comment_permalink_prefix' => "comment-", // id prefix for each comment. If needed make this different
 		'require_moderation' => false,
 		'html_allowed' => false, // allow for sanitized HTML in comments
-		'html_allowed_elements' => array('p', 'br', 'a', 'img', 'i', 'b')
+		'html_allowed_elements' => array('p', 'br', 'a', 'img', 'i', 'b'),
+		'use_preview' => false, // preview formatted comment (when allowing HTML)
 	);
 	
 	/**
