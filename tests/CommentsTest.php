@@ -155,6 +155,73 @@ class CommentsTest extends FunctionalTest {
 			$this->assertEquals($comment->CommenterURL, $protocol . $url, $protocol . ':// is a valid protocol');
 		}
 	}
+
+	public function testSanitizesWithAllowHtml() {
+		if(!class_exists('HTMLPurifier')) {
+			$this->markTestSkipped('HTMLPurifier class not found');
+			return;
+		}
+
+		$origAllowed = Commenting::get_config_value('CommentableItem','html_allowed');
+		
+		// Without HTML allowed
+		$comment1 = new Comment();
+		$comment1->BaseClass = 'CommentableItem';
+		$comment1->Comment = '<p><script>alert("w00t")</script>my comment</p>';
+		$comment1->write();
+		$this->assertEquals(
+			'<p><script>alert("w00t")</script>my comment</p>',
+			$comment1->Comment,
+			'Does not remove HTML tags with html_allowed=false, ' .
+			'which is correct behaviour because the HTML will be escaped'
+		);
+
+		// With HTML allowed
+		Commenting::set_config_value('CommentableItem','html_allowed', true);
+		$comment2 = new Comment();
+		$comment2->BaseClass = 'CommentableItem';
+		$comment2->Comment = '<p><script>alert("w00t")</script>my comment</p>';
+		$comment2->write();
+		$this->assertEquals(
+			'<p>my comment</p>',
+			$comment2->Comment,
+			'Removes HTML tags which are not on the whitelist'
+		);
+
+		Commenting::set_config_value('CommentableItem','html_allowed', $origAllowed);
+	}
+
+	public function testDefaultTemplateRendersHtmlWithAllowHtml() {
+		if(!class_exists('HTMLPurifier')) {
+			$this->markTestSkipped('HTMLPurifier class not found');
+		}
+
+		$origAllowed = Commenting::get_config_value('CommentableItem', 'html_allowed');
+		$item = new CommentableItem();
+		$item->write();
+
+		// Without HTML allowed
+		$comment = new Comment();
+		$comment->Comment = '<p>my comment</p>';
+		$comment->ParentID = $item->ID;
+		$comment->BaseClass = 'CommentableItem';
+		$comment->write();
+		
+		$html = $item->customise(array('CommentsEnabled' => true))->renderWith('CommentsInterface');
+		$this->assertContains(
+			'&lt;p&gt;my comment&lt;/p&gt;',
+			$html
+		);
+
+		Commenting::set_config_value('CommentableItem','html_allowed', true);
+		$html = $item->customise(array('CommentsEnabled' => true))->renderWith('CommentsInterface');
+		$this->assertContains(
+			'<p>my comment</p>',
+			$html
+		);
+
+		Commenting::set_config_value('CommentableItem','html_allowed', $origAllowed);
+	}
 }
 
 

@@ -9,7 +9,7 @@ class Comment extends DataObject {
 	
 	public static $db = array(
 		"Name"			=> "Varchar(200)",
-		"Comment"		=> "Text",
+		"Comment"		=> "Text", // can contain sanitized HTML with 'html_allowed=true' config
 		"Email"			=> "Varchar(200)",
 		"URL"			=> "Varchar(255)",
 		"BaseClass"		=> "Varchar(200)",
@@ -55,7 +55,14 @@ class Comment extends DataObject {
 		'IsSpam' => 'Is Spam'
 	);
 
+	public function onBeforeWrite() {
+		parent::onBeforeWrite();
 
+		// Sanitize HTML, because its expected to be passed to the template unescaped later
+		if($this->getAllowHtml()) {
+			$this->Comment = $this->purifyHtml($this->Comment);
+		}
+	}
 	
 	/**
 	 * Migrates the old {@link PageComment} objects to {@link Comment}
@@ -144,7 +151,7 @@ class Comment extends DataObject {
 
 		return ($parent->Title) ? $parent->Title : $parent->ClassName . " #" . $parent->ID;
 	}
-
+	
 	/**
 	 * Comment-parent classnames obviousely vary, return the parent classname
 	 *
@@ -329,5 +336,35 @@ class Comment extends DataObject {
 		$fields->replaceField('AuthorID', $authorIDField);
 		$fields->replaceField('BaseClass', $baseClassField);
 		return $fields;
+	}
+
+	public function getAllowHtml() {
+		return (
+			Commenting::has_commenting($this->BaseClass)
+			&& Commenting::get_config_value($this->BaseClass, 'html_allowed')
+		);	
+	}
+
+	/**
+	 * @param  String $dirtyHtml
+	 * @return String
+	 */
+	public function purifyHtml($dirtyHtml) {
+		$purifier = $this->getHtmlPurifierService();
+		return $purifier->purify($dirtyHtml);
+	}
+
+	/**
+	 * @return HTMLPurifier (or anything with a "purify()" method)
+	 */
+	public function getHtmlPurifierService() {
+		$config = HTMLPurifier_Config::createDefault();
+		$config->set('HTML.AllowedElements', 
+			Commenting::get_config_value($this->BaseClass, 'html_allowed_elements')
+		);
+		$config->set('AutoFormat.AutoParagraph', true);
+		$config->set('AutoFormat.Linkify', true);
+		$config->set('URI.DisableExternalResources', true);
+		return new HTMLPurifier($config);
 	}
 }
