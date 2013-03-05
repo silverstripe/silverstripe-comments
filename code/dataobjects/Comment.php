@@ -9,13 +9,14 @@ class Comment extends DataObject {
 	
 	public static $db = array(
 		"Name"			=> "Varchar(200)",
-		"Comment"		=> "Text", // can contain sanitized HTML with 'html_allowed=true' config
+		"Comment"		=> "Text",
 		"Email"			=> "Varchar(200)",
 		"URL"			=> "Varchar(255)",
 		"BaseClass"		=> "Varchar(200)",
 		"Moderated"		=> "Boolean",
 		"IsSpam"		=> "Boolean",
-		"ParentID"		=> "Int"
+		"ParentID"		=> "Int",
+		'AllowHtml'		=> "Boolean"
 	);
 
 	public static $has_one = array(
@@ -59,7 +60,7 @@ class Comment extends DataObject {
 		parent::onBeforeWrite();
 
 		// Sanitize HTML, because its expected to be passed to the template unescaped later
-		if($this->getAllowHtml()) {
+		if($this->AllowHtml) {
 			$this->Comment = $this->purifyHtml($this->Comment);
 		}
 	}
@@ -148,7 +149,7 @@ class Comment extends DataObject {
 	 *
 	 * @return string
 	 */
-	public function getParentTitle(){
+	public function getParentTitle() {
 		$parent = $this->getParent();
 
 		return ($parent && $parent->Title) ? $parent->Title : $parent->ClassName . " #" . $parent->ID;
@@ -161,12 +162,42 @@ class Comment extends DataObject {
 	 */
 	public function getParentClassName() {
 		$default = 'SiteTree';
+		
 		if(!$this->BaseClass) {
 			return $default;
 		}
+
 		return $this->BaseClass;
 	}
 	
+	/**
+	 * Return the content for this comment escaped depending on the Html state.
+	 *
+	 * @return HTMLText
+	 */
+	public function getEscapedComment() {
+		$comment = $this->dbObject('Comment');
+
+		if ($comment->exists()) {
+			if ($this->AllowHtml) {
+				return DBField::create_field('HTMLText', nl2br($comment->RAW()));
+			} else {
+				return DBField::create_field('HTMLText', sprintf("<p>%s</p>", nl2br($comment->XML())));
+			}
+		}
+
+		return $comment;
+	}
+
+	/**
+	 * Return whether this comment is a preview (has not been written to the db)
+	 *
+	 * @return boolean
+	 */
+	public function isPreview() {
+		return ($this->ID < 1);
+	}
+
 	/**
 	 * @todo needs to compare to the new {@link Commenting} configuration API
 	 *
@@ -331,20 +362,14 @@ class Comment extends DataObject {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$parent = $this->getParent()->ID;
-		$parentIDField = new HiddenField('ParentID', 'Parent', $parent);
-		$authorIDField = new HiddenField('AuthorID');
-		$baseClassField = new HiddenField('BaseClass');
-		$fields->replaceField('ParentID', $parentIDField);
-		$fields->replaceField('AuthorID', $authorIDField);
-		$fields->replaceField('BaseClass', $baseClassField);
-		return $fields;
-	}
 
-	public function getAllowHtml() {
-		return (
-			Commenting::has_commenting($this->BaseClass)
-			&& Commenting::get_config_value($this->BaseClass, 'html_allowed')
-		);	
+		$hidden = array('ParentID', 'AuthorID', 'BaseClass', 'AllowHtml');
+
+		foreach($hidden as $private) {
+			$fields->removeByName($private);
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -361,7 +386,7 @@ class Comment extends DataObject {
 	 */
 	public function getHtmlPurifierService() {
 		$config = HTMLPurifier_Config::createDefault();
-		$config->set('HTML.AllowedElements', 
+		$config->set('HTML.AllowedElements',
 			Commenting::get_config_value($this->BaseClass, 'html_allowed_elements')
 		);
 		$config->set('AutoFormat.AutoParagraph', true);

@@ -117,7 +117,13 @@ class CommentingController extends Controller {
 		$comments = new PaginatedList($comments, $request);
 		$comments->setPageLength(Commenting::get_config_value(null, 'comments_per_page'));
 
-		return new RSSFeed($comments, $link, $title, $link, 'Title', 'Comment', 'AuthorName');
+		return new RSSFeed(
+			$comments, 
+			$link, 
+			$title, 
+			$link, 
+			'Title', 'EscapedComment', 'AuthorName'
+		);
 	}
 
 	/**
@@ -242,23 +248,25 @@ class CommentingController extends Controller {
 	public function CommentsForm() {
 		$usePreview = Commenting::get_config_value($this->getBaseClass(), 'use_preview');
 		$member = Member::currentUser();
+
 		$fields = new FieldList(
-			TextField::create("Name", _t('CommentInterface.YOURNAME', 'Your name'))
-				->setCustomValidationMessage(_t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name'))
-				->setAttribute('data-message-required', _t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name')),
+			$dataFields = new CompositeField(
+				TextField::create("Name", _t('CommentInterface.YOURNAME', 'Your name'))
+					->setCustomValidationMessage(_t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name'))
+					->setAttribute('data-message-required', _t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name')),
 
-			EmailField::create("Email", _t('CommentingController.EMAILADDRESS', "Your email address (will not be published)"))
-				->setCustomValidationMessage(_t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address'))
-				->setAttribute('data-message-required', _t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address'))
-				->setAttribute('data-message-email', _t('CommentInterface.EMAILADDRESS_MESSAGE_EMAIL', 'Please enter a valid email address')),
+				EmailField::create("Email", _t('CommentingController.EMAILADDRESS', "Your email address (will not be published)"))
+					->setCustomValidationMessage(_t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address'))
+					->setAttribute('data-message-required', _t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address'))
+					->setAttribute('data-message-email', _t('CommentInterface.EMAILADDRESS_MESSAGE_EMAIL', 'Please enter a valid email address')),
 
-			TextField::create("URL", _t('CommentingController.WEBSITEURL', "Your website URL"))
-				->setAttribute('data-message-url', _t('CommentInterface.COMMENT_MESSAGE_URL', 'Please enter a valid URL')),
+				TextField::create("URL", _t('CommentingController.WEBSITEURL', "Your website URL"))
+					->setAttribute('data-message-url', _t('CommentInterface.COMMENT_MESSAGE_URL', 'Please enter a valid URL')),
 
-			TextareaField::create("Comment", _t('CommentingController.COMMENTS', "Comments"))
-				->setCustomValidationMessage(_t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment'))
-				->setAttribute('data-message-required', _t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment')),
-
+				TextareaField::create("Comment", _t('CommentingController.COMMENTS', "Comments"))
+					->setCustomValidationMessage(_t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment'))
+					->setAttribute('data-message-required', _t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment'))
+			),
 			HiddenField::create("ParentID"),
 			HiddenField::create("ReturnURL"),
 			HiddenField::create("BaseClass")
@@ -274,6 +282,7 @@ class CommentingController extends Controller {
 			);
 		}
 	
+		$dataFields->addExtraClass('data-fields');
 
 		// save actions
 		$actions = new FieldList(
@@ -360,7 +369,7 @@ class CommentingController extends Controller {
 	public function doPostComment($data, $form) {
 		$class = (isset($data['BaseClass'])) ? $data['BaseClass'] : $this->getBaseClass();
 		$usePreview = Commenting::get_config_value($class, 'use_preview');
-		$isPreview = ($usePreview && isset($data['preview']) && $data['preview']);
+		$isPreview = ($usePreview && isset($data['IsPreview']) && $data['IsPreview']);
 		
 		// if no class then we cannot work out what controller or model they
 		// are on so throw an error
@@ -398,23 +407,24 @@ class CommentingController extends Controller {
 		$comment = new Comment();
 		$form->saveInto($comment);
 
+		$comment->AllowHtml = Commenting::get_config_value($class, 'html_allowed');
 		$comment->Moderated = ($moderated) ? false : true;
 
 		// Save into DB, or call pre-save hooks to give accurate preview
 		if($isPreview) {
-			$comment->onBeforeWrite();	
+			$comment->extend('onBeforeWrite', $dummy);
 		} else {
 			$comment->write();	
-		}
 
-		// extend hook to allow extensions. Also see onBeforePostComment
-		$this->extend('onAfterPostComment', $comment);	
+			// extend hook to allow extensions. Also see onBeforePostComment
+			$this->extend('onAfterPostComment', $comment);	
+		}
 		
 		// clear the users comment since it passed validation
 		Cookie::set('CommentsForm_Comment', false);
 		
 		if(Director::is_ajax()) {
-			if(!$comment->Moderated) {
+			if(!$comment->Moderated && !$isPreview) {
 				return $comment->renderWith('CommentsInterface_pendingcomment');
 			} else {
 				return $comment->renderWith('CommentsInterface_singlecomment');
@@ -431,6 +441,7 @@ class CommentingController extends Controller {
 
 	public function doPreviewComment($data, $form) {
 		$data['IsPreview'] = 1;
+
 		return $this->doPostComment($data, $form);
 	}
 }

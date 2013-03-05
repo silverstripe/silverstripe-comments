@@ -22,22 +22,20 @@
 		 * Validate
 		 */
 		form.validate({
-		invalidHandler : function(form, validator){
+			invalidHandler : function(form, validator) {
 				$('html, body').animate({
-			scrollTop: $(validator.errorList[0].element).offset().top - 30
-			}, 200);
+					scrollTop: $(validator.errorList[0].element).offset().top - 30
+				}, 200);
 			},
-
 			showErrors: function(errorMap, errorList) {
-			this.defaultShowErrors();
-			// hack to add the extra classes we need to the validation message elements
-			form.find('span.error').addClass('message required');
-		},
+				this.defaultShowErrors();
+				// hack to add the extra classes we need to the validation message elements
+				form.find('span.error').addClass('message required');
+			},
 
 			errorElement: "span",
 			errorClass: "error",
 			ignore: '.hidden',
-
 			rules: {
 				Name : {
 					required : true
@@ -80,6 +78,8 @@
 			if(!form.validate().valid()){
 				return false;
 			}
+			
+			previewEl.removeClass('loading').hide();
 
 			// submit the form
 			$(this).ajaxSubmit(function(response) {
@@ -114,15 +114,18 @@
 		$(':submit[name=action_doPreviewComment]', form).click(function(e) {
 			e.preventDefault();
 
-			if(!form.validate().valid()) return false;
+			if(!form.validate().valid()) {
+				return false;
+			}
 
 			previewEl.show().addClass('loading').find('.middleColumn').html(' ');
+
 			form.ajaxSubmit({
 				success: function(response) {
 					var responseEl = $(response);
 					if(responseEl.is('form')) {
 						// Validation failed, renders form instead of single comment
-						form.replaceWith(responseEl);
+						form.find(".data-fields").replaceWith(responseEl.find(".data-fields"));
 					} else {
 						// Default behaviour
 						previewEl.removeClass('loading').find('.middleColumn').html(responseEl);
@@ -136,7 +139,7 @@
 		 * Hide outdated preview on form changes
 		 */
 		$(':input', form).on('change keydown', function() {
-			previewEl.hide();
+			previewEl.removeClass('loading').hide();
 		});
 		
 		/**
