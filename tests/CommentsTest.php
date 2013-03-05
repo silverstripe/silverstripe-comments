@@ -259,10 +259,6 @@ class CommentableItem extends DataObject implements TestOnly {
  */
 class CommentableItem_Controller extends Controller implements TestOnly {
 	
-	public static $allowed_actions = array(
-		"*" => true
-	);
-	
 	public function index() {
 		return CommentableItem::get()->first()->CommentsForm();
 	}
