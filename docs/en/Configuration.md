@@ -17,7 +17,7 @@ The module provides a number of built in configuration settings below are the de
 		'comment_permalink_prefix' => "comment-",
 		'require_moderation' => false,
 		'html_allowed' => false, // allow for sanitized HTML in comments
-		'html_allowed_elements' => array('p', 'br', 'a', 'img', 'i', 'b'),
+		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
 		'use_preview' => false, // preview formatted comment (when allowing HTML)
 	);
 	
