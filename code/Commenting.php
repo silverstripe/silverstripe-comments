@@ -25,7 +25,7 @@ class Commenting {
 	private static $default_config = array(
 		'require_login' => false, // boolean, whether a user needs to login
 		'required_permission' => false,  // required permission to comment (or array of permissions)
-		'use_ajax_commenting' => true, // use ajax to post comments.
+		'include_js' => true, // Enhance operation by ajax behaviour on moderation links
 		'use_gravatar' => false, // set to true to show gravatar icons,
 		'gravatar_size' => 80, // size of gravatar in pixels.  This is the same as the standard default
 		'show_comments_when_disabled' => false, // when comments are disabled should we show older comments (if available)
@@ -36,7 +36,7 @@ class Commenting {
 		'require_moderation' => false,
 		'html_allowed' => false, // allow for sanitized HTML in comments
 		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
-		'use_preview' => false, // preview formatted comment (when allowing HTML)
+		'use_preview' => false, // preview formatted comment (when allowing HTML). Requires include_js=true
 	);
 	
 	/**
