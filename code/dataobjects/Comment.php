@@ -135,9 +135,11 @@ class Comment extends DataObject {
 	 * @return DataObject
 	 */
 	public function getParent() {
-		if(!$this->BaseClass) $this->BaseClass = "SiteTree";
+		if(!$this->BaseClass) {
+			$this->BaseClass = "SiteTree";
+		}
 		
-		return DataObject::get_by_id($this->BaseClass, $this->ParentID);
+		return ($this->ParentID) ? DataObject::get_by_id($this->BaseClass, $this->ParentID) : null;
 	}
 
 
@@ -149,9 +151,9 @@ class Comment extends DataObject {
 	public function getParentTitle(){
 		$parent = $this->getParent();
 
-		return ($parent->Title) ? $parent->Title : $parent->ClassName . " #" . $parent->ID;
+		return ($parent && $parent->Title) ? $parent->Title : $parent->ClassName . " #" . $parent->ID;
 	}
-	
+
 	/**
 	 * Comment-parent classnames obviousely vary, return the parent classname
 	 *
