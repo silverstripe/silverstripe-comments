@@ -18,7 +18,9 @@ The module provides a number of built in configuration settings below are the de
 		'require_moderation' => false,
 		'html_allowed' => false, // allow for sanitized HTML in comments
 		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
-		'use_preview' => false, // preview formatted comment (when allowing HTML)
+		'use_preview' => false, // preview formatted comment (when allowing HTML),
+		'use_gravatar' => false,
+		'gravatar_size' => 80
 	);
 	
 If you want to customize any of the configuration options after you have added the extension (or
@@ -48,3 +50,13 @@ The easiest way to do this is through [Composer](http://getcomposer.org).
 **Important**: Rendering user-provided HTML on your website always risks
 exposing your users to cross-site scripting (XSS) attacks, if the HTML
 isn't properly sanitized. Don't allow tags like `<script>` or arbitrary attributes.
+
+## Gravatars
+
+Gravatars can be turned on by adding this to your mysite/_config.php file
+
+	Commenting::set_config_value('SiteTree', 'use_gravatar', true);
+
+The default size is 80 pixels, as per the gravatar site if the 's' parameter is omitted.  To change this add the following (again to mysite/_config.php):
+
+	Commenting::set_config_value('SiteTree', 'gravatar_size', 40);
