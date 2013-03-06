@@ -394,4 +394,19 @@ class Comment extends DataObject {
 		$config->set('URI.DisableExternalResources', true);
 		return new HTMLPurifier($config);
 	}
+
+	/*
+	Calcualate the gravatar link from the email address
+	*/
+	public function Gravatar() {
+		$gravatar = '';
+		$use_gravatar = Commenting::get_config_value($this->BaseClass, 'use_gravatar');
+		if ($use_gravatar) {
+			$gravatar = "http://www.gravatar.com/avatar/" . md5( strtolower(trim($this->Email)));
+			$gravatarsize = Commenting::get_config_value($this->BaseClass, 'gravatar_size');
+			$gravatar.= "?s=".$gravatarsize."&d=mm";
+		}
+
+		return $gravatar;
+	}
 }

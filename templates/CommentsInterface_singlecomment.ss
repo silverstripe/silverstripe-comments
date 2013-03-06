@@ -1,4 +1,5 @@
 <div class="comment" id="<% if isPreview %>comment-preview<% else %>$Permalink<% end_if %>">
+<% if $Gravatar %><img class="gravatar" src="$Gravatar" alt="Gravatar for $Name" title="Gravatar for $Name" /><% end_if %>
 	$EscapedComment
 </div>
 
