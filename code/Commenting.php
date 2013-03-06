@@ -26,6 +26,7 @@ class Commenting {
 		'require_login' => false, // boolean, whether a user needs to login
 		'required_permission' => false,  // required permission to comment (or array of permissions)
 		'use_ajax_commenting' => true, // use ajax to post comments.
+		'use_gravatar' => false, // set to true to show gravatar icons
 		'show_comments_when_disabled' => false, // when comments are disabled should we show older comments (if available)
 		'order_comments_by' => "\"Created\" DESC",
 		'comments_per_page' => 10,
