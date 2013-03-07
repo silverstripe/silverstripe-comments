@@ -2,20 +2,7 @@
 	<div id="$CommentHolderID" class="comments-holder-container">
 		<h4><% _t('POSTCOM','Post your comment') %></h4>
 		
-		<% if AddCommentForm %>
-			<% if CanPost %>
-				<% if ModeratedSubmitted %>
-					<p id="$CommentHolderID_PostCommentForm_error" class="message good"><% _t('AWAITINGMODERATION', 'Your comment has been submitted and is now awaiting moderation.') %></p>
-				<% end_if %>
-				$AddCommentForm
-			<% else %>
-				<p><% _t('COMMENTLOGINERROR', 'You cannot post comments until you have logged in') %><% if PostingRequiresPermission %>,<% _t('COMMENTPERMISSIONERROR', 'and that you have an appropriate permission level') %><% end_if %>. 
-					<a href="Security/login?BackURL={$Parent.Link}" title="<% _t('LOGINTOPOSTCOMMENT', 'Login to post a comment') %>"><% _t('COMMENTPOSTLOGIN', 'Login Here') %></a>.
-				</p>
-			<% end_if %>
-		<% else %>
-			<p><% _t('COMMENTSDISABLED', 'Posting comments has been disabled') %>.</p>	
-		<% end_if %>
+		<% if $FormPosition == 'before' %><% include AddCommentForm %><% end_if %>
 
 		<h4><% _t('COMMENTS','Comments') %></h4>
 	
@@ -57,6 +44,9 @@
 			<p class="no-comments-yet"<% if $Comments.Count %> style='display: none' <% end_if %> ><% _t('NOCOMMENTSYET','No one has commented on this page yet.') %></p>
 
 		</div>
+
+		<% if $FormPosition == 'after' %><% include AddCommentForm %><% end_if %>
+
 		
 		<% if DeleteAllLink %>
 			<p class="delete-comments">

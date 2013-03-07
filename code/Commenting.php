@@ -23,6 +23,7 @@ class Commenting {
 	 * @var array default configuration values
 	 */
 	private static $default_config = array(
+		'comment_form_position' => 'before', // position of the comment form with respect to the comments. Set to 'before' or 'after'
 		'require_login' => false, // boolean, whether a user needs to login
 		'required_permission' => false,  // required permission to comment (or array of permissions)
 		'use_ajax_commenting' => true, // use ajax to post comments.
