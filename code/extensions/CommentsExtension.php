@@ -130,6 +130,7 @@ class CommentsExtension extends DataExtension {
 			'CommentHolderID' 			=> Commenting::get_config_value($this->ownerBaseClass, 'comments_holder_id'),
 			'PostingRequiresPermission' => Commenting::get_config_value($this->ownerBaseClass, 'required_permission'),
 			'CanPost' 					=> Commenting::can_member_post($this->ownerBaseClass),
+			'FormPosition' 				=> Commenting::get_config_value($this->ownerBaseClass, 'comment_form_position'),
 			'RssLink'					=> "CommentingController/rss",
 			'RssLinkPage'				=> "CommentingController/rss/". $this->ownerBaseClass . '/'.$this->owner->ID,
 			'CommentsEnabled' 			=> $enabled,
