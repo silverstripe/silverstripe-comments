@@ -7,6 +7,7 @@ The module provides a number of built in configuration settings below are the de
 	// mysite/_config.php 
 	
 	Commenting::add('Foo', array(
+		'comment_form_position' => 'before',
 		'require_login' => false,
 		'required_permission' => false,
 		'use_ajax_commenting' => true,
@@ -29,6 +30,12 @@ on the built-in SiteTree commenting) use `set_config_value`
 	
 	// mysite/_config.php - Returns the setting 
 	Commenting::get_config_value('SiteTree', 'require_login');
+
+## Comment Form Position
+The comment form by default appears before the comments.  To change it to after add the following:
+
+	Commenting::set_config_value('SiteTree', 'comment_form_position', 'after');
+
 	
 ## HTML Comments
 
