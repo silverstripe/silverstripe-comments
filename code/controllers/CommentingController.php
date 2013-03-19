@@ -251,20 +251,20 @@ class CommentingController extends Controller {
 
 		$fields = new FieldList(
 			$dataFields = new CompositeField(
-				TextField::create("Name", _t('CommentInterface.YOURNAME', 'Your name'))
-					->setCustomValidationMessage(_t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name'))
-					->setAttribute('data-message-required', _t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name')),
+			TextField::create("Name", _t('CommentInterface.YOURNAME', 'Your name'))
+				->setCustomValidationMessage(_t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name'))
+				->setAttribute('data-message-required', _t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name')),
 
-				EmailField::create("Email", _t('CommentingController.EMAILADDRESS', "Your email address (will not be published)"))
-					->setCustomValidationMessage(_t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address'))
-					->setAttribute('data-message-required', _t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address'))
-					->setAttribute('data-message-email', _t('CommentInterface.EMAILADDRESS_MESSAGE_EMAIL', 'Please enter a valid email address')),
+			EmailField::create("Email", _t('CommentingController.EMAILADDRESS', "Your email address (will not be published)"))
+				->setCustomValidationMessage(_t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address'))
+				->setAttribute('data-message-required', _t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address'))
+				->setAttribute('data-message-email', _t('CommentInterface.EMAILADDRESS_MESSAGE_EMAIL', 'Please enter a valid email address')),
 
-				TextField::create("URL", _t('CommentingController.WEBSITEURL', "Your website URL"))
-					->setAttribute('data-message-url', _t('CommentInterface.COMMENT_MESSAGE_URL', 'Please enter a valid URL')),
+			TextField::create("URL", _t('CommentingController.WEBSITEURL', "Your website URL"))
+				->setAttribute('data-message-url', _t('CommentInterface.COMMENT_MESSAGE_URL', 'Please enter a valid URL')),
 
-				TextareaField::create("Comment", _t('CommentingController.COMMENTS', "Comments"))
-					->setCustomValidationMessage(_t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment'))
+			TextareaField::create("Comment", _t('CommentingController.COMMENTS', "Comments"))
+				->setCustomValidationMessage(_t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment'))
 					->setAttribute('data-message-required', _t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment'))
 			),
 			HiddenField::create("ParentID"),
@@ -416,24 +416,16 @@ class CommentingController extends Controller {
 		} else {
 			$comment->write();	
 
-			// extend hook to allow extensions. Also see onBeforePostComment
-			$this->extend('onAfterPostComment', $comment);	
+		// extend hook to allow extensions. Also see onBeforePostComment
+		$this->extend('onAfterPostComment', $comment);	
 		}
 		
 		// clear the users comment since it passed validation
 		Cookie::set('CommentsForm_Comment', false);
-		
-		if(Director::is_ajax()) {
-			if(!$comment->Moderated && !$isPreview) {
-				return $comment->renderWith('CommentsInterface_pendingcomment');
-			} else {
-				return $comment->renderWith('CommentsInterface_singlecomment');
-			}
-		}
 
 		$holder = Commenting::get_config_value($comment->BaseClass, 'comments_holder_id');
 
-		$hash = ($moderated) ? $comment->Permalink() : $holder;
+		$hash = ($moderated) ? $holder : $comment->Permalink();
 		$url = (isset($data['ReturnURL'])) ? $data['ReturnURL'] : false;
 			
 		return ($url) ? $this->redirect($url .'#'. $hash) : $this->redirectBack();

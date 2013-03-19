@@ -22,16 +22,16 @@
 		 * Validate
 		 */
 		form.validate({
-			invalidHandler : function(form, validator) {
+		invalidHandler : function(form, validator){
 				$('html, body').animate({
-					scrollTop: $(validator.errorList[0].element).offset().top - 30
-				}, 200);
+			scrollTop: $(validator.errorList[0].element).offset().top - 30
+			}, 200);
 			},
 			showErrors: function(errorMap, errorList) {
-				this.defaultShowErrors();
-				// hack to add the extra classes we need to the validation message elements
-				form.find('span.error').addClass('message required');
-			},
+			this.defaultShowErrors();
+			// hack to add the extra classes we need to the validation message elements
+			form.find('span.error').addClass('message required');
+		},
 
 			errorElement: "span",
 			errorClass: "error",
@@ -68,44 +68,9 @@
 			}
 		});
 
-
-		/**
-		 * Clicking one of the metalinks performs the operation via ajax
-		 * this inclues the spam and approve links
-		 */
 		form.submit(function (e) {
 			// trigger validation
-			if(!form.validate().valid()){
-				return false;
-			}
-			
-			previewEl.removeClass('loading').hide();
-
-			// submit the form
-			$(this).ajaxSubmit(function(response) {
-				noCommentsYet.hide();
-
-				if(!commentsList.length){
-					commentsHolder.append("<ul class='comments-list'></ul>");
-					commentsList = $('.comments-list', commentsHolder);
-				}
-
-				var evenOdd = (commentsList.children('.first').removeClass('first').hasClass('even')) ? 'odd' : 'even';
-				var newComment = $('<li />')
-					.addClass('comment first ' + evenOdd)
-					.html(response)
-					.hide();
-
-				if(response.match('<b>Spam detected!!</b>')) {
-					newComment.addClass('spam');
-				}
-
-				commentsList.prepend(newComment.fadeIn());
-			});
-
-			$(this).resetForm();
-			
-			return false;
+			if(!form.validate().valid()) return false;
 		});
 
 		/**

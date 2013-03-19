@@ -97,7 +97,7 @@ class CommentsExtension extends DataExtension {
 	 * @see docs/en/Extending
 	 */
 	public function CommentsForm() {
-		if (Commenting::has_commenting($this->ownerBaseClass) && Commenting::get_config_value($this->ownerBaseClass, 'use_ajax_commenting')) {
+		if(Commenting::has_commenting($this->ownerBaseClass) && Commenting::get_config_value($this->ownerBaseClass, 'include_js')) {
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/lib/jquery.form.js');
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/jquery.validate.pack.js');
