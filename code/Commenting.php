@@ -55,7 +55,7 @@ class Commenting {
 		
 		self::$enabled_classes[$class] = $settings;
 
-		Object::add_extension($class, 'CommentsExtension');
+		$class::add_extension('CommentsExtension');
 	}
 	
 	/**
@@ -69,7 +69,7 @@ class Commenting {
 			unset(self::$enabled_classes[$class]);
 		}
 		
-		Object::remove_extension($class, 'CommentsExtension');
+		$class::remove_extension('CommentsExtension');
 	}
 
 	/**
