@@ -3,15 +3,12 @@
 	"description": "This module provides commenting functionality for Pages and other DataObjects on your SilverStripe site.",
 	"type": "silverstripe-module",
 	"keywords": ["silverstripe", "comments"],
-	"authors": [
-	{
+	"authors": [{
 		"name": "Will Rossiter",
 		"email": "will@fullscreen.io"
-	}
-	],
-	"require":
-	{
-		"silverstripe/framework": "3.*"
+	}],
+	"require": {
+		"silverstripe/framework": "3.1.*"
 	},
 	"suggest": {
 		"ezyang/htmlpurifier": "4.*"
