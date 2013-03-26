@@ -28,6 +28,8 @@ class Commenting {
 		'include_js' => true, // Enhance operation by ajax behaviour on moderation links
 		'use_gravatar' => false, // set to true to show gravatar icons,
 		'gravatar_size' => 80, // size of gravatar in pixels.  This is the same as the standard default
+		'gravatar_default' => 'identicon', // theme for 'not found' gravatar (see http://gravatar.com/site/implement/images/)
+		'gravatar_rating' => 'g', // gravatar rating. This is the same as the standard default
 		'show_comments_when_disabled' => false, // when comments are disabled should we show older comments (if available)
 		'order_comments_by' => "\"Created\" DESC",
 		'comments_per_page' => 10,
