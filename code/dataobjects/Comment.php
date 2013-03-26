@@ -404,7 +404,9 @@ class Comment extends DataObject {
 		if ($use_gravatar) {
 			$gravatar = "http://www.gravatar.com/avatar/" . md5( strtolower(trim($this->Email)));
 			$gravatarsize = Commenting::get_config_value($this->BaseClass, 'gravatar_size');
-			$gravatar.= "?s=".$gravatarsize."&d=mm";
+			$gravatardefault = Commenting::get_config_value($this->BaseClass, 'gravatar_default');
+			$gravatarrating = Commenting::get_config_value($this->BaseClass, 'gravatar_rating');
+			$gravatar.= "?s=".$gravatarsize."&d=".$gravatardefault."&r=".$gravatarrating;
 		}
 
 		return $gravatar;
