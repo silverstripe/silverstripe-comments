@@ -231,7 +231,7 @@ class CommentsTest extends FunctionalTest {
  */
 class CommentableItem extends DataObject implements TestOnly {
 
-	public static $db = array(
+	private static $db = array(
 		'ProvideComments' => 'Boolean',
 		'Title' => 'Varchar'
 	);

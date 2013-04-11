@@ -6,7 +6,7 @@
 
 class CommentingController extends Controller {
 	
-	public static $allowed_actions = array(
+	private static $allowed_actions = array(
 		'delete',
 		'spam',
 		'ham',

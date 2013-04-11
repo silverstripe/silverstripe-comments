@@ -7,13 +7,13 @@
  */
 class CommentAdmin extends LeftAndMain {
 
-	public static $url_segment = 'comments';
+	private static $url_segment = 'comments';
 
-	public static $url_rule = '/$Action';
+	private static $url_rule = '/$Action';
 
-	public static $menu_title = 'Comments';
+	private static $menu_title = 'Comments';
 
-	public static $allowed_actions = array(
+	private static $allowed_actions = array(
 		'approvedmarked',
 		'deleteall',
 		'deletemarked',
