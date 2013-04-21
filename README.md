@@ -22,3 +22,7 @@ inside the docs folder.
 ## Installation
 
 See docs/en/Installing.md
+
+## Related
+
+ * [tractorcow/silverstripe-comments-notifications](https://github.com/tractorcow/silverstripe-comments-notifications): Comment admin email notifications module
