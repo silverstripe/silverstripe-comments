@@ -71,11 +71,13 @@ If the email address used to comment does not have a gravatar, it is possible to
 * blank: a transparent PNG image (border added to HTML below for demonstration purposes)
 
 To change the default image style, add the following to mysite/_config.php
-	Commenting::set_config_value('SiteTree', 'gravatar_default', 'retro');
+
+    Commenting::set_config_value('SiteTree', 'gravatar_default', 'retro');
 
 
 The rating of the image can be changed by adding a line similar to this to mysite/_config.php
-	Commenting::set_config_value('SiteTree', 'gravatar_rating', 'r');
+
+    Commenting::set_config_value('SiteTree', 'gravatar_rating', 'r');
 
 Vald values for rating are as follows:
 * g: suitable for display on all websites with any audience type.
