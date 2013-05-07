@@ -8,7 +8,7 @@
 		"email": "will@fullscreen.io"
 	}],
 	"require": {
-		"silverstripe/framework": "~3.1"
+		"silverstripe/framework": ">=3.1.x-dev,<4.0"
 	},
 	"suggest": {
 		"ezyang/htmlpurifier": "4.*"
