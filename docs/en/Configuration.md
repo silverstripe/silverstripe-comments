@@ -21,7 +21,7 @@ The module provides a number of built in configuration settings below are the de
 		'use_preview' => false, // preview formatted comment (when allowing HTML). Requires include_js=true
 		'use_gravatar' => false,
 		'gravatar_size' => 80
-	);
+	));
 	
 If you want to customize any of the configuration options after you have added the extension (or
 on the built-in SiteTree commenting) use `set_config_value`
