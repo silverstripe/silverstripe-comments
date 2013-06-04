@@ -57,14 +57,14 @@ class CommentsExtension extends DataExtension {
 
 		// Filter content for unauthorised users
 		if (!($member = Member::currentUser()) || !Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin')) {
-			
-			// Filter unmoderated comments for non-administrators if moderation is enabled
-			if (Commenting::get_config_value($this->ownerBaseClass, 'require_moderation')) {
-				$list = $list->filter('Moderated', 1);
-			} else {
-				// Filter spam comments for non-administrators if auto-moderted
-				$list = $list->filter('IsSpam', 0);
-			}
+		  
+		  // Filter unmoderated comments for non-administrators if moderation is enabled
+		  if (Commenting::get_config_value($this->ownerBaseClass, 'require_moderation') || Commenting::get_config_value($this->ownerBaseClass, 'require_moderation_nonmembers')) {
+		    $list = $list->filter('Moderated', 1);
+		  } else {
+		    // Filter spam comments for non-administrators if auto-moderted
+		    $list = $list->filter('IsSpam', 0);
+		  }
 		}
 
 		$list = new PaginatedList($list);
@@ -106,7 +106,7 @@ class CommentsExtension extends DataExtension {
 		// on a {@link DataObject} then it is enabled, however {@link SiteTree} objects can
 		// trigger comments on / off via ProvideComments
 		$enabled = (!$this->attachedToSiteTree() || $this->owner->ProvideComments) ? true : false;
-		
+
 		// do not include the comments on pages which don't have id's such as security pages
 		if($this->owner->ID < 0) return false;
 		
