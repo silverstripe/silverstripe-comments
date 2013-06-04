@@ -36,6 +36,7 @@ class Commenting {
 		'comments_holder_id' => "comments-holder", // id for the comments holder
 		'comment_permalink_prefix' => "comment-", // id prefix for each comment. If needed make this different
 		'require_moderation' => false,
+		'require_moderation_nonmembers' => false, // requires moderation for comments posted by non-members. 'require_moderation' overrides this if set.
 		'html_allowed' => false, // allow for sanitized HTML in comments
 		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
 		'use_preview' => false, // preview formatted comment (when allowing HTML). Requires include_js=true
@@ -80,7 +81,7 @@ class Commenting {
 	 * @return bool
 	 */
 	public static function has_commenting($class) {
-		return (isset(self::$enabled_classes[$class]));
+	  return (isset(self::$enabled_classes[$class]));
 	}
 
 	/**

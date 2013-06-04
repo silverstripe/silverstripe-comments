@@ -341,17 +341,21 @@ class CommentingController extends Controller {
 		// load any data from the cookies
 		if($data = Cookie::get('CommentsForm_UserData')) {
 			$data = Convert::json2array($data); 
-			
+			  
 			$form->loadDataFrom(array(
 				"Name"		=> isset($data['Name']) ? $data['Name'] : '',
 				"URL"		=> isset($data['URL']) ? $data['URL'] : '',
-				"Email"		=> isset($data['Email']) ? $data['Email'] : '',
-				"Comment"	=> Cookie::get('CommentsForm_Comment')
-			));			
+				"Email"		=> isset($data['Email']) ? $data['Email'] : ''
+			));
+			// allow previous value to fill if comment not stored in cookie (i.e. validation error)
+			$prevComment = Cookie::get('CommentsForm_Comment');
+			if($prevComment && $prevComment != ''){
+			  $form->loadDataFrom(array("Comment" => $prevComment));
+			}
 		}
 
 		if($member) {
-			$form->loadDataFrom($member);
+		  $form->loadDataFrom($member);
 		}
 		
 		// hook to allow further extensions to alter the comments form
@@ -397,7 +401,11 @@ class CommentingController extends Controller {
 
 		// is moderation turned on
 		$moderated = Commenting::get_config_value($class, 'require_moderation');
-
+		if(!$moderated){
+		  $moderated_nonmembers = Commenting::get_config_value($class, 'require_moderation_nonmembers');
+		  $moderated = $moderated_nonmembers ? !Member::currentUser() : false;
+		}
+		
 		// we want to show a notification if comments are moderated
 		if ($moderated) {
 			Session::set('CommentsModerated', 1);
