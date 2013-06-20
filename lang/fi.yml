@@ -1,0 +1,49 @@
+fi:
+  Comment:
+    ALLOWCOMMENTS: 'Salli kommentointi'
+    COMMENT: 'Komentti'
+    COMMENTBY: '''%s'' kommentoi'
+    ISSPAM: 'Spämmiä?'
+    MODERATED: 'Moderoitu?'
+    NAME: 'Kirjoittajan nimi'
+    ON: ':'
+    PLURALNAME: 'Kommentit'
+    SINGULARNAME: 'Komentti'
+  CommentAdmin:
+    Moderated: 'Moderoitu'
+    NeedsModeration: 'Tarvitsee moderointia'
+    MENUTITLE: 'Kommentit'
+  CommentInterface:
+    POST: 'Lähetä'
+    YOURNAME: 'Nimesi'
+  CommentingController:
+    COMMENTS: 'Kommentit'
+    EMAILADDRESS: 'Sähköpostiosoitteesi (ei julkaista)'
+    PERMISSIONFAILURE: 'Et voi kommentoida tätä sivua. Varmista, että olet kirjatuneena ja että käyttöoikeutesi ovat riittävät.'
+    RSSTITLE: 'Kommenttien RSS-syöte'
+    WEBSITEURL: 'WWW-sivustosi osoite'
+  CommentsAdmin:
+    NeedsModeration: 'Tarvitsee moderointia'
+  CommentsInterface.ss:
+    COMMENTLOGINERROR: 'Et voi kommentoida ennen kuin olet kirjautunut sisään'
+    COMMENTPERMISSIONERROR: 'ja käyttöoikeustasosi on oltava riittävä'
+    COMMENTPOSTLOGIN: 'Kirjaudu tästä'
+    COMMENTS: 'Comments'
+    COMMENTSDISABLED: 'Kommentointi on lukittu'
+    LOGINTOPOSTCOMMENT: 'Kirjaudu kommentoidaksesi'
+    NEXT: 'seuraava'
+    NOCOMMENTSYET: 'Kukaan ei ole vielä kommentoinut tätä sivua.'
+    POSTCOM: 'Lähetä kommenttisi'
+    PREV: 'edellinen'
+    RSSFEEDALLCOMMENTS: 'RSS-syöte kaikista kommenteista'
+    RSSFEEDCOMMENTS: 'RSS-syöte tämän sivun kommenteista'
+  CommentsInterface_pendingcomment.ss:
+    AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
+  CommentsInterface_singlecomment.ss:
+    APPROVE: 'hyväksy kommentti'
+    ISNTSPAM: 'kommentti ei ole spämmiä'
+    ISSPAM: 'kommentti on spämmiä'
+    PBY: 'Lähettänyt'
+    REMCOM: 'poista kommentti'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Poista kaikki tämän sivun kommentit'
