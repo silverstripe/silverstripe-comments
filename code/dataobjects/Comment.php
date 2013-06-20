@@ -124,8 +124,12 @@ class Comment extends DataObject {
 		$labels = parent::fieldLabels($includerelations);
 		$labels['Name'] = _t('Comment.NAME', 'Author Name');
 		$labels['Comment'] = _t('Comment.COMMENT', 'Comment');
+		$labels['Email'] = _t('Comment.EMAIL', 'Email');
+		$labels['URL'] = _t('Comment.URL', 'URL');
 		$labels['IsSpam'] = _t('Comment.ISSPAM', 'Spam?');
 		$labels['Moderated'] = _t('Comment.MODERATED', 'Moderated?');
+		$labels['ParentTitle'] = _t('Comment.PARENTTITLE', 'Parent');
+		$labels['Created'] = _t('Comment.CREATED', 'Date posted');
 		
 		return $labels;
 	}
