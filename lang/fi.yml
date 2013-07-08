@@ -24,7 +24,7 @@ fi:
     WEBSITEURL: 'WWW-sivustosi osoite'
   CommentsAdmin:
     NeedsModeration: 'Tarvitsee moderointia'
-  CommentsInterface.ss:
+  CommentsInterface_ss:
     COMMENTLOGINERROR: 'Et voi kommentoida ennen kuin olet kirjautunut sisään'
     COMMENTPERMISSIONERROR: 'ja käyttöoikeustasosi on oltava riittävä'
     COMMENTPOSTLOGIN: 'Kirjaudu tästä'
@@ -37,9 +37,9 @@ fi:
     PREV: 'edellinen'
     RSSFEEDALLCOMMENTS: 'RSS-syöte kaikista kommenteista'
     RSSFEEDCOMMENTS: 'RSS-syöte tämän sivun kommenteista'
-  CommentsInterface_pendingcomment.ss:
+  CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
-  CommentsInterface_singlecomment.ss:
+  CommentsInterface_singlecomment_ss:
     APPROVE: 'hyväksy kommentti'
     ISNTSPAM: 'kommentti ei ole spämmiä'
     ISSPAM: 'kommentti on spämmiä'

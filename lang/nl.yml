@@ -24,7 +24,7 @@ nl:
     WEBSITEURL: 'Website URL'
   CommentsAdmin:
     NeedsModeration: 'Wacht op moderatie'
-  CommentsInterface.ss:
+  CommentsInterface_ss:
     COMMENTLOGINERROR: 'Je moet ingelogd zijn om reacties te kunnen plaatsen'
     COMMENTPERMISSIONERROR: 'en controleer je gebruikersrechten'
     COMMENTPOSTLOGIN: 'Inloggen'
@@ -37,9 +37,9 @@ nl:
     PREV: vorige
     RSSFEEDALLCOMMENTS: 'RSS feed voor alle reacties'
     RSSFEEDCOMMENTS: 'RSS feed voor reacties op deze pagina'
-  CommentsInterface_pendingcomment.ss:
+  CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
-  CommentsInterface_singlecomment.ss:
+  CommentsInterface_singlecomment_ss:
     APPROVE: 'reactie goedkeuren'
     ISNTSPAM: 'deze reactie is geen spam'
     ISSPAM: 'deze reactie is spam'

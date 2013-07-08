@@ -24,7 +24,7 @@ de:
     WEBSITEURL: 'Website URL'
   CommentsAdmin:
     NeedsModeration: 'Benötigt Moderation'
-  CommentsInterface.ss:
+  CommentsInterface_ss:
     COMMENTLOGINERROR: 'Sie können diese Seite nur kommentieren, wenn Sie eingeloggt sind'
     COMMENTPERMISSIONERROR: 'und die nötige Berechtigung besitzen'
     COMMENTPOSTLOGIN: 'Login'
@@ -37,9 +37,9 @@ de:
     PREV: zurück
     RSSFEEDALLCOMMENTS: 'RSS Feed für alle Kommentare'
     RSSFEEDCOMMENTS: 'RSS Feed für Kommentare auf dieser Seite'
-  CommentsInterface_pendingcomment.ss:
+  CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
-  CommentsInterface_singlecomment.ss:
+  CommentsInterface_singlecomment_ss:
     APPROVE: 'Diesen Kommetar akzeptieren'
     ISNTSPAM: 'Dieser Kommentar ist kein Spam'
     ISSPAM: 'Dieser Kommentar ist Spam'

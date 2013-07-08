@@ -24,7 +24,7 @@ lt:
     WEBSITEURL: 'Jūsų svetainės nuoroda'
   CommentsAdmin:
     NeedsModeration: 'Laukia patvirtinimo'
-  CommentsInterface.ss:
+  CommentsInterface_ss:
     COMMENTLOGINERROR: 'Negalite rašyti komentarų neprisijungęs'
     COMMENTPERMISSIONERROR: 'ir neturėdamas atitinkamo teisių lygio'
     COMMENTPOSTLOGIN: 'Prisijungti čia'
@@ -37,9 +37,9 @@ lt:
     PREV: ankstesni
     RSSFEEDALLCOMMENTS: 'Visų komentarų RSS'
     RSSFEEDCOMMENTS: 'Šio puslapio komentarų RSS'
-  CommentsInterface_pendingcomment.ss:
+  CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
-  CommentsInterface_singlecomment.ss:
+  CommentsInterface_singlecomment_ss:
     APPROVE: 'patvirtinti šį komentarą'
     ISNTSPAM: 'šis komentaras nėra šlamštas'
     ISSPAM: 'šis komentaras yra šlamštas'

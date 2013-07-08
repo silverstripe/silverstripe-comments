@@ -24,7 +24,7 @@ en:
     WEBSITEURL: 'Your website URL'
   CommentsAdmin:
     NeedsModeration: 'Needs Moderation'
-  CommentsInterface.ss:
+  CommentsInterface_ss:
     COMMENTLOGINERROR: 'You cannot post comments until you have logged in'
     COMMENTPERMISSIONERROR: 'and that you have an appropriate permission level'
     COMMENTPOSTLOGIN: 'Login Here'
@@ -37,9 +37,9 @@ en:
     PREV: previous
     RSSFEEDALLCOMMENTS: 'RSS feed for all comments'
     RSSFEEDCOMMENTS: 'RSS feed for comments on this page'
-  CommentsInterface_pendingcomment.ss:
+  CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
-  CommentsInterface_singlecomment.ss:
+  CommentsInterface_singlecomment_ss:
     APPROVE: 'approve this comment'
     ISNTSPAM: 'this comment is not spam'
     ISSPAM: 'this comment is spam'

@@ -28,7 +28,7 @@ nb:
     WEBSITEURL: 'Hjemmeside'
   CommentsAdmin:
     NeedsModeration: 'Trenger moderering'
-  CommentsInterface.ss:
+  CommentsInterface_ss:
     COMMENTLOGINERROR: 'Du kan ikke skrive kommentarer før du har logget inn'
     COMMENTPERMISSIONERROR: 'og at du har et passende tilgangsnivå'
     COMMENTPOSTLOGIN: 'Logg inn her'
@@ -41,9 +41,9 @@ nb:
     PREV: forrige
     RSSFEEDALLCOMMENTS: 'RSS-feed for alle kommentarer'
     RSSFEEDCOMMENTS: 'RSS-feed for kommentarer på denne siden'
-  CommentsInterface_pendingcomment.ss:
+  CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Kommentaren din har blitt lagret og er lagt i kø for moderering.'
-  CommentsInterface_singlecomment.ss:
+  CommentsInterface_singlecomment_ss:
     APPROVE: 'Godta kommentar'
     ISNTSPAM: 'Kommentaren er ikke spam'
     ISSPAM: 'Merk som spam'
