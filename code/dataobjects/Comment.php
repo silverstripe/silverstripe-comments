@@ -100,7 +100,9 @@ class Comment extends DataObject {
 	 * @return string link to this comment.
 	 */
 	public function Link($action = "") {
-		return $this->getParent()->Link($action) . '#' . $this->Permalink();
+	  if($parent = $this->getParent()){
+		return $parent->Link($action) . '#' . $this->Permalink();
+	  }
 	}
 	
 	/**
@@ -154,9 +156,9 @@ class Comment extends DataObject {
 	 * @return string
 	 */
 	public function getParentTitle() {
-		$parent = $this->getParent();
-
+	  if($parent = $this->getParent()){
 		return ($parent && $parent->Title) ? $parent->Title : $parent->ClassName . " #" . $parent->ID;
+	  }
 	}
 
 	/**
