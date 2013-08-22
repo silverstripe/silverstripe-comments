@@ -2,13 +2,17 @@ en:
   Comment:
     ALLOWCOMMENTS: 'Allow Comments'
     COMMENT: Comment
-    COMMENTBY: 'Comment by ''%s'''
+    COMMENTBY: 'Comment by %s'
     ISSPAM: 'Spam?'
     MODERATED: 'Moderated?'
     NAME: 'Author Name'
     ON: on
     PLURALNAME: Comments
     SINGULARNAME: Comment
+    CREATED: 'Date posted'
+    EMAIL: Email
+    PARENTTITLE: Parent
+    URL: URL
   CommentAdmin:
     Moderated: Moderated
     NeedsModeration: 'Needs Moderation'
@@ -16,6 +20,13 @@ en:
   CommentInterface:
     POST: Post
     YOURNAME: 'Your name'
+    COMMENT_MESSAGE_REQUIRED: 'Please enter your comment'
+    COMMENT_MESSAGE_URL: 'Please enter a valid URL'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Please enter a valid email address'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Please enter your email address'
+    PREVIEW: Preview
+    PREVIEWLABEL: Preview
+    YOURNAME_MESSAGE_REQUIRED: 'Please enter your name'
   CommentingController:
     COMMENTS: Comments
     EMAILADDRESS: 'Your email address (will not be published)'
@@ -37,6 +48,9 @@ en:
     PREV: previous
     RSSFEEDALLCOMMENTS: 'RSS feed for all comments'
     RSSFEEDCOMMENTS: 'RSS feed for comments on this page'
+    AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
+    PageCommentInterface:
+      DELETEALLCOMMENTS: 'Delete all comments on this page'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
   CommentsInterface_singlecomment_ss:
