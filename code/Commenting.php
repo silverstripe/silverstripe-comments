@@ -40,6 +40,7 @@ class Commenting {
 		'html_allowed' => false, // allow for sanitized HTML in comments
 		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
 		'use_preview' => false, // preview formatted comment (when allowing HTML). Requires include_js=true
+		'experimental_commentthreading' => false, //This is experimental - see https://github.com/silverstripe/silverstripe-comments/issues/28
 	);
 	
 	/**

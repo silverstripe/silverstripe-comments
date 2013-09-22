@@ -98,6 +98,9 @@ class CommentsExtension extends DataExtension {
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/lib/jquery.form.js');
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/jquery.validate.pack.js');
 			Requirements::javascript('comments/javascript/CommentsInterface.js');
+			if ($this->CommentThreading()) {
+				Requirements::javascript('comments/javascript/CommentThreading.js');
+			}
 		}
 
 		$interface = new SSViewer('CommentsInterface');
@@ -135,6 +138,16 @@ class CommentsExtension extends DataExtension {
 			'Comments'					=> $this->Comments()
 		)));
 	}
+	
+	
+	/**
+	 * Returns true if comment threading is turned on
+	 * NOTE: This is experimental
+	 */
+	public function CommentThreading(){
+		return Commenting::get_config_value($this->ownerBaseClass, 'experimental_commentthreading');
+	}
+	
 	
 	/**
 	 * Returns whether this extension instance is attached to a {@link SiteTree} object
