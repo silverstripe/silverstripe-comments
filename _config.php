@@ -26,6 +26,6 @@
  * consult the Commenting class.
  */
 
-if(class_exists('SiteTree')) {
+if(class_exists('SiteTree') && !Commenting::has_commenting('SiteTree')) {
 	Commenting::add('SiteTree');
 }
