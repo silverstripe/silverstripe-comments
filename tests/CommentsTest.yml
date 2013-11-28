@@ -27,6 +27,9 @@ CommentableItem:
 	nocomments:
 		Title: No comments
 		ProvideComments: 0
+	spammed:
+		ProvideComments: 1
+		Title: spammed
 
 Comment:
 	firstComA:
@@ -135,6 +138,30 @@ Comment:
 	disabledCom:
 		ParentID: =>CommentableItem.nocomments
 		Name: Disabled
+		Moderated: 0
+		IsSpam: 1
+		BaseClass: CommentableItem
+	testCommentList1:
+		ParentID: =>CommentableItem.spammed
+		Name: Comment 1
+		Moderated: 0
+		IsSpam: 0
+		BaseClass: CommentableItem
+	testCommentList2:
+		ParentID: =>CommentableItem.spammed
+		Name: Comment 2
+		Moderated: 1
+		IsSpam: 1
+		BaseClass: CommentableItem
+	testCommentList3:
+		ParentID: =>CommentableItem.spammed
+		Name: Comment 3
+		Moderated: 1
+		IsSpam: 0
+		BaseClass: CommentableItem
+	testCommentList4:
+		ParentID: =>CommentableItem.spammed
+		Name: Comment 4
 		Moderated: 0
 		IsSpam: 1
 		BaseClass: CommentableItem

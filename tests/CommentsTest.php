@@ -18,6 +18,36 @@ class CommentsTest extends FunctionalTest {
 	}
 	
 
+	public function testCommentsList() {
+		// comments don't require moderation so unmoderated comments can be 
+		// shown but not spam posts
+		Commenting::set_config_value('CommentableItem','require_moderation', false);
+
+		$item = $this->objFromFixture('CommentableItem', 'spammed');
+
+		$this->assertDOSEquals(array(
+			array('Name' => 'Comment 1'),
+			array('Name' => 'Comment 3')
+		), $item->getComments(), 'Only 2 non spam posts should be shown');
+
+		// when moderated, only moderated, non spam posts should be shown.
+		Commenting::set_config_value('CommentableItem','require_moderation', true);
+
+		$this->assertDOSEquals(array(
+			array('Name' => 'Comment 3')
+		), $item->getComments(), 'Only 1 non spam, moderated post should be shown');
+
+		// when logged in as an user with CMS_ACCESS_CommentAdmin rights they 
+		// should see all the comments whether we have moderation on or not
+		$this->logInWithPermission('CMS_ACCESS_CommentAdmin');
+
+		Commenting::set_config_value('CommentableItem','require_moderation', true);
+		$this->assertEquals(4, $item->getComments()->Count());
+
+		Commenting::set_config_value('CommentableItem','require_moderation', false);
+		$this->assertEquals(4, $item->getComments()->Count());
+	}
+
 	public function testCanView() {
 		$visitor = $this->objFromFixture('Member', 'visitor');
 		$admin = $this->objFromFixture('Member', 'commentadmin');
@@ -222,6 +252,7 @@ class CommentsTest extends FunctionalTest {
 
 		Commenting::set_config_value('CommentableItem','html_allowed', $origAllowed);
 	}
+
 }
 
 
