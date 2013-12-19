@@ -26,14 +26,14 @@ class CommentingControllerTests extends FunctionalTest {
 		$this->assertEquals(10, substr_count($response->getBody(), "<item>"), "10 approved, non spam comments on page 1");
 
 		$response = $this->get('CommentingController/rss?start=10');
-		$this->assertEquals(3, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
+		$this->assertEquals(4, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
 
 		// all comments on a type
 		$response = $this->get('CommentingController/rss/CommentableItem');
 		$this->assertEquals(10, substr_count($response->getBody(), "<item>"));
 
 		$response = $this->get('CommentingController/rss/CommentableItem?start=10');
-		$this->assertEquals(3, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
+		$this->assertEquals(4, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
 
 		// specific page
 		$response = $this->get('CommentingController/rss/CommentableItem/'.$item->ID);
