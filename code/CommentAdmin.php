@@ -36,7 +36,7 @@ class CommentAdmin extends LeftAndMain {
 		if($record && !$record->canView()) {
 			return Security::permissionFailure($this);
 		}
-		
+
 		$commentsConfig = GridFieldConfig::create()->addComponents(
 			new GridFieldFilterHeader(),
 			new GridFieldDataColumns(),
@@ -46,7 +46,17 @@ class CommentAdmin extends LeftAndMain {
 			new GridFieldDetailForm(),
 			new GridFieldExportButton(),
 			new GridFieldEditButton(),
-			new GridFieldDetailForm()
+			new GridFieldDetailForm(),
+			$manager = new GridFieldBulkManager()
+		);
+
+		$manager->addBulkAction(
+			'markAsSpam', 'Mark as spam', 'CommentsGridFieldBulkAction_MarkAsSpam', 
+			array(
+				'isAjax' => true,
+				'icon' => 'delete',
+				'isDestructive' => true 
+			)
 		);
 
 		$needs = new GridField(
