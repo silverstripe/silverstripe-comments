@@ -39,7 +39,7 @@ class CommentAdmin extends LeftAndMain {
 
 		$commentsConfig = GridFieldConfig::create()->addComponents(
 			new GridFieldFilterHeader(),
-			new GridFieldDataColumns(),
+			$columns = new GridFieldDataColumns(),
 			new GridFieldSortableHeader(),
 			new GridFieldPaginator(25),
 			new GridFieldDeleteAction(),
@@ -58,6 +58,16 @@ class CommentAdmin extends LeftAndMain {
 				'isDestructive' => true 
 			)
 		);
+
+		$columns->setFieldFormatting(array(
+			'ParentTitle' => function($value, &$item) {
+				return sprintf(
+					'<a href="%s" class="cms-panel-link external-link action" target="_blank">%s</a>',
+					Convert::raw2xml($item->Link()),
+					Convert::raw2xml($value)
+				);
+			}
+		));
 
 		$needs = new GridField(
 			'Comments', 
