@@ -5,13 +5,13 @@ php:
  - 5.3
 
 env:
- - DB=MYSQL CORE_RELEASE=3.1
- - DB=PGSQL CORE_RELEASE=3.1
+ - DB=MYSQL CORE_RELEASE=3.0
+ - DB=PGSQL CORE_RELEASE=3.0
 
 matrix:
   include:
     - php: 5.4
-      env: DB=MYSQL CORE_RELEASE=3.1
+      env: DB=MYSQL CORE_RELEASE=3.0
 
 before_script:
  - git clone git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
