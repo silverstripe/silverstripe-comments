@@ -111,7 +111,7 @@
 		 * Clicking one of the metalinks performs the operation via ajax
 		 * this inclues the spam and approve links
 		 */
-		$(".action-links a", commentsList).live('click', function(e) {
+		$(".action-links a", commentsList).on('click', function(e) {
 			var link = $(this);
 			var comment = link.parents('.comment:first');
 			
@@ -154,7 +154,7 @@
 		/**
 		 * Ajax pagination
 		 */
-		pagination.find('a').live('click', function(){
+		pagination.find('a').on('click', function(){
 			commentsList.addClass('loading');
 			$.ajax({
 				url: $(this).attr('href'),
