@@ -111,7 +111,7 @@
 		 * Clicking one of the metalinks performs the operation via ajax
 		 * this inclues the spam and approve links
 		 */
-		$(".action-links a", commentsList).on('click', function(e) {
+		commentsList.on('click', '.action-links a', function(e) {
 			var link = $(this);
 			var comment = link.parents('.comment:first');
 			
