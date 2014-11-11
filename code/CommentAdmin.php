@@ -5,7 +5,7 @@
  *
  * @package comments
  */
-class CommentAdmin extends LeftAndMain {
+class CommentAdmin extends LeftAndMain implements PermissionProvider {
 
 	private static $url_segment = 'comments';
 
@@ -23,6 +23,15 @@ class CommentAdmin extends LeftAndMain {
 		'EditForm',
 		'unmoderated'
 	);
+
+	public function providePermissions() {
+		return array(
+			"CMS_ACCESS_CommentAdmin" => array(
+				'name' => _t('CommentAdmin.ADMIN_PERMISSION', "Access to 'Comments' section"),
+				'category' => _t('Permission.CMS_ACCESS_CATEGORY', 'CMS Access')
+			)
+		);
+	}
 
 	/**
 	 * @return Form

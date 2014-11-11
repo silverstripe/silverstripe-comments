@@ -17,6 +17,7 @@ en:
     Moderated: Moderated
     NeedsModeration: 'Needs Moderation'
     MENUTITLE: Comments
+    ADMIN_PERMISSION: "Access to 'Comments' section"
   CommentInterface:
     POST: Post
     YOURNAME: 'Your name'
