@@ -398,6 +398,7 @@ class Comment extends DataObject {
 		$config->set('AutoFormat.AutoParagraph', true);
 		$config->set('AutoFormat.Linkify', true);
 		$config->set('URI.DisableExternalResources', true);
+		$config->set('Cache.SerializerPath', getTempFolder());
 		return new HTMLPurifier($config);
 	}
 
