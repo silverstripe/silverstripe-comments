@@ -28,4 +28,9 @@
 			<% end_if %>
 		</ul>
 	<% end_if %>
+
+	<% if $CommentThreading %>
+		<% include NestedComments %>
+	<% end_if %>
+
 <% end_if %>

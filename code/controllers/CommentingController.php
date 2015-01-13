@@ -14,7 +14,8 @@ class CommentingController extends Controller {
 		'rss',
 		'CommentsForm',
 		'doPostComment',
-		'doPreviewComment'
+		'doPreviewComment',
+		'replyform'
 	);
 
 	private $baseClass = "";
@@ -205,6 +206,36 @@ class CommentingController extends Controller {
 
 		return $this->httpError(404);
 	}
+	
+	/**
+	 * Renders html for replying to threaded comments
+	 * Should be called via AJAX
+	 * Example of url: /CommentingController/replyform/5?ReturnURL=/blog/sample-blog-entry/
+	 * 
+	 * @return string
+	 */
+	public function replyform(){
+		$p = $this->getURLParams();
+		$cID = (int) $p['ID'];
+		$c = Comment::get()->ByID($cID);
+
+		$controller = new CommentingController();		
+		$controller->setOwnerRecord($c);
+		$controller->setBaseClass('Comment');
+		$controller->setOwnerController(Controller::curr());
+		
+		$form = $controller->CommentsForm();
+		
+		//setting return url
+		if (isset($_GET['ReturnURL'])) {
+			$form->loadDataFrom(array(
+				'ReturnURL'		=> $_GET['ReturnURL'],
+			));
+		}
+		
+		return $form->forTemplate();
+	}
+		
 	
 	/**
 	 * Returns the comment referenced in the URL (by ID). Permission checking
