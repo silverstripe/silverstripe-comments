@@ -39,6 +39,7 @@ Comment:
 		BaseClass: CommentableItem
 		Moderated: 1
 		IsSpam: 0
+		Depth: 1
 	secondComA:
 		ParentID: =>CommentableItem.second
 		Name: SA
@@ -46,6 +47,7 @@ Comment:
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	secondComB:
 		ParentID: =>CommentableItem.second
 		Name: SB
@@ -53,6 +55,7 @@ Comment:
 		Moderated: 0
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	secondComC:
 		ParentID: =>CommentableItem.second
 		Name: SB
@@ -60,6 +63,7 @@ Comment:
 		Moderated: 1
 		IsSpam: 1
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComA:
 		ParentID: =>CommentableItem.third
 		Name: TA
@@ -67,6 +71,7 @@ Comment:
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComB:
 		ParentID: =>CommentableItem.third
 		Name: TB
@@ -74,6 +79,7 @@ Comment:
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComC:
 		ParentID: =>CommentableItem.third
 		Name: TC
@@ -81,18 +87,21 @@ Comment:
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComD:
 		ParentID: =>CommentableItem.third
 		Name: TC
 		Comment: textTC
 		Moderated: 1
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComE:
 		ParentID: =>CommentableItem.third
 		Name: TC
 		Comment: textTC
 		Moderated: 1
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComF:
 		ParentID: =>CommentableItem.third
 		Name: TC
@@ -100,6 +109,7 @@ Comment:
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComG:
 		ParentID: =>CommentableItem.third
 		Name: TC
@@ -107,6 +117,7 @@ Comment:
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComH:
 		ParentID: =>CommentableItem.third
 		Name: TC
@@ -114,6 +125,7 @@ Comment:
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComI:
 		ParentID: =>CommentableItem.third
 		Name: TC
@@ -121,6 +133,7 @@ Comment:
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComJ:
 		ParentID: =>CommentableItem.third
 		Name: TC
@@ -128,6 +141,7 @@ Comment:
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	thirdComK:
 		ParentID: =>CommentableItem.third
 		Name: TC
@@ -135,33 +149,39 @@ Comment:
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	disabledCom:
 		ParentID: =>CommentableItem.nocomments
 		Name: Disabled
 		Moderated: 0
 		IsSpam: 1
 		BaseClass: CommentableItem
+		Depth: 1
 	testCommentList1:
 		ParentID: =>CommentableItem.spammed
 		Name: Comment 1
 		Moderated: 0
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	testCommentList2:
 		ParentID: =>CommentableItem.spammed
 		Name: Comment 2
 		Moderated: 1
 		IsSpam: 1
 		BaseClass: CommentableItem
+		Depth: 1
 	testCommentList3:
 		ParentID: =>CommentableItem.spammed
 		Name: Comment 3
 		Moderated: 1
 		IsSpam: 0
 		BaseClass: CommentableItem
+		Depth: 1
 	testCommentList4:
 		ParentID: =>CommentableItem.spammed
 		Name: Comment 4
 		Moderated: 0
 		IsSpam: 1
 		BaseClass: CommentableItem
+		Depth: 1
