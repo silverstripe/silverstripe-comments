@@ -1,0 +1,159 @@
+
+
+.typography ul.action-links, .typography ul.comments-list, .typography ul.no-bullet {
+	margin-left: 0px;
+	padding-left: 0px;
+
+}
+
+.typography ul.action-links, {
+	display: block;
+	float: none;
+	border: solid red 10px;
+}
+
+.action-links {
+	clear: left;
+}
+
+.action-links li, .no-bullet li {
+	float: left;
+	display: inline;
+	list-style-type: none;
+	padding-left: 0px;
+	margin-left: 0px;
+	margin-right: 20px;
+	font-style: italic;
+}
+
+.commenting-rss-feed {
+	clear: both;
+	padding-top: 20px;
+}
+
+.comments-heading, p.info {
+	clear: both;
+}
+
+.comments-list {
+	clear: both;
+	padding-top: 20px;
+}
+
+.no-bullet li.hidden {
+	display: none;
+}
+
+#CommentsFormContainer {
+	clear: both;
+}
+
+.typography li.comment {
+	list-style-type: none;
+}
+
+/* comments */
+li.comment {
+	background: #F2F2F2;
+	margin-bottom: 50px;
+	padding-bottom: 40px;
+	padding: 10px;
+	clear: both;
+	display: block;
+}
+
+div.comment {
+	display: table;
+}
+
+
+/*
+.comment .gravatar {
+	float: left;
+	display: inline;
+}
+*/
+
+.comment .actualcomment {
+	display: table-cell;
+	vertical-align:top;
+}
+
+.comment .gravatarContainer {
+	display: table-cell;
+	vertical-align:top;
+	width: 120px;
+}
+
+
+.comment div.date {
+	color: #444;
+	margin-bottom: 7px;
+}
+
+/* when a comment is successfully posted */
+.commentsuccess {
+	color: orange;
+	font-weight: bold;
+	clear: both;
+}
+
+/* commenting indentation */
+.typography .comment.depth2 {
+  margin-left: 40px;
+}
+
+.typography .comment.depth3 {
+  margin-left: 70px;
+}
+
+.typography .comment.depth4 {
+  margin-left: 100px;
+}
+
+.typography .comment.depth5 {
+  margin-left: 130px;
+}
+
+.typography .comment.depth6 {
+  margin-left: 160px;
+}
+
+.typography .comment.depth7 {
+  margin-left: 190px;
+}
+
+.typography .comment.depth8 {
+  margin-left: 220px;
+}
+
+/* Reply to form indents */
+.typography .comment.depth1 #CommentsFormContainer {
+	margin-left: 25%;
+}
+
+.typography .comment.depth2 #CommentsFormContainer {
+	margin-left: 25%;
+}
+
+.typography .comment.depth3 #CommentsFormContainer {
+	margin-left: 25%;
+}
+
+.typography .comment.depth4 #CommentsFormContainer {
+	margin-left: 25%;
+}
+.typography .comment.depth5 #CommentsFormContainer {
+	margin-left: 25%;
+}
+
+.typography .comment.depth6 #CommentsFormContainer {
+	margin-left: 25%;
+}
+.typography .comment.depth7 #CommentsFormContainer {
+	margin-left: 25%;
+}
+
+.typography .comment.depth8 #CommentsFormContainer {
+	margin-left: 25%;
+}
