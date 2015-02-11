@@ -1,5 +1,6 @@
 <div class="comment" data-comment-id="$ID" id="<% if isPreview %>comment-preview<% else %>$Permalink<% end_if %>">
 <% if MarkedAsDeleted %><% _t('DELETED_BY_ADMIN','This comment was deleted by an administrator') %><% else %>
+<% if $Gravatar %><div class="gravatarContainer"><img class="gravatar" src="$Gravatar" alt="Gravatar for $Name" title="Gravatar for $Name" /></div><% end_if %>
 <div class="actualcomment">
 <% if $URL %>
 	<h4><% _t('CommentsInterface_singlecomment_ss.PBY','Posted by') %> <a href="$URL.URL" rel="nofollow">$AuthorName.XML</a></h4>
@@ -33,5 +34,4 @@ $EscapedComment
 		<% end_if %>
 </div>
 <% end_if %>
-<% if $Gravatar %><div class="gravatarContainer"><img class="gravatar" src="$Gravatar" alt="Gravatar for $Name" title="Gravatar for $Name" /></div><% end_if %>
 </div>
