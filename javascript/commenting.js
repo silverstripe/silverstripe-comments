@@ -66,7 +66,7 @@
 					setTimeout(function() {msg.fadeOut(3000);},2000);
 				} else {
 					// a reply
-					newcomment.prepend(msg);
+					newcomment.parent().prepend(msg);
 					$('body,html').animate({
 						scrollTop: newcomment.offset().top - 30
 					}, 200);
