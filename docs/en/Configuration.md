@@ -21,7 +21,9 @@ default settings
 		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
 		'use_preview' => false, // preview formatted comment (when allowing HTML). Requires include_js=true
 		'use_gravatar' => false,
-		'gravatar_size' => 80
+		'gravatar_size' => 80,
+		'thread_comments' => false, // allow replies to existing comments.  Requires include_js=true,
+		'maximum_thread_comment_depth' => 10
 	));
 	
 If you want to customize any of the configuration options after you have added 
@@ -96,3 +98,50 @@ swear words, or mild violence.
 * r: may contain such things as harsh profanity, intense violence, nudity, or 
 hard drug use.
 * x: may contain hardcore sexual imagery or extremely disturbing violence.
+
+## Threaded Comments
+
+Comments can be replied to by adding this to your mysite/_config.php file
+
+	Commenting::set_config_value('SiteTree', 'thread_comments', true);
+	Commenting::set_config_value('SiteTree', 'maximum_thread_comment_depth', 8);
+	Commenting::set_config_value('SiteTree', 'order_comments_by', 'Lineage');
+
+'Lineage' here refers to a string representing the ancestry of a comment, e.g. 
+0000700124 would mean that comment with ID 124 replied to comment with ID of 7.
+This technique avoid expensive hierarchical traversal of the comments tree from
+a database query point of view.
+
+A 'Reply' button will appear by comments and when this is clicked the end user
+will be able to reply to a comment up until the maximum depth of hierarchy has
+been reached.
+
+The moderation flag is also respected, so either the comment appears immediately or
+a message indicating moderation is shown.
+
+## Addition of Twitter Username to Comment Posting / Rendering
+
+The addition of Twitter username can be achieved by adding the following to mysite/_config.php
+
+	Object::add_extension('Comment', 'CommentTwitterUsernameExtension');
+	Object::add_extension('CommentingController', 'CommentingControllerTwitterUsernameExtension');
+
+This adds the following functionality:
+
+* The end user can optionally enter a Twitter username
+* When comments are rendering the relevant Twitter handle is shown, along with the number of
+followers for that user.
+
+Note that in or to show this widget correctly, you need to include the following in your theme
+when rendering comments:
+
+```
+<script>window.twttr = (function (d, s, id) {
+  var t, js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id; js.src= "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+  return window.twttr || (t = { _e: [], ready: function (f) { t._e.push(f) } });
+}(document, "script", "twitter-wjs"));
+</script>
+```
