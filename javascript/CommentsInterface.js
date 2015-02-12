@@ -261,7 +261,7 @@
 				// get the root node of the comment
 				var commentbox = $(this).closest('.comment');
 
-				commentbox.append($('#CommentsFormContainer'));//.parent().parent());
+				commentbox.parent().append($('#CommentsFormContainer'));//.parent().parent());
 				$(this).parent().addClass('hidden'); // hide reply button
 
 				$(this).parent().parent().find('.cancelReplyButton').removeClass('hidden'); // show cancel reply button
