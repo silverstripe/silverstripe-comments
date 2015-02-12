@@ -46,6 +46,12 @@
 
 #CommentsFormContainer {
 	clear: both;
+	display: block;
+	width: 100%;
+}
+
+#CommentsFormContainer .Actions {
+	margin-bottom: 65px;
 }
 
 .typography li.comment {
@@ -129,31 +135,31 @@ div.comment {
 
 /* Reply to form indents */
 .typography .comment.depth1 #CommentsFormContainer {
-	margin-left: 25%;
+	margin-left: 120px;
 }
 
 .typography .comment.depth2 #CommentsFormContainer {
-	margin-left: 25%;
+	margin-left: 120px;
 }
 
 .typography .comment.depth3 #CommentsFormContainer {
-	margin-left: 25%;
+	margin-left: 120px;
 }
 
 .typography .comment.depth4 #CommentsFormContainer {
-	margin-left: 25%;
+	margin-left: 120px;
 }
 .typography .comment.depth5 #CommentsFormContainer {
-	margin-left: 25%;
+	margin-left: 120px;
 }
 
 .typography .comment.depth6 #CommentsFormContainer {
-	margin-left: 25%;
+	margin-left: 120px;
 }
 .typography .comment.depth7 #CommentsFormContainer {
-	margin-left: 25%;
+	margin-left: 120px;
 }
 
 .typography .comment.depth8 #CommentsFormContainer {
-	margin-left: 25%;
+	margin-left: 120px;
 }
