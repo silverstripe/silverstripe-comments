@@ -44,6 +44,7 @@ class CommentsExtension extends DataExtension {
 	 */
 	public function getComments() {
 		$order = Commenting::get_config_value($this->ownerBaseClass, 'order_comments_by');
+		$threaded = Commenting::get_config_value($this->ownerBaseClass, 'thread_comments');
 
 		$list = Comment::get()->filter(array(
 			'ParentID' => $this->owner->ID,
@@ -130,7 +131,9 @@ class CommentsExtension extends DataExtension {
 			'Parent'					=> $this->owner,
 			'AddCommentForm'			=> $form,
 			'ModeratedSubmitted'		=> $moderatedSubmitted,
-			'Comments'					=> $this->getComments()
+			'Comments'					=> $this->getComments(),
+			'ThreadedComments'          => Commenting::get_config_value($this->ownerBaseClass, 'thread_comments'),
+            'MaxThreadedCommentDepth'   => Commenting::get_config_value($this->ownerBaseClass, 'maximum_thread_comment_depth')
 		)));
 	}
 	

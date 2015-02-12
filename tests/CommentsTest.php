@@ -108,6 +108,51 @@ class CommentsTest extends FunctionalTest {
 		$this->assertFalse($check && $check->exists());
 	}
 
+	/*
+	Test a reply to a comment.  This should set the following:
+	- a depth of 2
+	- lineage containing ten characters, namely the ID of the parent and then the ID of the child comment, padded out to 5 chars each
+	*/
+	public function testReplyToComment() {
+		$comment1 = $this->objFromFixture('Comment', 'firstComA');
+		$comment2 = $this->objFromFixture('Comment', 'secondComC');
+		$comment2->ParentCommentID = $comment1->ID;
+		$comment2->write();
+
+		$check = DataObject::get_by_id('Comment', $comment2->ID);
+		$this->assertEquals(2, $check->Depth);
+		$parentpadded = str_pad($check->ParentCommentID, 5, '0', STR_PAD_LEFT);
+		$lineage = $parentpadded.str_pad($check->ID, 5, '0', STR_PAD_LEFT);
+		$this->assertEquals($lineage, $check->Lineage);
+	}
+
+
+	public function testCanReply() {
+		Commenting::set_config_value('CommentableItem','maximum_thread_comment_depth', 8);
+		Commenting::set_config_value('CommentableItem','thread_comments', true);
+		Commenting::set_config_value('CommentableItem','require_moderation', false);
+
+		$disabledComment = $this->objFromFixture('Comment', 'disabledCom');
+		$this->assertFalse($disabledComment->CanReply(),
+			'One cannot reply to a disabled comment'
+		);
+
+		// nothing to stop this one being replied to
+		$comment = $this->objFromFixture('Comment', 'firstComA');
+		$this->assertTrue($comment->CanReply(), 'This comment can be replied to');
+
+		Commenting::set_config_value('CommentableItem','maximum_thread_comment_depth', 1);
+		$this->assertFalse($comment->CanReply(), 'Cannot reply due to having reached maximum depth');
+
+		Commenting::set_config_value('CommentableItem','maximum_thread_comment_depth', 8);
+		Commenting::set_config_value('CommentableItem','thread_comments', false);
+		$this->assertFalse($comment->CanReply(), 'Cannot reply due threaded comments being turned off');
+
+		Commenting::set_config_value('CommentableItem','thread_comments', true);
+		$comment->Moderated = false;
+		$this->assertFalse($comment->CanReply(), "Cannot reply to a comment that is still awaiting moderation");
+	}
+
 	public function testSpamComment() {
 		$comment = $this->objFromFixture('Comment', 'firstComA');
 		$this->assertNull($comment->SpamLink(), 'No permission to see mark as spam link');
