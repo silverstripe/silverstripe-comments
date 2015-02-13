@@ -136,7 +136,7 @@ class CommentingController extends Controller {
 		}
 
 		if(($comment = $this->getComment()) && $comment->canDelete()) {
-			$childcount = Comment::get()->filter('ParentCommentID', $this->ID)->count();
+			$childcount = Comment::get()->filter('ParentCommentID', $comment->ID)->count();
 			if ($childcount == 0) {
 				$comment->delete();
 			} else {
