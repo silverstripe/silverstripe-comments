@@ -56,4 +56,23 @@ class CommentingControllerTests extends FunctionalTest {
 	public function testDoCommentsForm() {
 		$this->markTestIncomplete("Not implemented");
 	}
+
+	public function testDeleteWithChildComments() {
+		$this->logInAs('commentadmin');
+		
+		// create minimal parent hierarchy, namely parent and child
+		$comment1 = $this->objFromFixture('Comment', 'firstComA');
+		$comment2 = $this->objFromFixture('Comment', 'secondComC');
+		$comment2->ParentCommentID = $comment1->ID;
+		$comment2->write();
+
+		// check permissions for deletion of comment
+		$this->assertEquals(true, $comment1->canDelete());
+
+		// try to delete the parent comment
+		$response = $this->get('CommentingController/delete/'.$comment1->ID);
+		$check = DataObject::get_by_id('Comment', $comment1->ID);
+		$this->assertEquals($check->MarkedAsDeleted, true);
+
+	}
 }

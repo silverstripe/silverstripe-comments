@@ -40,6 +40,8 @@ class Commenting {
 		'html_allowed' => false, // allow for sanitized HTML in comments
 		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
 		'use_preview' => false, // preview formatted comment (when allowing HTML). Requires include_js=true
+		'thread_comments' => false, // allow replies to existing comments.  Requires include_js=true,
+		'maximum_thread_comment_depth' => 10 // how deep the level of replies can be when threads are used
 	);
 	
 	/**

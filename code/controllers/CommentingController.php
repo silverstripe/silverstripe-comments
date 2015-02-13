@@ -11,6 +11,7 @@ class CommentingController extends Controller {
 		'spam',
 		'ham',
 		'approve',
+		'viewcomment',
 		'rss',
 		'CommentsForm',
 		'doPostComment',
@@ -135,7 +136,15 @@ class CommentingController extends Controller {
 		}
 
 		if(($comment = $this->getComment()) && $comment->canDelete()) {
-			$comment->delete();
+			$childcount = Comment::get()->filter('ParentCommentID', $comment->ID)->count();
+			if ($childcount == 0) {
+				$comment->delete();
+			} else {
+				// mark the comment as deleted, but do not actually delete it as there are child comments
+				$comment->MarkedAsDeleted = true;
+				$comment->write();
+			}
+			
 				
 			return ($this->request->isAjax()) ? true : $this->redirectBack();
 		}
@@ -205,6 +214,21 @@ class CommentingController extends Controller {
 
 		return $this->httpError(404);
 	}
+
+
+	/**
+	 * Show a given {@link Comment} for AJAX reply.  No security check as it's viewing of public data
+	 */
+	public function viewcomment() {
+		$comment = $this->getComment();
+		if(($comment = $this->getComment()) && $comment->canView() && $comment->Moderated) {				
+			return ($this->request->isAjax()) ? $comment->renderWith('CommentsInterface_singlecomment') : $this->redirectBack();
+		} else {
+			return $this->httpError(403);
+		}
+
+		return $this->httpError(404);
+	}
 	
 	/**
 	 * Returns the comment referenced in the URL (by ID). Permission checking
@@ -269,7 +293,8 @@ class CommentingController extends Controller {
 			),
 			HiddenField::create("ParentID"),
 			HiddenField::create("ReturnURL"),
-			HiddenField::create("BaseClass")
+			HiddenField::create("BaseClass"),
+			HiddenField::create("ParentCommentID")
 		);
 
 		// Preview formatted comment. Makes most sense when shortcodes or
@@ -411,12 +436,32 @@ class CommentingController extends Controller {
 			Session::set('CommentsModerated', 1);
 		}
 
+		// ensure that the parent comment can be replied to, if not throw a 403 forbidden error
+		$threaded = Commenting::get_config_value($class, 'thread_comments');
+        if ($threaded) {
+    		$parentidfield = $form->Fields()->fieldByName('ParentCommentID');
+    		if ($parentidfield) {
+    			$parentid = $parentidfield->Value();
+                if ($parentid) {
+                        $parentComment = DataObject::get_by_id('Comment', $parentid);
+                        if (!$parentComment->CanReply()) {
+                        	$this->httpError(403);
+                        }
+                }
+    		}
+        }
+
 		
 		$comment = new Comment();
 		$form->saveInto($comment);
 
 		$comment->AllowHtml = Commenting::get_config_value($class, 'html_allowed');
 		$comment->Moderated = ($moderated) ? false : true;
+
+		
+		
+        
+
 
 		// Save into DB, or call pre-save hooks to give accurate preview
 		if($isPreview) {
@@ -435,8 +480,62 @@ class CommentingController extends Controller {
 
 		$hash = ($moderated) ? $holder : $comment->Permalink();
 		$url = (isset($data['ReturnURL'])) ? $data['ReturnURL'] : false;
+
+		if (Director::is_ajax()) {
+			$result = array();
+			if ($url) {
+				$result['success'] = true;
+				if (Commenting::get_config_value($comment->BaseClass, 'require_moderation')) {
+					$result['message'] = _t('COMMENT.SuccessButModerated','Your comment is awaiting moderation');
+				} else {
+					$result['message'] = _t('COMMENT.Success','Your comment was posted');
+				}
+				
+			} else {
+				$result['success'] = false;
+				$result['message'] = _t('COMMENT.Fail','Please fix error in form');
+			}
+			$result['parentcommentid'] = $comment->ParentCommentID;
+			$result['commentid'] = $comment->ID;
+			$result['depth'] = $comment->Depth;
+
+			$result['requiresmoderation'] = Commenting::get_config_value($comment->BaseClass, 'require_moderation');
+
+
+			$interface = new SSViewer('CommentsInterfaceForm');
 			
-		return ($url) ? $this->redirect($url .'#'. $hash) : $this->redirectBack();
+			//$controller = new CommentingController();		
+			//$controller->setOwnerRecord($this->owner);
+			//$controller->setBaseClass($this->ownerBaseClass);
+			//$controller->setOwnerController(Controller::curr());
+
+			$moderatedSubmitted = Session::get('CommentsModerated');
+			Session::clear('CommentsModerated');
+
+			// a little bit all over the show but to ensure a slightly easier upgrade for users
+			// return back the same variables as previously done in comments
+			$result['html'] = $interface->process(new ArrayData(array(
+				'CommentHolderID' 			=> Commenting::get_config_value($this->ownerBaseClass, 'comments_holder_id'),
+				'PostingRequiresPermission' => Commenting::get_config_value($this->ownerBaseClass, 'required_permission'),
+				'CanPost' 					=> Commenting::can_member_post($this->ownerBaseClass),
+				'RssLink'					=> "CommentingController/rss",
+				//'RssLinkPage'				=> "CommentingController/rss/". $this->ownerBaseClass . '/'.$this->owner->ID,
+				'RssLinkPage'				=> "CommentingController/rss/". $this->ownerBaseClass.'FIXME',
+				'CommentsEnabled' 			=> true,
+				'Parent'					=> $this->dataRecord,
+				'AddCommentForm'			=> $form,
+				'ModeratedSubmitted'		=> $moderatedSubmitted,
+				//'ThreadedComments'          => true, // FIXME - hardcoded
+	           // 'MaxThreadedCommentDepth'   => 10
+	            'ThreadedComments'          => Commenting::get_config_value($this->ownerBaseClass, 'thread_comments'),
+	            'MaxThreadedCommentDepth'   => Commenting::get_config_value($this->ownerBaseClass, 'maximum_thread_comment_depth')
+			)))->Value;
+
+			return json_encode($result);
+		} else {
+			// return either back to the form if errors, or redirect to the comment holder to show any messages
+			return ($url) ? $this->redirect($url .'#'. $hash) : $this->redirectBack();
+		}
 	}
 
 	public function doPreviewComment($data, $form) {

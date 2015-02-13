@@ -16,11 +16,16 @@ class Comment extends DataObject {
 		"Moderated"		=> "Boolean",
 		"IsSpam"		=> "Boolean",
 		"ParentID"		=> "Int",
-		'AllowHtml'		=> "Boolean"
+		'AllowHtml'		=> "Boolean",
+		"ParentID"		=> "Int",
+		"Depth" => 'Int',
+		'Lineage' => 'Varchar(255)',
+		'MarkedAsDeleted' => 'Boolean'
 	);
 
 	private static $has_one = array(
-		"Author"		=> "Member"
+		"Author"		=> "Member",
+		"ParentComment" => 'Comment'
 	);
 	
 	private static $default_sort = '"Created" DESC';
@@ -32,6 +37,11 @@ class Comment extends DataObject {
 	private static $defaults = array(
 		"Moderated" => 1,
 		"IsSpam" => 0
+	);
+
+	private static $indexes = array(
+		'Depth' => true,
+		'Lineage' => true
 	);
 	
 	private static $casting = array(
@@ -56,13 +66,37 @@ class Comment extends DataObject {
 		'IsSpam' => 'Is Spam'
 	);
 
-	public function onBeforeWrite() {
-		parent::onBeforeWrite();
+	public function onAfterWrite() {
+		parent::onAfterWrite();
 
-		// Sanitize HTML, because its expected to be passed to the template unescaped later
-		if($this->AllowHtml) {
-			$this->Comment = $this->purifyHtml($this->Comment);
+		if (!$this->LineageFixed) {
+			// Sanitize HTML, because its expected to be passed to the template unescaped later
+			if($this->AllowHtml) {
+				$this->Comment = $this->purifyHtml($this->Comment);
+			}
+
+			// Calculate depth and lineage from parent comment
+			if ($this->ParentCommentID == 0) {
+				$this->Depth = 1;
+				$this->Lineage = $this->paddedNumber($this->ID);
+			} else {
+				$pc = $this->ParentComment();
+				$this->Depth = $pc->Depth + 1;
+				$this->Lineage = ($pc->Lineage).$this->paddedNumber($this->ID);
+			}
+
+			$this->LineageFixed = true;
+
+			$this->write();
 		}
+
+		
+	}
+
+
+	private function paddedNumber($i) {
+		// fixme, use config
+		return str_pad($i, 5, '0', STR_PAD_LEFT);
 	}
 	
 	/**
@@ -91,6 +125,31 @@ class Comment extends DataObject {
 			
 			DB::alteration_message("Migrated PageComment to Comment","changed");
 			DB::getConn()->dontRequireTable('PageComment');
+		}
+
+		DB::query('UPDATE Comment set Depth=1 where ParentCommentID = 0;');
+
+		// add depth to comments missing this value
+		$maxthreaddepth = Commenting::get_config_value($this->Class, 'maximum_thread_comment_depth');
+
+		for ($i=1; $i < $maxthreaddepth; $i++) { 
+			$sql = "UPDATE Comment c1\n".
+			"INNER JOIN Comment c2\n".
+			"ON c1.ID = c2.ParentCommentID\n".
+			"SET c2.Depth=".($i+1)." WHERE c1.Depth=".$i.";";
+			DB::query($sql);
+		}
+
+		DB::alteration_message("Updated missing depth values from comment hierarchy","changed");
+
+		// now fix any missing lineage
+		for ($i=1; $i < $maxthreaddepth; $i++) {
+			$comments = Comment::get()->filter('Depth',$i)->where('Lineage is NULL');
+			foreach ($comments as $comment) {
+				$comment->write();
+				DB::alteration_message("Lineage fixed for comment ".$comment->write(),"changed");
+			}
+
 		}
 	}
 	 
@@ -333,6 +392,21 @@ class Comment extends DataObject {
 			))));
 		}
 	}
+
+	/**
+	 * @return string
+	 */
+	public function ViewCommentLink() {
+		if($this->canView() && $this->Moderated) {
+			$token = SecurityToken::inst();
+
+			return DBField::create_field("Varchar", Director::absoluteURL($token->addToUrl(sprintf(
+				"CommentingController/viewcomment/%s", 'COMMENTID'
+			))));
+		} else {
+			return 'lolnope';
+		}
+	}
 	
 	/**
 	 * @return string
@@ -417,5 +491,18 @@ class Comment extends DataObject {
 		}
 
 		return $gravatar;
+	}
+
+	/*
+	Check if this comment can be replied to
+	- check threading is enabled
+	- comment must have been moderated
+	*/
+	public function CanReply() {
+		$threaded = Commenting::get_config_value($this->BaseClass, 'thread_comments');
+		$maxdepth = Commenting::get_config_value($this->BaseClass, 'maximum_thread_comment_depth');
+		$disabled = $this->Disabled;
+		$moderated = $this->Moderated;
+		return  $threaded && $this->Moderated && $this->Depth < $maxdepth && !$disabled && $this->Moderated;
 	}
 }
