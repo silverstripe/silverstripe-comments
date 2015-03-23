@@ -13,12 +13,18 @@
  */
 
 class Commenting {
-	
+
 	/**
 	 * @var array map of enabled {@link DataObject} and related configuration
 	 */
 	private static $enabled_classes = array();
-	
+
+	/**
+	 * @config
+	 * @var bool Whether to enable commenting on SiteTree objects by default
+	 */
+	private static $sitetree_comments = true;
+
 	/**
 	 * @var array default configuration values
 	 */
