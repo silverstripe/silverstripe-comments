@@ -2,7 +2,18 @@
 
 /**
  * Represents a single comment object.
- * 
+ *
+ * @property string $Name
+ * @property string $Comment
+ * @property string $Email
+ * @property string $URL
+ * @property string $BaseClass
+ * @property boolean $Moderated
+ * @property boolean $IsSpam True if the comment is known as spam
+ * @property integer $ParentID ID of the parent page / dataobject
+ * @property boolean $AllowHtml If true, treat $Comment as HTML instead of plain text
+ * @property string $SecretToken Secret admin token required to provide moderation links between sessions
+ * @method Member Author()
  * @package comments
  */
 class Comment extends DataObject {
@@ -16,7 +27,8 @@ class Comment extends DataObject {
 		"Moderated"		=> "Boolean",
 		"IsSpam"		=> "Boolean",
 		"ParentID"		=> "Int",
-		'AllowHtml'		=> "Boolean"
+		'AllowHtml'		=> "Boolean",
+		"SecretToken"	=> "Varchar(255)",
 	);
 
 	private static $has_one = array(
@@ -36,7 +48,12 @@ class Comment extends DataObject {
 	
 	private static $casting = array(
 		'AuthorName' => 'Varchar',
-		'RSSName' => 'Varchar'
+		'RSSName' => 'Varchar',
+		'DeleteLink' => 'Varchar',
+		'SpamLink' => 'Varchar',
+		'HamLink' => 'Varchar',
+		'ApproveLink' => 'Varchar',
+		'Permalink' => 'Varchar',
 	);
 
 	private static $searchable_fields = array(
@@ -63,6 +80,13 @@ class Comment extends DataObject {
 		if($this->AllowHtml) {
 			$this->Comment = $this->purifyHtml($this->Comment);
 		}
+	}
+
+	/**
+	 * @return Comment_SecurityToken
+	 */
+	public function getSecurityToken() {
+		return Injector::inst()->createWithArgs('Comment_SecurityToken', array($this));
 	}
 	
 	/**
@@ -100,9 +124,9 @@ class Comment extends DataObject {
 	 * @return string link to this comment.
 	 */
 	public function Link($action = "") {
-	  if($parent = $this->getParent()){
-		return $parent->Link($action) . '#' . $this->Permalink();
-	  }
+		if($parent = $this->getParent()){
+			return $parent->Link($action) . '#' . $this->Permalink();
+		}
 	}
 	
 	/**
@@ -283,55 +307,70 @@ class Comment extends DataObject {
 	}
 
 	/**
+	 * Generate a secure admin-action link authorised for the specified member
+	 *
+	 * @param string $action An action on CommentingController to link to
+	 * @param Member $member The member authorised to invoke this action
 	 * @return string
 	 */
-	public function DeleteLink() {
-		if($this->canDelete()) {
-			$token = SecurityToken::inst();
+	protected function actionLink($action, $member = null) {
+		if(!$member) $member = Member::currentUser();
+		if(!$member) return false;
 
-			return DBField::create_field("Varchar", Director::absoluteURL($token->addToUrl(sprintf(
-				"CommentingController/delete/%s", (int) $this->ID
-			))));
-		}
+		$url = Controller::join_links(
+			Director::baseURL(),
+			"CommentingController",
+			$action,
+			$this->ID
+		);
+
+		// Limit access for this user
+		$token = $this->getSecurityToken();
+		return $token->addToUrl($url, $member);
+	}
+
+	/**
+	 * Link to delete this comment
+	 *
+	 * @param Member $member
+	 * @return string
+	 */
+	public function DeleteLink($member = null) {
+		if(!$this->canDelete($member)) return false;
+		return $this->actionLink('delete', $member);
 	}
 	
 	/**
+	 * Link to mark as spam
+	 *
+	 * @param Member $member
 	 * @return string
 	 */
-	public function SpamLink() {
-		if($this->canEdit() && !$this->IsSpam) {
-			$token = SecurityToken::inst();
-
-			return DBField::create_field("Varchar", Director::absoluteURL($token->addToUrl(sprintf(
-				"CommentingController/spam/%s", (int) $this->ID
-			))));
-		}
+	public function SpamLink($member = null) {
+		if(!$this->canEdit($member) || $this->IsSpam) return false;
+		return $this->actionLink('spam', $member);
 	}
 	
 	/**
+	 * Link to mark as not-spam (ham)
+	 *
+	 * @param Member $member
 	 * @return string
 	 */
-	public function HamLink() {
-		if($this->canEdit() && $this->IsSpam) {
-			$token = SecurityToken::inst();
-
-			return DBField::create_field("Varchar", Director::absoluteURL($token->addToUrl(sprintf(
-				"CommentingController/ham/%s", (int) $this->ID
-			))));
-		}
+	public function HamLink($member = null) {
+		if(!$this->canEdit($member) || !$this->IsSpam) return false;
+		return $this->actionLink('ham', $member);
 	}
 	
 	/**
+	 * Link to approve this comment
+	 *
+	 * @param Member $member
 	 * @return string
 	 */
-	public function ApproveLink() {
-		if($this->canEdit() && !$this->Moderated) {
-			$token = SecurityToken::inst();
-
-			return DBField::create_field("Varchar", Director::absoluteURL($token->addToUrl(sprintf(
-				"CommentingController/approve/%s", (int) $this->ID
-			))));
-		}
+	public function ApproveLink($member = null) {
+		if(!$this->canEdit($member) || $this->Moderated) return false;
+		return $this->actionLink('approve', $member);
 	}
 	
 	/**
@@ -367,9 +406,8 @@ class Comment extends DataObject {
 	 */
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$parent = $this->getParent()->ID;
 
-		$hidden = array('ParentID', 'AuthorID', 'BaseClass', 'AllowHtml');
+		$hidden = array('ParentID', 'AuthorID', 'BaseClass', 'AllowHtml', 'SecretToken');
 
 		foreach($hidden as $private) {
 			$fields->removeByName($private);
@@ -417,5 +455,138 @@ class Comment extends DataObject {
 		}
 
 		return $gravatar;
+	}
+}
+
+/**
+ * Provides the ability to generate cryptographically secure tokens for comment moderation
+ */
+class Comment_SecurityToken {
+
+	private $secret = null;
+
+	/**
+	 * @param Comment $comment Comment to generate this token for
+	 */
+	public function __construct($comment) {
+		if(!$comment->SecretToken) {
+			$comment->SecretToken = $this->generate();
+			$comment->write();
+		}
+		$this->secret = $comment->SecretToken;
+	}
+
+	/**
+	 * Generate the token for the given salt and current secret
+	 *
+	 * @param string $salt
+	 * @return string
+	 */
+	protected function getToken($salt) {
+		return function_exists('hash_pbkdf2')
+			? hash_pbkdf2('sha256', $this->secret, $salt, 1000, 30)
+			: $this->hash_pbkdf2('sha256', $this->secret, $salt, 100, 30);
+	}
+
+	/**
+	 * Get the member-specific salt.
+	 *
+	 * The reason for making the salt specific to a user is that it cannot be "passed in" via a querystring,
+	 * requiring the same user to be present at both the link generation and the controller action.
+	 *
+	 * @param string $salt Single use salt
+	 * @param type $member Member object
+	 * @return string Generated salt specific to this member
+	 */
+	protected function memberSalt($salt, $member) {
+		// Fallback to salting with ID in case the member has not one set
+		return $salt . ($member->Salt ?: $member->ID);
+	}
+
+	/**
+	 * @param string $url Comment action URL
+	 * @param Member $member Member to restrict access to this action to
+	 * @return string
+	 */
+	public function addToUrl($url, $member) {
+		$salt = $this->generate(15); // New random salt; Will be passed into url
+		// Generate salt specific to this member
+		$memberSalt = $this->memberSalt($salt, $member);
+		$token = $this->getToken($memberSalt);
+		return Controller::join_links(
+			$url,
+			sprintf(
+				'?t=%s&s=%s',
+				urlencode($token),
+				urlencode($salt)
+			)
+		);
+	}
+
+	/**
+	 * @param SS_HTTPRequest $request
+	 * @return boolean
+	 */
+	public function checkRequest($request) {
+		$member = Member::currentUser();
+		if(!$member) return false;
+
+		$salt = $request->getVar('s');
+		$memberSalt = $this->memberSalt($salt, $member);
+		$token = $this->getToken($memberSalt);
+
+		// Ensure tokens match
+		return $token === $request->getVar('t');
+	}
+
+
+	/**
+	 * Generates new random key
+	 *
+	 * @param integer $length
+	 * @return string
+	 */
+	protected function generate($length = null) {
+		$generator = new RandomGenerator();
+		$result = $generator->randomToken('sha256');
+		if($length !== null) return substr ($result, 0, $length);
+		return $result;
+	}
+
+	/*-----------------------------------------------------------
+	* PBKDF2 Implementation (described in RFC 2898) from php.net
+	*-----------------------------------------------------------
+	* @param   string  a   hash algorithm
+	* @param   string  p   password
+	* @param   string  s   salt
+	* @param   int     c   iteration count (use 1000 or higher)
+	* @param   int     kl  derived key length
+	* @param   int     st  start position of result
+	*
+	* @return  string  derived key
+	*/
+	private function hash_pbkdf2 ($a, $p, $s, $c, $kl, $st=0) {
+
+		$kb  =  $st+$kl;     // Key blocks to compute
+		$dk  =  '';          // Derived key
+
+		// Create key
+		for ($block=1; $block<=$kb; $block++) {
+
+			// Initial hash for this block
+			$ib = $h = hash_hmac($a, $s . pack('N', $block), $p, true);
+
+			// Perform block iterations
+			for ($i=1; $i<$c; $i++) {
+				// XOR each iterate
+				$ib  ^=  ($h = hash_hmac($a, $h, $p, true));
+			}
+
+			$dk  .=  $ib;   // Append iterated block
+
+		}
+
+		// Return derived key of correct length
+		return substr($dk, $st, $kl);
 	}
 }
