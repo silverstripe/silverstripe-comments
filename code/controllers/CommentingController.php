@@ -20,6 +20,7 @@ class CommentingController extends Controller {
 	private $baseClass = "";
 	private $ownerRecord = "";
 	private $ownerController = "";
+	protected $fallbackReturnURL = null;
 	
 	public function setBaseClass($class) {
 		$this->baseClass = $class;
@@ -132,7 +133,9 @@ class CommentingController extends Controller {
 	public function delete() {
 		$comment = $this->getComment();
 		if(!$comment) return $this->httpError(404);
-		if(!$comment->canDelete()) return $this->httpError(403);
+		if(!$comment->canDelete()) {
+			return Security::permissionFailure($this, 'You do not have permission to delete this comment');
+		}
 		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
 
 		$comment->delete();
@@ -148,7 +151,9 @@ class CommentingController extends Controller {
 	public function spam() {
 		$comment = $this->getComment();
 		if(!$comment) return $this->httpError(404);
-		if(!$comment->canEdit()) return $this->httpError(403);
+		if(!$comment->canEdit()) {
+			return Security::permissionFailure($this, 'You do not have permission to edit this comment');
+		}
 		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
 		
 		$comment->IsSpam = true;
@@ -166,7 +171,9 @@ class CommentingController extends Controller {
 	public function ham() {
 		$comment = $this->getComment();
 		if(!$comment) return $this->httpError(404);
-		if(!$comment->canEdit()) return $this->httpError(403);
+		if(!$comment->canEdit()) {
+			return Security::permissionFailure($this, 'You do not have permission to edit this comment');
+		}
 		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
 		
 		$comment->IsSpam = false;
@@ -184,7 +191,9 @@ class CommentingController extends Controller {
 	public function approve() {
 		$comment = $this->getComment();
 		if(!$comment) return $this->httpError(404);
-		if(!$comment->canEdit()) return $this->httpError(403);
+		if(!$comment->canEdit()) {
+			return Security::permissionFailure($this, 'You do not have permission to approve this comment');
+		}
 		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
 
 		$comment->IsSpam = false;
@@ -209,6 +218,7 @@ class CommentingController extends Controller {
 			$comment = DataObject::get_by_id('Comment', $id);
 
 			if($comment) {
+				$this->fallbackReturnURL = $comment->Link();
 				return $comment;
 			}
 		}
@@ -419,5 +429,36 @@ class CommentingController extends Controller {
 		$data['IsPreview'] = 1;
 
 		return $this->doPostComment($data, $form);
+	}
+
+	public function redirectBack() {
+		// Don't cache the redirect back ever
+		HTTP::set_cache_age(0);
+
+		$url = null;
+
+		// In edge-cases, this will be called outside of a handleRequest() context; in that case,
+		// redirect to the homepage - don't break into the global state at this stage because we'll
+		// be calling from a test context or something else where the global state is inappropraite
+		if($this->request) {
+			if($this->request->requestVar('BackURL')) {
+				$url = $this->request->requestVar('BackURL');
+			} else if($this->request->isAjax() && $this->request->getHeader('X-Backurl')) {
+				$url = $this->request->getHeader('X-Backurl');
+			} else if($this->request->getHeader('Referer')) {
+				$url = $this->request->getHeader('Referer');
+			}
+		}
+
+		if(!$url) $url = $this->fallbackReturnURL;
+		if(!$url) $url = Director::baseURL();
+
+		// absolute redirection URLs not located on this site may cause phishing
+		if(Director::is_site_url($url)) {
+			return $this->redirect($url);
+		} else {
+			return false;
+		}
+
 	}
 }
