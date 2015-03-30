@@ -69,7 +69,7 @@ class Comment extends DataObject {
 		'Email' => 'Email',
 		'Comment' => 'Comment',
 		'Created' => 'Date Posted',
-		'ParentTitle' => 'Parent',
+		'ParentTitle' => 'Blog Post',
 		'IsSpam' => 'Is Spam'
 	);
 
