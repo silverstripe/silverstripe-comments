@@ -130,80 +130,70 @@ class CommentingController extends Controller {
 	 * Deletes a given {@link Comment} via the URL.
 	 */
 	public function delete() {
-		if(!$this->checkSecurityToken($this->request)) {
-			return $this->httpError(400);
-		}
+		$comment = $this->getComment();
+		if(!$comment) return $this->httpError(404);
+		if(!$comment->canDelete()) return $this->httpError(403);
+		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
 
-		if(($comment = $this->getComment()) && $comment->canDelete()) {
-			$comment->delete();
-				
-			return ($this->request->isAjax()) ? true : $this->redirectBack();
-		}
+		$comment->delete();
 
-		return $this->httpError(404);
+		return $this->request->isAjax()
+			? true
+			: $this->redirectBack();
 	}
 
 	/**
 	 * Marks a given {@link Comment} as spam. Removes the comment from display
 	 */
 	public function spam() {
-		if(!$this->checkSecurityToken($this->request)) {
-			return $this->httpError(400);
-		}
-
 		$comment = $this->getComment();
+		if(!$comment) return $this->httpError(404);
+		if(!$comment->canEdit()) return $this->httpError(403);
+		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
+		
+		$comment->IsSpam = true;
+		$comment->Moderated = true;
+		$comment->write();
 
-		if(($comment = $this->getComment()) && $comment->canEdit()) {
-			$comment->IsSpam = true;
-			$comment->Moderated = true;
-			$comment->write();
-				
-			return ($this->request->isAjax()) ? $comment->renderWith('CommentsInterface_singlecomment') : $this->redirectBack();
-		}
-
-		return $this->httpError(404);
+		return $this->request->isAjax()
+			? $comment->renderWith('CommentsInterface_singlecomment')
+			: $this->redirectBack();
 	}
 
 	/**
 	 * Marks a given {@link Comment} as ham (not spam).
 	 */
 	public function ham() {
-		if(!$this->checkSecurityToken($this->request)) {
-			return $this->httpError(400);
-		}
-
 		$comment = $this->getComment();
+		if(!$comment) return $this->httpError(404);
+		if(!$comment->canEdit()) return $this->httpError(403);
+		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
+		
+		$comment->IsSpam = false;
+		$comment->Moderated = true;
+		$comment->write();
 
-		if(($comment = $this->getComment()) && $comment->canEdit()) {
-			$comment->IsSpam = false;
-			$comment->Moderated = true;
-			$comment->write();
-				
-			return ($this->request->isAjax()) ? $comment->renderWith('CommentsInterface_singlecomment') : $this->redirectBack();
-		}
-
-		return $this->httpError(404);
+		return $this->request->isAjax()
+			? $comment->renderWith('CommentsInterface_singlecomment')
+			: $this->redirectBack();
 	}
 
 	/**
 	 * Marks a given {@link Comment} as approved.
 	 */
 	public function approve() {
-		if(!$this->checkSecurityToken($this->request)) {
-			return $this->httpError(400);
-		}
-
 		$comment = $this->getComment();
+		if(!$comment) return $this->httpError(404);
+		if(!$comment->canEdit()) return $this->httpError(403);
+		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
 
-		if(($comment = $this->getComment()) && $comment->canEdit()) {
-			$comment->IsSpam = false;
-			$comment->Moderated = true;
-			$comment->write();
-				
-			return ($this->request->isAjax()) ? $comment->renderWith('CommentsInterface_singlecomment') : $this->redirectBack();
-		}
+		$comment->IsSpam = false;
+		$comment->Moderated = true;
+		$comment->write();
 
-		return $this->httpError(404);
+		return $this->request->isAjax()
+			? $comment->renderWith('CommentsInterface_singlecomment')
+			: $this->redirectBack();
 	}
 	
 	/**
@@ -224,20 +214,6 @@ class CommentingController extends Controller {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Checks the security token given with the URL to prevent CSRF attacks 
-	 * against administrators allowing users to hijack comment moderation.
-	 *
-	 * @param SS_HTTPRequest
-	 *
-	 * @return boolean
-	 */
-	public function checkSecurityToken($req) {
-		$token = SecurityToken::inst();
-
-		return $token->checkRequest($req);
 	}
 
 	/**

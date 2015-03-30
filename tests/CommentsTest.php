@@ -90,82 +90,168 @@ class CommentsTest extends FunctionalTest {
 	}
 	
 	public function testDeleteComment() {
+		// Test anonymous user
+		if($member = Member::currentUser()) $member->logOut();
 		$comment = $this->objFromFixture('Comment', 'firstComA');
-		$this->assertNull($comment->DeleteLink(), 'No permission to see delete link');
+		$commentID = $comment->ID;
+		$this->assertFalse($comment->DeleteLink(), 'No permission to see delete link');
 		$delete = $this->get('CommentingController/delete/'.$comment->ID);
-		$check = DataObject::get_by_id('Comment', $comment->ID);
+		$this->assertEquals(403, $delete->getStatusCode());
+		$check = DataObject::get_by_id('Comment', $commentID);
 		$this->assertTrue($check && $check->exists());
 
-		$firstPage = $this->objFromFixture('CommentableItem', 'first');
-		$this->autoFollowRedirection = false;
+		// Test non-authenticated user
+		$this->logInAs('visitor');
+		$this->assertFalse($comment->DeleteLink(), 'No permission to see delete link');
+
+		// Test authenticated user
 		$this->logInAs('commentadmin');
-		
-		$firstComment = $this->objFromFixture('Comment', 'firstComA');
-		$firstCommentID = $firstComment->ID;
-		Director::test($firstPage->RelativeLink(), null, $this->session());
-		$delete = $this->get('CommentingController/delete/'.$firstComment->ID);
-		$check = DataObject::get_by_id('Comment', $firstCommentID);
+		$comment = $this->objFromFixture('Comment', 'firstComA');
+		$commentID = $comment->ID;
+		$adminComment1Link = $comment->DeleteLink();
+		$this->assertContains('CommentingController/delete/'.$commentID.'?t=', $adminComment1Link);
+
+		// Test that this link can't be shared / XSS exploited
+		$this->logInAs('commentadmin2');
+		$delete = $this->get($adminComment1Link);
+		$this->assertEquals(400, $delete->getStatusCode());
+		$check = DataObject::get_by_id('Comment', $commentID);
+		$this->assertTrue($check && $check->exists());
+
+		// Test that this other admin can delete the comment with their own link
+		$adminComment2Link = $comment->DeleteLink();
+		$this->assertNotEquals($adminComment2Link, $adminComment1Link);
+		$this->autoFollowRedirection = false;
+		$delete = $this->get($adminComment2Link);
+		$this->assertEquals(302, $delete->getStatusCode());
+		$check = DataObject::get_by_id('Comment', $commentID);
 		$this->assertFalse($check && $check->exists());
 	}
 
 	public function testSpamComment() {
+		// Test anonymous user
+		if($member = Member::currentUser()) $member->logOut();
 		$comment = $this->objFromFixture('Comment', 'firstComA');
-		$this->assertNull($comment->SpamLink(), 'No permission to see mark as spam link');
+		$commentID = $comment->ID;
+		$this->assertFalse($comment->SpamLink(), 'No permission to see mark as spam link');
 		$spam = $this->get('CommentingController/spam/'.$comment->ID);
+		$this->assertEquals(403, $spam->getStatusCode());
+		$check = DataObject::get_by_id('Comment', $commentID);
+		$this->assertEquals(0, $check->IsSpam, 'No permission to mark as spam');
 
+		// Test non-authenticated user
+		$this->logInAs('visitor');
+		$this->assertFalse($comment->SpamLink(), 'No permission to see mark as spam link');
+
+		// Test authenticated user
+		$this->logInAs('commentadmin');
+		$comment = $this->objFromFixture('Comment', 'firstComA');
+		$commentID = $comment->ID;
+		$adminComment1Link = $comment->SpamLink();
+		$this->assertContains('CommentingController/spam/'.$commentID.'?t=', $adminComment1Link);
+
+		// Test that this link can't be shared / XSS exploited
+		$this->logInAs('commentadmin2');
+		$spam = $this->get($adminComment1Link);
+		$this->assertEquals(400, $spam->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $comment->ID);
 		$this->assertEquals(0, $check->IsSpam, 'No permission to mark as spam');
 
+		// Test that this other admin can spam the comment with their own link
+		$adminComment2Link = $comment->SpamLink();
+		$this->assertNotEquals($adminComment2Link, $adminComment1Link);
 		$this->autoFollowRedirection = false;
-		$this->logInAs('commentadmin');
-
-		$this->assertContains('CommentingController/spam/'. $comment->ID, $comment->SpamLink()->getValue());
-
-		$spam = $this->get('CommentingController/spam/'.$comment->ID);
-		$check = DataObject::get_by_id('Comment', $comment->ID);
+		$spam = $this->get($adminComment2Link);
+		$this->assertEquals(302, $spam->getStatusCode());
+		$check = DataObject::get_by_id('Comment', $commentID);
 		$this->assertEquals(1, $check->IsSpam);
 
-		$this->assertNull($check->SpamLink());
+		// Cannot re-spam spammed comment
+		$this->assertFalse($check->SpamLink());
 	}
 
 	public function testHamComment() {
+		// Test anonymous user
+		if($member = Member::currentUser()) $member->logOut();
 		$comment = $this->objFromFixture('Comment', 'secondComC');
-		$this->assertNull($comment->HamLink(), 'No permission to see mark as ham link');
+		$commentID = $comment->ID;
+		$this->assertFalse($comment->HamLink(), 'No permission to see mark as ham link');
 		$ham = $this->get('CommentingController/ham/'.$comment->ID);
+		$this->assertEquals(403, $ham->getStatusCode());
+		$check = DataObject::get_by_id('Comment', $commentID);
+		$this->assertEquals(1, $check->IsSpam, 'No permission to mark as ham');
 
+		// Test non-authenticated user
+		$this->logInAs('visitor');
+		$this->assertFalse($comment->HamLink(), 'No permission to see mark as ham link');
+
+		// Test authenticated user
+		$this->logInAs('commentadmin');
+		$comment = $this->objFromFixture('Comment', 'secondComC');
+		$commentID = $comment->ID;
+		$adminComment1Link = $comment->HamLink();
+		$this->assertContains('CommentingController/ham/'.$commentID.'?t=', $adminComment1Link);
+
+		// Test that this link can't be shared / XSS exploited
+		$this->logInAs('commentadmin2');
+		$ham = $this->get($adminComment1Link);
+		$this->assertEquals(400, $ham->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $comment->ID);
 		$this->assertEquals(1, $check->IsSpam, 'No permission to mark as ham');
 
+		// Test that this other admin can ham the comment with their own link
+		$adminComment2Link = $comment->HamLink();
+		$this->assertNotEquals($adminComment2Link, $adminComment1Link);
 		$this->autoFollowRedirection = false;
-		$this->logInAs('commentadmin');
-
-		$this->assertContains('CommentingController/ham/'. $comment->ID, $comment->HamLink()->getValue());
-
-		$ham = $this->get('CommentingController/ham/'.$comment->ID);
-		$check = DataObject::get_by_id('Comment', $comment->ID);
+		$ham = $this->get($adminComment2Link);
+		$this->assertEquals(302, $ham->getStatusCode());
+		$check = DataObject::get_by_id('Comment', $commentID);
 		$this->assertEquals(0, $check->IsSpam);
 
-		$this->assertNull($check->HamLink());
+		// Cannot re-ham hammed comment
+		$this->assertFalse($check->HamLink());
 	}
 	
 	public function testApproveComment() {
+		// Test anonymous user
+		if($member = Member::currentUser()) $member->logOut();
 		$comment = $this->objFromFixture('Comment', 'secondComB');
-		$this->assertNull($comment->ApproveLink(), 'No permission to see mark as approved link');
-		$ham = $this->get('CommentingController/approve/'.$comment->ID);
+		$commentID = $comment->ID;
+		$this->assertFalse($comment->ApproveLink(), 'No permission to see approve link');
+		$approve = $this->get('CommentingController/approve/'.$comment->ID);
+		$this->assertEquals(403, $approve->getStatusCode());
+		$check = DataObject::get_by_id('Comment', $commentID);
+		$this->assertEquals(0, $check->Moderated, 'No permission to approve');
 
-		$check = DataObject::get_by_id('Comment', $comment->ID);
-		$this->assertEquals(0, $check->Moderated, 'No permission to mark as approved');
+		// Test non-authenticated user
+		$this->logInAs('visitor');
+		$this->assertFalse($comment->ApproveLink(), 'No permission to see approve link');
 
-		$this->autoFollowRedirection = false;
+		// Test authenticated user
 		$this->logInAs('commentadmin');
+		$comment = $this->objFromFixture('Comment', 'secondComB');
+		$commentID = $comment->ID;
+		$adminComment1Link = $comment->ApproveLink();
+		$this->assertContains('CommentingController/approve/'.$commentID.'?t=', $adminComment1Link);
 
-		$this->assertContains('CommentingController/approve/'. $comment->ID, $comment->ApproveLink()->getValue());
-
-		$ham = $this->get('CommentingController/approve/'.$comment->ID);
+		// Test that this link can't be shared / XSS exploited
+		$this->logInAs('commentadmin2');
+		$approve = $this->get($adminComment1Link);
+		$this->assertEquals(400, $approve->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $comment->ID);
+		$this->assertEquals(0, $check->Moderated, 'No permission to approve');
+
+		// Test that this other admin can approve the comment with their own link
+		$adminComment2Link = $comment->ApproveLink();
+		$this->assertNotEquals($adminComment2Link, $adminComment1Link);
+		$this->autoFollowRedirection = false;
+		$approve = $this->get($adminComment2Link);
+		$this->assertEquals(302, $approve->getStatusCode());
+		$check = DataObject::get_by_id('Comment', $commentID);
 		$this->assertEquals(1, $check->Moderated);
 
-		$this->assertNull($check->ApproveLink());
+		// Cannot re-approve approved comment
+		$this->assertFalse($check->ApproveLink());
 	}
 
 	public function testCommenterURLWrite() {

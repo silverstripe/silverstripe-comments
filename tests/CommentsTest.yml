@@ -1,167 +1,169 @@
 Member:
-	commentadmin:
-		FirstName: admin
-	visitor:
-		FirstName: visitor
+  commentadmin:
+    FirstName: admin
+  commentadmin2:
+    FirstName: admin2
+  visitor:
+    FirstName: visitor
 
 Group:
-	commentadmins:
-		Title: Admin
-		Members: =>Member.commentadmin
+  commentadmins:
+    Title: Admin
+    Members: =>Member.commentadmin, =>Member.commentadmin2
 
 Permission:
-	admin:
-		Code: CMS_ACCESS_CommentAdmin
-		Group: =>Group.commentadmins
+  admin:
+    Code: CMS_ACCESS_CommentAdmin
+    Group: =>Group.commentadmins
 
 CommentableItem:
-	first:
-		Title: First
-		ProvideComments: 1
-	second:
-		Title: Second
-		ProvideComments: 1
-	third:
-		Title: Third
-		ProvideComments: 1
-	nocomments:
-		Title: No comments
-		ProvideComments: 0
-	spammed:
-		ProvideComments: 1
-		Title: spammed
+  first:
+    Title: First
+    ProvideComments: 1
+  second:
+    Title: Second
+    ProvideComments: 1
+  third:
+    Title: Third
+    ProvideComments: 1
+  nocomments:
+    Title: No comments
+    ProvideComments: 0
+  spammed:
+    ProvideComments: 1
+    Title: spammed
 
 Comment:
-	firstComA:
-		ParentID: =>CommentableItem.first
-		Name: FA
-		Comment: textFA
-		BaseClass: CommentableItem
-		Moderated: 1
-		IsSpam: 0
-	secondComA:
-		ParentID: =>CommentableItem.second
-		Name: SA
-		Comment: textSA
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	secondComB:
-		ParentID: =>CommentableItem.second
-		Name: SB
-		Comment: textSB
-		Moderated: 0
-		IsSpam: 0
-		BaseClass: CommentableItem
-	secondComC:
-		ParentID: =>CommentableItem.second
-		Name: SB
-		Comment: textSB
-		Moderated: 1
-		IsSpam: 1
-		BaseClass: CommentableItem
-	thirdComA:
-		ParentID: =>CommentableItem.third
-		Name: TA
-		Comment: textTA
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	thirdComB:
-		ParentID: =>CommentableItem.third
-		Name: TB
-		Comment: textTB
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	thirdComC:
-		ParentID: =>CommentableItem.third
-		Name: TC
-		Comment: textTC
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	thirdComD:
-		ParentID: =>CommentableItem.third
-		Name: TC
-		Comment: textTC
-		Moderated: 1
-		BaseClass: CommentableItem
-	thirdComE:
-		ParentID: =>CommentableItem.third
-		Name: TC
-		Comment: textTC
-		Moderated: 1
-		BaseClass: CommentableItem
-	thirdComF:
-		ParentID: =>CommentableItem.third
-		Name: TC
-		Comment: textTC
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	thirdComG:
-		ParentID: =>CommentableItem.third
-		Name: TC
-		Comment: textTC
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	thirdComH:
-		ParentID: =>CommentableItem.third
-		Name: TC
-		Comment: textTC
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	thirdComI:
-		ParentID: =>CommentableItem.third
-		Name: TC
-		Comment: textTC
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	thirdComJ:
-		ParentID: =>CommentableItem.third
-		Name: TC
-		Comment: textTC
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	thirdComK:
-		ParentID: =>CommentableItem.third
-		Name: TC
-		Comment: textTC
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	disabledCom:
-		ParentID: =>CommentableItem.nocomments
-		Name: Disabled
-		Moderated: 0
-		IsSpam: 1
-		BaseClass: CommentableItem
-	testCommentList1:
-		ParentID: =>CommentableItem.spammed
-		Name: Comment 1
-		Moderated: 0
-		IsSpam: 0
-		BaseClass: CommentableItem
-	testCommentList2:
-		ParentID: =>CommentableItem.spammed
-		Name: Comment 2
-		Moderated: 1
-		IsSpam: 1
-		BaseClass: CommentableItem
-	testCommentList3:
-		ParentID: =>CommentableItem.spammed
-		Name: Comment 3
-		Moderated: 1
-		IsSpam: 0
-		BaseClass: CommentableItem
-	testCommentList4:
-		ParentID: =>CommentableItem.spammed
-		Name: Comment 4
-		Moderated: 0
-		IsSpam: 1
-		BaseClass: CommentableItem
+  firstComA:
+    ParentID: =>CommentableItem.first
+    Name: FA
+    Comment: textFA
+    BaseClass: CommentableItem
+    Moderated: 1
+    IsSpam: 0
+  secondComA:
+    ParentID: =>CommentableItem.second
+    Name: SA
+    Comment: textSA
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  secondComB:
+    ParentID: =>CommentableItem.second
+    Name: SB
+    Comment: textSB
+    Moderated: 0
+    IsSpam: 0
+    BaseClass: CommentableItem
+  secondComC:
+    ParentID: =>CommentableItem.second
+    Name: SB
+    Comment: textSB
+    Moderated: 1
+    IsSpam: 1
+    BaseClass: CommentableItem
+  thirdComA:
+    ParentID: =>CommentableItem.third
+    Name: TA
+    Comment: textTA
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  thirdComB:
+    ParentID: =>CommentableItem.third
+    Name: TB
+    Comment: textTB
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  thirdComC:
+    ParentID: =>CommentableItem.third
+    Name: TC
+    Comment: textTC
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  thirdComD:
+    ParentID: =>CommentableItem.third
+    Name: TC
+    Comment: textTC
+    Moderated: 1
+    BaseClass: CommentableItem
+  thirdComE:
+    ParentID: =>CommentableItem.third
+    Name: TC
+    Comment: textTC
+    Moderated: 1
+    BaseClass: CommentableItem
+  thirdComF:
+    ParentID: =>CommentableItem.third
+    Name: TC
+    Comment: textTC
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  thirdComG:
+    ParentID: =>CommentableItem.third
+    Name: TC
+    Comment: textTC
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  thirdComH:
+    ParentID: =>CommentableItem.third
+    Name: TC
+    Comment: textTC
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  thirdComI:
+    ParentID: =>CommentableItem.third
+    Name: TC
+    Comment: textTC
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  thirdComJ:
+    ParentID: =>CommentableItem.third
+    Name: TC
+    Comment: textTC
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  thirdComK:
+    ParentID: =>CommentableItem.third
+    Name: TC
+    Comment: textTC
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  disabledCom:
+    ParentID: =>CommentableItem.nocomments
+    Name: Disabled
+    Moderated: 0
+    IsSpam: 1
+    BaseClass: CommentableItem
+  testCommentList1:
+    ParentID: =>CommentableItem.spammed
+    Name: Comment 1
+    Moderated: 0
+    IsSpam: 0
+    BaseClass: CommentableItem
+  testCommentList2:
+    ParentID: =>CommentableItem.spammed
+    Name: Comment 2
+    Moderated: 1
+    IsSpam: 1
+    BaseClass: CommentableItem
+  testCommentList3:
+    ParentID: =>CommentableItem.spammed
+    Name: Comment 3
+    Moderated: 1
+    IsSpam: 0
+    BaseClass: CommentableItem
+  testCommentList4:
+    ParentID: =>CommentableItem.spammed
+    Name: Comment 4
+    Moderated: 0
+    IsSpam: 1
+    BaseClass: CommentableItem
