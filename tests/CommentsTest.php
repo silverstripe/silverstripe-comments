@@ -95,7 +95,7 @@ class CommentsTest extends FunctionalTest {
 		$comment = $this->objFromFixture('Comment', 'firstComA');
 		$commentID = $comment->ID;
 		$this->assertFalse($comment->DeleteLink(), 'No permission to see delete link');
-		$delete = $this->get('CommentingController/delete/'.$comment->ID);
+		$delete = $this->get('CommentingController/delete/'.$comment->ID.'?ajax=1');
 		$this->assertEquals(403, $delete->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $commentID);
 		$this->assertTrue($check && $check->exists());
@@ -134,7 +134,7 @@ class CommentsTest extends FunctionalTest {
 		$comment = $this->objFromFixture('Comment', 'firstComA');
 		$commentID = $comment->ID;
 		$this->assertFalse($comment->SpamLink(), 'No permission to see mark as spam link');
-		$spam = $this->get('CommentingController/spam/'.$comment->ID);
+		$spam = $this->get('CommentingController/spam/'.$comment->ID.'?ajax=1');
 		$this->assertEquals(403, $spam->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $commentID);
 		$this->assertEquals(0, $check->IsSpam, 'No permission to mark as spam');
@@ -176,7 +176,7 @@ class CommentsTest extends FunctionalTest {
 		$comment = $this->objFromFixture('Comment', 'secondComC');
 		$commentID = $comment->ID;
 		$this->assertFalse($comment->HamLink(), 'No permission to see mark as ham link');
-		$ham = $this->get('CommentingController/ham/'.$comment->ID);
+		$ham = $this->get('CommentingController/ham/'.$comment->ID.'?ajax=1');
 		$this->assertEquals(403, $ham->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $commentID);
 		$this->assertEquals(1, $check->IsSpam, 'No permission to mark as ham');
@@ -218,7 +218,7 @@ class CommentsTest extends FunctionalTest {
 		$comment = $this->objFromFixture('Comment', 'secondComB');
 		$commentID = $comment->ID;
 		$this->assertFalse($comment->ApproveLink(), 'No permission to see approve link');
-		$approve = $this->get('CommentingController/approve/'.$comment->ID);
+		$approve = $this->get('CommentingController/approve/'.$comment->ID.'?ajax=1');
 		$this->assertEquals(403, $approve->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $commentID);
 		$this->assertEquals(0, $check->Moderated, 'No permission to approve');
