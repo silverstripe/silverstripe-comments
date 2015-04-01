@@ -107,17 +107,17 @@ class CommentsExtension extends DataExtension {
 
 		// do not include the comments on pages which don't have id's such as security pages
 		if($this->owner->ID < 0) return false;
-		
-		$controller = new CommentingController();		
+
+		$controller = CommentingController::create();
 		$controller->setOwnerRecord($this->owner);
 		$controller->setBaseClass($this->ownerBaseClass);
 		$controller->setOwnerController(Controller::curr());
 
 		$moderatedSubmitted = Session::get('CommentsModerated');
 		Session::clear('CommentsModerated');
-		
+
 		$form = ($enabled) ? $controller->CommentsForm() : false;
-		
+
 		// a little bit all over the show but to ensure a slightly easier upgrade for users
 		// return back the same variables as previously done in comments
 		return $interface->process(new ArrayData(array(
