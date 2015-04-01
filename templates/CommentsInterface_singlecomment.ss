@@ -1,4 +1,4 @@
-<div class="comment" id="<% if isPreview %>comment-preview<% else %>$Permalink<% end_if %>">
+<div class="comment" id="<% if $isPreview %>comment-preview<% else %>$Permalink<% end_if %>">
 <% if $Gravatar %><img class="gravatar" src="$Gravatar" alt="Gravatar for $Name" title="Gravatar for $Name" /><% end_if %>
 	$EscapedComment
 </div>
@@ -14,16 +14,16 @@
 
 	<% if $ApproveLink || $SpamLink || $HamLink || $DeleteLink %>
 		<ul class="action-links">
-			<% if ApproveLink %>
+			<% if $ApproveLink %>
 				<li><a href="$ApproveLink.ATT" class="approve"><% _t('CommentsInterface_singlecomment_ss.APPROVE', 'approve this comment') %></a></li>
 			<% end_if %>
-			<% if SpamLink %>
+			<% if $SpamLink %>
 				<li><a href="$SpamLink.ATT" class="spam"><% _t('CommentsInterface_singlecomment_ss.ISSPAM','this comment is spam') %></a></li>
 			<% end_if %>
-			<% if HamLink %>
+			<% if $HamLink %>
 				<li><a href="$HamLink.ATT" class="ham"><% _t('CommentsInterface_singlecomment_ss.ISNTSPAM','this comment is not spam') %></a></li>
 			<% end_if %>
-			<% if DeleteLink %>
+			<% if $DeleteLink %>
 				<li class="last"><a href="$DeleteLink.ATT" class="delete"><% _t('CommentsInterface_singlecomment_ss.REMCOM','remove this comment') %></a></li>
 			<% end_if %>
 		</ul>
