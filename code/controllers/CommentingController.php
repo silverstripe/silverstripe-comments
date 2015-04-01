@@ -373,27 +373,30 @@ class CommentingController extends Controller {
 		$this->extend('onBeforePostComment', $form);	
 		
 		// If commenting can only be done by logged in users, make sure the user is logged in
-		$member = Member::currentUser();
-		
-		if(Commenting::can_member_post($class) && $member) {
-			$form->Fields()->push(new HiddenField("AuthorID", "Author ID", $member->ID));
-		} 
-		
 		if(!Commenting::can_member_post($class)) {
-			echo _t('CommentingController.PERMISSIONFAILURE', "You're not able to post comments to this page. Please ensure you are logged in and have an appropriate permission level.");
-			
-			return;
+			return Security::permissionFailure(
+				$this,
+				_t(
+					'CommentingController.PERMISSIONFAILURE',
+					"You're not able to post comments to this page. Please ensure you are logged in and have an "
+					. "appropriate permission level."
+				)
+			);
 		}
 
+		if($member = Member::currentUser()) {
+			$form->Fields()->push(new HiddenField("AuthorID", "Author ID", $member->ID));
+		} 
+
 		// is moderation turned on
-		$moderated = Commenting::get_config_value($class, 'require_moderation');
-		if(!$moderated){
-		  $moderated_nonmembers = Commenting::get_config_value($class, 'require_moderation_nonmembers');
-		  $moderated = $moderated_nonmembers ? !Member::currentUser() : false;
+		$requireModeration = Commenting::get_config_value($class, 'require_moderation');
+		if(!$requireModeration){
+			$requireModerationNonmembers = Commenting::get_config_value($class, 'require_moderation_nonmembers');
+			$requireModeration = $requireModerationNonmembers ? !Member::currentUser() : false;
 		}
 		
 		// we want to show a notification if comments are moderated
-		if ($moderated) {
+		if ($requireModeration) {
 			Session::set('CommentsModerated', 1);
 		}
 
@@ -402,7 +405,7 @@ class CommentingController extends Controller {
 		$form->saveInto($comment);
 
 		$comment->AllowHtml = Commenting::get_config_value($class, 'html_allowed');
-		$comment->Moderated = ($moderated) ? false : true;
+		$comment->Moderated = !$requireModeration;
 
 		// Save into DB, or call pre-save hooks to give accurate preview
 		if($isPreview) {
@@ -410,19 +413,36 @@ class CommentingController extends Controller {
 		} else {
 			$comment->write();	
 
-		// extend hook to allow extensions. Also see onBeforePostComment
-		$this->extend('onAfterPostComment', $comment);	
+			// extend hook to allow extensions. Also see onBeforePostComment
+			$this->extend('onAfterPostComment', $comment);
 		}
 		
 		// clear the users comment since it passed validation
 		Cookie::set('CommentsForm_Comment', false);
 
-		$holder = Commenting::get_config_value($comment->BaseClass, 'comments_holder_id');
+		// Find parent link
+		if(!empty($data['ReturnURL'])) {
+			$url = $data['ReturnURL'];
+		} elseif($parent = $comment->getParent()) {
+			$url = $parent->Link();
+		} else {
+			return $this->redirectBack();
+		}
 
-		$hash = ($moderated) ? $holder : $comment->Permalink();
-		$url = (isset($data['ReturnURL'])) ? $data['ReturnURL'] : false;
-			
-		return ($url) ? $this->redirect($url .'#'. $hash) : $this->redirectBack();
+		// Given a redirect page exists, attempt to link to the correct anchor
+		if(!$comment->Moderated) {
+			// Display the "awaiting moderation" text
+			$holder = Commenting::get_config_value($comment->BaseClass, 'comments_holder_id');
+			$hash = "{$holder}_PostCommentForm_error";
+		} elseif($comment->IsSpam) {
+			// Link to the form with the error message contained
+			$hash = $form->FormName();
+		} else {
+			// Link to the moderated, non-spam comment
+			$hash = $comment->Permalink();
+		}
+
+		return $this->redirect(Controller::join_links($url, "#{$hash}"));
 	}
 
 	public function doPreviewComment($data, $form) {
