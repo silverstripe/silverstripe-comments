@@ -336,8 +336,9 @@ class Comment extends DataObject {
 	 * @return string
 	 */
 	public function DeleteLink($member = null) {
-		if(!$this->canDelete($member)) return false;
-		return $this->actionLink('delete', $member);
+		if($this->canDelete($member)) {
+			return $this->actionLink('delete', $member);
+		}
 	}
 	
 	/**
@@ -347,8 +348,9 @@ class Comment extends DataObject {
 	 * @return string
 	 */
 	public function SpamLink($member = null) {
-		if(!$this->canEdit($member) || $this->IsSpam) return false;
-		return $this->actionLink('spam', $member);
+		if($this->canEdit($member) && !$this->IsSpam) {
+			return $this->actionLink('spam', $member);
+		}
 	}
 	
 	/**
@@ -358,8 +360,9 @@ class Comment extends DataObject {
 	 * @return string
 	 */
 	public function HamLink($member = null) {
-		if(!$this->canEdit($member) || !$this->IsSpam) return false;
-		return $this->actionLink('ham', $member);
+		if($this->canEdit($member) && $this->IsSpam) {
+			return $this->actionLink('ham', $member);
+		}
 	}
 	
 	/**
@@ -369,8 +372,9 @@ class Comment extends DataObject {
 	 * @return string
 	 */
 	public function ApproveLink($member = null) {
-		if(!$this->canEdit($member) || $this->Moderated) return false;
-		return $this->actionLink('approve', $member);
+		if($this->canEdit($member) && !$this->Moderated) {
+			return $this->actionLink('approve', $member);
+		}
 	}
 	
 	/**

@@ -94,7 +94,7 @@ class CommentsTest extends FunctionalTest {
 		if($member = Member::currentUser()) $member->logOut();
 		$comment = $this->objFromFixture('Comment', 'firstComA');
 		$commentID = $comment->ID;
-		$this->assertFalse($comment->DeleteLink(), 'No permission to see delete link');
+		$this->assertNull($comment->DeleteLink(), 'No permission to see delete link');
 		$delete = $this->get('CommentingController/delete/'.$comment->ID.'?ajax=1');
 		$this->assertEquals(403, $delete->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $commentID);
@@ -102,7 +102,7 @@ class CommentsTest extends FunctionalTest {
 
 		// Test non-authenticated user
 		$this->logInAs('visitor');
-		$this->assertFalse($comment->DeleteLink(), 'No permission to see delete link');
+		$this->assertNull($comment->DeleteLink(), 'No permission to see delete link');
 
 		// Test authenticated user
 		$this->logInAs('commentadmin');
@@ -133,7 +133,7 @@ class CommentsTest extends FunctionalTest {
 		if($member = Member::currentUser()) $member->logOut();
 		$comment = $this->objFromFixture('Comment', 'firstComA');
 		$commentID = $comment->ID;
-		$this->assertFalse($comment->SpamLink(), 'No permission to see mark as spam link');
+		$this->assertNull($comment->SpamLink(), 'No permission to see mark as spam link');
 		$spam = $this->get('CommentingController/spam/'.$comment->ID.'?ajax=1');
 		$this->assertEquals(403, $spam->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $commentID);
@@ -141,7 +141,7 @@ class CommentsTest extends FunctionalTest {
 
 		// Test non-authenticated user
 		$this->logInAs('visitor');
-		$this->assertFalse($comment->SpamLink(), 'No permission to see mark as spam link');
+		$this->assertNull($comment->SpamLink(), 'No permission to see mark as spam link');
 
 		// Test authenticated user
 		$this->logInAs('commentadmin');
@@ -167,7 +167,7 @@ class CommentsTest extends FunctionalTest {
 		$this->assertEquals(1, $check->IsSpam);
 
 		// Cannot re-spam spammed comment
-		$this->assertFalse($check->SpamLink());
+		$this->assertNull($check->SpamLink());
 	}
 
 	public function testHamComment() {
@@ -175,7 +175,7 @@ class CommentsTest extends FunctionalTest {
 		if($member = Member::currentUser()) $member->logOut();
 		$comment = $this->objFromFixture('Comment', 'secondComC');
 		$commentID = $comment->ID;
-		$this->assertFalse($comment->HamLink(), 'No permission to see mark as ham link');
+		$this->assertNull($comment->HamLink(), 'No permission to see mark as ham link');
 		$ham = $this->get('CommentingController/ham/'.$comment->ID.'?ajax=1');
 		$this->assertEquals(403, $ham->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $commentID);
@@ -183,7 +183,7 @@ class CommentsTest extends FunctionalTest {
 
 		// Test non-authenticated user
 		$this->logInAs('visitor');
-		$this->assertFalse($comment->HamLink(), 'No permission to see mark as ham link');
+		$this->assertNull($comment->HamLink(), 'No permission to see mark as ham link');
 
 		// Test authenticated user
 		$this->logInAs('commentadmin');
@@ -209,7 +209,7 @@ class CommentsTest extends FunctionalTest {
 		$this->assertEquals(0, $check->IsSpam);
 
 		// Cannot re-ham hammed comment
-		$this->assertFalse($check->HamLink());
+		$this->assertNull($check->HamLink());
 	}
 	
 	public function testApproveComment() {
@@ -217,7 +217,7 @@ class CommentsTest extends FunctionalTest {
 		if($member = Member::currentUser()) $member->logOut();
 		$comment = $this->objFromFixture('Comment', 'secondComB');
 		$commentID = $comment->ID;
-		$this->assertFalse($comment->ApproveLink(), 'No permission to see approve link');
+		$this->assertNull($comment->ApproveLink(), 'No permission to see approve link');
 		$approve = $this->get('CommentingController/approve/'.$comment->ID.'?ajax=1');
 		$this->assertEquals(403, $approve->getStatusCode());
 		$check = DataObject::get_by_id('Comment', $commentID);
@@ -225,7 +225,7 @@ class CommentsTest extends FunctionalTest {
 
 		// Test non-authenticated user
 		$this->logInAs('visitor');
-		$this->assertFalse($comment->ApproveLink(), 'No permission to see approve link');
+		$this->assertNull($comment->ApproveLink(), 'No permission to see approve link');
 
 		// Test authenticated user
 		$this->logInAs('commentadmin');
@@ -251,7 +251,7 @@ class CommentsTest extends FunctionalTest {
 		$this->assertEquals(1, $check->Moderated);
 
 		// Cannot re-approve approved comment
-		$this->assertFalse($check->ApproveLink());
+		$this->assertNull($check->ApproveLink());
 	}
 
 	public function testCommenterURLWrite() {
