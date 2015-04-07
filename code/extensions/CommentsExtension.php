@@ -19,6 +19,8 @@ class CommentsExtension extends DataExtension {
 	 * gravatar_default:            Theme for 'not found' gravatar {@see http://gravatar.com/site/implement/images}
 	 * gravatar_rating:             Gravatar rating (same as the standard default)
 	 * show_comments_when_disabled: Show older comments when commenting has been disabled.
+	 * order_comments_by:           Default sort order.
+	 * order_replies_by:            Sort order for replies.
 	 * comments_holder_id:          ID for the comments holder
 	 * comment_permalink_prefix:    ID prefix for each comment
 	 * require_moderation:          Require moderation for all comments
@@ -27,6 +29,8 @@ class CommentsExtension extends DataExtension {
 	 * frontend_spam:               Display spam comments in the frontend, if the user can moderate them.
 	 * html_allowed:                Allow for sanitized HTML in comments
 	 * use_preview:                 Preview formatted comment (when allowing HTML)
+	 * nested_comments:             Enable nested comments
+	 * nested_depth:                Max depth of nested comments in levels (where root is 1 depth) 0 means no limit.
 	 *
 	 * @var array
 	 *
@@ -45,6 +49,7 @@ class CommentsExtension extends DataExtension {
 		'gravatar_rating' => 'g',
 		'show_comments_when_disabled' => false,
 		'order_comments_by' => '"Created" DESC',
+		'order_replies_by' => false,
 		'comments_per_page' => 10,
 		'comments_holder_id' => 'comments-holder',
 		'comment_permalink_prefix' => 'comment-',
@@ -56,6 +61,8 @@ class CommentsExtension extends DataExtension {
 		'html_allowed' => false,
 		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
 		'use_preview' => false,
+		'nested_comments' => false,
+		'nested_depth' => 2,
 	);
 
 	/**
@@ -142,24 +149,6 @@ class CommentsExtension extends DataExtension {
 	}
 
 	/**
-	 * Returns the RelationList of all comments against this object. Can be used as a data source
-	 * for a gridfield with write access.
-	 *
-	 * @return CommentList
-	 */
-	public function AllComments() {
-		$comments = CommentList::create($this->ownerBaseClass)->forForeignID($this->owner->ID);
-		$this->owner->extend('updateAllComments', $comments);
-		return $comments;
-	}
-
-	public function getComments() {
-		// TODO: find out why this is being triggered when combined with blog
-		// Deprecation::notice('2.0', 'Use PagedComments to get paged comments');
-		return $this->PagedComments();
-	}
-
-	/**
 	 * Get comment moderation rules for this parent
 	 *
 	 * None:           No moderation required
@@ -194,16 +183,27 @@ class CommentsExtension extends DataExtension {
 	}
 
 	/**
-	 * Returns the root level comments, with spam and unmoderated items excluded, for use in the frontend
+	 * Returns the RelationList of all comments against this object. Can be used as a data source
+	 * for a gridfield with write access.
 	 *
 	 * @return CommentList
 	 */
-	public function Comments() {
-		// Get all non-spam comments
+	public function AllComments() {
 		$order = $this->owner->getCommentsOption('order_comments_by');
-		$list = $this
-			->AllComments()
+		$comments = CommentList::create($this->ownerBaseClass)
+			->forForeignID($this->owner->ID)
 			->sort($order);
+		$this->owner->extend('updateAllComments', $comments);
+		return $comments;
+	}
+
+	/**
+	 * Returns all comments against this object, with with spam and unmoderated items excluded, for use in the frontend
+	 *
+	 * @return CommentList
+	 */
+	public function AllVisibleComments() {
+		$list = $this->AllComments();
 
 		// Filter spam comments for non-administrators if configured
 		$showSpam = $this->owner->getCommentsOption('frontend_spam') && $this->owner->canModerateComments();
@@ -216,6 +216,23 @@ class CommentsExtension extends DataExtension {
 			|| ($this->owner->getCommentsOption('frontend_moderation') && $this->owner->canModerateComments());
 		if(!$showUnmoderated) {
 			$list = $list->filter('Moderated', 1);
+		}
+
+		$this->owner->extend('updateAllVisibleComments', $list);
+		return $list;
+	}
+
+	/**
+	 * Returns the root level comments, with spam and unmoderated items excluded, for use in the frontend
+	 *
+	 * @return CommentList
+	 */
+	public function Comments() {
+		$list = $this->AllVisibleComments();
+
+		// If nesting comments, only show root level
+		if($this->owner->getCommentsOption('nested_comments')) {
+			$list = $list->filter('ParentCommentID', 0);
 		}
 
 		$this->owner->extend('updateComments', $list);
@@ -384,8 +401,9 @@ class CommentsExtension extends DataExtension {
 		$enabled = $this->getCommentsEnabled();
 		if($enabled && $this->owner->getCommentsOption('include_js')) {
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+			Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/lib/jquery.form.js');
-			Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/jquery.validate.pack.js');
+			Requirements::javascript(COMMENTS_THIRDPARTY . '/jquery-validate/jquery.validate.min.js');
 			Requirements::javascript('comments/javascript/CommentsInterface.js');
 		}
 

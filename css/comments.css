@@ -1,0 +1,173 @@
+/* line 12, ../scss/comments.scss */
+#comments-holder {
+  clear: both;
+}
+/* line 15, ../scss/comments.scss */
+#comments-holder h2 {
+  margin: 30px 0 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+/* line 21, ../scss/comments.scss */
+#comments-holder h3 {
+  margin-top: 0;
+}
+/* line 25, ../scss/comments.scss */
+#comments-holder .field {
+  clear: left;
+}
+/* line 29, ../scss/comments.scss */
+#comments-holder .num,
+#comments-holder .author {
+  font-size: 1.3em;
+}
+/* line 34, ../scss/comments.scss */
+#comments-holder .num {
+  color: #999;
+  margin-right: 5px;
+}
+/* line 39, ../scss/comments.scss */
+#comments-holder .num-total {
+  line-height: 40px;
+  margin-bottom: 0;
+}
+/* line 44, ../scss/comments.scss */
+#comments-holder .comments-list {
+  margin: 0;
+}
+/* line 49, ../scss/comments.scss */
+#comments-holder .comment {
+  clear: both;
+  list-style-type: none;
+  overflow: auto;
+  padding: 20px 0 10px;
+  position: relative;
+}
+/* line 57, ../scss/comments.scss */
+#comments-holder .comment.author-comment:after {
+  content: 'Author';
+  float: right;
+  position: absolute;
+  top: 1.5em;
+  right: 0;
+  font-size: 1em;
+  font-weight: bold;
+  color: #00acee;
+}
+/* line 68, ../scss/comments.scss */
+#comments-holder .comment.author-comment .comment-text {
+  border: 1px solid #00acee;
+}
+/* line 75, ../scss/comments.scss */
+#comments-holder .comment.spam .comment-text {
+  border: 1px dashed #f48b33;
+}
+/* line 80, ../scss/comments.scss */
+#comments-holder .comment .comment-text {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  margin: 0;
+  padding: 0 15% 0 20px;
+  white-space: pre;
+  white-space: pre-wrap;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+/* line 91, ../scss/comments.scss */
+#comments-holder .comment .comment-text p:last-child {
+  margin-bottom: 0;
+}
+/* line 96, ../scss/comments.scss */
+#comments-holder .comment .date {
+  font-size: 16px;
+}
+/* line 99, ../scss/comments.scss */
+#comments-holder .comment .date:before {
+  content: '\0000a0\0000a0\0000a0\0000a0';
+}
+/* line 104, ../scss/comments.scss */
+#comments-holder .comment.unmoderated {
+  border: 2px dashed gray;
+  margin: 2em 0 4em;
+  padding: 2em;
+}
+/* line 109, ../scss/comments.scss */
+#comments-holder .comment.unmoderated .comment-moderation {
+  margin-bottom: 0;
+}
+/* line 114, ../scss/comments.scss */
+#comments-holder .comment .info {
+  margin-bottom: 10px;
+}
+/* line 118, ../scss/comments.scss */
+#comments-holder .comment.spam .comment {
+  border: 1px dashed #f48b33;
+  color: #f48b33;
+  border-radius: 4px;
+  padding: 2.5em 1em 1em;
+}
+/* line 125, ../scss/comments.scss */
+#comments-holder .comment .comment-replies-container {
+  margin-left: 20px;
+  padding-left: 10px;
+  border-left: 1px dashed #999;
+}
+/* line 130, ../scss/comments.scss */
+#comments-holder .comment .comment-replies-container .comment-reply-form-holder {
+  padding: 0 10px;
+}
+/* line 133, ../scss/comments.scss */
+#comments-holder .comment .comment-replies-container .comment-replies-holder {
+  padding: 0 0 0 10px;
+}
+/* line 140, ../scss/comments.scss */
+#comments-holder .comment-moderation {
+  float: right;
+  margin: 1em 0 2em;
+}
+/* line 144, ../scss/comments.scss */
+#comments-holder .comment-moderation .heading {
+  margin-bottom: 0;
+}
+/* line 149, ../scss/comments.scss */
+#comments-holder .action-links {
+  margin: 20px 0 10px;
+}
+/* line 152, ../scss/comments.scss */
+#comments-holder .action-links li {
+  display: inline;
+  list-style-type: none;
+  margin-left: 20px;
+  overflow: auto;
+}
+/* line 158, ../scss/comments.scss */
+#comments-holder .action-links li:first-child {
+  margin-left: 0;
+}
+/* line 162, ../scss/comments.scss */
+#comments-holder .action-links li.comment-reply-action {
+  float: right;
+}
+/* line 168, ../scss/comments.scss */
+#comments-holder .comment-count {
+  margin: 15px 0;
+}
+/* line 173, ../scss/comments.scss */
+#comments-holder .commenting-area {
+  margin-top: 50px;
+}
+/* line 176, ../scss/comments.scss */
+#comments-holder .commenting-area label.left {
+  font-weight: normal;
+}
+/* line 181, ../scss/comments.scss */
+#comments-holder .commenting-rss-feed {
+  margin-top: 4em;
+  text-align: right;
+}
+/* line 186, ../scss/comments.scss */
+#comments-holder .no-comments-yet {
+  display: inline-block;
+  margin-top: 10px;
+}

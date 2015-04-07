@@ -13,8 +13,25 @@ class CommentingController extends Controller {
 		'approve',
 		'rss',
 		'CommentsForm',
+		'reply',
 		'doPostComment',
 		'doPreviewComment'
+	);
+
+	private static $url_handlers = array(
+		'reply/$ParentCommentID//$ID/$OtherID' => 'reply',
+	);
+
+	/**
+	 * Fields required for this form
+	 *
+	 * @var array
+	 * @config
+	 */
+	private static $required_fields = array(
+		'Name',
+		'Email',
+		'Comment'
 	);
 
 	/**
@@ -290,6 +307,47 @@ class CommentingController extends Controller {
 	}
 
 	/**
+	 * Create a reply form for a specified comment
+	 *
+	 * @param Comment $comment
+	 */
+	public function ReplyForm($comment) {
+		// Enables multiple forms with different names to use the same handler
+		$form = $this->CommentsForm();
+		$form->setName('ReplyForm_'.$comment->ID);
+		$form->addExtraClass('reply-form');
+
+		// Load parent into reply form
+		$form->loadDataFrom(array(
+			'ParentCommentID' => $comment->ID
+		));
+
+		// Customise action
+		$form->setFormAction($this->Link('reply', $comment->ID));
+		
+		$this->extend('updateReplyForm', $form);
+		return $form;
+	}
+	
+
+	/**
+	 * Request handler for reply form.
+	 * This method will disambiguate multiple reply forms in the same method
+	 *
+	 * @param SS_HTTPRequest $request
+	 */
+	public function reply(SS_HTTPRequest $request) {
+		// Extract parent comment from reply and build this way
+		if($parentID = $request->param('ParentCommentID')) {
+			$comment = DataObject::get_by_id('Comment', $parentID, true);
+			if($comment) {
+				return $this->ReplyForm($comment);
+			}
+		}
+		return $this->httpError(404);
+	}
+
+	/**
 	 * Post a comment form
 	 *
 	 * @return Form
@@ -297,26 +355,42 @@ class CommentingController extends Controller {
 	public function CommentsForm() {
 		$usePreview = $this->getOption('use_preview');
 
+		$nameRequired = _t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name');
+		$emailRequired = _t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address');
+		$emailInvalid = _t('CommentInterface.EMAILADDRESS_MESSAGE_EMAIL', 'Please enter a valid email address');
+		$urlInvalid = _t('CommentInterface.COMMENT_MESSAGE_URL', 'Please enter a valid URL');
+		$commentRequired = _t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment');
+
 		$fields = new FieldList(
 			$dataFields = new CompositeField(
-			TextField::create("Name", _t('CommentInterface.YOURNAME', 'Your name'))
-				->setCustomValidationMessage(_t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name'))
-				->setAttribute('data-message-required', _t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name')),
+				// Name
+				TextField::create("Name", _t('CommentInterface.YOURNAME', 'Your name'))
+					->setCustomValidationMessage($nameRequired)
+					->setAttribute('data-msg-required', $nameRequired),
 
-			EmailField::create("Email", _t('CommentingController.EMAILADDRESS', "Your email address (will not be published)"))
-				->setCustomValidationMessage(_t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address'))
-				->setAttribute('data-message-required', _t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address'))
-				->setAttribute('data-message-email', _t('CommentInterface.EMAILADDRESS_MESSAGE_EMAIL', 'Please enter a valid email address')),
+				// Email
+				EmailField::create(
+					"Email",
+					_t('CommentingController.EMAILADDRESS', "Your email address (will not be published)")
+				)
+					->setCustomValidationMessage($emailRequired)
+					->setAttribute('data-msg-required', $emailRequired)
+					->setAttribute('data-msg-email', $emailInvalid)
+					->setAttribute('data-rule-email', true),
 
-			TextField::create("URL", _t('CommentingController.WEBSITEURL', "Your website URL"))
-				->setAttribute('data-message-url', _t('CommentInterface.COMMENT_MESSAGE_URL', 'Please enter a valid URL')),
+				// Url
+				TextField::create("URL", _t('CommentingController.WEBSITEURL', "Your website URL"))
+					->setAttribute('data-msg-url', $urlInvalid)
+					->setAttribute('data-rule-url', true),
 
-			TextareaField::create("Comment", _t('CommentingController.COMMENTS', "Comments"))
-				->setCustomValidationMessage(_t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment'))
-					->setAttribute('data-message-required', _t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment'))
+				// Comment
+				TextareaField::create("Comment", _t('CommentingController.COMMENTS', "Comments"))
+					->setCustomValidationMessage($commentRequired)
+					->setAttribute('data-msg-required', $commentRequired)
 			),
 			HiddenField::create("ParentID"),
 			HiddenField::create("ReturnURL"),
+			HiddenField::create("ParentCommentID"),
 			HiddenField::create("BaseClass")
 		);
 
@@ -345,11 +419,7 @@ class CommentingController extends Controller {
 		}
 
 		// required fields for server side
-		$required = new RequiredFields(array(
-			'Name',
-			'Email',
-			'Comment'
-		));
+		$required = new RequiredFields($this->config()->required_fields);
 
 		// create the comment form
 		$form = new Form($this, 'CommentsForm', $fields, $actions, $required);
@@ -397,8 +467,8 @@ class CommentingController extends Controller {
 			}
 		}
 
-		if($member) {
-		  $form->loadDataFrom($member);
+		if(!empty($member)) {
+			$form->loadDataFrom($member);
 		}
 		
 		// hook to allow further extensions to alter the comments form
