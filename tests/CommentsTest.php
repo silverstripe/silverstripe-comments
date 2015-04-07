@@ -13,39 +13,42 @@ class CommentsTest extends FunctionalTest {
 
 	public function setUp() {
 		parent::setUp();
-
-		Commenting::add('CommentableItem');
+		Config::nest();
 	}
-	
+
+	public function tearDown() {
+		Config::unnest();
+		parent::tearDown();
+	}
 
 	public function testCommentsList() {
 		// comments don't require moderation so unmoderated comments can be 
 		// shown but not spam posts
-		Commenting::set_config_value('CommentableItem','require_moderation', false);
+		Config::inst()->update('CommentableItem', 'comments', array('require_moderation' => false));
 
 		$item = $this->objFromFixture('CommentableItem', 'spammed');
 
 		$this->assertDOSEquals(array(
 			array('Name' => 'Comment 1'),
 			array('Name' => 'Comment 3')
-		), $item->getComments(), 'Only 2 non spam posts should be shown');
+		), $item->Comments(), 'Only 2 non spam posts should be shown');
 
 		// when moderated, only moderated, non spam posts should be shown.
-		Commenting::set_config_value('CommentableItem','require_moderation', true);
+		Config::inst()->update('CommentableItem', 'comments', array('require_moderation' => true));
 
 		$this->assertDOSEquals(array(
 			array('Name' => 'Comment 3')
-		), $item->getComments(), 'Only 1 non spam, moderated post should be shown');
+		), $item->Comments(), 'Only 1 non spam, moderated post should be shown');
 
-		// when logged in as an user with CMS_ACCESS_CommentAdmin rights they 
-		// should see all the comments whether we have moderation on or not
+		// As of 2.0, logging in with admin no longer grants special privileges to view frontend comments and should
+		// be done via the CMS
 		$this->logInWithPermission('CMS_ACCESS_CommentAdmin');
 
-		Commenting::set_config_value('CommentableItem','require_moderation', true);
-		$this->assertEquals(4, $item->getComments()->Count());
+		Config::inst()->update('CommentableItem', 'comments', array('require_moderation' => true));
+		$this->assertEquals(1, $item->Comments()->Count());
 
-		Commenting::set_config_value('CommentableItem','require_moderation', false);
-		$this->assertEquals(4, $item->getComments()->Count());
+		Config::inst()->update('CommentableItem', 'comments', array('require_moderation' => false));
+		$this->assertEquals(2, $item->Comments()->Count());
 	}
 
 	public function testCanView() {
@@ -351,6 +354,10 @@ class CommentableItem extends DataObject implements TestOnly {
 	private static $db = array(
 		'ProvideComments' => 'Boolean',
 		'Title' => 'Varchar'
+	);
+
+	private static $extensions = array(
+		'CommentsExtension'
 	);
 
 	public function RelativeLink() {

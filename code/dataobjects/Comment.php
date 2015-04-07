@@ -13,40 +13,40 @@
  * @property integer $ParentID ID of the parent page / dataobject
  * @property boolean $AllowHtml If true, treat $Comment as HTML instead of plain text
  * @property string $SecretToken Secret admin token required to provide moderation links between sessions
- * @method Member Author()
+ * @method HasManyList ChildComments() List of child comments
+ * @method Member Author() Member object who created this comment
  * @package comments
  */
 class Comment extends DataObject {
 	
 	private static $db = array(
-		"Name"			=> "Varchar(200)",
-		"Comment"		=> "Text",
-		"Email"			=> "Varchar(200)",
-		"URL"			=> "Varchar(255)",
-		"BaseClass"		=> "Varchar(200)",
-		"Moderated"		=> "Boolean",
-		"IsSpam"		=> "Boolean",
-		"ParentID"		=> "Int",
-		'AllowHtml'		=> "Boolean",
-		"SecretToken"	=> "Varchar(255)",
+		"Name" => "Varchar(200)",
+		"Comment" => "Text",
+		"Email" => "Varchar(200)",
+		"URL" => "Varchar(255)",
+		"BaseClass" => "Varchar(200)",
+		"Moderated" => "Boolean(1)",
+		"IsSpam" => "Boolean(0)",
+		"ParentID" => "Int",
+		'AllowHtml' => "Boolean",
+		"SecretToken" => "Varchar(255)",
 	);
 
 	private static $has_one = array(
-		"Author"		=> "Member"
+		"Author" => "Member",
 	);
 	
 	private static $default_sort = '"Created" DESC';
 	
-	private static $has_many = array();
-	
-	private static $many_many = array();
-	
 	private static $defaults = array(
 		"Moderated" => 1,
-		"IsSpam" => 0
+		"IsSpam" => 0,
 	);
 	
 	private static $casting = array(
+		'Title' => 'Varchar',
+		'ParentTitle' => 'Varchar',
+		'ParentClassName' => 'Varchar',
 		'AuthorName' => 'Varchar',
 		'RSSName' => 'Varchar',
 		'DeleteLink' => 'Varchar',
@@ -70,7 +70,7 @@ class Comment extends DataObject {
 		'Comment' => 'Comment',
 		'Created' => 'Date Posted',
 		'ParentTitle' => 'Parent',
-		'IsSpam' => 'Is Spam'
+		'IsSpam' => 'Is Spam',
 	);
 
 	public function onBeforeWrite() {
@@ -136,8 +136,7 @@ class Comment extends DataObject {
 	 * @return string
 	 */
 	public function Permalink() {
-		$prefix = Commenting::get_config_value($this->BaseClass, 'comment_permalink_prefix');
-		
+		$prefix = $this->getOption('comment_permalink_prefix');
 		return $prefix . $this->ID;
 	}
 	
@@ -159,6 +158,26 @@ class Comment extends DataObject {
 		
 		return $labels;
 	}
+
+	/**
+	 * Get the commenting option
+	 *
+	 * @param string $key
+	 * @return mixed Result if the setting is available, or null otherwise
+	 */
+	public function getOption($key) {
+		// If possible use the current record
+		$record = $this->getParent();
+		if(!$record && $this->BaseClass) {
+			// Otherwise a singleton of that record
+			$record = singleton($this->BaseClass);
+		} elseif(!$record) {
+			// Otherwise just use the default options
+			$record = singleton('CommentsExtension');
+		}
+
+		return $record->getCommentsOption($key);
+	}
 	
 	/**
 	 * Returns the parent {@link DataObject} this comment is attached too
@@ -166,11 +185,9 @@ class Comment extends DataObject {
 	 * @return DataObject
 	 */
 	public function getParent() {
-		if(!$this->BaseClass) {
-			$this->BaseClass = "SiteTree";
-		}
-		
-		return ($this->ParentID) ? DataObject::get_by_id($this->BaseClass, $this->ParentID) : null;
+		return $this->BaseClass && $this->ParentID
+			? DataObject::get_by_id($this->BaseClass, $this->ParentID, true)
+			: null;
 	}
 
 
@@ -180,43 +197,35 @@ class Comment extends DataObject {
 	 * @return string
 	 */
 	public function getParentTitle() {
-	  if($parent = $this->getParent()){
-		return ($parent && $parent->Title) ? $parent->Title : $parent->ClassName . " #" . $parent->ID;
-	  }
+		if($parent = $this->getParent()) {
+			return $parent->Title ?: ($parent->ClassName . " #" . $parent->ID);
+		}
 	}
 
 	/**
-	 * Comment-parent classnames obviousely vary, return the parent classname
+	 * Comment-parent classnames obviously vary, return the parent classname
 	 *
 	 * @return string
 	 */
 	public function getParentClassName() {
-		$default = 'SiteTree';
-		
-		if(!$this->BaseClass) {
-			return $default;
-		}
-
 		return $this->BaseClass;
+	}
+
+	public function castingHelper($field) {
+		// Safely escape the comment
+		if($field === 'EscapedComment') {
+			return $this->AllowHtml ? 'HTMLText' : 'Varchar';
+		}
+		return parent::castingHelper($field);
 	}
 	
 	/**
-	 * Return the content for this comment escaped depending on the Html state.
+	 * Content to be safely escaped on the frontend
 	 *
-	 * @return HTMLText
+	 * @return string
 	 */
 	public function getEscapedComment() {
-		$comment = $this->dbObject('Comment');
-
-		if ($comment->exists()) {
-			if ($this->AllowHtml) {
-				return DBField::create_field('HTMLText', nl2br($comment->RAW()));
-			} else {
-				return DBField::create_field('HTMLText', sprintf("<p>%s</p>", nl2br($comment->XML())));
-			}
-		}
-
-		return $comment;
+		return $this->Comment;
 	}
 
 	/**
@@ -225,7 +234,7 @@ class Comment extends DataObject {
 	 * @return boolean
 	 */
 	public function isPreview() {
-		return ($this->ID < 1);
+		return !$this->exists();
 	}
 
 	/**
@@ -250,11 +259,13 @@ class Comment extends DataObject {
 		// Standard mechanism for accepting permission changes from decorators
 		$extended = $this->extendedCan('canView', $member);
 		if($extended !== null) return $extended;
-		
-		$page = $this->getParent();
-		$admin = (bool) Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin');
 
-		return (($page && $page->ProvideComments && $page->canView($member)) || $admin);
+		// Allow admin
+		if(Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin')) return true;
+
+		// Check if parent has comments and can be viewed
+		$parent = $this->getParent();
+		return $parent && $parent->ProvideComments && $parent->canView($member);
 	}
 	
 	/**
@@ -301,8 +312,8 @@ class Comment extends DataObject {
 	public function getAuthorName() {
 		if($this->Name) {
 			return $this->Name;
-		} else if($this->Author()) {
-			return $this->Author()->getName();
+		} else if($author = $this->Author()) {
+			return $author->getName();
 		}
 	}
 
@@ -434,9 +445,7 @@ class Comment extends DataObject {
 	 */
 	public function getHtmlPurifierService() {
 		$config = HTMLPurifier_Config::createDefault();
-		$config->set('HTML.AllowedElements',
-			Commenting::get_config_value($this->BaseClass, 'html_allowed_elements')
-		);
+		$config->set('HTML.AllowedElements', $this->getOption('html_allowed_elements'));
 		$config->set('AutoFormat.AutoParagraph', true);
 		$config->set('AutoFormat.Linkify', true);
 		$config->set('URI.DisableExternalResources', true);
@@ -444,17 +453,19 @@ class Comment extends DataObject {
 		return new HTMLPurifier($config);
 	}
 
-	/*
-	Calcualate the gravatar link from the email address
-	*/
+	/**
+	 * Calcualate the gravatar link from the email address
+	 *
+	 * @return string
+	 */
 	public function Gravatar() {
 		$gravatar = '';
-		$use_gravatar = Commenting::get_config_value($this->BaseClass, 'use_gravatar');
+		$use_gravatar = $this->getOption('use_gravatar');
 		if ($use_gravatar) {
 			$gravatar = "http://www.gravatar.com/avatar/" . md5( strtolower(trim($this->Email)));
-			$gravatarsize = Commenting::get_config_value($this->BaseClass, 'gravatar_size');
-			$gravatardefault = Commenting::get_config_value($this->BaseClass, 'gravatar_default');
-			$gravatarrating = Commenting::get_config_value($this->BaseClass, 'gravatar_rating');
+			$gravatarsize = $this->getOption('gravatar_size');
+			$gravatardefault = $this->getOption('gravatar_default');
+			$gravatarrating = $this->getOption('gravatar_rating');
 			$gravatar.= "?s=".$gravatarsize."&d=".$gravatardefault."&r=".$gravatarrating;
 		}
 
