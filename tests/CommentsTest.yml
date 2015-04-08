@@ -20,9 +20,11 @@ CommentableItem:
   first:
     Title: First
     ProvideComments: 1
+    CommentsRequireLogin: 0
   second:
     Title: Second
     ProvideComments: 1
+    CommentsRequireLogin: 1
   third:
     Title: Third
     ProvideComments: 1
@@ -32,6 +34,7 @@ CommentableItem:
   spammed:
     ProvideComments: 1
     Title: spammed
+    ModerationRequired: 'None'
 
 Comment:
   firstComA:

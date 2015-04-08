@@ -24,26 +24,35 @@ SiteTree:
   extensions:
 	- CommentsExtension
   comments:
-	require_login: false # boolean, whether a user needs to login
-	required_permission: false # required permission to comment (or array of permissions)
-	include_js: true # Enhance operation by ajax behaviour on moderation links
-	show_comments_when_disabled: false # when comments are disabled should we show older comments (if available)
-	order_comments_by: '"Created" DESC'
-	comments_per_page: 10
-	comments_holder_id: 'comments-holder' # id for the comments holder
-	comment_permalink_prefix: 'comment-' # id prefix for each comment. If needed make this different
-	require_moderation: false
-	html_allowed: false # allow for sanitized HTML in comments
-	html_allowed_elements:
-	  - a
-	  - img
-	  - i
-	  - b
-	use_preview: false # preview formatted comment (when allowing HTML). Requires include_js=true
-	use_gravatar: false
-	gravatar_size: 80
+	enabled: true # Enables commenting to be disabled for a specific class (or subclass of a parent with commenting enabled)
+    enabled_cms: false # The 'enabled' option will be set via the CMS instead of config
+    require_login: false # boolean, whether a user needs to login
+    require_login_cms: false # The 'require_login' option will be set via the CMS instead of config
+    required_permission: false # required permission to comment (or array of permissions)
+    include_js: true # Enhance operation by ajax behaviour on moderation links
+    use_gravatar; false # set to true to show gravatar icons,
+    gravatar_size: 80 # size of gravatar in pixels.  This is the same as the standard default
+    gravatar_default: 'identicon' # theme for 'not found' gravatar (see http://gravatar.com/site/implement/images/)
+    gravatar_rating: 'g' # gravatar rating. This is the same as the standard default
+    show_comments_when_disabled: false # when comments are disabled should we show older comments (if available)
+    order_comments_by: '"Created" DESC'
+    comments_per_page: 10
+    comments_holder_id: 'comments-holder' # id for the comments holder
+    comment_permalink_prefix: 'comment-' # id prefix for each comment. If needed make this different
+    require_moderation: false
+	require_moderation_nonmembers: false # requires moderation for comments posted by non-members. 'require_moderation' overrides this if set.
+	require_moderation_cms: false # If true, ignore above values and configure moderation requirements via the CMS only
+    html_allowed: false # allow for sanitized HTML in comments
+    html_allowed_elements:
+      - a
+      - img
+      - i
+      - b
+    use_preview: false # preview formatted comment (when allowing HTML). Requires include_js=true
 ```
 
+Enabling any of the *_cms options will instead allow these options to be configured under the settings tab
+of each page in the CMS.
 
 If you want to customize any of the configuration options after you have added 
 the extension (or on the built-in SiteTree commenting) use `set_config_value`

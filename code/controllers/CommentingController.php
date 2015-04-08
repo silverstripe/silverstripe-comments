@@ -360,22 +360,21 @@ class CommentingController extends Controller {
 		// create the comment form
 		$form = new Form($this, 'CommentsForm', $fields, $actions, $required);
 
-		// Load member data
-		$requireLogin = $this->getOption('require_login');
-		$permission = $this->getOption('required_permission');
-		$member = Member::currentUser();
-		if(($requireLogin || $permission) && $member) {
-			$fields = $form->Fields();
-
-			$fields->removeByName('Name');
-			$fields->removeByName('Email');
-			$fields->insertBefore(new ReadonlyField("NameView", _t('CommentInterface.YOURNAME', 'Your name'), $member->getName()), 'URL');
-			$fields->push(new HiddenField("Name", "", $member->getName()));
-			$fields->push(new HiddenField("Email", "", $member->Email));
-		}
-
 		// if the record exists load the extra required data
 		if($record = $this->getOwnerRecord()) {
+
+			// Load member data
+			$member = Member::currentUser();
+			if(($record->CommentsRequireLogin || $record->PostingRequiredPermission) && $member) {
+				$fields = $form->Fields();
+
+				$fields->removeByName('Name');
+				$fields->removeByName('Email');
+				$fields->insertBefore(new ReadonlyField("NameView", _t('CommentInterface.YOURNAME', 'Your name'), $member->getName()), 'URL');
+				$fields->push(new HiddenField("Name", "", $member->getName()));
+				$fields->push(new HiddenField("Email", "", $member->Email));
+			}
+			
 			// we do not want to read a new URL when the form has already been submitted
 			// which in here, it hasn't been.
 			$form->loadDataFrom(array(
@@ -453,11 +452,18 @@ class CommentingController extends Controller {
 			$form->Fields()->push(new HiddenField("AuthorID", "Author ID", $member->ID));
 		} 
 
-		// is moderation turned on
-		$requireModeration = $this->getOption('require_moderation');
-		if(!$requireModeration) {
-			$requireModerationNonmembers = $this->getOption('require_moderation_nonmembers');
-			$requireModeration = $requireModerationNonmembers ? !Member::currentUser() : false;
+		// What kind of moderation is required?
+		switch($this->getOwnerRecord()->ModerationRequired) {
+			case 'Required':
+				$requireModeration = true;
+				break;
+			case 'NonMembersOnly':
+				$requireModeration = empty($member);
+				break;
+			case 'None':
+			default:
+				$requireModeration = false;
+				break;
 		}
 		
 		// we want to show a notification if comments are moderated

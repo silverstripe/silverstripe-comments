@@ -1,0 +1,9 @@
+---
+# SiteTree specific config for comments
+Name: commentssitetree
+only:
+  moduleexists: 'cms'
+---
+SiteTree:
+  comments:
+    enabled_cms: true
