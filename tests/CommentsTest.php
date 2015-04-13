@@ -57,6 +57,41 @@ class CommentsTest extends FunctionalTest {
 		
 		Config::inst()->update('CommentableItem', 'comments', array('require_moderation_nonmembers' => false));
 		$this->assertEquals(2, $item->Comments()->Count());
+
+		// With unmoderated comments set to display in frontend
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'require_moderation' => true,
+			'frontend_moderation' => true
+		));
+		$this->assertEquals(1, $item->Comments()->Count());
+
+		$this->logInWithPermission('ADMIN');
+		$this->assertEquals(2, $item->Comments()->Count());
+
+		// With spam comments set to display in frontend
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'require_moderation' => true,
+			'frontend_moderation' => false,
+			'frontend_spam' => true,
+		));
+		if($member = Member::currentUser()) $member->logOut();
+		$this->assertEquals(1, $item->Comments()->Count());
+
+		$this->logInWithPermission('ADMIN');
+		$this->assertEquals(2, $item->Comments()->Count());
+
+
+		// With spam and unmoderated comments set to display in frontend
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'require_moderation' => true,
+			'frontend_moderation' => true,
+			'frontend_spam' => true,
+		));
+		if($member = Member::currentUser()) $member->logOut();
+		$this->assertEquals(1, $item->Comments()->Count());
+
+		$this->logInWithPermission('ADMIN');
+		$this->assertEquals(4, $item->Comments()->Count());
 	}
 
 	/**

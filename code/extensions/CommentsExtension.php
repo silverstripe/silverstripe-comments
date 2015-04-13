@@ -23,6 +23,8 @@ class CommentsExtension extends DataExtension {
 	 * comment_permalink_prefix:    ID prefix for each comment
 	 * require_moderation:          Require moderation for all comments
 	 * require_moderation_cms:      Ignore other comment moderation config settings and set via CMS
+	 * frontend_moderation:         Display unmoderated comments in the frontend, if the user can moderate them.
+	 * frontend_spam:               Display spam comments in the frontend, if the user can moderate them.
 	 * html_allowed:                Allow for sanitized HTML in comments
 	 * use_preview:                 Preview formatted comment (when allowing HTML)
 	 *
@@ -49,6 +51,8 @@ class CommentsExtension extends DataExtension {
 		'require_moderation' => false,
 		'require_moderation_nonmembers' => false,
 		'require_moderation_cms' => false,
+		'frontend_moderation' => false,
+		'frontend_spam' => false,
 		'html_allowed' => false,
 		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
 		'use_preview' => false,
@@ -199,11 +203,18 @@ class CommentsExtension extends DataExtension {
 		$order = $this->owner->getCommentsOption('order_comments_by');
 		$list = $this
 			->AllComments()
-			->sort($order)
-			->filter('IsSpam', 0);
+			->sort($order);
+
+		// Filter spam comments for non-administrators if configured
+		$showSpam = $this->owner->getCommentsOption('frontend_spam') && $this->owner->canModerateComments();
+		if(!$showSpam) {
+			$list = $list->filter('IsSpam', 0);
+		}
 
 		// Filter un-moderated comments for non-administrators if moderation is enabled
-		if($this->owner->ModerationRequired !== 'None') {
+		$showUnmoderated = ($this->owner->ModerationRequired === 'None')
+			|| ($this->owner->getCommentsOption('frontend_moderation') && $this->owner->canModerateComments());
+		if(!$showUnmoderated) {
 			$list = $list->filter('Moderated', 1);
 		}
 
