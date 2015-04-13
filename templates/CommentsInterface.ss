@@ -20,20 +20,20 @@
 		<h4><% _t('CommentsInterface_ss.COMMENTS','Comments') %></h4>
 	
 		<div class="comments-holder">
-			<% if $Comments %>
+			<% if $PagedComments %>
 				<ul class="comments-list">
-					<% loop $Comments %>
+					<% loop $PagedComments %>
 						<li class="comment $EvenOdd<% if FirstLast %> $FirstLast <% end_if %> $SpamClass">
 							<% include CommentsInterface_singlecomment %>
 						</li>
 					<% end_loop %>
 				</ul>
-				<% with $Comments %>
+				<% with $PagedComments %>
 					<% include CommentPagination %>
 				<% end_with %>
 			<% end_if %>
 
-			<p class="no-comments-yet"<% if $Comments.Count %> style='display: none' <% end_if %> ><% _t('CommentsInterface_ss.NOCOMMENTSYET','No one has commented on this page yet.') %></p>
+			<p class="no-comments-yet"<% if $PagedComments.Count %> style='display: none' <% end_if %> ><% _t('CommentsInterface_ss.NOCOMMENTSYET','No one has commented on this page yet.') %></p>
 
 		</div>
 		
