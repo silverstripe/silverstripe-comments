@@ -5,33 +5,62 @@
 The module provides a number of built in configuration settings below are the 
 default settings
 
-	// mysite/_config.php 
-	
-	Commenting::add('Foo', array(
-		'require_login' => false, // boolean, whether a user needs to login
-		'required_permission' => false,  // required permission to comment (or array of permissions)
-		'include_js' => true, // Enhance operation by ajax behaviour on moderation links
-		'show_comments_when_disabled' => false, // when comments are disabled should we show older comments (if available)
-		'order_comments_by' => "\"Created\" DESC",
-		'comments_per_page' => 10,
-		'comments_holder_id' => "comments-holder", // id for the comments holder
-		'comment_permalink_prefix' => "comment-", // id prefix for each comment. If needed make this different
-		'require_moderation' => false,
-		'html_allowed' => false, // allow for sanitized HTML in comments
-		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
-		'use_preview' => false, // preview formatted comment (when allowing HTML). Requires include_js=true
-		'use_gravatar' => false,
-		'gravatar_size' => 80
-	));
-	
+In order to add commenting to your site, the minimum amount of work necessary is to add the `CommentsExtension` to
+the base class for the object which holds comments.
+
+```yaml
+SiteTree:
+  extensions:
+    - CommentsExtension
+```
+
+## Configuration
+
+In order to configure options for any class you should assign the specific option a value under the 'comments'
+config of the specified class.
+
+```yaml
+SiteTree:
+  extensions:
+	- CommentsExtension
+  comments:
+	require_login: false # boolean, whether a user needs to login
+	required_permission: false # required permission to comment (or array of permissions)
+	include_js: true # Enhance operation by ajax behaviour on moderation links
+	show_comments_when_disabled: false # when comments are disabled should we show older comments (if available)
+	order_comments_by: '"Created" DESC'
+	comments_per_page: 10
+	comments_holder_id: 'comments-holder' # id for the comments holder
+	comment_permalink_prefix: 'comment-' # id prefix for each comment. If needed make this different
+	require_moderation: false
+	html_allowed: false # allow for sanitized HTML in comments
+	html_allowed_elements:
+	  - a
+	  - img
+	  - i
+	  - b
+	use_preview: false # preview formatted comment (when allowing HTML). Requires include_js=true
+	use_gravatar: false
+	gravatar_size: 80
+```
+
+
 If you want to customize any of the configuration options after you have added 
 the extension (or on the built-in SiteTree commenting) use `set_config_value`
 
-	// mysite/_config.php - Sets require_login to true for all pages
-	Commenting::set_config_value('SiteTree', 'require_login', true);
-	
-	// mysite/_config.php - Returns the setting 
-	Commenting::get_config_value('SiteTree', 'require_login');
+```yaml
+# Set the default option for pages to require login
+SiteTree:
+  comments:
+    require_login: true
+```
+
+
+```php
+// Get the setting
+$loginRequired = singleton('SiteTree')->getCommentsOption('require_login');
+```
+
 	
 ## HTML Comments
 
@@ -56,12 +85,20 @@ properly sanitized. Don't allow tags like `<script>` or arbitrary attributes.
 
 Gravatars can be turned on by adding this to your mysite/_config.php file
 
-	Commenting::set_config_value('SiteTree', 'use_gravatar', true);
+```yaml
+SiteTree:
+  comments:
+    use_gravitar: true
+````
 
 The default size is 80 pixels, as per the gravatar site if the 's' parameter is 
 omitted. To change this add the following (again to mysite/_config.php):
 
-	Commenting::set_config_value('SiteTree', 'gravatar_size', 40);
+```yaml
+SiteTree:
+  comments:
+    gravatar_size: 40
+```
 
 If the email address used to comment does not have a gravatar, it is possible 
 to configure the default image shown.  Valid values can be found at 
@@ -79,14 +116,22 @@ return an HTTP 404 (File Not Found) response.
 * blank: a transparent PNG image (border added to HTML below for demonstration 
 purposes)
 
-To change the default image style, add the following to mysite/_config.php
+To change the default image style, add the following to mysite/_config/config.yml
 
-    Commenting::set_config_value('SiteTree', 'gravatar_default', 'retro');
+```yaml
+SiteTree:
+  comments:
+    gravatar_default: 'retro'
+```
 
 The rating of the image can be changed by adding a line similar to this to 
-mysite/_config.php
+mysite/_config/config.yml
 
-    Commenting::set_config_value('SiteTree', 'gravatar_rating', 'r');
+```yaml
+SiteTree:
+  comments:
+    gravatar_rating: 'r'
+```
 
 Vald values for rating are as follows:
 

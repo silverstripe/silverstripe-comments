@@ -17,33 +17,107 @@ class CommentingController extends Controller {
 		'doPreviewComment'
 	);
 
+	/**
+	 * Base class this commenting form is for
+	 *
+	 * @var string
+	 */
 	private $baseClass = "";
-	private $ownerRecord = "";
-	private $ownerController = "";
+
+	/**
+	 * The record this commenting form is for
+	 * 
+	 * @var DataObject
+	 */
+	private $ownerRecord = null;
+
+	/**
+	 * Parent controller record
+	 *
+	 * @var Controller
+	 */
+	private $ownerController = null;
+
+	/**
+	 * Backup url to return to
+	 *
+	 * @var string
+	 */
 	protected $fallbackReturnURL = null;
-	
+
+	/**
+	 * Set the base class to use
+	 *
+	 * @param string $class
+	 */
 	public function setBaseClass($class) {
 		$this->baseClass = $class;
 	}
-	
+
+	/**
+	 * Get the base class used
+	 *
+	 * @return string
+	 */
 	public function getBaseClass() {
 		return $this->baseClass;
 	}
-	
+
+	/**
+	 * Set the record this controller is working on
+	 *
+	 * @param DataObject $record
+	 */
 	public function setOwnerRecord($record) {
 		$this->ownerRecord = $record;
 	}
-	
+
+	/**
+	 * Get the record
+	 *
+	 * @return DataObject
+	 */
 	public function getOwnerRecord() {
 		return $this->ownerRecord;
 	}
-	
+
+	/**
+	 * Set the parent controller
+	 *
+	 * @param Controller $controller
+	 */
 	public function setOwnerController($controller) {
 		$this->ownerController = $controller;
 	}
-	
+
+	/**
+	 * Get the parent controller
+	 *
+	 * @return Controller
+	 */
 	public function getOwnerController() {
 		return $this->ownerController;
+	}
+
+	/**
+	 * Get the commenting option for the current state
+	 *
+	 * @param string $key
+	 * @return mixed Result if the setting is available, or null otherwise
+	 */
+	public function getOption($key) {
+		// If possible use the current record
+		if($record = $this->getOwnerRecord()) {
+			return $record->getCommentsOption($key);
+		}
+		
+		// Otherwise a singleton of that record
+		if($class = $this->getBaseClass()) {
+			return singleton($class)->getCommentsOption($key);
+		}
+
+		// Otherwise just use the default options
+		return singleton('CommentsExtension')->getCommentsOption($key);
 	}
 	
 	/**
@@ -51,14 +125,14 @@ class CommentingController extends Controller {
 	 *
 	 * @return string
 	 */
-	public function Link($action = "", $id = '', $other = '') {
-		return Controller::join_links(__CLASS__ , $action, $id, $other);
+	public function Link($action = '', $id = '', $other = '') {
+		return Controller::join_links(Director::baseURL(), __CLASS__ , $action, $id, $other);
 	}
 	
 	/**
 	 * Outputs the RSS feed of comments
 	 *
-	 * @return XML
+	 * @return HTMLText
 	 */
 	public function rss() {
 		return $this->getFeed($this->request)->outputToBrowser();
@@ -81,42 +155,37 @@ class CommentingController extends Controller {
 		$class = $request->param('ID');
 		$id = $request->param('OtherID');
 
+		// Support old pageid param
+		if(!$id && !$class && ($id = $request->getVar('pageid'))) {
+			$class = 'SiteTree';
+		}
+
 		$comments = Comment::get()->filter(array(
 			'Moderated' => 1,
 			'IsSpam' => 0,
 		));
 
-		if($request->getVar('pageid')) {
-			$comments = $comments->filter(array(
-				'BaseClass' => 'SiteTree',
-				'ParentID' => $request->getVar('pageid'),
-			));
-
-			$link = $this->Link('rss', 'SiteTree', $id);
-
-		} elseif($class && $id) {
-			if(Commenting::has_commenting($class)) {
-				$comments = $comments->filter(array(
-					'BaseClass' => $class,
-					'ParentID' => $id,
-				));
-
-				$link = $this->Link('rss', Convert::raw2xml($class), (int) $id);
-			} else {
+		// Check if class filter
+		if($class) {
+			if(!is_subclass_of($class, 'DataObject') || !$class::has_extension('CommentsExtension')) {
 				return $this->httpError(404);
 			}
-		} elseif($class) {
-			if(Commenting::has_commenting($class)) {
-				$comments = $comments->filter('BaseClass', $class);
-			} else {
-				return $this->httpError(404);
+			$this->setBaseClass($class);
+			$comments = $comments->filter('BaseClass', $class);
+			$link = Controller::join_links($link, $class);
+
+			// Check if id filter
+			if($id) {
+				$comments = $comments->filter('ParentID', $id);
+				$link = Controller::join_links($link, $id);
+				$this->setOwnerRecord(DataObject::get_by_id($class, $id));
 			}
 		}
 
 		$title = _t('CommentingController.RSSTITLE', "Comments RSS Feed");
 
 		$comments = new PaginatedList($comments, $request);
-		$comments->setPageLength(Commenting::get_config_value(null, 'comments_per_page'));
+		$comments->setPageLength($this->getOption('comments_per_page'));
 
 		return new RSSFeed(
 			$comments, 
@@ -232,8 +301,7 @@ class CommentingController extends Controller {
 	 * @return Form
 	 */
 	public function CommentsForm() {
-		$usePreview = Commenting::get_config_value($this->getBaseClass(), 'use_preview');
-		$member = Member::currentUser();
+		$usePreview = $this->getOption('use_preview');
 
 		$fields = new FieldList(
 			$dataFields = new CompositeField(
@@ -292,34 +360,30 @@ class CommentingController extends Controller {
 		// create the comment form
 		$form = new Form($this, 'CommentsForm', $fields, $actions, $required);
 
+		// Load member data
+		$requireLogin = $this->getOption('require_login');
+		$permission = $this->getOption('required_permission');
+		$member = Member::currentUser();
+		if(($requireLogin || $permission) && $member) {
+			$fields = $form->Fields();
+
+			$fields->removeByName('Name');
+			$fields->removeByName('Email');
+			$fields->insertBefore(new ReadonlyField("NameView", _t('CommentInterface.YOURNAME', 'Your name'), $member->getName()), 'URL');
+			$fields->push(new HiddenField("Name", "", $member->getName()));
+			$fields->push(new HiddenField("Email", "", $member->Email));
+		}
+
 		// if the record exists load the extra required data
 		if($record = $this->getOwnerRecord()) {
-			$require_login	= Commenting::get_config_value($this->getBaseClass(), 'require_login');
-			$permission		= Commenting::get_config_value($this->getBaseClass(), 'required_permission');
-			
-			if(($require_login || $permission) && $member) {
-				$fields = $form->Fields();
-				
-				$fields->removeByName('Name');
-				$fields->removeByName('Email');
-				$fields->insertBefore(new ReadonlyField("NameView", _t('CommentInterface.YOURNAME', 'Your name'), $member->getName()), 'URL');
-				$fields->push(new HiddenField("Name", "", $member->getName()));
-				$fields->push(new HiddenField("Email", "", $member->Email));
-				
-				$form->setFields($fields);
-			}
-			
 			// we do not want to read a new URL when the form has already been submitted
 			// which in here, it hasn't been.
-			$url = (isset($_SERVER['REQUEST_URI'])) ? Director::protocolAndHost() . '' . $_SERVER['REQUEST_URI'] : false;
-			
 			$form->loadDataFrom(array(
 				'ParentID'		=> $record->ID,
-				'ReturnURL'		=> $url,
+				'ReturnURL'		=> $this->request->getURL(),
 				'BaseClass'		=> $this->getBaseClass()
 			));
 		}
-
 				
 		// Set it so the user gets redirected back down to the form upon form fail
 		$form->setRedirectToFormOnValidationError(true);
@@ -336,7 +400,7 @@ class CommentingController extends Controller {
 			// allow previous value to fill if comment not stored in cookie (i.e. validation error)
 			$prevComment = Cookie::get('CommentsForm_Comment');
 			if($prevComment && $prevComment != ''){
-			  $form->loadDataFrom(array("Comment" => $prevComment));
+				$form->loadDataFrom(array("Comment" => $prevComment));
 			}
 		}
 
@@ -357,13 +421,14 @@ class CommentingController extends Controller {
 	 * @param Form $form
 	 */
 	public function doPostComment($data, $form) {
-		$class = (isset($data['BaseClass'])) ? $data['BaseClass'] : $this->getBaseClass();
-		$usePreview = Commenting::get_config_value($class, 'use_preview');
-		$isPreview = ($usePreview && isset($data['IsPreview']) && $data['IsPreview']);
-		
-		// if no class then we cannot work out what controller or model they
-		// are on so throw an error
-		if(!$class) user_error("No OwnerClass set on CommentingController.", E_USER_ERROR);
+		// Load class and parent from data
+		if(isset($data['BaseClass'])) {
+			$this->setBaseClass($data['BaseClass']);
+		}
+		if(isset($data['ParentID']) && ($class = $this->getBaseClass())) {
+			$this->setOwnerRecord($class::get()->byID($data['ParentID']));
+		}
+		if(!$this->getOwnerRecord()) return $this->httpError(404);
 		
 		// cache users data
 		Cookie::set("CommentsForm_UserData", Convert::raw2json($data));
@@ -373,7 +438,7 @@ class CommentingController extends Controller {
 		$this->extend('onBeforePostComment', $form);	
 		
 		// If commenting can only be done by logged in users, make sure the user is logged in
-		if(!Commenting::can_member_post($class)) {
+		if(!$this->getOwnerRecord()->canPostComment()) {
 			return Security::permissionFailure(
 				$this,
 				_t(
@@ -389,9 +454,9 @@ class CommentingController extends Controller {
 		} 
 
 		// is moderation turned on
-		$requireModeration = Commenting::get_config_value($class, 'require_moderation');
-		if(!$requireModeration){
-			$requireModerationNonmembers = Commenting::get_config_value($class, 'require_moderation_nonmembers');
+		$requireModeration = $this->getOption('require_moderation');
+		if(!$requireModeration) {
+			$requireModerationNonmembers = $this->getOption('require_moderation_nonmembers');
 			$requireModeration = $requireModerationNonmembers ? !Member::currentUser() : false;
 		}
 		
@@ -400,18 +465,19 @@ class CommentingController extends Controller {
 			Session::set('CommentsModerated', 1);
 		}
 
-		
 		$comment = new Comment();
 		$form->saveInto($comment);
 
-		$comment->AllowHtml = Commenting::get_config_value($class, 'html_allowed');
+		$comment->AllowHtml = $this->getOption('html_allowed');
 		$comment->Moderated = !$requireModeration;
 
 		// Save into DB, or call pre-save hooks to give accurate preview
+		$usePreview = $this->getOption('use_preview');
+		$isPreview = $usePreview && !empty($data['IsPreview']);
 		if($isPreview) {
-			$comment->extend('onBeforeWrite', $dummy);
+			$comment->extend('onBeforeWrite');
 		} else {
-			$comment->write();	
+			$comment->write();
 
 			// extend hook to allow extensions. Also see onBeforePostComment
 			$this->extend('onAfterPostComment', $comment);
@@ -432,7 +498,7 @@ class CommentingController extends Controller {
 		// Given a redirect page exists, attempt to link to the correct anchor
 		if(!$comment->Moderated) {
 			// Display the "awaiting moderation" text
-			$holder = Commenting::get_config_value($comment->BaseClass, 'comments_holder_id');
+			$holder = $this->getOption('comments_holder_id');
 			$hash = "{$holder}_PostCommentForm_error";
 		} elseif($comment->IsSpam) {
 			// Link to the form with the error message contained

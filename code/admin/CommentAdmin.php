@@ -46,37 +46,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 			return Security::permissionFailure($this);
 		}
 
-		$commentsConfig = GridFieldConfig::create()->addComponents(
-			new GridFieldFilterHeader(),
-			$columns = new GridFieldDataColumns(),
-			new GridFieldSortableHeader(),
-			new GridFieldPaginator(25),
-			new GridFieldDeleteAction(),
-			new GridFieldDetailForm(),
-			new GridFieldExportButton(),
-			new GridFieldEditButton(),
-			new GridFieldDetailForm(),
-			$manager = new GridFieldBulkManager()
-		);
-
-		$manager->addBulkAction(
-			'markAsSpam', 'Mark as spam', 'CommentsGridFieldBulkAction_MarkAsSpam', 
-			array(
-				'isAjax' => true,
-				'icon' => 'delete',
-				'isDestructive' => true 
-			)
-		);
-
-		$columns->setFieldFormatting(array(
-			'ParentTitle' => function($value, &$item) {
-				return sprintf(
-					'<a href="%s" class="cms-panel-link external-link action" target="_blank">%s</a>',
-					Convert::raw2xml($item->Link()),
-					Convert::raw2xml($value)
-				);
-			}
-		));
+		$commentsConfig = CommentsGridFieldConfig::create();
 
 		$needs = new GridField(
 			'Comments', 
@@ -87,7 +57,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 
 		$moderated = new GridField(
 			'CommentsModerated', 
-			_t('CommentsAdmin.CommentsModerated'),
+			_t('CommentsAdmin.Moderated', 'Moderated'),
 			Comment::get()->filter('Moderated',1),
 			$commentsConfig
 		);
