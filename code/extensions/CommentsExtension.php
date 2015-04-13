@@ -230,6 +230,9 @@ class CommentsExtension extends DataExtension {
 	 * @return boolean
 	 */
 	public function getCommentsEnabled() {
+		// Don't display comments form for pseudo-pages (such as the login form)
+		if(!$this->owner->exists()) return false;
+		
 		// Determine which flag should be used to determine if this is enabled
 		if($this->owner->getCommentsOption('enabled_cms')) {
 			return $this->owner->ProvideComments;
