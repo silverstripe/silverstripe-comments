@@ -16,34 +16,56 @@ class CommentsExtension extends DataExtension {
 	 */
 	private static $comments = array(
 		'enabled' => true, // Allows commenting to be disabled even if the extension is present
+		'enabled_cms' => false, // Allows commenting to be enabled or disabled via the CMS
 		'require_login' => false, // boolean, whether a user needs to login
-		'required_permission' => false,  // required permission to comment (or array of permissions)
+		'require_login_cms' => false, // Allows require_login to be set via the CMS
+		// required permission to comment (or array of permissions). require_login must be set for this to work
+		'required_permission' => false,
 		'include_js' => true, // Enhance operation by ajax behaviour on moderation links
 		'use_gravatar' => false, // set to true to show gravatar icons,
 		'gravatar_size' => 80, // size of gravatar in pixels.  This is the same as the standard default
-		'gravatar_default' => 'identicon', // theme for 'not found' gravatar (see http://gravatar.com/site/implement/images/)
+		// theme for 'not found' gravatar (see http://gravatar.com/site/implement/images/)
+		'gravatar_default' => 'identicon',
 		'gravatar_rating' => 'g', // gravatar rating. This is the same as the standard default
-		'show_comments_when_disabled' => false, // when comments are disabled should we show older comments (if available)
+		// when comments are disabled should we show older comments (if available)
+		'show_comments_when_disabled' => false,
 		'order_comments_by' => "\"Created\" DESC",
 		'comments_per_page' => 10,
 		'comments_holder_id' => "comments-holder", // id for the comments holder
 		'comment_permalink_prefix' => "comment-", // id prefix for each comment. If needed make this different
-		'require_moderation' => false,
-		'require_moderation_nonmembers' => false, // requires moderation for comments posted by non-members. 'require_moderation' overrides this if set.
+		'require_moderation' => false, // Require moderation for all comments
+		// requires moderation for comments posted by non-members. 'require_moderation' overrides this if set.
+		'require_moderation_nonmembers' => false,
+		// If true, ignore above values and configure moderation requirements via the CMS only
+		'require_moderation_cms' => false,
 		'html_allowed' => false, // allow for sanitized HTML in comments
 		'html_allowed_elements' => array('a', 'img', 'i', 'b'),
 		'use_preview' => false, // preview formatted comment (when allowing HTML). Requires include_js=true
 	);
 
-	public static function get_extra_config($class, $extension, $args = null) {
-		$config = array();
-	
-		// if it is attached to the SiteTree then we need to add ProvideComments
-		if(is_subclass_of($class, 'SiteTree') || $class == 'SiteTree') {
-			$config['db'] =  array('ProvideComments' => 'Boolean');
+	private static $db = array(
+		'ProvideComments' => 'Boolean',
+		'ModerationRequired' => "Enum('None,Required,NonMembersOnly','None')",
+		'CommentsRequireLogin' => 'Boolean',
+	);
+
+	/**
+	 * CMS configurable options should default to the config values
+	 */
+	public function populateDefaults() {
+		// Set if comments should be enabled by default
+		$this->owner->ProvideComments = $this->owner->getCommentsOption('enabled') ? 1 : 0;
+
+		// If moderations options should be configurable via the CMS then
+		if($this->owner->getCommentsOption('require_moderation')) {
+			$this->owner->ModerationRequired = 'Required';
+		} elseif($this->owner->getCommentsOption('require_moderation_nonmembers')) {
+			$this->owner->ModerationRequired = 'NonMembersOnly';
+		} else {
+			$this->owner->ModerationRequired = 'None';
 		}
 
-		return $config;
+		$this->owner->CommentsRequireLogin = $this->owner->getCommentsOption('require_login') ? 1 : 0;
 	}
 
 	
@@ -57,10 +79,47 @@ class CommentsExtension extends DataExtension {
 	 * @param FieldSet
 	 */
 	public function updateSettingsFields(FieldList $fields) {
-		if($this->attachedToSiteTree()) {
-			$fields->addFieldToTab('Root.Settings',
-				new CheckboxField('ProvideComments', _t('Comment.ALLOWCOMMENTS', 'Allow Comments'))
+
+		$options = FieldGroup::create()->setTitle(_t('CommentsExtension.COMMENTOPTIONS', 'Comments'));
+		
+		// Check if enabled setting should be cms configurable
+		if($this->owner->getCommentsOption('enabled_cms')) {
+			$options->push(new CheckboxField('ProvideComments', _t('Comment.ALLOWCOMMENTS', 'Allow Comments')));
+		}
+
+		// Check if we should require users to login to comment
+		if($this->owner->getCommentsOption('require_login_cms')) {
+			$options->push(
+				new CheckboxField(
+					'CommentsRequireLogin',
+					_t('Comments.COMMENTSREQUIRELOGIN', 'Require login to comment')
+				)
 			);
+		}
+
+		if($options->FieldList()->count()) {
+			if($fields->hasTabSet()) {
+				$fields->addFieldsToTab('Root.Settings', $options);
+			} else {
+				$fields->push($options);
+			}
+		}
+
+		// Check if moderation should be enabled via cms configurable
+		if($this->owner->getCommentsOption('require_moderation_cms')) {
+			$moderationField = new DropdownField('ModerationRequired', 'Comment Moderation', array(
+				'None' => _t('CommentsExtension.MODERATIONREQUIRED_NONE', 'No moderation required'),
+				'Required' => _t('CommentsExtension.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
+				'NonMembersOnly' => _t(
+					'CommentsExtension.MODERATIONREQUIRED_NONMEMBERSONLY',
+					'Only moderate non-members'
+				),
+			));
+			if($fields->hasTabSet()) {
+				$fields->addFieldsToTab('Root.Settings', $moderationField);
+			} else {
+				$fields->push($moderationField);
+			}
 		}
 	}
 
@@ -80,7 +139,38 @@ class CommentsExtension extends DataExtension {
 		Deprecation::notice('2.0',  'Use PagedComments to get paged coments');
 		return $this->PagedComments();
 	}
-	
+
+	/**
+	 * Get comment moderation rules for this parent
+	 *
+	 * @return string A value of either 'None' (no moderation required), 'Required' (all comments),
+	 * or 'NonMembersOnly' (only not logged in users)
+	 */
+	public function getModerationRequired() {
+		if($this->owner->getCommentsOption('require_moderation_cms')) {
+			return $this->owner->getField('ModerationRequired');
+		} elseif($this->owner->getCommentsOption('require_moderation')) {
+			return 'Required';
+		} elseif($this->owner->getCommentsOption('require_moderation_nonmembers')) {
+			return 'NonMembersOnly';
+		} else {
+			return 'None';
+		}
+	}
+
+	/**
+	 * Determine if users must be logged in to post comments
+	 *
+	 * @return boolean
+	 */
+	public function getCommentsRequireLogin() {
+		if($this->owner->getCommentsOption('require_login_cms')) {
+			return (bool)$this->owner->getField('CommentsRequireLogin');
+		} else {
+			return (bool)$this->owner->getCommentsOption('require_login');
+		}
+	}
+
 	/**
 	 * Returns the root level comments, with spam and unmoderated items excluded, for use in the frontend
 	 *
@@ -95,9 +185,7 @@ class CommentsExtension extends DataExtension {
 			->filter('IsSpam', 0);
 		
 		// Filter unmoderated comments for non-administrators if moderation is enabled
-		if ($this->owner->getCommentsOption('require_moderation')
-			|| $this->owner->getCommentsOption('require_moderation_nonmembers')
-		) {
+		if ($this->owner->ModerationRequired !== 'None') {
 		    $list = $list->filter('Moderated', 1);
 		}
 
@@ -142,10 +230,12 @@ class CommentsExtension extends DataExtension {
 	 * @return boolean
 	 */
 	public function getCommentsEnabled() {
-		if(!$this->owner->getCommentsOption('enabled')) return false;
-
-		// Non-page objects always have comments enabled
-		return !$this->attachedToSiteTree() || $this->owner->ProvideComments;
+		// Determine which flag should be used to determine if this is enabled
+		if($this->owner->getCommentsOption('enabled_cms')) {
+			return $this->owner->ProvideComments;
+		} else {
+			return $this->owner->getCommentsOption('enabled');
+		}
 	}
 
 	/**
@@ -186,8 +276,11 @@ class CommentsExtension extends DataExtension {
 	 * @return boolean
 	 */
 	public function canPostComment($member = null) {
+		// Deny if not enabled for this object
+		if(!$this->owner->CommentsEnabled) return false;
+
 		// Check if member is required
-		$requireLogin = $this->owner->getCommentsOption('require_login');
+		$requireLogin = $this->owner->CommentsRequireLogin;
 		if(!$requireLogin) return true;
 
 		// Check member is logged in
@@ -195,7 +288,7 @@ class CommentsExtension extends DataExtension {
 		if(!$member) return false;
 
 		// If member required check permissions
-		$requiredPermission = $this->getPostingRequiredPermission();
+		$requiredPermission = $this->owner->PostingRequiredPermission;
 		if($requiredPermission && !Permission::checkMember($member, $requiredPermission)) return false;
 
 		return true;
@@ -323,10 +416,12 @@ class CommentsExtension extends DataExtension {
 		return $value;
 	}
 
-	public function updateCMSFields(\FieldList $fields) {
-		// Disable moderation if not permitted
-		if(!$this->owner->canModerateComments()) return;
-
+	/**
+	 * Add moderation functions to the current fieldlist
+	 *
+	 * @param FieldList $fields
+	 */
+	protected function updateModerationFields(FieldList $fields) {
 		// Create gridfield config
 		$commentsConfig = CommentsGridFieldConfig::create();
 
@@ -358,6 +453,18 @@ class CommentsExtension extends DataExtension {
 		} else {
 			$fields->push($needs);
 			$fields->push($moderated);
+		}
+	}
+
+	public function updateCMSFields(\FieldList $fields) {
+		// Disable moderation if not permitted
+		if($this->owner->canModerateComments()) {
+			$this->updateModerationFields($fields);
+		}
+
+		// If this isn't a page we should merge the settings into the CMS fields
+		if(!$this->attachedToSiteTree()) {
+			$this->updateSettingsFields($fields);
 		}
 	}
 }

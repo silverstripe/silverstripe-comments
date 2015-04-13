@@ -22,11 +22,16 @@ class CommentsTest extends FunctionalTest {
 	}
 
 	public function testCommentsList() {
-		// comments don't require moderation so unmoderated comments can be 
+		// comments don't require moderation so unmoderated comments can be
 		// shown but not spam posts
-		Config::inst()->update('CommentableItem', 'comments', array('require_moderation' => false));
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'require_moderation_nonmembers' => false,
+			'require_moderation' => false,
+			'require_moderation_cms' => false,
+		));
 
 		$item = $this->objFromFixture('CommentableItem', 'spammed');
+		$this->assertEquals('None', $item->ModerationRequired);
 
 		$this->assertDOSEquals(array(
 			array('Name' => 'Comment 1'),
@@ -34,21 +39,124 @@ class CommentsTest extends FunctionalTest {
 		), $item->Comments(), 'Only 2 non spam posts should be shown');
 
 		// when moderated, only moderated, non spam posts should be shown.
+		Config::inst()->update('CommentableItem', 'comments', array('require_moderation_nonmembers' => true));
+		$this->assertEquals('NonMembersOnly', $item->ModerationRequired);
+
+		// Check that require_moderation overrides this option
 		Config::inst()->update('CommentableItem', 'comments', array('require_moderation' => true));
+		$this->assertEquals('Required', $item->ModerationRequired);
 
 		$this->assertDOSEquals(array(
 			array('Name' => 'Comment 3')
 		), $item->Comments(), 'Only 1 non spam, moderated post should be shown');
-
-		// As of 2.0, logging in with admin no longer grants special privileges to view frontend comments and should
-		// be done via the CMS
-		$this->logInWithPermission('CMS_ACCESS_CommentAdmin');
-
-		Config::inst()->update('CommentableItem', 'comments', array('require_moderation' => true));
 		$this->assertEquals(1, $item->Comments()->Count());
 
+		// require_moderation_nonmembers still filters out unmoderated comments
 		Config::inst()->update('CommentableItem', 'comments', array('require_moderation' => false));
+		$this->assertEquals(1, $item->Comments()->Count());
+		
+		Config::inst()->update('CommentableItem', 'comments', array('require_moderation_nonmembers' => false));
 		$this->assertEquals(2, $item->Comments()->Count());
+	}
+
+	/**
+	 * Test moderation options configured via the CMS
+	 */
+	public function testCommentCMSModerationList() {
+		// comments don't require moderation so unmoderated comments can be
+		// shown but not spam posts
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'require_moderation' => true,
+			'require_moderation_cms' => true,
+		));
+
+		$item = $this->objFromFixture('CommentableItem', 'spammed');
+		$this->assertEquals('None', $item->ModerationRequired);
+
+		$this->assertDOSEquals(array(
+			array('Name' => 'Comment 1'),
+			array('Name' => 'Comment 3')
+		), $item->Comments(), 'Only 2 non spam posts should be shown');
+
+		// when moderated, only moderated, non spam posts should be shown.
+		$item->ModerationRequired = 'NonMembersOnly';
+		$item->write();
+		$this->assertEquals('NonMembersOnly', $item->ModerationRequired);
+
+		// Check that require_moderation overrides this option
+		$item->ModerationRequired = 'Required';
+		$item->write();
+		$this->assertEquals('Required', $item->ModerationRequired);
+
+		$this->assertDOSEquals(array(
+			array('Name' => 'Comment 3')
+		), $item->Comments(), 'Only 1 non spam, moderated post should be shown');
+		$this->assertEquals(1, $item->Comments()->Count());
+
+		// require_moderation_nonmembers still filters out unmoderated comments
+		$item->ModerationRequired = 'NonMembersOnly';
+		$item->write();
+		$this->assertEquals(1, $item->Comments()->Count());
+
+		$item->ModerationRequired = 'None';
+		$item->write();
+		$this->assertEquals(2, $item->Comments()->Count());
+	}
+
+	public function testCanPostComment() {
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'require_login' => false,
+			'require_login_cms' => false,
+			'required_permission' => false,
+		));
+		$item = $this->objFromFixture('CommentableItem', 'first');
+		$item2 = $this->objFromFixture('CommentableItem', 'second');
+
+		// Test restriction free commenting
+		if($member = Member::currentUser()) $member->logOut();
+		$this->assertFalse($item->CommentsRequireLogin);
+		$this->assertTrue($item->canPostComment());
+
+		// Test permission required to post
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'require_login' => true,
+			'required_permission' => 'POSTING_PERMISSION',
+		));
+		$this->assertTrue($item->CommentsRequireLogin);
+		$this->assertFalse($item->canPostComment());
+		$this->logInWithPermission('WRONG_ONE');
+		$this->assertFalse($item->canPostComment());
+		$this->logInWithPermission('POSTING_PERMISSION');
+		$this->assertTrue($item->canPostComment());
+		$this->logInWithPermission('ADMIN');
+		$this->assertTrue($item->canPostComment());
+
+		// Test require login to post, but not any permissions
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'required_permission' => false,
+		));
+		$this->assertTrue($item->CommentsRequireLogin);
+		if($member = Member::currentUser()) $member->logOut();
+		$this->assertFalse($item->canPostComment());
+		$this->logInWithPermission('ANY_PERMISSION');
+		$this->assertTrue($item->canPostComment());
+
+		// Test options set via CMS
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'require_login' => true,
+			'require_login_cms' => true,
+		));
+		$this->assertFalse($item->CommentsRequireLogin);
+		$this->assertTrue($item2->CommentsRequireLogin);
+		if($member = Member::currentUser()) $member->logOut();
+		$this->assertTrue($item->canPostComment());
+		$this->assertFalse($item2->canPostComment());
+
+		// Login grants permission to post
+		$this->logInWithPermission('ANY_PERMISSION');
+		$this->assertTrue($item->canPostComment());
+		$this->assertTrue($item2->canPostComment());
+		
 	}
 
 	public function testCanView() {
