@@ -24,7 +24,7 @@ SiteTree:
   extensions:
 	- CommentsExtension
   comments:
-	enabled: true # Enables commenting to be disabled for a specific class (or subclass of a parent with commenting enabled)
+    enabled: true # Enables commenting to be disabled for a specific class (or subclass of a parent with commenting enabled)
     enabled_cms: false # The 'enabled' option will be set via the CMS instead of config
     require_login: false # boolean, whether a user needs to login
     require_login_cms: false # The 'require_login' option will be set via the CMS instead of config
@@ -40,8 +40,10 @@ SiteTree:
     comments_holder_id: 'comments-holder' # id for the comments holder
     comment_permalink_prefix: 'comment-' # id prefix for each comment. If needed make this different
     require_moderation: false
-	require_moderation_nonmembers: false # requires moderation for comments posted by non-members. 'require_moderation' overrides this if set.
-	require_moderation_cms: false # If true, ignore above values and configure moderation requirements via the CMS only
+    require_moderation_nonmembers: false # requires moderation for comments posted by non-members. 'require_moderation' overrides this if set.
+    require_moderation_cms: false # If true, ignore above values and configure moderation requirements via the CMS only
+    frontend_moderation: false # Display unmoderated comments in the frontend, if the user can moderate them.
+    frontend_spam: false # Display spam comments in the frontend, if the user can moderate them.
     html_allowed: false # allow for sanitized HTML in comments
     html_allowed_elements:
       - a
