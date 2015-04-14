@@ -267,56 +267,94 @@ class Comment extends DataObject {
 	 * @return Boolean
 	 */
 	public function canView($member = null) {
-		if(!$member) $member = Member::currentUser();
+		$member = $this->getMember($member);
 
-		// Standard mechanism for accepting permission changes from decorators
 		$extended = $this->extendedCan('canView', $member);
-		if($extended !== null) return $extended;
+		if($extended !== null) {
+			return $extended;
+		}
 
-		// Allow admin
-		if(Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin')) return true;
+		if(Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin')) {
+			return true;
+		}
 
-		// Check if parent has comments and can be viewed
-		$parent = $this->getParent();
-		return $parent && $parent->ProvideComments && $parent->canView($member);
+		if($parent = $this->getParent()) {
+			return $parent->canView($member)
+				&& $parent->has_extension('CommentsExtension')
+				&& $parent->CommentsEnabled;
+		}
+
+		return false;
 	}
 
 	/**
-	 * Checks for "CMS_ACCESS_CommentAdmin" permission codes and
-	 * {@link canView()}.
+	 * Checks if the comment can be edited.
 	 *
-	 * @param Member $member
+	 * @param null|int|Member $member
 	 *
 	 * @return Boolean
 	 */
 	public function canEdit($member = null) {
-		if(!$member) $member = Member::currentUser();
+		$member = $this->getMember($member);
 
-		// Standard mechanism for accepting permission changes from decorators
+		if(!$member) {
+			return false;
+		}
+
 		$extended = $this->extendedCan('canEdit', $member);
-		if($extended !== null) return $extended;
+		if($extended !== null) {
+			return $extended;
+		}
 
-		if(!$this->canView($member)) return false;
+		if(Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin')) {
+			return true;
+		}
 
-		return (bool) Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin');
+		if($parent = $this->getParent()) {
+			return $parent->canEdit($member);
+		}
+
+		return false;
 	}
 
 	/**
-	 * Checks for "CMS_ACCESS_CommentAdmin" permission codes and
-	 * {@link canEdit()}.
+	 * Checks if the comment can be deleted.
 	 *
-	 * @param Member $member
+	 * @param null|int|Member $member
 	 *
 	 * @return Boolean
 	 */
 	public function canDelete($member = null) {
-		if(!$member) $member = Member::currentUser();
+		$member = $this->getMember($member);
 
-		// Standard mechanism for accepting permission changes from decorators
+		if(!$member) {
+			return false;
+		}
+
 		$extended = $this->extendedCan('canDelete', $member);
-		if($extended !== null) return $extended;
+		if($extended !== null) {
+			return $extended;
+		}
 
 		return $this->canEdit($member);
+	}
+
+	/**
+	 * Resolves Member object.
+	 *
+	 * @param Member|int|null $member
+	 * @return Member|null
+	 */
+	protected function getMember($member = null) {
+		if(!$member) {
+			$member = Member::currentUser();
+		}
+
+		if(is_numeric($member)) {
+			$member = DataObject::get_by_id('Member', $member, true);
+		}
+
+		return $member;
 	}
 
 	/**

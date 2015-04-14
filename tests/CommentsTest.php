@@ -14,6 +14,25 @@ class CommentsTest extends FunctionalTest {
 	public function setUp() {
 		parent::setUp();
 		Config::nest();
+
+		// Set good default values
+		Config::inst()->update('CommentsExtension', 'comments', array(
+			'enabled' => true,
+			'enabled_cms' => false,
+			'require_login' => false,
+			'require_login_cms' => false,
+			'required_permission' => false,
+			'require_moderation_nonmembers' => false,
+			'require_moderation' => false,
+			'require_moderation_cms' => false,
+			'frontend_moderation' => false,
+			'frontend_spam' => false,
+		));
+
+		// Configure this dataobject
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'enabled_cms' => true
+		));
 	}
 
 	public function tearDown() {
