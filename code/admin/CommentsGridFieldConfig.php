@@ -4,7 +4,9 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor {
 	public function __construct($itemsPerPage = 25) {
 		parent::__construct($itemsPerPage);
 
-		$this->addComponent(new GridFieldExportButton());
+		// $this->addComponent(new GridFieldExportButton());
+
+		$this->addComponent(new CommentsGridFieldAction());
 
 		// Format column
 		$columns = $this->getComponentByType('GridFieldDataColumns');
@@ -20,14 +22,28 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor {
 
 		// Add bulk option
 		$manager = new GridFieldBulkManager();
+
 		$manager->addBulkAction(
-			'markAsSpam', 'Mark as spam', 'CommentsGridFieldBulkAction_MarkAsSpam',
+			'markAsSpam', 'Mark as spam', 'CommentsGridFieldBulkAction_Handlers',
 			array(
 				'isAjax' => true,
-				'icon' => 'delete',
-				'isDestructive' => true
+				'icon' => 'cross',
+				'isDestructive' => false
 			)
 		);
+
+		$manager->addBulkAction(
+			'markAsNotSpam', 'Mark as not spam', 'CommentsGridFieldBulkAction_Handlers',
+			array(
+				'isAjax' => true,
+				'icon' => 'cross',
+				'isDestructive' => false
+			)
+		);
+
+		$manager->removeBulkAction('bulkEdit');
+		$manager->removeBulkAction('unLink');
+
 		$this->addComponent($manager);
 	}
 }

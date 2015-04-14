@@ -48,36 +48,56 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 
 		$commentsConfig = CommentsGridFieldConfig::create();
 
-		$needs = new GridField(
-			'Comments', 
-			_t('CommentsAdmin.NeedsModeration', 'Needs Moderation'), 
-			Comment::get()->filter('Moderated',0),
+		$newComments = Comment::get()->filter('Moderated', 0);
+
+		$newGrid = new GridField(
+			'NewComments',
+			_t('CommentsAdmin.NewComments', 'Unmoderated'),
+			$newComments,
 			$commentsConfig
 		);
 
-		$moderated = new GridField(
-			'CommentsModerated', 
-			_t('CommentsAdmin.Moderated', 'Moderated'),
-			Comment::get()->filter('Moderated',1),
+		$approvedComments = Comment::get()->filter('Moderated', 1)->filter('IsSpam', 0);
+
+		$approvedGrid = new GridField(
+			'ApprovedComments',
+			_t('CommentsAdmin.ApprovedComments', 'Displayed'),
+			$approvedComments,
 			$commentsConfig
 		);
+
+		$spamComments = Comment::get()->filter('Moderated', 1)->filter('IsSpam', 1);
+
+		$spamGrid = new GridField(
+			'SpamComments',
+			_t('CommentsAdmin.SpamComments', 'Spam'),
+			$spamComments,
+			$commentsConfig
+		);
+
+		$newCount = '(' . count($newComments) . ')';
+		$approvedCount = '(' . count($approvedComments) . ')';
+		$spamCount = '(' . count($spamComments) . ')';
 
 		$fields = new FieldList(
 			$root = new TabSet(
 				'Root',
-				new Tab('NeedsModeration', _t('CommentAdmin.NeedsModeration', 'Needs Moderation'), 
-					$needs
+				new Tab('NewComments', _t('CommentAdmin.NewComments', 'Unmoderated') . ' ' . $newCount,
+					$newGrid
 				),
-				new Tab('Comments', _t('CommentAdmin.Moderated', 'Moderated'),
-					$moderated
+				new Tab('ApprovedComments', _t('CommentAdmin.ApprovedComments', 'Displayed') . ' ' . $approvedCount,
+					$approvedGrid
+				),
+				new Tab('SpamComments', _t('CommentAdmin.SpamComments', 'Spam') . ' ' . $spamCount,
+					$spamGrid
 				)
 			)
 		);
-		
+
 		$root->setTemplate('CMSTabSet');
 
 		$actions = new FieldList();
-		
+
 		$form = new Form(
 			$this,
 			'EditForm',
@@ -88,7 +108,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 		$form->addExtraClass('cms-edit-form');
 		$form->setTemplate($this->getTemplatesWithSuffix('_EditForm'));
 
-		if($form->Fields()->hasTabset()) { 
+		if($form->Fields()->hasTabset()) {
 			$form->Fields()->findOrMakeTab('Root')->setTemplate('CMSTabSet');
 			$form->addExtraClass('center ss-tabset cms-tabset ' . $this->BaseCSSClasses());
 		}

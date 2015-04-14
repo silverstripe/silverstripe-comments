@@ -3,46 +3,50 @@
 /**
  * Represents a single comment object.
  *
- * @property string $Name
- * @property string $Comment
- * @property string $Email
- * @property string $URL
- * @property string $BaseClass
+ * @property string  $Name
+ * @property string  $Comment
+ * @property string  $Email
+ * @property string  $URL
+ * @property string  $BaseClass
  * @property boolean $Moderated
- * @property boolean $IsSpam True if the comment is known as spam
- * @property integer $ParentID ID of the parent page / dataobject
- * @property boolean $AllowHtml If true, treat $Comment as HTML instead of plain text
- * @property string $SecretToken Secret admin token required to provide moderation links between sessions
+ * @property boolean $IsSpam      True if the comment is known as spam
+ * @property integer $ParentID    ID of the parent page / dataobject
+ * @property boolean $AllowHtml   If true, treat $Comment as HTML instead of plain text
+ * @property string  $SecretToken Secret admin token required to provide moderation links between sessions
+ *
  * @method HasManyList ChildComments() List of child comments
  * @method Member Author() Member object who created this comment
+ *
  * @package comments
  */
 class Comment extends DataObject {
-	
+	/**
+	 * @var array
+	 */
 	private static $db = array(
-		"Name" => "Varchar(200)",
-		"Comment" => "Text",
-		"Email" => "Varchar(200)",
-		"URL" => "Varchar(255)",
-		"BaseClass" => "Varchar(200)",
-		"Moderated" => "Boolean(1)",
-		"IsSpam" => "Boolean(0)",
-		"ParentID" => "Int",
-		'AllowHtml' => "Boolean",
-		"SecretToken" => "Varchar(255)",
+		'Name' => 'Varchar(200)',
+		'Comment' => 'Text',
+		'Email' => 'Varchar(200)',
+		'URL' => 'Varchar(255)',
+		'BaseClass' => 'Varchar(200)',
+		'Moderated' => 'Boolean(0)',
+		'IsSpam' => 'Boolean(0)',
+		'ParentID' => 'Int',
+		'AllowHtml' => 'Boolean',
+		'SecretToken' => 'Varchar(255)',
 	);
 
 	private static $has_one = array(
-		"Author" => "Member",
+		'Author' => 'Member',
 	);
-	
+
 	private static $default_sort = '"Created" DESC';
-	
+
 	private static $defaults = array(
-		"Moderated" => 1,
-		"IsSpam" => 0,
+		'Moderated' => 0,
+		'IsSpam' => 0,
 	);
-	
+
 	private static $casting = array(
 		'Title' => 'Varchar',
 		'ParentTitle' => 'Varchar',
@@ -63,13 +67,13 @@ class Comment extends DataObject {
 		'Created',
 		'BaseClass',
 	);
-	
+
 	private static $summary_fields = array(
 		'Name' => 'Submitted By',
 		'Email' => 'Email',
 		'Comment' => 'Comment',
 		'Created' => 'Date Posted',
-		'ParentTitle' => 'Parent',
+		'ParentTitle' => 'Post',
 		'IsSpam' => 'Is Spam',
 	);
 
@@ -88,47 +92,49 @@ class Comment extends DataObject {
 	public function getSecurityToken() {
 		return Injector::inst()->createWithArgs('Comment_SecurityToken', array($this));
 	}
-	
+
 	/**
 	 * Migrates the old {@link PageComment} objects to {@link Comment}
 	 */
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();
-		
+
 		if(DB::getConn()->hasTable('PageComment')) {
-			$comments = DB::query("SELECT * FROM \"PageComment\"");
-			
+			$comments = DB::query('SELECT * FROM "PageComment"');
+
 			if($comments) {
 				while($pageComment = $comments->nextRecord()) {
 					// create a new comment from the older page comment
 					$comment = new Comment();
 					$comment->update($pageComment);
-					
+
 					// set the variables which have changed
 					$comment->BaseClass = 'SiteTree';
-					$comment->URL = (isset($pageComment['CommenterURL'])) ? $pageComment['CommenterURL'] : "";
-					if((int)$pageComment['NeedsModeration'] == 0) $comment->Moderated = true;
-					
+					$comment->URL = (isset($pageComment['CommenterURL'])) ? $pageComment['CommenterURL'] : '';
+					if((int) $pageComment['NeedsModeration'] == 0) $comment->Moderated = true;
+
 					$comment->write();
 				}
 			}
-			
-			DB::alteration_message("Migrated PageComment to Comment","changed");
+
+			DB::alteration_message('Migrated PageComment to Comment', 'changed');
 			DB::getConn()->dontRequireTable('PageComment');
 		}
 	}
-	 
+
 	/**
 	 * Return a link to this comment
 	 *
+	 * @param string $action
+	 *
 	 * @return string link to this comment.
 	 */
-	public function Link($action = "") {
-		if($parent = $this->getParent()){
+	public function Link($action = '') {
+		if($parent = $this->getParent()) {
 			return $parent->Link($action) . '#' . $this->Permalink();
 		}
 	}
-	
+
 	/**
 	 * Returns the permalink for this {@link Comment}. Inserted into
 	 * the ID tag of the comment
@@ -139,14 +145,17 @@ class Comment extends DataObject {
 		$prefix = $this->getOption('comment_permalink_prefix');
 		return $prefix . $this->ID;
 	}
-	
+
 	/**
 	 * Translate the form field labels for the CMS administration
 	 *
 	 * @param boolean $includerelations
+	 *
+	 * @return array
 	 */
 	public function fieldLabels($includerelations = true) {
 		$labels = parent::fieldLabels($includerelations);
+
 		$labels['Name'] = _t('Comment.NAME', 'Author Name');
 		$labels['Comment'] = _t('Comment.COMMENT', 'Comment');
 		$labels['Email'] = _t('Comment.EMAIL', 'Email');
@@ -155,7 +164,7 @@ class Comment extends DataObject {
 		$labels['Moderated'] = _t('Comment.MODERATED', 'Moderated?');
 		$labels['ParentTitle'] = _t('Comment.PARENTTITLE', 'Parent');
 		$labels['Created'] = _t('Comment.CREATED', 'Date posted');
-		
+
 		return $labels;
 	}
 
@@ -163,6 +172,7 @@ class Comment extends DataObject {
 	 * Get the commenting option
 	 *
 	 * @param string $key
+	 *
 	 * @return mixed Result if the setting is available, or null otherwise
 	 */
 	public function getOption($key) {
@@ -178,7 +188,7 @@ class Comment extends DataObject {
 
 		return $record->getCommentsOption($key);
 	}
-	
+
 	/**
 	 * Returns the parent {@link DataObject} this comment is attached too
 	 *
@@ -198,7 +208,7 @@ class Comment extends DataObject {
 	 */
 	public function getParentTitle() {
 		if($parent = $this->getParent()) {
-			return $parent->Title ?: ($parent->ClassName . " #" . $parent->ID);
+			return $parent->Title ?: ($parent->ClassName . ' #' . $parent->ID);
 		}
 	}
 
@@ -218,7 +228,7 @@ class Comment extends DataObject {
 		}
 		return parent::castingHelper($field);
 	}
-	
+
 	/**
 	 * Content to be safely escaped on the frontend
 	 *
@@ -240,22 +250,25 @@ class Comment extends DataObject {
 	/**
 	 * @todo needs to compare to the new {@link Commenting} configuration API
 	 *
-	 * @return Boolean
+	 * @param Member $member
+	 *
+	 * @return bool
 	 */
 	public function canCreate($member = null) {
 		return false;
 	}
 
 	/**
-	 * Checks for association with a page, and {@link SiteTree->ProvidePermission} 
+	 * Checks for association with a page, and {@link SiteTree->ProvidePermission}
 	 * flag being set to true.
-	 * 
+	 *
 	 * @param Member $member
+	 *
 	 * @return Boolean
 	 */
 	public function canView($member = null) {
 		if(!$member) $member = Member::currentUser();
-		
+
 		// Standard mechanism for accepting permission changes from decorators
 		$extended = $this->extendedCan('canView', $member);
 		if($extended !== null) return $extended;
@@ -267,40 +280,42 @@ class Comment extends DataObject {
 		$parent = $this->getParent();
 		return $parent && $parent->ProvideComments && $parent->canView($member);
 	}
-	
+
 	/**
-	 * Checks for "CMS_ACCESS_CommentAdmin" permission codes and 
-	 * {@link canView()}. 
-	 * 
+	 * Checks for "CMS_ACCESS_CommentAdmin" permission codes and
+	 * {@link canView()}.
+	 *
 	 * @param Member $member
+	 *
 	 * @return Boolean
 	 */
 	public function canEdit($member = null) {
 		if(!$member) $member = Member::currentUser();
-		
+
 		// Standard mechanism for accepting permission changes from decorators
 		$extended = $this->extendedCan('canEdit', $member);
 		if($extended !== null) return $extended;
-		
+
 		if(!$this->canView($member)) return false;
-		
-		return (bool)Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin');
+
+		return (bool) Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin');
 	}
-	
+
 	/**
-	 * Checks for "CMS_ACCESS_CommentAdmin" permission codes and 
+	 * Checks for "CMS_ACCESS_CommentAdmin" permission codes and
 	 * {@link canEdit()}.
-	 * 
+	 *
 	 * @param Member $member
+	 *
 	 * @return Boolean
 	 */
 	public function canDelete($member = null) {
 		if(!$member) $member = Member::currentUser();
-		
+
 		// Standard mechanism for accepting permission changes from decorators
 		$extended = $this->extendedCan('canDelete', $member);
 		if($extended !== null) return $extended;
-		
+
 		return $this->canEdit($member);
 	}
 
@@ -322,6 +337,7 @@ class Comment extends DataObject {
 	 *
 	 * @param string $action An action on CommentingController to link to
 	 * @param Member $member The member authorised to invoke this action
+	 *
 	 * @return string
 	 */
 	protected function actionLink($action, $member = null) {
@@ -330,7 +346,7 @@ class Comment extends DataObject {
 
 		$url = Controller::join_links(
 			Director::baseURL(),
-			"CommentingController",
+			'CommentingController',
 			$action,
 			$this->ID
 		);
@@ -344,6 +360,7 @@ class Comment extends DataObject {
 	 * Link to delete this comment
 	 *
 	 * @param Member $member
+	 *
 	 * @return string
 	 */
 	public function DeleteLink($member = null) {
@@ -351,11 +368,12 @@ class Comment extends DataObject {
 			return $this->actionLink('delete', $member);
 		}
 	}
-	
+
 	/**
 	 * Link to mark as spam
 	 *
 	 * @param Member $member
+	 *
 	 * @return string
 	 */
 	public function SpamLink($member = null) {
@@ -363,11 +381,12 @@ class Comment extends DataObject {
 			return $this->actionLink('spam', $member);
 		}
 	}
-	
+
 	/**
 	 * Link to mark as not-spam (ham)
 	 *
 	 * @param Member $member
+	 *
 	 * @return string
 	 */
 	public function HamLink($member = null) {
@@ -375,11 +394,12 @@ class Comment extends DataObject {
 			return $this->actionLink('ham', $member);
 		}
 	}
-	
+
 	/**
 	 * Link to approve this comment
 	 *
 	 * @param Member $member
+	 *
 	 * @return string
 	 */
 	public function ApproveLink($member = null) {
@@ -387,7 +407,7 @@ class Comment extends DataObject {
 			return $this->actionLink('approve', $member);
 		}
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -400,16 +420,16 @@ class Comment extends DataObject {
 			return 'notspam';
 		}
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	public function getTitle() {
-		$title = sprintf(_t('Comment.COMMENTBY', "Comment by %s", 'Name'), $this->getAuthorName());
+		$title = sprintf(_t('Comment.COMMENTBY', 'Comment by %s', 'Name'), $this->getAuthorName());
 
 		if($parent = $this->getParent()) {
 			if($parent->Title) {
-				$title .= sprintf(" %s %s", _t('Comment.ON', 'on'), $parent->Title);
+				$title .= sprintf(' %s %s', _t('Comment.ON', 'on'), $parent->Title);
 			}
 		}
 
@@ -433,6 +453,7 @@ class Comment extends DataObject {
 
 	/**
 	 * @param  String $dirtyHtml
+	 *
 	 * @return String
 	 */
 	public function purifyHtml($dirtyHtml) {
@@ -454,19 +475,19 @@ class Comment extends DataObject {
 	}
 
 	/**
-	 * Calcualate the gravatar link from the email address
+	 * Calculate the Gravatar link from the email address
 	 *
 	 * @return string
 	 */
 	public function Gravatar() {
 		$gravatar = '';
 		$use_gravatar = $this->getOption('use_gravatar');
-		if ($use_gravatar) {
-			$gravatar = "http://www.gravatar.com/avatar/" . md5( strtolower(trim($this->Email)));
+		if($use_gravatar) {
+			$gravatar = 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Email)));
 			$gravatarsize = $this->getOption('gravatar_size');
 			$gravatardefault = $this->getOption('gravatar_default');
 			$gravatarrating = $this->getOption('gravatar_rating');
-			$gravatar.= "?s=".$gravatarsize."&d=".$gravatardefault."&r=".$gravatarrating;
+			$gravatar .= '?s=' . $gravatarsize . '&d=' . $gravatardefault . '&r=' . $gravatarrating;
 		}
 
 		return $gravatar;
@@ -495,6 +516,7 @@ class Comment_SecurityToken {
 	 * Generate the token for the given salt and current secret
 	 *
 	 * @param string $salt
+	 *
 	 * @return string
 	 */
 	protected function getToken($salt) {
@@ -506,11 +528,13 @@ class Comment_SecurityToken {
 	/**
 	 * Get the member-specific salt.
 	 *
-	 * The reason for making the salt specific to a user is that it cannot be "passed in" via a querystring,
-	 * requiring the same user to be present at both the link generation and the controller action.
+	 * The reason for making the salt specific to a user is that it cannot be "passed in" via a
+	 * querystring, requiring the same user to be present at both the link generation and the
+	 * controller action.
 	 *
-	 * @param string $salt Single use salt
-	 * @param type $member Member object
+	 * @param string $salt   Single use salt
+	 * @param Member $member Member object
+	 *
 	 * @return string Generated salt specific to this member
 	 */
 	protected function memberSalt($salt, $member) {
@@ -519,8 +543,9 @@ class Comment_SecurityToken {
 	}
 
 	/**
-	 * @param string $url Comment action URL
+	 * @param string $url    Comment action URL
 	 * @param Member $member Member to restrict access to this action to
+	 *
 	 * @return string
 	 */
 	public function addToUrl($url, $member) {
@@ -540,6 +565,7 @@ class Comment_SecurityToken {
 
 	/**
 	 * @param SS_HTTPRequest $request
+	 *
 	 * @return boolean
 	 */
 	public function checkRequest($request) {
@@ -559,12 +585,13 @@ class Comment_SecurityToken {
 	 * Generates new random key
 	 *
 	 * @param integer $length
+	 *
 	 * @return string
 	 */
 	protected function generate($length = null) {
 		$generator = new RandomGenerator();
 		$result = $generator->randomToken('sha256');
-		if($length !== null) return substr ($result, 0, $length);
+		if($length !== null) return substr($result, 0, $length);
 		return $result;
 	}
 
@@ -580,24 +607,24 @@ class Comment_SecurityToken {
 	*
 	* @return  string  derived key
 	*/
-	private function hash_pbkdf2 ($a, $p, $s, $c, $kl, $st=0) {
+	private function hash_pbkdf2($a, $p, $s, $c, $kl, $st = 0) {
 
-		$kb  =  $st+$kl;     // Key blocks to compute
-		$dk  =  '';          // Derived key
+		$kb = $st + $kl;     // Key blocks to compute
+		$dk = '';          // Derived key
 
 		// Create key
-		for ($block=1; $block<=$kb; $block++) {
+		for($block = 1; $block <= $kb; $block++) {
 
 			// Initial hash for this block
 			$ib = $h = hash_hmac($a, $s . pack('N', $block), $p, true);
 
 			// Perform block iterations
-			for ($i=1; $i<$c; $i++) {
+			for($i = 1; $i < $c; $i++) {
 				// XOR each iterate
-				$ib  ^=  ($h = hash_hmac($a, $h, $p, true));
+				$ib ^= ($h = hash_hmac($a, $h, $p, true));
 			}
 
-			$dk  .=  $ib;   // Append iterated block
+			$dk .= $ib;   // Append iterated block
 
 		}
 
