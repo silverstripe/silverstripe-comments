@@ -447,6 +447,34 @@ class Comment extends DataObject {
 	}
 
 	/**
+	 * Mark this comment as spam
+	 */
+	public function markSpam() {
+		$this->IsSpam = true;
+		$this->Moderated = true;
+		$this->write();
+		$this->extend('afterMarkSpam');
+	}
+
+	/**
+	 * Mark this comment as approved
+	 */
+	public function markApproved() {
+		$this->IsSpam = false;
+		$this->Moderated = true;
+		$this->write();
+		$this->extend('afterMarkApproved');
+	}
+
+	/**
+	 * Mark this comment as unapproved
+	 */
+	public function markUnapproved() {
+		$this->Moderated = false;
+		$this->write();
+		$this->extend('afterMarkUnapproved');
+	}
+	/**
 	 * @return string
 	 */
 	public function SpamClass() {

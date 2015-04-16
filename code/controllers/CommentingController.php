@@ -225,9 +225,7 @@ class CommentingController extends Controller {
 		}
 		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
 		
-		$comment->IsSpam = true;
-		$comment->Moderated = true;
-		$comment->write();
+		$comment->markSpam();
 
 		return $this->request->isAjax()
 			? $comment->renderWith('CommentsInterface_singlecomment')
@@ -244,10 +242,8 @@ class CommentingController extends Controller {
 			return Security::permissionFailure($this, 'You do not have permission to edit this comment');
 		}
 		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
-		
-		$comment->IsSpam = false;
-		$comment->Moderated = true;
-		$comment->write();
+
+		$comment->markApproved();
 
 		return $this->request->isAjax()
 			? $comment->renderWith('CommentsInterface_singlecomment')
@@ -265,9 +261,7 @@ class CommentingController extends Controller {
 		}
 		if(!$comment->getSecurityToken()->checkRequest($this->request)) return $this->httpError(400);
 
-		$comment->IsSpam = false;
-		$comment->Moderated = true;
-		$comment->write();
+		$comment->markApproved();
 
 		return $this->request->isAjax()
 			? $comment->renderWith('CommentsInterface_singlecomment')
