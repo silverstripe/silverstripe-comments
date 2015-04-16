@@ -14,8 +14,8 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor {
 			'ParentTitle' => function($value, &$item) {
 				return sprintf(
 					'<a href="%s" class="cms-panel-link external-link action" target="_blank">%s</a>',
-					Convert::raw2xml($item->Link()),
-					Convert::raw2xml($value)
+					Convert::raw2att($item->Link()),
+					$item->obj('ParentTitle')->forTemplate()
 				);
 			}
 		));
