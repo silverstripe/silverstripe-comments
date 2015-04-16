@@ -463,7 +463,7 @@ class CommentsExtension extends DataExtension {
 
 		$newGrid = new GridField(
 			'NewComments',
-			_t('CommentsAdmin.NewComments', 'Unmoderated'),
+			_t('CommentsAdmin.NewComments', 'New'),
 			$newComments,
 			$commentsConfig
 		);
@@ -472,7 +472,7 @@ class CommentsExtension extends DataExtension {
 
 		$approvedGrid = new GridField(
 			'ApprovedComments',
-			_t('CommentsAdmin.Comments', 'Displayed'),
+			_t('CommentsAdmin.Comments', 'Approved'),
 			$approvedComments,
 			$commentsConfig
 		);
@@ -493,10 +493,10 @@ class CommentsExtension extends DataExtension {
 		if($fields->hasTabSet()) {
 			$tabs = new TabSet(
 				'Comments',
-				new Tab('CommentsNewCommentsTab', _t('CommentAdmin.NewComments', 'Unmoderated') . ' ' . $newCount,
+				new Tab('CommentsNewCommentsTab', _t('CommentAdmin.NewComments', 'New') . ' ' . $newCount,
 					$newGrid
 				),
-				new Tab('CommentsCommentsTab', _t('CommentAdmin.Comments', 'Displayed') . ' ' . $approvedCount,
+				new Tab('CommentsCommentsTab', _t('CommentAdmin.Comments', 'Approved') . ' ' . $approvedCount,
 					$approvedGrid
 				),
 				new Tab('CommentsSpamCommentsTab', _t('CommentAdmin.SpamComments', 'Spam') . ' ' . $spamCount,

@@ -52,7 +52,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 
 		$newGrid = new GridField(
 			'NewComments',
-			_t('CommentsAdmin.NewComments', 'Unmoderated'),
+			_t('CommentsAdmin.NewComments', 'New'),
 			$newComments,
 			$commentsConfig
 		);
@@ -61,7 +61,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 
 		$approvedGrid = new GridField(
 			'ApprovedComments',
-			_t('CommentsAdmin.ApprovedComments', 'Displayed'),
+			_t('CommentsAdmin.ApprovedComments', 'Approved'),
 			$approvedComments,
 			$commentsConfig
 		);
@@ -82,10 +82,10 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 		$fields = new FieldList(
 			$root = new TabSet(
 				'Root',
-				new Tab('NewComments', _t('CommentAdmin.NewComments', 'Unmoderated') . ' ' . $newCount,
+				new Tab('NewComments', _t('CommentAdmin.NewComments', 'New') . ' ' . $newCount,
 					$newGrid
 				),
-				new Tab('ApprovedComments', _t('CommentAdmin.ApprovedComments', 'Displayed') . ' ' . $approvedCount,
+				new Tab('ApprovedComments', _t('CommentAdmin.ApprovedComments', 'Approved') . ' ' . $approvedCount,
 					$approvedGrid
 				),
 				new Tab('SpamComments', _t('CommentAdmin.SpamComments', 'Spam') . ' ' . $spamCount,

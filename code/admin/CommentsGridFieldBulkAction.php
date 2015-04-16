@@ -4,7 +4,7 @@
  * @package comments
  */
 class CommentsGridFieldBulkAction extends GridFieldBulkActionHandler {
-	
+
 }
 
 /**
@@ -13,22 +13,22 @@ class CommentsGridFieldBulkAction extends GridFieldBulkActionHandler {
  * @package comments
  */
 class CommentsGridFieldBulkAction_Handlers extends CommentsGridFieldBulkAction {
-	
+
 	private static $allowed_actions = array(
-		'markAsSpam',
-		'markAsNotSpam',
+		'spam',
+		'approve',
 	);
 
 	private static $url_handlers = array(
-		'markAsSpam' => 'markAsSpam',
-		'markAsNotSpam' => 'markAsNotSpam',
+		'spam' => 'spam',
+		'approve' => 'approve',
 	);
 
 
-	public function markAsSpam(SS_HTTPRequest $request) {
+	public function spam(SS_HTTPRequest $request) {
 		$ids = array();
-		
-		foreach($this->getRecords() as $record) {						
+
+		foreach($this->getRecords() as $record) {
 			array_push($ids, $record->ID);
 
 			$record->Moderated = 1;
@@ -43,11 +43,11 @@ class CommentsGridFieldBulkAction_Handlers extends CommentsGridFieldBulkAction {
 
 		$response->addHeader('Content-Type', 'text/json');
 
-		return $response;	
+		return $response;
 	}
 
 
-	public function markAsNotSpam(SS_HTTPRequest $request) {
+	public function approve(SS_HTTPRequest $request) {
 		$ids = array();
 
 		foreach($this->getRecords() as $record) {
