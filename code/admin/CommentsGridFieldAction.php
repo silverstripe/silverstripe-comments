@@ -44,7 +44,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 		$field .= GridField_FormAction::create(
 			$gridField,
 			'CustomAction' . $record->ID,
-			'Mark As Spam',
+			'Spam',
 			'spam',
 			array('RecordID' => $record->ID)
 		)->Field();
@@ -52,8 +52,8 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 		$field .= GridField_FormAction::create(
 			$gridField,
 			'CustomAction' . $record->ID,
-			'Mark As Not Spam',
-			'not_spam',
+			'Approve',
+			'approve',
 			array('RecordID' => $record->ID)
 		)->Field();
 
@@ -64,7 +64,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 	 * {@inheritdoc}
 	 */
 	public function getActions($gridField) {
-		return array('spam', 'not_spam');
+		return array('spam', 'approve');
 	}
 
 	/**
@@ -85,7 +85,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 			);
 		}
 
-		if($actionName == 'not_spam') {
+		if($actionName == 'approve') {
 			$comment = Comment::get()->byID($arguments["RecordID"]);
 
 			$comment->Moderated = true;
@@ -95,7 +95,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 			// output a success message to the user
 			Controller::curr()->getResponse()->setStatusCode(
 				200,
-				'Comment marked as not spam.'
+				'Comment approved.'
 			);
 		}
 	}
