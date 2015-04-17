@@ -50,7 +50,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 
 		$newComments = Comment::get()->filter('Moderated', 0);
 
-		$newGrid = new GridField(
+		$newGrid = new CommentsGridField(
 			'NewComments',
 			_t('CommentsAdmin.NewComments', 'New'),
 			$newComments,
@@ -59,7 +59,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 
 		$approvedComments = Comment::get()->filter('Moderated', 1)->filter('IsSpam', 0);
 
-		$approvedGrid = new GridField(
+		$approvedGrid = new CommentsGridField(
 			'ApprovedComments',
 			_t('CommentsAdmin.ApprovedComments', 'Approved'),
 			$approvedComments,
@@ -68,7 +68,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 
 		$spamComments = Comment::get()->filter('Moderated', 1)->filter('IsSpam', 1);
 
-		$spamGrid = new GridField(
+		$spamGrid = new CommentsGridField(
 			'SpamComments',
 			_t('CommentsAdmin.SpamComments', 'Spam'),
 			$spamComments,
