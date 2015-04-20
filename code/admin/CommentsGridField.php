@@ -1,32 +1,17 @@
 <?php
 
-class CommentsGridField extends GridField
-{
+class CommentsGridField extends GridField {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function newRow($gridfield, $total, $index, $record, $attributes, $content) {
-		$classes = array('ss-gridfield-item');
-
-		if($index == 0) {
-			$classes[] = 'first';
+	protected function newRow($total, $index, $record, $attributes, $content) {
+		if(!isset($attributes['class'])) {
+			$attributes['class'] = '';
 		}
 
-		if($index == $total - 1) {
-			$classes[] = 'last';
+		if($record->IsSpam) {
+			$attributes['class'] .= ' spam';
 		}
-
-		$classes[] = ($index % 2) ? 'even' : 'odd';
-
-		if ($record->IsSpam) {
-			$classes[] = 'spam';
-		}
-
-		$attributes = array(
-			'class' => implode(' ', $classes),
-			'data-id' => $record->ID,
-			'data-class' => $record->ClassName,
-		);
 
 		return FormField::create_tag(
 			'tr',

@@ -1,3 +1,7 @@
 .cms table.ss-gridfield-table tr.spam {
-    background-color: #FFD8D8 ;
+    background-color: #FFD8D8;
+}
+
+.cms table.ss-gridfield-table tr.spam:hover {
+    background-color: #FFF2F2;
 }
