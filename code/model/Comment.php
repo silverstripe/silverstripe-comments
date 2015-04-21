@@ -561,15 +561,6 @@ class Comment extends DataObject {
 			);
 		}
 
-		// Show parent comment details
-		if(($parent = $this->ParentComment()) && $parent->exists()) {
-			$fields->insertAfter(
-				TextField::create('ParentCommentDescription', $this->fieldLabel('ParentComment'), $parent->Title)
-					->performReadonlyTransformation(),
-				'Created'
-			);
-		}
-
 		$this->extend('updateCMSFields', $fields);
 		return $fields;
 	}
