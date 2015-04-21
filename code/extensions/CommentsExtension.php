@@ -475,7 +475,7 @@ class CommentsExtension extends DataExtension {
 	 * @param FieldList $fields
 	 */
 	protected function updateModerationFields(FieldList $fields) {
-		Requirements::css(COMMENTS_DIR . '/css/Comments.css');
+		Requirements::css(COMMENTS_DIR . '/css/cms.css');
 
 		$commentsConfig = CommentsGridFieldConfig::create();
 
