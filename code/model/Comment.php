@@ -13,13 +13,15 @@
  * @property integer $ParentID    ID of the parent page / dataobject
  * @property boolean $AllowHtml   If true, treat $Comment as HTML instead of plain text
  * @property string  $SecretToken Secret admin token required to provide moderation links between sessions
+ * @property integer $Depth       Depth of this comment in the nested chain
  *
  * @method HasManyList ChildComments() List of child comments
  * @method Member Author() Member object who created this comment
- *
+ * @method Comment ParentComment() Parent comment this is a reply to
  * @package comments
  */
 class Comment extends DataObject {
+
 	/**
 	 * @var array
 	 */
@@ -34,10 +36,16 @@ class Comment extends DataObject {
 		'ParentID' => 'Int',
 		'AllowHtml' => 'Boolean',
 		'SecretToken' => 'Varchar(255)',
+		'Depth' => 'Int',
 	);
 
 	private static $has_one = array(
-		'Author' => 'Member',
+		"Author" => "Member",
+		"ParentComment" => "Comment",
+	);
+
+	private static $has_many = array(
+		"ChildComments"	=> "Comment"
 	);
 
 	private static $default_sort = '"Created" DESC';
@@ -71,10 +79,14 @@ class Comment extends DataObject {
 	private static $summary_fields = array(
 		'Name' => 'Submitted By',
 		'Email' => 'Email',
-		'Comment' => 'Comment',
+		'Comment.LimitWordCount' => 'Comment',
 		'Created' => 'Date Posted',
 		'ParentTitle' => 'Post',
 		'IsSpam' => 'Is Spam',
+	);
+
+	private static $field_labels = array(
+		'Author' => 'Author Member',
 	);
 
 	public function onBeforeWrite() {
@@ -83,6 +95,18 @@ class Comment extends DataObject {
 		// Sanitize HTML, because its expected to be passed to the template unescaped later
 		if($this->AllowHtml) {
 			$this->Comment = $this->purifyHtml($this->Comment);
+		}
+
+		// Check comment depth
+		$this->updateDepth();
+	}
+
+	public function onBeforeDelete() {
+		parent::onBeforeDelete();
+
+		// Delete all children
+		foreach($this->ChildComments() as $comment) {
+			$comment->delete();
 		}
 	}
 
@@ -224,7 +248,7 @@ class Comment extends DataObject {
 	public function castingHelper($field) {
 		// Safely escape the comment
 		if($field === 'EscapedComment') {
-			return $this->AllowHtml ? 'HTMLText' : 'Varchar';
+			return $this->AllowHtml ? 'HTMLText' : 'Text';
 		}
 		return parent::castingHelper($field);
 	}
@@ -474,6 +498,7 @@ class Comment extends DataObject {
 		$this->write();
 		$this->extend('afterMarkUnapproved');
 	}
+	
 	/**
 	 * @return string
 	 */
@@ -506,14 +531,46 @@ class Comment extends DataObject {
 	 * Modify the default fields shown to the user
 	 */
 	public function getCMSFields() {
-		$fields = parent::getCMSFields();
+		$commentField = $this->AllowHtml ? 'HtmlEditorField' : 'TextareaField';
+		$fields = new FieldList(
+			$this
+				->obj('Created')
+				->scaffoldFormField($this->fieldLabel('Created'))
+				->performReadonlyTransformation(),
+			TextField::create('Name', $this->fieldLabel('AuthorName')),
+			$commentField::create('Comment', $this->fieldLabel('Comment')),
+			EmailField::create('Email', $this->fieldLabel('Email')),
+			TextField::create('URL', $this->fieldLabel('URL')),
+			FieldGroup::create(array(
+				CheckboxField::create('Moderated', $this->fieldLabel('Moderated')),
+				CheckboxField::create('IsSpam', $this->fieldLabel('IsSpam')),
+			))
+				->setTitle('Options')
+				->setDescription(_t(
+					'Comment.OPTION_DESCRIPTION',
+					'Unmoderated and spam comments will not be displayed until approved'
+				))
+		);
 
-		$hidden = array('ParentID', 'AuthorID', 'BaseClass', 'AllowHtml', 'SecretToken');
-
-		foreach($hidden as $private) {
-			$fields->removeByName($private);
+		// Show member name if given
+		if(($author = $this->Author()) && $author->exists()) {
+			$fields->insertAfter(
+				TextField::create('AuthorMember', $this->fieldLabel('Author'), $author->Title)
+					->performReadonlyTransformation(),
+				'Name'
+			);
 		}
 
+		// Show parent comment details
+		if(($parent = $this->ParentComment()) && $parent->exists()) {
+			$fields->insertAfter(
+				TextField::create('ParentCommentDescription', $this->fieldLabel('ParentComment'), $parent->Title)
+					->performReadonlyTransformation(),
+				'Created'
+			);
+		}
+
+		$this->extend('updateCMSFields', $fields);
 		return $fields;
 	}
 
@@ -558,7 +615,134 @@ class Comment extends DataObject {
 
 		return $gravatar;
 	}
+
+	/**
+	 * Determine if replies are enabled for this instance
+	 *
+	 * @return boolean
+	 */
+	public function getRepliesEnabled() {
+		// Check reply option
+		if(!$this->getOption('nested_comments')) {
+			return false;
+		}
+
+		// Check if depth is limited
+		$maxLevel = $this->getOption('nested_depth');
+		return !$maxLevel || $this->Depth < $maxLevel;
+	}
+
+	/**
+	 * Returns the list of all replies
+	 *
+	 * @return SS_List
+	 */
+	public function AllReplies() {
+		// No replies if disabled
+		if(!$this->getRepliesEnabled()) {
+			return new ArrayList();
+		}
+		
+		// Get all non-spam comments
+		$order = $this->getOption('order_replies_by')
+			?: $this->getOption('order_comments_by');
+		$list = $this
+			->ChildComments()
+			->sort($order);
+
+		$this->extend('updateAllReplies', $list);
+		return $list;
+	}
+
+	/**
+	 * Returns the list of replies, with spam and unmoderated items excluded, for use in the frontend
+	 *
+	 * @return SS_List
+	 */
+	public function Replies() {
+		// No replies if disabled
+		if(!$this->getRepliesEnabled()) {
+			return new ArrayList();
+		}
+		$list = $this->AllReplies();
+		
+		// Filter spam comments for non-administrators if configured
+		$parent = $this->getParent();
+		$showSpam = $this->getOption('frontend_spam') && $parent && $parent->canModerateComments();
+		if(!$showSpam) {
+			$list = $list->filter('IsSpam', 0);
+		}
+
+		// Filter un-moderated comments for non-administrators if moderation is enabled
+		$showUnmoderated = $parent && (
+			($parent->ModerationRequired === 'None')
+			|| ($this->getOption('frontend_moderation') && $parent->canModerateComments())
+		);
+		if (!$showUnmoderated) {
+		    $list = $list->filter('Moderated', 1);
+		}
+
+		$this->extend('updateReplies', $list);
+		return $list;
+	}
+
+	/**
+	 * Returns the list of replies paged, with spam and unmoderated items excluded, for use in the frontend
+	 *
+	 * @return PaginatedList
+	 */
+	public function PagedReplies() {
+		$list = $this->Replies();
+
+		// Add pagination
+		$list = new PaginatedList($list, Controller::curr()->getRequest());
+		$list->setPaginationGetVar('repliesstart'.$this->ID);
+		$list->setPageLength($this->getOption('comments_per_page'));
+
+		$this->extend('updatePagedReplies', $list);
+		return $list;
+	}
+
+	/**
+	 * Generate a reply form for this comment
+	 *
+	 * @return Form
+	 */
+	public function ReplyForm() {
+		// Ensure replies are enabled
+		if(!$this->getRepliesEnabled()) {
+			return null;
+		}
+
+		// Check parent is available
+		$parent = $this->getParent();
+		if(!$parent || !$parent->exists()) {
+			return null;
+		}
+
+		// Build reply controller
+		$controller = CommentingController::create();
+		$controller->setOwnerRecord($parent);
+		$controller->setBaseClass($parent->ClassName);
+		$controller->setOwnerController(Controller::curr());
+
+		return $controller->ReplyForm($this);
+	}
+
+	/**
+	 * Refresh of this comment in the hierarchy
+	 */
+	public function updateDepth() {
+		$parent = $this->ParentComment();
+		if($parent && $parent->exists()) {
+			$parent->updateDepth();
+			$this->Depth = $parent->Depth + 1;
+		} else {
+			$this->Depth = 1;
+		}
+	}
 }
+
 
 /**
  * Provides the ability to generate cryptographically secure tokens for comment moderation

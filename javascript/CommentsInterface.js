@@ -2,115 +2,142 @@
  * @package comments
  */
 (function($) {
-	$(document).ready(function () {
-
-		var container = $('.comments-holder-container'),
-			commentsHolder = $('.comments-holder'),
-			commentsList = $('.comments-list', commentsHolder),
-			pagination = $('.comments-pagination'),
-			noCommentsYet = $('.no-comments-yet', commentsHolder),
-			form = $('form', container),
-			previewEl = form.find('#PreviewComment');
+	$.entwine( "ss.comments", function($) {
 
 		/**
-		 * Init
+		 * Enable form validation
 		 */
-		previewEl.hide();
-		$(':submit[name=action_doPreviewComment]').show();
+		$('.comments-holder-container form').entwine({
+			onmatch: function() {
+				
+				// @todo Reinstate preview-comment functionality
 
-		/**
-		 * Validate
-		 */
-		form.validate({
-		invalidHandler : function(form, validator){
-				$('html, body').animate({
-			scrollTop: $(validator.errorList[0].element).offset().top - 30
-			}, 200);
+				/**
+				 * Validate
+				 */
+				$(this).validate({
+
+					/**
+					 * Ignore hidden elements in this form
+					 */
+					ignore: ':hidden',
+
+					/**
+					 * Use default 'required' for error labels
+					 */
+					errorClass: "required",
+
+					/**
+					 * Use span instead of labels
+					 */
+					errorElement: "span",
+
+					/**
+					 * On error, scroll to the invalid element
+					 */
+					invalidHandler : function(form, validator){
+						$('html, body').animate({
+							scrollTop: $(validator.errorList[0].element).offset().top - 30
+						}, 200);
+					},
+
+					/**
+					 * Ensure any new error message has the correct class and placement
+					 */
+					errorPlacement: function(error, element) {
+						error
+							.addClass('message')
+							.insertAfter(element);
+					}
+				});
+				this._super();
 			},
-			showErrors: function(errorMap, errorList) {
-			this.defaultShowErrors();
-			// hack to add the extra classes we need to the validation message elements
-			form.find('span.error').addClass('message required');
-		},
-
-			errorElement: "span",
-			errorClass: "error",
-			ignore: '.hidden',
-			rules: {
-				Name : {
-					required : true
-				},
-				Email : {
-					required : true,
-					email : true
-				},
-				Comment: {
-					required : true
-				},
-				URL: {
-					url : true
+			onunmatch: function() {
+				this._super();
+			}
+		});
+		
+		/**
+		 * Comment reply form
+		 */
+		$( ".comment-replies-container .comment-reply-form-holder" ).entwine({
+			onmatch: function() {
+				// If and only if this is not the currently selected form, hide it on page load
+				var selectedHash = window.document.location.hash.substr(1),
+					form = $(this).children('.reply-form');
+				if( !selectedHash || selectedHash !== form.prop( 'id' ) ) {
+					this.hide();
 				}
+				this._super();
 			},
-			messages: {
-				Name : {
-					required : form.find('[name="Name"]').data('message-required')
-				},
-				Email : {
-					required : form.find('[name="Email"]').data('message-required'),
-					email : form.find('[name="Email"]').data('message-email')
-				},
-				Comment: {
-					required : form.find('[name="Comment"]').data('message-required')
-				},
-				URL: {
-					url : form.find('[name="Comment"]').data('message-url')
+			onunmatch: function() {
+				this._super();
+			}
+		});
+			
+		/**
+		 * Toggle on/off reply form
+		 */
+		$( ".comment-reply-link" ).entwine({
+			onclick: function( e ) {
+				var allForms = $( ".comment-reply-form-holder" ),
+					formID = $( this ).prop('href').replace(/^[^#]*#/, '#'),
+					form = $(formID).closest('.comment-reply-form-holder');
+				
+				// Prevent focus
+				e.preventDefault();
+				if(form.is(':visible')) {
+					allForms.slideUp();
+				} else {
+					allForms.not(form).slideUp();
+					form.slideDown();
 				}
 			}
 		});
-
-		form.submit(function (e) {
-			// trigger validation
-			if(!form.validate().valid()) return false;
-		});
+		
 
 		/**
 		 * Preview comment by fetching it from the server via ajax.
 		 */
+		/* @todo Migrate to work with nested comments
 		$(':submit[name=action_doPreviewComment]', form).click(function(e) {
-			e.preventDefault();
+		   e.preventDefault();
 
-			if(!form.validate().valid()) {
-				return false;
-			}
+		   if(!form.validate().valid()) {
+			   return false;
+		   }
 
-			previewEl.show().addClass('loading').find('.middleColumn').html(' ');
+		   previewEl.show().addClass('loading').find('.middleColumn').html(' ');
 
-			form.ajaxSubmit({
-				success: function(response) {
-					var responseEl = $(response);
-					if(responseEl.is('form')) {
-						// Validation failed, renders form instead of single comment
-						form.find(".data-fields").replaceWith(responseEl.find(".data-fields"));
-					} else {
-						// Default behaviour
-						previewEl.removeClass('loading').find('.middleColumn').html(responseEl);
-					}
-				},
-				data: {'action_doPreviewComment': 1}
-			});
+		   form.ajaxSubmit({
+			   success: function(response) {
+				   var responseEl = $(response);
+				   if(responseEl.is('form')) {
+					   // Validation failed, renders form instead of single comment
+					   form.find(".data-fields").replaceWith(responseEl.find(".data-fields"));
+				   } else {
+					   // Default behaviour
+					   previewEl.removeClass('loading').find('.middleColumn').html(responseEl);
+				   }
+			   },
+			   data: {'action_doPreviewComment': 1}
+		   });
 		});
+		*/
 
 		/**
 		 * Hide outdated preview on form changes
 		 */
+		/*
 		$(':input', form).on('change keydown', function() {
-			previewEl.removeClass('loading').hide();
-		});
+		   previewEl.removeClass('loading').hide();
+		});*/
 		
 		/**
 		 * Clicking one of the metalinks performs the operation via ajax
 		 * this inclues the spam and approve links
 		 */
+		/* @todo Migrate to work with nested comments
 		commentsList.on('click', '.action-links a', function(e) {
 			var link = $(this);
 			var comment = link.parents('.comment:first');
@@ -149,11 +176,12 @@
 			
 			e.preventDefault();
 		});
-
+		*/
 
 		/**
 		 * Ajax pagination
 		 */
+		/* @todo Migrate to work with nested comments
 		pagination.find('a').on('click', function(){
 			commentsList.addClass('loading');
 			$.ajax({
@@ -165,14 +193,16 @@
 					pagination.hide().html(html.find('.comments-pagination:first').html()).fadeIn();
 					commentsList.removeClass('loading');
 					$('html, body').animate({
-				scrollTop: commentsList.offset().top - 30
-				}, 200);
+						scrollTop: commentsList.offset().top - 30
+					}, 200);
 				},
 				failure: function(html) {
 					alert('Error loading comments');
 				}
 			});
 			return false;
-		});
+		});*/
 	});
 })(jQuery);
+
+

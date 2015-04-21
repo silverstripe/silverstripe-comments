@@ -1,3 +1,5 @@
+<% require themedCSS('comments', 'comments') %>
+
 <% if $CommentsEnabled %>
 	<div id="$CommentHolderID" class="comments-holder-container">
 		<h4><% _t('CommentsInterface_ss.POSTCOM','Post your comment') %></h4>
@@ -21,7 +23,7 @@
 	
 		<div class="comments-holder">
 			<% if $PagedComments %>
-				<ul class="comments-list">
+				<ul class="comments-list root-level">
 					<% loop $PagedComments %>
 						<li class="comment $EvenOdd<% if FirstLast %> $FirstLast <% end_if %> $SpamClass">
 							<% include CommentsInterface_singlecomment %>
