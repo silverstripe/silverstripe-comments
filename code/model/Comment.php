@@ -561,6 +561,43 @@ class Comment extends DataObject {
 			);
 		}
 
+		// Show parent comment if given
+		if(($parent = $this->ParentComment()) && $parent->exists()) {
+			$fields->push(new HeaderField(
+				'ParentComment_Title',
+				_t('Comment.ParentComment_Title', 'This comment is a reply to the below')
+			));
+			// Created date
+			$fields->push(
+				$parent
+					->obj('Created')
+					->scaffoldFormField($parent->fieldLabel('Created'))
+					->setName('ParentComment_Created')
+					->setValue($parent->Created)
+					->performReadonlyTransformation()
+			);
+
+			// Name (could be member or string value)
+			$fields->push(
+				$parent
+					->obj('AuthorName')
+					->scaffoldFormField($parent->fieldLabel('AuthorName'))
+					->setName('ParentComment_AuthorName')
+					->setValue($parent->getAuthorName())
+					->performReadonlyTransformation()
+			);
+
+			// Comment body
+			$fields->push(
+				$parent
+					->obj('EscapedComment')
+					->scaffoldFormField($parent->fieldLabel('Comment'))
+					->setName('ParentComment_EscapedComment')
+					->setValue($parent->Comment)
+					->performReadonlyTransformation()
+			);
+		}
+
 		$this->extend('updateCMSFields', $fields);
 		return $fields;
 	}
