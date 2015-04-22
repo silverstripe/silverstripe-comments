@@ -22,7 +22,7 @@
   margin-bottom: 0;
 }
 /* line 23, ../scss/comments.scss */
-.comments-holder-container ol.comments-list {
+.comments-holder-container .comments-list {
   margin: 0;
 }
 /* line 27, ../scss/comments.scss */
