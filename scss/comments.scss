@@ -1,26 +1,16 @@
-// Colours
-$blue:                  #00acee !default;
-$blueDark:              #0064cd !default;
-$green:                 #46a546 !default;
-$redLight:				#DB4A39 !default;
-$red:                   #9d261d !default;
-$yellow:                #ffc40d !default;
-$orange:                #f48b33 !default;
-$pink:                  #c3325f !default;
-$purple:                #7a43b6 !default;
+// bootstrap custom
 
-#comments-holder {
+@import "../../themes/default/scss/bootstrap_config/custom/variables",
+        "../../themes/default/scss/bootstrap_config/custom/mixins";
+
+// bootstrap
+
+@import "../../themes/module_bootstrap/lib/buttons",
+        "../../themes/module_bootstrap/lib/mixins",
+        "../../themes/module_bootstrap/lib/typography";        
+
+.comments-holder-container {
     clear: both;
-
-    h2 {
-        margin: 30px 0 10px;
-        padding-bottom: 5px;
-        border-bottom: 1px solid #eee;
-    }
-
-    h3 {
-        margin-top: 0;
-    }
 
     .field {
         clear: left;
@@ -41,128 +31,8 @@ $purple:                #7a43b6 !default;
         margin-bottom: 0;
     }
 
-    .comments-list {
+    ol.comments-list {
         margin: 0;
-    }
-
-    // A published comment
-    .comment {
-        clear:both;
-        list-style-type: none;
-        overflow: auto;
-        padding: 20px 0 10px;
-        position: relative;
-
-        &.author-comment {
-            &:after {
-				content: 'Author';
-				float: right;
-				position: absolute;
-				top: 1.5em;
-				right: 0;
-				font-size: 1em;
-				font-weight: bold;
-				color: $blue;
-			}
-
-			.comment-text {
-				border: 1px solid $blue;
-			}
-
-		}
-
-		&.spam {
-			.comment-text {
-				border: 1px dashed $orange;
-			}
-		}
-
-		.comment-text {
-			background-color: #fff;
-			border: 1px solid #ddd;
-			box-shadow: none;
-			margin: 0;
-			padding: 0 15% 0 20px;
-			white-space: pre;
-			white-space: pre-wrap;
-			white-space: pre-line;
-			word-wrap: break-word;
-
-			p:last-child {
-				margin-bottom: 0;
-			}
-		}
-
-		.date {
-			font-size: 16px;
-
-			&:before {
-				content: '\0000a0\0000a0\0000a0\0000a0';
-			}
-		}
-
-		&.unmoderated {
-			border: 2px dashed gray;
-			margin: 2em 0 4em;
-			padding: 2em;
-
-			.comment-moderation {
-				margin-bottom: 0; // Remove the margin to compensate for unmoderated comment padding.
-			}
-        }
-
-        .info {
-            margin-bottom: 10px;
-        }
-
-        &.spam .comment{
-            border: 1px dashed $orange;
-            color: $orange;
-            border-radius: 4px;
-            padding: 2.5em 1em 1em;
-        }
-
-		.comment-replies-container {
-			margin-left: 20px;
-			padding-left: 10px;
-			border-left: 1px dashed #999;
-			
-			.comment-reply-form-holder {
-				padding: 0 10px; // Prevent clipping issues on slideUp/Down
-			}
-			.comment-replies-holder {
-				padding: 0 0 0 10px;
-			}
-		}
-    }
-
-    // Admin actions
-    .comment-moderation {
-        float: right;
-        margin: 1em 0 2em;
-
-        .heading {
-            margin-bottom: 0;
-        }
-    }
-
-    .action-links {
-        margin: 20px 0 10px;
-
-        li {
-            display: inline;
-            list-style-type: none;
-            margin-left: 20px;
-			overflow: auto;
-
-            &:first-child {
-                margin-left: 0;
-            }
-			
-			&.comment-reply-action {
-				float: right;
-			}
-        }
     }
 
     .comment-count {
@@ -181,6 +51,37 @@ $purple:                #7a43b6 !default;
     .commenting-rss-feed {
         margin-top: 4em;
         text-align: right;
+        
+        .action-links {
+            margin: 20px 0 10px;
+
+            li {
+                display: inline;
+                list-style-type: none;
+                margin-left: 20px;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+
+                &.comment-reply-action {
+                    float: right;
+                }
+            }
+
+            a {
+                background-image: none;
+                @extend .btn-small;
+
+                &::first-letter {
+                    text-transform: capitalize;
+                }
+
+                &:hover {
+                    @extend .btn:hover;
+                }
+            }
+        }
     }
 
     .no-comments-yet {
@@ -188,3 +89,335 @@ $purple:                #7a43b6 !default;
         margin-top: 10px;
     }
 }
+
+// A published comment
+.comment {
+    clear:both;
+    list-style-type: none;
+    overflow: hidden;
+    padding: 20px 0 10px;
+    position: relative;
+
+    &.author-comment {
+        &:after {
+          content: 'Author';
+          float: right;
+          position: absolute;
+          top: 1.5em;
+          right: 0.5em;
+          font-size: 1em;
+          font-weight: bold;
+          color: $blue;
+      }
+
+      > .comment-text {
+        border: 1px solid $blue;
+    }
+
+}   
+
+&.spam {
+    .comment-text {
+        border: 1px dashed $orange;
+    }
+}
+
+.comment-text {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: none;
+    margin: 0;
+    padding: 0 15% 0 20px;
+    white-space: pre;
+    white-space: pre-wrap;
+    white-space: pre-line;
+    word-wrap: break-word;
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.date {
+    font-size: 16px;
+
+    &:before {
+        content: '\0000a0\0000a0\0000a0\0000a0';
+    }
+}
+
+&.unmoderated {
+    > .comment-text {
+    border: 1px solid $yellow;
+    }
+}
+
+.info {
+    margin-bottom: 10px;
+}
+
+&.spam .comment {
+    border: 1px dashed $orange;
+    color: $orange;
+    border-radius: 4px;
+    padding: 2.5em 1em 1em;
+}
+
+.comment-replies-container {
+    clear: both;
+    padding-left: 10px;
+    margin: 80px 0 0 0;
+    border-left: 1px dashed #999;
+    
+    .comment-reply-form-holder {
+            padding: 0 10px; // Prevent clipping issues on slideUp/Down
+        }
+        .comment-replies-holder {
+            padding: 0 0 0 10px;
+        }
+    }
+}
+
+
+.comment-reply-link {
+    @extend .btn-primary;
+    @extend .btn-small;
+    float: right;
+}
+
+.comment-moderation-options {
+    float: left;
+}
+
+.comment-action-links {
+    margin: 20px 0 10px;
+
+    a {
+        background-image: none;
+        @extend .btn-small;
+
+        &::first-letter {
+            text-transform: capitalize;
+        }
+
+        &:hover {
+            @extend .btn:hover;
+        }
+    }
+
+    a.approve {
+        @extend .btn-success;
+        background: $blue;
+    }
+
+    a.delete {
+        @extend .btn-danger;
+        background: $red;
+    }
+
+    a.ham {
+        @extend .btn-info;
+        background: $blue;                    
+    }
+
+    a.spam {
+        @extend .btn-warning;
+        background: $orange;        
+    }
+}
+
+.commenting-rss-feed ul {
+    list-style: none;
+}
+
+
+// // Colours
+// $blue:                  #00acee !default;
+// $blueDark:              #0064cd !default;
+// $green:                 #46a546 !default;
+// $redLight:				#DB4A39 !default;
+// $red:                   #9d261d !default;
+// $yellow:                #ffc40d !default;
+// $orange:                #f48b33 !default;
+// $pink:                  #c3325f !default;
+// $purple:                #7a43b6 !default;
+
+// #comments-holder {
+//     clear: both;
+
+//     h2 {
+//         margin: 30px 0 10px;
+//         padding-bottom: 5px;
+//         border-bottom: 1px solid #eee;
+//     }
+
+//     h3 {
+//         margin-top: 0;
+//     }
+
+//     .field {
+//         clear: left;
+//     }
+
+//     .num,
+//     .author {
+//         font-size: 1.3em;
+//     }
+
+//     .num {
+//         color: #999;
+//         margin-right: 5px;
+//     }
+
+//     .num-total {
+//         line-height: 40px;
+//         margin-bottom: 0;
+//     }
+
+//     .comments-list {
+//         margin: 0;
+//     }
+
+//     // A published comment
+//     .comment {
+//         clear:both;
+//         list-style-type: none;
+//         overflow: auto;
+//         padding: 20px 0 10px;
+//         position: relative;
+
+//         &.author-comment {
+//             &:after {
+// 				content: 'Author';
+// 				float: right;
+// 				position: absolute;
+// 				top: 1.5em;
+// 				right: 0;
+// 				font-size: 1em;
+// 				font-weight: bold;
+// 				color: $blue;
+// 			}
+
+// 			.comment-text {
+// 				border: 1px solid $blue;
+// 			}
+
+// 		}
+
+// 		&.spam {
+// 			.comment-text {
+// 				border: 1px dashed $orange;
+// 			}
+// 		}
+
+// 		.comment-text {
+// 			background-color: #fff;
+// 			border: 1px solid #ddd;
+// 			box-shadow: none;
+// 			margin: 0;
+// 			padding: 0 15% 0 20px;
+// 			white-space: pre;
+// 			white-space: pre-wrap;
+// 			white-space: pre-line;
+// 			word-wrap: break-word;
+
+// 			p:last-child {
+// 				margin-bottom: 0;
+// 			}
+// 		}
+
+// 		.date {
+// 			font-size: 16px;
+
+// 			&:before {
+// 				content: '\0000a0\0000a0\0000a0\0000a0';
+// 			}
+// 		}
+
+// 		&.unmoderated {
+// 			border: 2px dashed gray;
+// 			margin: 2em 0 4em;
+// 			padding: 2em;
+
+// 			.comment-moderation {
+// 				margin-bottom: 0; // Remove the margin to compensate for unmoderated comment padding.
+// 			}
+//         }
+
+//         .info {
+//             margin-bottom: 10px;
+//         }
+
+//         &.spam .comment{
+//             border: 1px dashed $orange;
+//             color: $orange;
+//             border-radius: 4px;
+//             padding: 2.5em 1em 1em;
+//         }
+
+// 		.comment-replies-container {
+// 			margin-left: 20px;
+// 			padding-left: 10px;
+// 			border-left: 1px dashed #999;
+			
+// 			.comment-reply-form-holder {
+// 				padding: 0 10px; // Prevent clipping issues on slideUp/Down
+// 			}
+// 			.comment-replies-holder {
+// 				padding: 0 0 0 10px;
+// 			}
+// 		}
+//     }
+
+//     // Admin actions
+//     .comment-moderation {
+//         float: right;
+//         margin: 1em 0 2em;
+
+//         .heading {
+//             margin-bottom: 0;
+//         }
+//     }
+
+//     .action-links {
+//         margin: 20px 0 10px;
+
+//         li {
+//             display: inline;
+//             list-style-type: none;
+//             margin-left: 20px;
+// 			overflow: auto;
+
+//             &:first-child {
+//                 margin-left: 0;
+//             }
+			
+// 			&.comment-reply-action {
+// 				float: right;
+// 			}
+//         }
+//     }
+
+//     .comment-count {
+//         margin: 15px 0;
+//     }
+
+//     // The comment form
+//     .commenting-area {
+//         margin-top: 50px;
+
+//         label.left{
+//             font-weight: normal;
+//         }
+//     }
+
+//     .commenting-rss-feed {
+//         margin-top: 4em;
+//         text-align: right;
+//     }
+
+//     .no-comments-yet {
+//         display: inline-block;
+//         margin-top: 10px;
+//     }
+// }
