@@ -11,32 +11,32 @@
 		<% end_if %>
 	</p>
 <% end_if %>
-
+	
 <div class="comment-text" id="<% if $isPreview %>comment-preview<% else %>$Permalink<% end_if %>">
 	<p>$EscapedComment</p>
 </div>
 
 <% if not $isPreview %>
 	<% if $ApproveLink || $SpamLink || $HamLink || $DeleteLink || $RepliesEnabled %>
-		<ul class="action-links">
-			<% if $ApproveLink %>
-				<li><a href="$ApproveLink.ATT" class="approve"><% _t('CommentsInterface_singlecomment_ss.APPROVE', 'approve this comment') %></a></li>
-			<% end_if %>
-			<% if $SpamLink %>
-				<li><a href="$SpamLink.ATT" class="spam"><% _t('CommentsInterface_singlecomment_ss.ISSPAM','this comment is spam') %></a></li>
-			<% end_if %>
-			<% if $HamLink %>
-				<li><a href="$HamLink.ATT" class="ham"><% _t('CommentsInterface_singlecomment_ss.ISNTSPAM','this comment is not spam') %></a></li>
-			<% end_if %>
-			<% if $DeleteLink %>
-				<li><a href="$DeleteLink.ATT" class="delete"><% _t('CommentsInterface_singlecomment_ss.REMCOM','remove this comment') %></a></li>
-			<% end_if %>
+		<div class="comment-action-links">
+			<div class="comment-moderation-options">
+				<% if $ApproveLink %>
+					<a href="$ApproveLink.ATT" class="approve"><% _t('CommentsInterface_singlecomment_ss.APPROVE', 'approve it') %></a>
+				<% end_if %>
+				<% if $SpamLink %>
+					<a href="$SpamLink.ATT" class="spam"><% _t('CommentsInterface_singlecomment_ss.ISSPAM','spam it') %></a>
+				<% end_if %>
+				<% if $HamLink %>
+					<a href="$HamLink.ATT" class="ham"><% _t('CommentsInterface_singlecomment_ss.ISNTSPAM','not spam') %></a>
+				<% end_if %>
+				<% if $DeleteLink %>
+					<a href="$DeleteLink.ATT" class="delete"><% _t('CommentsInterface_singlecomment_ss.REMCOM','reject it') %></a>
+				<% end_if %>
+			</div>
 			<% if $RepliesEnabled %>
-				<li class="comment-reply-action">
-					<a class="comment-reply-link" href="#{$ReplyForm.FormName}">Reply to $AuthorName.XML</a>
-				</li>
+				<a class="comment-reply-link" href="#{$ReplyForm.FormName}">Reply to $AuthorName.XML</a>
 			<% end_if %>
-		</ul>
+		</div>
 	<% end_if %>
 	
 	<% include CommentReplies %>
