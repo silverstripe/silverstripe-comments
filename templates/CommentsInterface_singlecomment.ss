@@ -12,7 +12,7 @@
 	</p>
 <% end_if %>
 	
-<div class="comment-text well" id="<% if $isPreview %>comment-preview<% else %>$Permalink<% end_if %>">
+<div class="comment-text" id="<% if $isPreview %>comment-preview<% else %>$Permalink<% end_if %>">
 	<p>$EscapedComment</p>
 </div>
 
