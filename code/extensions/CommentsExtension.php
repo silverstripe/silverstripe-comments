@@ -352,6 +352,10 @@ class CommentsExtension extends DataExtension {
 	 * @return boolean
 	 */
 	public function canModerateComments($member = null) {
+		// Deny if not enabled for this object
+		if(!$this->owner->CommentsEnabled) return false;
+
+		// Fallback to can-edit
 		return $this->owner->canEdit($member);
 	}
 
