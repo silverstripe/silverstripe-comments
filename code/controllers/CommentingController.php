@@ -529,11 +529,6 @@ class CommentingController extends Controller {
 				$requireModeration = false;
 				break;
 		}
-		
-		// we want to show a notification if comments are moderated
-		if ($requireModeration) {
-			Session::set('CommentsModerated', 1);
-		}
 
 		$comment = new Comment();
 		$form->saveInto($comment);
@@ -551,6 +546,11 @@ class CommentingController extends Controller {
 
 			// extend hook to allow extensions. Also see onBeforePostComment
 			$this->extend('onAfterPostComment', $comment);
+		}
+
+		// we want to show a notification if comments are moderated
+		if ($requireModeration && !$comment->IsSpam) {
+			Session::set('CommentsModerated', 1);
 		}
 		
 		// clear the users comment since it passed validation
