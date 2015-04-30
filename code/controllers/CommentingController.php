@@ -566,13 +566,13 @@ class CommentingController extends Controller {
 		}
 
 		// Given a redirect page exists, attempt to link to the correct anchor
-		if(!$comment->Moderated) {
+		if($comment->IsSpam) {
+			// Link to the form with the error message contained
+			$hash = $form->FormName();
+		} else if(!$comment->Moderated) {
 			// Display the "awaiting moderation" text
 			$holder = $this->getOption('comments_holder_id');
 			$hash = "{$holder}_PostCommentForm_error";
-		} elseif($comment->IsSpam) {
-			// Link to the form with the error message contained
-			$hash = $form->FormName();
 		} else {
 			// Link to the moderated, non-spam comment
 			$hash = $comment->Permalink();
