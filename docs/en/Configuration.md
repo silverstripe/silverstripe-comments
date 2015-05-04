@@ -30,7 +30,7 @@ SiteTree:
     require_login_cms: false # The 'require_login' option will be set via the CMS instead of config
     required_permission: false # required permission to comment (or array of permissions)
     include_js: true # Enhance operation by ajax behaviour on moderation links
-    use_gravatar; false # set to true to show gravatar icons,
+    use_gravatar: false # set to true to show gravatar icons,
     gravatar_size: 80 # size of gravatar in pixels.  This is the same as the standard default
     gravatar_default: 'identicon' # theme for 'not found' gravatar (see http://gravatar.com/site/implement/images/)
     gravatar_rating: 'g' # gravatar rating. This is the same as the standard default
