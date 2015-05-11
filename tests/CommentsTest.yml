@@ -16,7 +16,7 @@ Permission:
     Code: CMS_ACCESS_CommentAdmin
     Group: =>Group.commentadmins
 
-CommentableItem:
+HasComments:
   first:
     Title: First
     ProvideComments: 1
@@ -38,135 +38,135 @@ CommentableItem:
 
 Comment:
   firstComA:
-    ParentID: =>CommentableItem.first
+    ParentID: =>HasComments.first
     Name: FA
     Comment: textFA
-    BaseClass: CommentableItem
+    BaseClass: HasComments
     Moderated: 1
     IsSpam: 0
   secondComA:
-    ParentID: =>CommentableItem.second
+    ParentID: =>HasComments.second
     Name: SA
     Comment: textSA
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   secondComB:
-    ParentID: =>CommentableItem.second
+    ParentID: =>HasComments.second
     Name: SB
     Comment: textSB
     Moderated: 0
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   secondComC:
-    ParentID: =>CommentableItem.second
+    ParentID: =>HasComments.second
     Name: SB
     Comment: textSB
     Moderated: 1
     IsSpam: 1
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComA:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TA
     Comment: textTA
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComB:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TB
     Comment: textTB
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComC:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComD:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TC
     Comment: textTC
     Moderated: 1
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComE:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TC
     Comment: textTC
     Moderated: 1
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComF:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComG:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComH:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComI:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComJ:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   thirdComK:
-    ParentID: =>CommentableItem.third
+    ParentID: =>HasComments.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   disabledCom:
-    ParentID: =>CommentableItem.nocomments
+    ParentID: =>HasComments.nocomments
     Name: Disabled
     Moderated: 0
     IsSpam: 1
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   testCommentList1:
-    ParentID: =>CommentableItem.spammed
+    ParentID: =>HasComments.spammed
     Name: Comment 1
     Moderated: 0
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   testCommentList2:
-    ParentID: =>CommentableItem.spammed
+    ParentID: =>HasComments.spammed
     Name: Comment 2
     Moderated: 1
     IsSpam: 1
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   testCommentList3:
-    ParentID: =>CommentableItem.spammed
+    ParentID: =>HasComments.spammed
     Name: Comment 3
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
+    BaseClass: HasComments
   testCommentList4:
-    ParentID: =>CommentableItem.spammed
+    ParentID: =>HasComments.spammed
     Name: Comment 4
     Moderated: 0
     IsSpam: 1
-    BaseClass: CommentableItem
+    BaseClass: HasComments

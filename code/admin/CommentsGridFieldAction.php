@@ -14,7 +14,9 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 	 * {@inheritdoc}
 	 */
 	public function getColumnAttributes($gridField, $record, $columnName) {
-		return array('class' => 'col-buttons');
+		return array(
+			'class' => 'col-buttons',
+		);
 	}
 
 	/**
@@ -22,24 +24,34 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 	 */
 	public function getColumnMetadata($gridField, $columnName) {
 		if($columnName == 'Actions') {
-			return array('title' => '');
+			return array(
+				'title' => '',
+			);
 		}
+
+		return array();
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function getColumnsHandled($gridField) {
-		return array('Actions');
+		return array(
+			'Actions',
+		);
 	}
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @param Comment $record
 	 */
 	public function getColumnContent($gridField, $record, $columnName) {
-		if(!$record->canEdit()) return;
+		if(!$record->canEdit()) {
+			return '';
+		}
 
-		$field = "";
+		$field = '';
 
 		if(!$record->IsSpam || !$record->Moderated) {
 			$field .= GridField_FormAction::create(
@@ -47,7 +59,9 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 				'CustomAction' . $record->ID,
 				'Spam',
 				'spam',
-				array('RecordID' => $record->ID)
+				array(
+					'RecordID' => $record->ID,
+				)
 			)->Field();
 		}
 
@@ -57,7 +71,9 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 				'CustomAction' . $record->ID,
 				'Approve',
 				'approve',
-				array('RecordID' => $record->ID)
+				array(
+					'RecordID' => $record->ID,
+				)
 			)->Field();
 		}
 
@@ -68,7 +84,10 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 	 * {@inheritdoc}
 	 */
 	public function getActions($gridField) {
-		return array('spam', 'approve');
+		return array(
+			'spam',
+			'approve',
+		);
 	}
 
 	/**
@@ -76,25 +95,37 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 	 */
 	public function handleAction(GridField $gridField, $actionName, $arguments, $data) {
 		if($actionName == 'spam') {
-			$comment = Comment::get()->byID($arguments["RecordID"]);
+			/**
+			 * @var Comment $comment
+			 */
+			$comment = Comment::get()
+				->byID($arguments["RecordID"]);
+
 			$comment->markSpam();
 
-			// output a success message to the user
-			Controller::curr()->getResponse()->setStatusCode(
-				200,
-				'Comment marked as spam.'
-			);
+			Controller::curr()
+				->getResponse()
+				->setStatusCode(
+					200,
+					'Comment marked as spam.'
+				);
 		}
 
 		if($actionName == 'approve') {
-			$comment = Comment::get()->byID($arguments["RecordID"]);
+			/**
+			 * @var Comment $comment
+			 */
+			$comment = Comment::get()
+				->byID($arguments["RecordID"]);
+
 			$comment->markApproved();
 
-			// output a success message to the user
-			Controller::curr()->getResponse()->setStatusCode(
-				200,
-				'Comment approved.'
-			);
+			Controller::curr()
+				->getResponse()
+				->setStatusCode(
+					200,
+					'Comment approved.'
+				);
 		}
 	}
 }
