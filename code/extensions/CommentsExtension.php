@@ -3,6 +3,10 @@
 /**
  * Extension to {@link DataObject} to enable tracking comments.
  *
+ * @property bool $ProvideComments
+ * @property string $ModerationRequired
+ * @property bool $CommentsRequireLogin
+ *
  * @package comments
  */
 class CommentsExtension extends DataExtension {
@@ -32,9 +36,9 @@ class CommentsExtension extends DataExtension {
 	 * nested_comments:             Enable nested comments
 	 * nested_depth:                Max depth of nested comments in levels (where root is 1 depth) 0 means no limit.
 	 *
-	 * @var array
-	 *
 	 * @config
+	 *
+	 * @var array
 	 */
 	private static $comments = array(
 		'enabled' => true,
@@ -78,41 +82,50 @@ class CommentsExtension extends DataExtension {
 	 * CMS configurable options should default to the config values
 	 */
 	public function populateDefaults() {
-		// Set if comments should be enabled by default
-		$this->owner->ProvideComments = $this->owner->getCommentsOption('enabled') ? 1 : 0;
+		$this->owner->ProvideComments = 0;
 
-		// If moderation options should be configurable via the CMS then
-		if($this->owner->getCommentsOption('require_moderation')) {
-			$this->owner->ModerationRequired = 'Required';
-		} elseif($this->owner->getCommentsOption('require_moderation_nonmembers')) {
-			$this->owner->ModerationRequired = 'NonMembersOnly';
-		} else {
-			$this->owner->ModerationRequired = 'None';
+		if($this->owner->getCommentsOption('enabled')) {
+			$this->owner->ProvideComments = 1;
 		}
 
-		$this->owner->CommentsRequireLogin = $this->owner->getCommentsOption('require_login') ? 1 : 0;
+		$this->owner->ModerationRequired = 'None';
+
+		if($this->owner->getCommentsOption('require_moderation')) {
+			$this->owner->ModerationRequired = 'Required';
+		}
+
+		if($this->owner->getCommentsOption('require_moderation_nonmembers')) {
+			$this->owner->ModerationRequired = 'NonMembersOnly';
+		}
+
+		$this->owner->CommentsRequireLogin = 0;
+
+		if($this->owner->getCommentsOption('require_login')) {
+			$this->owner->CommentsRequireLogin = 1;
+		}
 	}
 
-
 	/**
-	 * If this extension is applied to a {@link SiteTree} record then
-	 * append a Provide Comments checkbox to allow authors to trigger
-	 * whether or not to display comments
+	 * If this extension is applied to a {@link SiteTree} record then append a Provide Comments
+	 * checkbox to allow authors to trigger whether or not to display comments.
 	 *
 	 * @todo Allow customization of other {@link Commenting} configuration
 	 *
 	 * @param FieldList $fields
 	 */
 	public function updateSettingsFields(FieldList $fields) {
+		$options = FieldGroup::create();
+		$options->setTitle(_t('CommentsExtension.COMMENTOPTIONS', 'Comments'));
 
-		$options = FieldGroup::create()->setTitle(_t('CommentsExtension.COMMENTOPTIONS', 'Comments'));
-
-		// Check if enabled setting should be cms configurable
 		if($this->owner->getCommentsOption('enabled_cms')) {
-			$options->push(new CheckboxField('ProvideComments', _t('Comment.ALLOWCOMMENTS', 'Allow Comments')));
+			$options->push(
+				new CheckboxField(
+					'ProvideComments',
+					_t('Comment.ALLOWCOMMENTS', 'Allow Comments')
+				)
+			);
 		}
 
-		// Check if we should require users to login to comment
 		if($this->owner->getCommentsOption('require_login_cms')) {
 			$options->push(
 				new CheckboxField(
@@ -130,16 +143,26 @@ class CommentsExtension extends DataExtension {
 			}
 		}
 
-		// Check if moderation should be enabled via cms configurable
 		if($this->owner->getCommentsOption('require_moderation_cms')) {
-			$moderationField = new DropdownField('ModerationRequired', 'Comment Moderation', array(
-				'None' => _t('CommentsExtension.MODERATIONREQUIRED_NONE', 'No moderation required'),
-				'Required' => _t('CommentsExtension.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
-				'NonMembersOnly' => _t(
-					'CommentsExtension.MODERATIONREQUIRED_NONMEMBERSONLY',
-					'Only moderate non-members'
-				),
-			));
+			$moderationField = new DropdownField(
+				'ModerationRequired',
+				'Comment Moderation',
+				array(
+					'None' => _t(
+						'CommentsExtension.MODERATIONREQUIRED_NONE',
+						'No moderation required'
+					),
+					'Required' => _t(
+						'CommentsExtension.MODERATIONREQUIRED_REQUIRED',
+						'Moderate all comments'
+					),
+					'NonMembersOnly' => _t(
+						'CommentsExtension.MODERATIONREQUIRED_NONMEMBERSONLY',
+						'Only moderate non-members'
+					),
+				)
+			);
+
 			if($fields->hasTabSet()) {
 				$fields->addFieldsToTab('Root.Settings', $moderationField);
 			} else {
@@ -149,10 +172,10 @@ class CommentsExtension extends DataExtension {
 	}
 
 	/**
-	 * Get comment moderation rules for this parent
+	 * Get comment moderation rules for this parent.
 	 *
-	 * None:           No moderation required
-	 * Required:       All comments
+	 * None: No moderation required
+	 * Required: All comments
 	 * NonMembersOnly: Only anonymous users
 	 *
 	 * @return string
@@ -160,26 +183,30 @@ class CommentsExtension extends DataExtension {
 	public function getModerationRequired() {
 		if($this->owner->getCommentsOption('require_moderation_cms')) {
 			return $this->owner->getField('ModerationRequired');
-		} elseif($this->owner->getCommentsOption('require_moderation')) {
-			return 'Required';
-		} elseif($this->owner->getCommentsOption('require_moderation_nonmembers')) {
-			return 'NonMembersOnly';
-		} else {
-			return 'None';
 		}
+
+		if($this->owner->getCommentsOption('require_moderation')) {
+			return 'Required';
+		}
+
+		if($this->owner->getCommentsOption('require_moderation_nonmembers')) {
+			return 'NonMembersOnly';
+		}
+
+		return 'None';
 	}
 
 	/**
-	 * Determine if users must be logged in to post comments
+	 * Determine if users must be logged in to post comments.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getCommentsRequireLogin() {
 		if($this->owner->getCommentsOption('require_login_cms')) {
 			return (bool) $this->owner->getField('CommentsRequireLogin');
-		} else {
-			return (bool) $this->owner->getCommentsOption('require_login');
 		}
+
+		return (bool) $this->owner->getCommentsOption('require_login');
 	}
 
 	/**
@@ -190,105 +217,109 @@ class CommentsExtension extends DataExtension {
 	 */
 	public function AllComments() {
 		$order = $this->owner->getCommentsOption('order_comments_by');
-		$comments = CommentList::create($this->ownerBaseClass)
-			->forForeignID($this->owner->ID)
-			->sort($order);
+
+		$comments = CommentList::create($this->ownerBaseClass);
+		$comments->forForeignID($this->owner->ID);
+		$comments->sort($order);
+
 		$this->owner->extend('updateAllComments', $comments);
+
 		return $comments;
 	}
 
 	/**
-	 * Returns all comments against this object, with with spam and unmoderated items excluded, for use in the frontend
+	 * Returns all comments against this object, with with spam and un-moderated items excluded.
 	 *
 	 * @return CommentList
 	 */
 	public function AllVisibleComments() {
 		$list = $this->AllComments();
 
-		// Filter spam comments for non-administrators if configured
 		$showSpam = $this->owner->getCommentsOption('frontend_spam') && $this->owner->canModerateComments();
+
 		if(!$showSpam) {
 			$list = $list->filter('IsSpam', 0);
 		}
 
-		// Filter un-moderated comments for non-administrators if moderation is enabled
-		$showUnmoderated = ($this->owner->ModerationRequired === 'None')
-			|| ($this->owner->getCommentsOption('frontend_moderation') && $this->owner->canModerateComments());
-		if(!$showUnmoderated) {
+		$showUnModerated = ($this->owner->ModerationRequired === 'None') || ($this->owner->getCommentsOption('frontend_moderation') && $this->owner->canModerateComments());
+
+		if(!$showUnModerated) {
 			$list = $list->filter('Moderated', 1);
 		}
 
 		$this->owner->extend('updateAllVisibleComments', $list);
+
 		return $list;
 	}
 
 	/**
-	 * Returns the root level comments, with spam and unmoderated items excluded, for use in the frontend
+	 * Returns the root level comments, with spam and un-moderated items excluded.
 	 *
 	 * @return CommentList
 	 */
 	public function Comments() {
 		$list = $this->AllVisibleComments();
 
-		// If nesting comments, only show root level
 		if($this->owner->getCommentsOption('nested_comments')) {
 			$list = $list->filter('ParentCommentID', 0);
 		}
 
 		$this->owner->extend('updateComments', $list);
+
 		return $list;
 	}
 
 	/**
-	 * Returns a paged list of the root level comments, with spam and unmoderated items excluded,
-	 * for use in the frontend
+	 * Returns a paged list of the root level comments, with spam and un-moderated items excluded.
 	 *
 	 * @return PaginatedList
 	 */
 	public function PagedComments() {
 		$list = $this->Comments();
 
-		// Add pagination
 		$list = new PaginatedList($list, Controller::curr()->getRequest());
 		$list->setPaginationGetVar('commentsstart' . $this->owner->ID);
 		$list->setPageLength($this->owner->getCommentsOption('comments_per_page'));
 
 		$this->owner->extend('updatePagedComments', $list);
+
 		return $list;
 	}
 
 	/**
 	 * Check if comments are configured for this page even if they are currently disabled.
-	 * Do not include the comments on pages which don't have id's such as security pages
+	 *
+	 * Do not include the comments on pages which don't have id's such as security pages.
 	 *
 	 * @deprecated since version 2.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getCommentsConfigured() {
 		Deprecation::notice('2.0', 'getCommentsConfigured is deprecated. Use getCommentsEnabled instead');
-		return true; // by virtue of all classes with this extension being 'configured'
+
+		return true;
 	}
 
 	/**
-	 * Determine if comments are enabled for this instance
+	 * Determine if comments are enabled for this instance.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getCommentsEnabled() {
-		// Don't display comments form for pseudo-pages (such as the login form)
-		if(!$this->owner->exists()) return false;
-		
-		// Determine which flag should be used to determine if this is enabled
+		if(!$this->owner->exists()) {
+			return false;
+		}
+
 		if($this->owner->getCommentsOption('enabled_cms')) {
 			return $this->owner->ProvideComments;
-		} else {
-			return $this->owner->getCommentsOption('enabled');
 		}
+
+		return $this->owner->getCommentsOption('enabled');
 	}
 
 	/**
-	 * Get the HTML ID for the comment holder in the template
+	 * Get the HTML ID for the comment holder in the template.
 	 *
 	 * @return string
 	 */
@@ -301,71 +332,86 @@ class CommentsExtension extends DataExtension {
 	 */
 	public function getPostingRequiresPermission() {
 		Deprecation::notice('2.0', 'Use getPostingRequiredPermission instead');
+
 		return $this->getPostingRequiredPermission();
 	}
 
 	/**
-	 * Permission codes required in order to post (or empty if none required)
+	 * Permission codes required in order to post (or empty if none required).
 	 *
-	 * @return string|array Permission or list of permissions, if required
+	 * @return string|array
 	 */
 	public function getPostingRequiredPermission() {
 		return $this->owner->getCommentsOption('required_permission');
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function canPost() {
 		Deprecation::notice('2.0', 'Use canPostComment instead');
+
 		return $this->canPostComment();
 	}
 
 	/**
-	 * Determine if a user can post comments on this item
+	 * Determine if a user can post comments on this item.
 	 *
-	 * @param Member $member Member to check
+	 * @param null|Member $member
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canPostComment($member = null) {
-		// Deny if not enabled for this object
-		if(!$this->owner->CommentsEnabled) return false;
+		if(!$this->owner->CommentsEnabled) {
+			return false;
+		}
 
-		// Check if member is required
 		$requireLogin = $this->owner->CommentsRequireLogin;
-		if(!$requireLogin) return true;
 
-		// Check member is logged in
-		$member = $member ?: Member::currentUser();
-		if(!$member) return false;
+		if(!$requireLogin) {
+			return true;
+		}
 
-		// If member required check permissions
+		if(!$member) {
+			$member = Member::currentUser();
+		}
+
+		if(!$member) {
+			return false;
+		}
+
 		$requiredPermission = $this->owner->PostingRequiredPermission;
-		if($requiredPermission && !Permission::checkMember($member, $requiredPermission)) return false;
+
+		if($requiredPermission && !Permission::checkMember($member, $requiredPermission)) {
+			return false;
+		}
 
 		return true;
 	}
 
 	/**
-	 * Determine if this member can moderate comments in the CMS
+	 * Determine if this member can moderate comments in the CMS.
 	 *
-	 * @param Member $member
+	 * @param null|Member $member
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canModerateComments($member = null) {
-		// Deny if not enabled for this object
-		if(!$this->owner->CommentsEnabled) return false;
+		if(!$this->owner->CommentsEnabled) {
+			return false;
+		}
 
-		// Fallback to can-edit
 		return $this->owner->canEdit($member);
 	}
 
 	public function getRssLink() {
 		Deprecation::notice('2.0', 'Use getCommentRSSLink instead');
+
 		return $this->getCommentRSSLink();
 	}
 
 	/**
-	 * Gets the RSS link to all comments
+	 * Gets the RSS link to all comments.
 	 *
 	 * @return string
 	 */
@@ -373,42 +419,44 @@ class CommentsExtension extends DataExtension {
 		return Controller::join_links(Director::baseURL(), 'CommentingController/rss');
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getRssLinkPage() {
 		Deprecation::notice('2.0', 'Use getCommentRSSLinkPage instead');
+
 		return $this->getCommentRSSLinkPage();
 	}
 
 	/**
-	 * Get the RSS link to all comments on this page
+	 * Get the RSS link to all comments on this page.
 	 *
 	 * @return string
 	 */
 	public function getCommentRSSLinkPage() {
 		return Controller::join_links(
-			$this->getCommentRSSLink(), $this->ownerBaseClass, $this->owner->ID
+			$this->getCommentRSSLink(),
+			$this->ownerBaseClass,
+			$this->owner->ID
 		);
 	}
 
 	/**
-	 * Comments interface for the front end. Includes the CommentAddForm and the composition
-	 * of the comments display.
+	 * Comments interface for the front end. Includes the CommentAddForm and the composition of the
+	 * comments display.
 	 *
-	 * To customize the html see templates/CommentInterface.ss or extend this function with
-	 * your own extension.
-	 *
-	 * @todo Cleanup the passing of all this configuration based functionality
-	 *
-	 * @see  docs/en/Extending
+	 * To customize the html see templates/CommentInterface.ss or extend this function with your
+	 * own extension.
 	 */
 	public function CommentsForm() {
-		// Check if enabled
 		$enabled = $this->getCommentsEnabled();
+
 		if($enabled && $this->owner->getCommentsOption('include_js')) {
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
 			Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/lib/jquery.form.js');
 			Requirements::javascript(COMMENTS_THIRDPARTY . '/jquery-validate/jquery.validate.min.js');
-			Requirements::javascript('comments/javascript/CommentsInterface.js');
+			Requirements::javascript(COMMENTS_DIR . '/javascript/CommentsInterface.js');
 		}
 
 		$controller = CommentingController::create();
@@ -417,12 +465,15 @@ class CommentsExtension extends DataExtension {
 		$controller->setOwnerController(Controller::curr());
 
 		$moderatedSubmitted = Session::get('CommentsModerated');
+
 		Session::clear('CommentsModerated');
 
-		$form = ($enabled) ? $controller->CommentsForm() : false;
+		$form = false;
 
-		// a little bit all over the show but to ensure a slightly easier upgrade for users
-		// return back the same variables as previously done in comments
+		if($enabled) {
+			$form = $controller->CommentsForm();
+		}
+
 		return $this
 			->owner
 			->customise(array(
@@ -433,48 +484,58 @@ class CommentsExtension extends DataExtension {
 	}
 
 	/**
-	 * Returns whether this extension instance is attached to a {@link SiteTree} object
+	 * Returns whether this extension instance is attached to a {@link SiteTree} object.
 	 *
 	 * @return bool
 	 */
 	public function attachedToSiteTree() {
 		$class = $this->ownerBaseClass;
 
-		return (is_subclass_of($class, 'SiteTree')) || ($class == 'SiteTree');
+		return $class === 'SiteTree' || is_subclass_of($class, 'SiteTree');
 	}
 
 	/**
-	 * @deprecated 1.0 Please use {@link CommentsExtension->CommentsForm()}
+	 * Please use {@link CommentsExtension->CommentsForm()}.
+	 *
+	 * @deprecated 1.0
 	 */
 	public function PageComments() {
-		// This method is very commonly used, don't throw a warning just yet
 		Deprecation::notice('1.0', '$PageComments is deprecated. Please use $CommentsForm');
+
 		return $this->CommentsForm();
 	}
 
 	/**
-	 * Get the commenting option for this object
+	 * Get the commenting option for this object.
 	 *
-	 * This can be overridden in any instance or extension to customise the option available
+	 * This can be overridden in any instance or extension to customise the option available.
 	 *
 	 * @param string $key
 	 *
-	 * @return mixed Result if the setting is available, or null otherwise
+	 * @return mixed
 	 */
 	public function getCommentsOption($key) {
-		$settings = $this->owner // In case singleton is called on the extension directly
-			? $this->owner->config()->comments
-			: Config::inst()->get(__CLASS__, 'comments');
-		$value = null;
-		if(isset($settings[$key])) $value = $settings[$key];
+		if($this->owner) {
+			$settings = $this->owner->config()->comments;
+		} else {
+			$settings = Config::inst()->get(__CLASS__, 'comments');
+		}
 
-		// To allow other extensions to customise this option
-		if($this->owner) $this->owner->extend('updateCommentsOption', $key, $value);
+		$value = null;
+
+		if(isset($settings[$key])) {
+			$value = $settings[$key];
+		}
+
+		if($this->owner) {
+			$this->owner->extend('updateCommentsOption', $key, $value);
+		}
+
 		return $value;
 	}
 
 	/**
-	 * Add moderation functions to the current fieldlist
+	 * Add moderation functions to the current field list.
 	 *
 	 * @param FieldList $fields
 	 */
@@ -483,65 +544,91 @@ class CommentsExtension extends DataExtension {
 
 		$commentsConfig = CommentsGridFieldConfig::create();
 
-		$newComments = $this->owner->AllComments()->filter('Moderated', 0);
+		$newComments = Comment::get()
+			->filter('Moderated', 0);
 
-		$newGrid = new CommentsGridField(
+		$newCommentsGrid = new CommentsGridField(
 			'NewComments',
 			_t('CommentsAdmin.NewComments', 'New'),
 			$newComments,
 			$commentsConfig
 		);
 
-		$approvedComments = $this->owner->AllComments()->filter('Moderated', 1)->filter('IsSpam', 0);
+		$newCommentsCountLabel = sprintf('(%s)', count($newComments));
 
-		$approvedGrid = new CommentsGridField(
+		$approvedComments = Comment::get()
+			->filter('Moderated', 1)
+			->filter('IsSpam', 0);
+
+		$approvedCommentsGrid = new CommentsGridField(
 			'ApprovedComments',
-			_t('CommentsAdmin.Comments', 'Approved'),
+			_t('CommentsAdmin.ApprovedComments', 'Approved'),
 			$approvedComments,
 			$commentsConfig
 		);
 
-		$spamComments = $this->owner->AllComments()->filter('Moderated', 1)->filter('IsSpam', 1);
+		$approvedCommentsCountLabel = sprintf('(%s)', count($approvedComments));
 
-		$spamGrid = new CommentsGridField(
+		$spamComments = Comment::get()
+			->filter('Moderated', 1)
+			->filter('IsSpam', 1);
+
+		$spamCommentsGrid = new CommentsGridField(
 			'SpamComments',
 			_t('CommentsAdmin.SpamComments', 'Spam'),
 			$spamComments,
 			$commentsConfig
 		);
 
-		$newCount = '(' . count($newComments) . ')';
-		$approvedCount = '(' . count($approvedComments) . ')';
-		$spamCount = '(' . count($spamComments) . ')';
+		$spamCommentsCountLabel = sprintf('(%s)', count($spamComments));
 
 		if($fields->hasTabSet()) {
 			$tabs = new TabSet(
 				'Comments',
-				new Tab('CommentsNewCommentsTab', _t('CommentAdmin.NewComments', 'New') . ' ' . $newCount,
-					$newGrid
+				new Tab(
+					'NewComments',
+					sprintf(
+						'%s %s',
+						_t('CommentAdmin.NewComments', 'New'),
+						$newCommentsCountLabel
+					),
+					$newCommentsGrid
 				),
-				new Tab('CommentsCommentsTab', _t('CommentAdmin.Comments', 'Approved') . ' ' . $approvedCount,
-					$approvedGrid
+				new Tab(
+					'ApprovedComments',
+					sprintf(
+						'%s %s',
+						_t('CommentAdmin.ApprovedComments', 'Approved'),
+						$approvedCommentsCountLabel
+					),
+					$approvedCommentsGrid
 				),
-				new Tab('CommentsSpamCommentsTab', _t('CommentAdmin.SpamComments', 'Spam') . ' ' . $spamCount,
-					$spamGrid
+				new Tab(
+					'SpamComments',
+					sprintf(
+						'%s %s',
+						_t('CommentAdmin.SpamComments', 'Spam'),
+						$spamCommentsCountLabel
+					),
+					$spamCommentsGrid
 				)
 			);
 			$fields->addFieldToTab('Root', $tabs);
 		} else {
-			$fields->push($newGrid);
-			$fields->push($approvedGrid);
-			$fields->push($spamGrid);
+			$fields->push($newCommentsGrid);
+			$fields->push($approvedCommentsGrid);
+			$fields->push($spamCommentsGrid);
 		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function updateCMSFields(FieldList $fields) {
-		// Disable moderation if not permitted
 		if($this->owner->canModerateComments()) {
 			$this->updateModerationFields($fields);
 		}
 
-		// If this isn't a page we should merge the settings into the CMS fields
 		if(!$this->attachedToSiteTree()) {
 			$this->updateSettingsFields($fields);
 		}

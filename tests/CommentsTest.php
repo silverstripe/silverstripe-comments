@@ -1,21 +1,30 @@
 <?php
 
 /**
+ * @mixin PHPUnit_Framework_TestCase
+ *
  * @package comments
  */
 class CommentsTest extends FunctionalTest {
-	
+	/**
+	 * @var string
+	 */
 	public static $fixture_file = 'comments/tests/CommentsTest.yml';
-	
+
+	/**
+	 * @var array
+	 */
 	protected $extraDataObjects = array(
-		'CommentableItem'
+		'HasComments',
 	);
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function setUp() {
 		parent::setUp();
 		Config::nest();
 
-		// Set good default values
 		Config::inst()->update('CommentsExtension', 'comments', array(
 			'enabled' => true,
 			'enabled_cms' => false,
@@ -29,188 +38,244 @@ class CommentsTest extends FunctionalTest {
 			'frontend_spam' => false,
 		));
 
-		// Configure this dataobject
-		Config::inst()->update('CommentableItem', 'comments', array(
-			'enabled_cms' => true
+		Config::inst()->update('HasComments', 'comments', array(
+			'enabled_cms' => true,
 		));
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function tearDown() {
 		Config::unnest();
+
 		parent::tearDown();
 	}
 
 	public function testCommentsList() {
-		// comments don't require moderation so unmoderated comments can be
-		// shown but not spam posts
-		Config::inst()->update('CommentableItem', 'comments', array(
+		Config::inst()->update('HasComments', 'comments', array(
 			'require_moderation_nonmembers' => false,
 			'require_moderation' => false,
 			'require_moderation_cms' => false,
 		));
 
-		$item = $this->objFromFixture('CommentableItem', 'spammed');
+		/**
+		 * @var HasComments $item
+		 */
+		$item = $this->objFromFixture('HasComments', 'spammed');
+
 		$this->assertEquals('None', $item->ModerationRequired);
+		$this->assertDOSEquals(
+			array(
+				array('Name' => 'Comment 1'),
+				array('Name' => 'Comment 3')
+			),
+			$item->Comments(),
+			'Only 2 non spam posts should be shown'
+		);
 
-		$this->assertDOSEquals(array(
-			array('Name' => 'Comment 1'),
-			array('Name' => 'Comment 3')
-		), $item->Comments(), 'Only 2 non spam posts should be shown');
+		Config::inst()->update('HasComments', 'comments', array('require_moderation_nonmembers' => true));
 
-		// when moderated, only moderated, non spam posts should be shown.
-		Config::inst()->update('CommentableItem', 'comments', array('require_moderation_nonmembers' => true));
 		$this->assertEquals('NonMembersOnly', $item->ModerationRequired);
 
-		// Check that require_moderation overrides this option
-		Config::inst()->update('CommentableItem', 'comments', array('require_moderation' => true));
+		Config::inst()->update('HasComments', 'comments', array('require_moderation' => true));
+
 		$this->assertEquals('Required', $item->ModerationRequired);
 
-		$this->assertDOSEquals(array(
-			array('Name' => 'Comment 3')
-		), $item->Comments(), 'Only 1 non spam, moderated post should be shown');
+		$this->assertDOSEquals(
+			array(
+				array('Name' => 'Comment 3')
+			),
+			$item->Comments(),
+			'Only 1 non spam, moderated post should be shown'
+		);
 		$this->assertEquals(1, $item->Comments()->Count());
 
-		// require_moderation_nonmembers still filters out unmoderated comments
-		Config::inst()->update('CommentableItem', 'comments', array('require_moderation' => false));
+		Config::inst()->update('HasComments', 'comments', array('require_moderation' => false));
+
 		$this->assertEquals(1, $item->Comments()->Count());
-		
-		Config::inst()->update('CommentableItem', 'comments', array('require_moderation_nonmembers' => false));
+
+		Config::inst()->update('HasComments', 'comments', array('require_moderation_nonmembers' => false));
+
 		$this->assertEquals(2, $item->Comments()->Count());
 
-		// With unmoderated comments set to display in frontend
-		Config::inst()->update('CommentableItem', 'comments', array(
+		Config::inst()->update('HasComments', 'comments', array(
 			'require_moderation' => true,
-			'frontend_moderation' => true
+			'frontend_moderation' => true,
 		));
+
 		$this->assertEquals(1, $item->Comments()->Count());
 
 		$this->logInWithPermission('ADMIN');
+
 		$this->assertEquals(2, $item->Comments()->Count());
 
-		// With spam comments set to display in frontend
-		Config::inst()->update('CommentableItem', 'comments', array(
+		Config::inst()->update('HasComments', 'comments', array(
 			'require_moderation' => true,
 			'frontend_moderation' => false,
 			'frontend_spam' => true,
 		));
-		if($member = Member::currentUser()) $member->logOut();
+
+		if($member = Member::currentUser()) {
+			$member->logOut();
+		}
+
 		$this->assertEquals(1, $item->Comments()->Count());
 
 		$this->logInWithPermission('ADMIN');
+
 		$this->assertEquals(2, $item->Comments()->Count());
 
-
-		// With spam and unmoderated comments set to display in frontend
-		Config::inst()->update('CommentableItem', 'comments', array(
+		Config::inst()->update('HasComments', 'comments', array(
 			'require_moderation' => true,
 			'frontend_moderation' => true,
 			'frontend_spam' => true,
 		));
-		if($member = Member::currentUser()) $member->logOut();
+
+		if($member = Member::currentUser()) {
+			$member->logOut();
+		}
+
 		$this->assertEquals(1, $item->Comments()->Count());
 
 		$this->logInWithPermission('ADMIN');
+
 		$this->assertEquals(4, $item->Comments()->Count());
 	}
 
 	/**
-	 * Test moderation options configured via the CMS
+	 * Test moderation options configured via the CMS.
 	 */
 	public function testCommentCMSModerationList() {
-		// comments don't require moderation so unmoderated comments can be
-		// shown but not spam posts
-		Config::inst()->update('CommentableItem', 'comments', array(
+		Config::inst()->update('HasComments', 'comments', array(
 			'require_moderation' => true,
 			'require_moderation_cms' => true,
 		));
 
-		$item = $this->objFromFixture('CommentableItem', 'spammed');
+		/**
+		 * @var HasComments $item
+		 */
+		$item = $this->objFromFixture('HasComments', 'spammed');
+
 		$this->assertEquals('None', $item->ModerationRequired);
+		$this->assertDOSEquals(
+			array(
+				array('Name' => 'Comment 1'),
+				array('Name' => 'Comment 3')
+			),
+			$item->Comments(),
+			'Only 2 non spam posts should be shown'
+		);
 
-		$this->assertDOSEquals(array(
-			array('Name' => 'Comment 1'),
-			array('Name' => 'Comment 3')
-		), $item->Comments(), 'Only 2 non spam posts should be shown');
-
-		// when moderated, only moderated, non spam posts should be shown.
 		$item->ModerationRequired = 'NonMembersOnly';
 		$item->write();
+
 		$this->assertEquals('NonMembersOnly', $item->ModerationRequired);
 
-		// Check that require_moderation overrides this option
 		$item->ModerationRequired = 'Required';
 		$item->write();
+
 		$this->assertEquals('Required', $item->ModerationRequired);
 
-		$this->assertDOSEquals(array(
-			array('Name' => 'Comment 3')
-		), $item->Comments(), 'Only 1 non spam, moderated post should be shown');
-		$this->assertEquals(1, $item->Comments()->Count());
+		$this->assertDOSEquals(
+			array(
+				array('Name' => 'Comment 3')
+			),
+			$item->Comments(),
+			'Only 1 non spam, moderated post should be shown'
+		);
 
-		// require_moderation_nonmembers still filters out unmoderated comments
 		$item->ModerationRequired = 'NonMembersOnly';
 		$item->write();
+
 		$this->assertEquals(1, $item->Comments()->Count());
 
 		$item->ModerationRequired = 'None';
 		$item->write();
+
 		$this->assertEquals(2, $item->Comments()->Count());
 	}
 
 	public function testCanPostComment() {
-		Config::inst()->update('CommentableItem', 'comments', array(
+		Config::inst()->update('HasComments', 'comments', array(
 			'require_login' => false,
 			'require_login_cms' => false,
 			'required_permission' => false,
 		));
-		$item = $this->objFromFixture('CommentableItem', 'first');
-		$item2 = $this->objFromFixture('CommentableItem', 'second');
 
-		// Test restriction free commenting
-		if($member = Member::currentUser()) $member->logOut();
+		/**
+		 * @var HasComments $item
+		 */
+		$item = $this->objFromFixture('HasComments', 'first');
+
+		/**
+		 * @var HasComments $item2
+		 */
+		$item2 = $this->objFromFixture('HasComments', 'second');
+
+		if($member = Member::currentUser()) {
+			$member->logOut();
+		}
+
 		$this->assertFalse($item->CommentsRequireLogin);
 		$this->assertTrue($item->canPostComment());
 
-		// Test permission required to post
-		Config::inst()->update('CommentableItem', 'comments', array(
+		Config::inst()->update('HasComments', 'comments', array(
 			'require_login' => true,
 			'required_permission' => 'POSTING_PERMISSION',
 		));
+
 		$this->assertTrue($item->CommentsRequireLogin);
 		$this->assertFalse($item->canPostComment());
+
 		$this->logInWithPermission('WRONG_ONE');
+
 		$this->assertFalse($item->canPostComment());
+
 		$this->logInWithPermission('POSTING_PERMISSION');
-		$this->assertTrue($item->canPostComment());
-		$this->logInWithPermission('ADMIN');
+
 		$this->assertTrue($item->canPostComment());
 
-		// Test require login to post, but not any permissions
-		Config::inst()->update('CommentableItem', 'comments', array(
+		$this->logInWithPermission('ADMIN');
+
+		$this->assertTrue($item->canPostComment());
+
+		Config::inst()->update('HasComments', 'comments', array(
 			'required_permission' => false,
 		));
+
 		$this->assertTrue($item->CommentsRequireLogin);
-		if($member = Member::currentUser()) $member->logOut();
+
+		if($member = Member::currentUser()) {
+			$member->logOut();
+		}
+
 		$this->assertFalse($item->canPostComment());
+
 		$this->logInWithPermission('ANY_PERMISSION');
+
 		$this->assertTrue($item->canPostComment());
 
-		// Test options set via CMS
-		Config::inst()->update('CommentableItem', 'comments', array(
+		Config::inst()->update('HasComments', 'comments', array(
 			'require_login' => true,
 			'require_login_cms' => true,
 		));
+
 		$this->assertFalse($item->CommentsRequireLogin);
 		$this->assertTrue($item2->CommentsRequireLogin);
-		if($member = Member::currentUser()) $member->logOut();
+
+		if($member = Member::currentUser()) {
+			$member->logOut();
+		}
+
 		$this->assertTrue($item->canPostComment());
 		$this->assertFalse($item2->canPostComment());
 
-		// Login grants permission to post
 		$this->logInWithPermission('ANY_PERMISSION');
+
 		$this->assertTrue($item->canPostComment());
 		$this->assertTrue($item2->canPostComment());
-		
+
 	}
 
 	public function testCanView() {
@@ -218,15 +283,15 @@ class CommentsTest extends FunctionalTest {
 		$admin = $this->objFromFixture('Member', 'commentadmin');
 		$comment = $this->objFromFixture('Comment', 'firstComA');
 
-		$this->assertTrue($comment->canView($visitor), 
+		$this->assertTrue($comment->canView($visitor),
 			'Unauthenticated members can view comments associated to a object with ProvideComments=1'
 		);
 		$this->assertTrue($comment->canView($admin),
 			'Admins with CMS_ACCESS_CommentAdmin permissions can view comments associated to a page with ProvideComments=1'
 		);
-		
+
 		$disabledComment = $this->objFromFixture('Comment', 'disabledCom');
-		
+
 		$this->assertFalse($disabledComment->canView($visitor),
 			'Unauthenticated members can not view comments associated to a object with ProvideComments=0'
 		);
@@ -235,221 +300,278 @@ class CommentsTest extends FunctionalTest {
 			'Admins with CMS_ACCESS_CommentAdmin permissions can view comments associated to a page with ProvideComments=0'
 		);
 	}
-	
+
 	public function testCanEdit() {
 		$visitor = $this->objFromFixture('Member', 'visitor');
 		$admin = $this->objFromFixture('Member', 'commentadmin');
 		$comment = $this->objFromFixture('Comment', 'firstComA');
-		
+
 		$this->assertFalse($comment->canEdit($visitor));
 		$this->assertTrue($comment->canEdit($admin));
 	}
-	
+
 	public function testCanDelete() {
 		$visitor = $this->objFromFixture('Member', 'visitor');
 		$admin = $this->objFromFixture('Member', 'commentadmin');
 		$comment = $this->objFromFixture('Comment', 'firstComA');
-		
+
 		$this->assertFalse($comment->canEdit($visitor));
 		$this->assertTrue($comment->canEdit($admin));
 	}
-	
+
 	public function testDeleteComment() {
-		// Test anonymous user
-		if($member = Member::currentUser()) $member->logOut();
+		if($member = Member::currentUser()) {
+			$member->logOut();
+		}
+
+		/**
+		 * @var Comment $comment
+		 */
 		$comment = $this->objFromFixture('Comment', 'firstComA');
-		$commentID = $comment->ID;
+
 		$this->assertNull($comment->DeleteLink(), 'No permission to see delete link');
-		$delete = $this->get('CommentingController/delete/'.$comment->ID.'?ajax=1');
+
+		$delete = $this->get(sprintf(
+			'CommentingController/delete/%s?ajax=1',
+			$comment->ID
+		));
+
 		$this->assertEquals(403, $delete->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $commentID);
-		$this->assertTrue($check && $check->exists());
 
-		// Test non-authenticated user
 		$this->logInAs('visitor');
+
 		$this->assertNull($comment->DeleteLink(), 'No permission to see delete link');
 
-		// Test authenticated user
 		$this->logInAs('commentadmin');
-		$comment = $this->objFromFixture('Comment', 'firstComA');
-		$commentID = $comment->ID;
-		$adminComment1Link = $comment->DeleteLink();
-		$this->assertContains('CommentingController/delete/'.$commentID.'?t=', $adminComment1Link);
 
-		// Test that this link can't be shared / XSS exploited
+		$commentAdminLink = $comment->DeleteLink();
+
+		$this->assertContains(
+			sprintf(
+				'CommentingController/delete/%s?t=',
+				$comment->ID
+			),
+			$commentAdminLink
+		);
+
 		$this->logInAs('commentadmin2');
-		$delete = $this->get($adminComment1Link);
-		$this->assertEquals(400, $delete->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $commentID);
-		$this->assertTrue($check && $check->exists());
 
-		// Test that this other admin can delete the comment with their own link
-		$adminComment2Link = $comment->DeleteLink();
-		$this->assertNotEquals($adminComment2Link, $adminComment1Link);
+		$delete = $this->get($commentAdminLink);
+
+		$this->assertEquals(400, $delete->getStatusCode());
+		$this->assertNotEquals($comment->DeleteLink(), $commentAdminLink);
+
 		$this->autoFollowRedirection = false;
-		$delete = $this->get($adminComment2Link);
+
+		$delete = $this->get($comment->DeleteLink());
+
 		$this->assertEquals(302, $delete->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $commentID);
-		$this->assertFalse($check && $check->exists());
+		$this->assertFalse(DataObject::get_by_id('Comment', $comment->ID));
 	}
 
 	public function testSpamComment() {
-		// Test anonymous user
-		if($member = Member::currentUser()) $member->logOut();
+		if($member = Member::currentUser()) {
+			$member->logOut();
+		}
+
+		/**
+		 * @var Comment $comment
+		 */
 		$comment = $this->objFromFixture('Comment', 'firstComA');
-		$commentID = $comment->ID;
+
 		$this->assertNull($comment->SpamLink(), 'No permission to see mark as spam link');
-		$spam = $this->get('CommentingController/spam/'.$comment->ID.'?ajax=1');
+
+		$spam = $this->get(sprintf(
+			'CommentingController/spam/%s?ajax=1',
+			$comment->ID
+		));
+
 		$this->assertEquals(403, $spam->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $commentID);
-		$this->assertEquals(0, $check->IsSpam, 'No permission to mark as spam');
+		$this->assertEquals(0, $comment->IsSpam, 'No permission to mark as spam');
 
-		// Test non-authenticated user
 		$this->logInAs('visitor');
+
 		$this->assertNull($comment->SpamLink(), 'No permission to see mark as spam link');
 
-		// Test authenticated user
 		$this->logInAs('commentadmin');
-		$comment = $this->objFromFixture('Comment', 'firstComA');
-		$commentID = $comment->ID;
-		$adminComment1Link = $comment->SpamLink();
-		$this->assertContains('CommentingController/spam/'.$commentID.'?t=', $adminComment1Link);
 
-		// Test that this link can't be shared / XSS exploited
+		$commentAdminLink = $comment->SpamLink();
+
+		$this->assertContains(
+			sprintf(
+				'CommentingController/spam/%s?t=',
+				$comment->ID
+			),
+			$commentAdminLink
+		);
+
 		$this->logInAs('commentadmin2');
-		$spam = $this->get($adminComment1Link);
+
+		$spam = $this->get($commentAdminLink);
+
 		$this->assertEquals(400, $spam->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $comment->ID);
-		$this->assertEquals(0, $check->IsSpam, 'No permission to mark as spam');
+		$this->assertNotEquals($comment->SpamLink(), $commentAdminLink);
 
-		// Test that this other admin can spam the comment with their own link
-		$adminComment2Link = $comment->SpamLink();
-		$this->assertNotEquals($adminComment2Link, $adminComment1Link);
 		$this->autoFollowRedirection = false;
-		$spam = $this->get($adminComment2Link);
-		$this->assertEquals(302, $spam->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $commentID);
-		$this->assertEquals(1, $check->IsSpam);
 
-		// Cannot re-spam spammed comment
-		$this->assertNull($check->SpamLink());
+		$spam = $this->get($comment->SpamLink());
+
+		$this->assertEquals(302, $spam->getStatusCode());
+
+		/**
+		 * @var Comment $comment
+		 */
+		$comment = DataObject::get_by_id('Comment', $comment->ID);
+
+		$this->assertEquals(1, $comment->IsSpam);
+		$this->assertNull($comment->SpamLink());
 	}
 
 	public function testHamComment() {
-		// Test anonymous user
-		if($member = Member::currentUser()) $member->logOut();
+		if($member = Member::currentUser()) {
+			$member->logOut();
+		}
+
+		/**
+		 * @var Comment $comment
+		 */
 		$comment = $this->objFromFixture('Comment', 'secondComC');
-		$commentID = $comment->ID;
+
 		$this->assertNull($comment->HamLink(), 'No permission to see mark as ham link');
-		$ham = $this->get('CommentingController/ham/'.$comment->ID.'?ajax=1');
+
+		$ham = $this->get(sprintf(
+			'CommentingController/ham/%s?ajax=1',
+			$comment->ID
+		));
+
 		$this->assertEquals(403, $ham->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $commentID);
-		$this->assertEquals(1, $check->IsSpam, 'No permission to mark as ham');
 
-		// Test non-authenticated user
 		$this->logInAs('visitor');
+
 		$this->assertNull($comment->HamLink(), 'No permission to see mark as ham link');
 
-		// Test authenticated user
 		$this->logInAs('commentadmin');
-		$comment = $this->objFromFixture('Comment', 'secondComC');
-		$commentID = $comment->ID;
-		$adminComment1Link = $comment->HamLink();
-		$this->assertContains('CommentingController/ham/'.$commentID.'?t=', $adminComment1Link);
 
-		// Test that this link can't be shared / XSS exploited
+		$adminCommentLink = $comment->HamLink();
+
+		$this->assertContains(
+			sprintf(
+				'CommentingController/ham/%s?t=',
+				$comment->ID
+			),
+			$adminCommentLink
+		);
+
 		$this->logInAs('commentadmin2');
-		$ham = $this->get($adminComment1Link);
+
+		$ham = $this->get($adminCommentLink);
+
 		$this->assertEquals(400, $ham->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $comment->ID);
-		$this->assertEquals(1, $check->IsSpam, 'No permission to mark as ham');
+		$this->assertNotEquals($comment->HamLink(), $adminCommentLink);
 
-		// Test that this other admin can ham the comment with their own link
-		$adminComment2Link = $comment->HamLink();
-		$this->assertNotEquals($adminComment2Link, $adminComment1Link);
 		$this->autoFollowRedirection = false;
-		$ham = $this->get($adminComment2Link);
+
+		$ham = $this->get($comment->HamLink());
+
 		$this->assertEquals(302, $ham->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $commentID);
-		$this->assertEquals(0, $check->IsSpam);
 
-		// Cannot re-ham hammed comment
-		$this->assertNull($check->HamLink());
+		/**
+		 * @var Comment $comment
+		 */
+		$comment = DataObject::get_by_id('Comment', $comment->ID);
+
+		$this->assertEquals(0, $comment->IsSpam);
+		$this->assertNull($comment->HamLink());
 	}
-	
+
 	public function testApproveComment() {
-		// Test anonymous user
-		if($member = Member::currentUser()) $member->logOut();
+		if($member = Member::currentUser()) {
+			$member->logOut();
+		}
+
+		/**
+		 * @var Comment $comment
+		 */
 		$comment = $this->objFromFixture('Comment', 'secondComB');
-		$commentID = $comment->ID;
+
 		$this->assertNull($comment->ApproveLink(), 'No permission to see approve link');
-		$approve = $this->get('CommentingController/approve/'.$comment->ID.'?ajax=1');
+
+		$approve = $this->get(sprintf(
+			'CommentingController/approve/%s?ajax=1',
+			$comment->ID
+		));
+
 		$this->assertEquals(403, $approve->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $commentID);
-		$this->assertEquals(0, $check->Moderated, 'No permission to approve');
 
-		// Test non-authenticated user
 		$this->logInAs('visitor');
+
 		$this->assertNull($comment->ApproveLink(), 'No permission to see approve link');
 
-		// Test authenticated user
 		$this->logInAs('commentadmin');
-		$comment = $this->objFromFixture('Comment', 'secondComB');
-		$commentID = $comment->ID;
-		$adminComment1Link = $comment->ApproveLink();
-		$this->assertContains('CommentingController/approve/'.$commentID.'?t=', $adminComment1Link);
 
-		// Test that this link can't be shared / XSS exploited
+		$adminCommentLink = $comment->ApproveLink();
+
+		$this->assertContains(
+			sprintf(
+				'CommentingController/approve/%s?t=',
+				$comment->ID
+			),
+			$adminCommentLink
+		);
+
 		$this->logInAs('commentadmin2');
-		$approve = $this->get($adminComment1Link);
+
+		$approve = $this->get($adminCommentLink);
+
 		$this->assertEquals(400, $approve->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $comment->ID);
-		$this->assertEquals(0, $check->Moderated, 'No permission to approve');
 
-		// Test that this other admin can approve the comment with their own link
-		$adminComment2Link = $comment->ApproveLink();
-		$this->assertNotEquals($adminComment2Link, $adminComment1Link);
+		$this->assertNotEquals($comment->ApproveLink(), $adminCommentLink);
+
 		$this->autoFollowRedirection = false;
-		$approve = $this->get($adminComment2Link);
-		$this->assertEquals(302, $approve->getStatusCode());
-		$check = DataObject::get_by_id('Comment', $commentID);
-		$this->assertEquals(1, $check->Moderated);
 
-		// Cannot re-approve approved comment
-		$this->assertNull($check->ApproveLink());
+		$approve = $this->get($comment->ApproveLink());
+
+		$this->assertEquals(302, $approve->getStatusCode());
+
+		/**
+		 * @var Comment $comment
+		 */
+		$comment = DataObject::get_by_id('Comment', $comment->ID);
+
+		$this->assertEquals(1, $comment->Moderated);
+		$this->assertNull($comment->ApproveLink());
 	}
 
 	public function testCommenterURLWrite() {
 		$comment = new Comment();
-		// We only care about the CommenterURL, so only set that
-		// Check a http and https URL. Add more test urls here as needed.
+
 		$protocols = array(
-			'Http',
-			'Https',
+			'HTTP',
+			'HTTPS',
 		);
+
 		$url = '://example.com';
 
 		foreach($protocols as $protocol) {
-			$comment->CommenterURL = $protocol . $url;
-			// The protocol should stay as if, assuming it is valid
+			$comment->URL = $protocol . $url;
 			$comment->write();
-			$this->assertEquals($comment->CommenterURL, $protocol . $url, $protocol . ':// is a valid protocol');
+
+			$this->assertEquals($comment->URL, $protocol . $url, $protocol . ':// is a valid protocol');
 		}
 	}
 
 	public function testSanitizesWithAllowHtml() {
 		if(!class_exists('HTMLPurifier')) {
 			$this->markTestSkipped('HTMLPurifier class not found');
-			return;
 		}
 
-		$origAllowed = Commenting::get_config_value('CommentableItem','html_allowed');
-		
-		// Without HTML allowed
+		$originalHtmlAllowed = Commenting::get_config_value('HasComments', 'html_allowed');
+
 		$comment1 = new Comment();
-		$comment1->BaseClass = 'CommentableItem';
+		$comment1->BaseClass = 'HasComments';
 		$comment1->Comment = '<p><script>alert("w00t")</script>my comment</p>';
 		$comment1->write();
+
 		$this->assertEquals(
 			'<p><script>alert("w00t")</script>my comment</p>',
 			$comment1->Comment,
@@ -457,19 +579,20 @@ class CommentsTest extends FunctionalTest {
 			'which is correct behaviour because the HTML will be escaped'
 		);
 
-		// With HTML allowed
-		Commenting::set_config_value('CommentableItem','html_allowed', true);
+		Commenting::set_config_value('HasComments', 'html_allowed', true);
+
 		$comment2 = new Comment();
-		$comment2->BaseClass = 'CommentableItem';
+		$comment2->BaseClass = 'HasComments';
 		$comment2->Comment = '<p><script>alert("w00t")</script>my comment</p>';
 		$comment2->write();
+
 		$this->assertEquals(
 			'<p>my comment</p>',
 			$comment2->Comment,
 			'Removes HTML tags which are not on the whitelist'
 		);
 
-		Commenting::set_config_value('CommentableItem','html_allowed', $origAllowed);
+		Commenting::set_config_value('HasComments', 'html_allowed', $originalHtmlAllowed);
 	}
 
 	public function testDefaultTemplateRendersHtmlWithAllowHtml() {
@@ -477,63 +600,92 @@ class CommentsTest extends FunctionalTest {
 			$this->markTestSkipped('HTMLPurifier class not found');
 		}
 
-		$origAllowed = Commenting::get_config_value('CommentableItem', 'html_allowed');
-		$item = new CommentableItem();
+		$originalHtmlAllowed = Commenting::get_config_value('HasComments', 'html_allowed');
+
+		$item = new HasComments();
 		$item->write();
 
-		// Without HTML allowed
 		$comment = new Comment();
 		$comment->Comment = '<p>my comment</p>';
 		$comment->ParentID = $item->ID;
-		$comment->BaseClass = 'CommentableItem';
+		$comment->BaseClass = 'HasComments';
 		$comment->write();
-		
-		$html = $item->customise(array('CommentsEnabled' => true))->renderWith('CommentsInterface');
+
+		$html = $item
+			->customise(array(
+				'CommentsEnabled' => true,
+			))
+			->renderWith('CommentsInterface');
+
 		$this->assertContains(
 			'&lt;p&gt;my comment&lt;/p&gt;',
 			$html
 		);
 
-		Commenting::set_config_value('CommentableItem','html_allowed', true);
-		$html = $item->customise(array('CommentsEnabled' => true))->renderWith('CommentsInterface');
+		Commenting::set_config_value('HasComments', 'html_allowed', true);
+
+		$html = $item
+			->customise(array(
+				'CommentsEnabled' => true,
+			))
+			->renderWith('CommentsInterface');
+
 		$this->assertContains(
 			'<p>my comment</p>',
 			$html
 		);
 
-		Commenting::set_config_value('CommentableItem','html_allowed', $origAllowed);
+		Commenting::set_config_value('HasComments', 'html_allowed', $originalHtmlAllowed);
 	}
 
 }
 
-
 /**
+ * @mixin CommentsExtension
+ *
  * @package comments
  * @subpackage tests
  */
-class CommentableItem extends DataObject implements TestOnly {
-
+class HasComments extends DataObject implements TestOnly {
+	/**
+	 * @var array
+	 */
 	private static $db = array(
 		'ProvideComments' => 'Boolean',
-		'Title' => 'Varchar'
+		'Title' => 'Varchar',
 	);
 
+	/**
+	 * @var array
+	 */
 	private static $extensions = array(
-		'CommentsExtension'
+		'CommentsExtension',
 	);
 
+	/**
+	 * @return string
+	 */
 	public function RelativeLink() {
-		return "CommentableItem_Controller";
+		return 'HasComments_Controller';
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function canView($member = null) {
 		return true;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function Link() {
 		return $this->RelativeLink();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function AbsoluteLink() {
 		return Director::absoluteURL($this->RelativeLink());
 	}
@@ -543,9 +695,11 @@ class CommentableItem extends DataObject implements TestOnly {
  * @package comments
  * @subpackage tests
  */
-class CommentableItem_Controller extends Controller implements TestOnly {
-	
+class HasComments_Controller extends Controller implements TestOnly {
+	/**
+	 * @return Form
+	 */
 	public function index() {
-		return CommentableItem::get()->first()->CommentsForm();
+		return HasComments::get()->first()->CommentsForm();
 	}
 }

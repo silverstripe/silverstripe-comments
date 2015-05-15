@@ -3,6 +3,8 @@
 class CommentsGridField extends GridField {
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @param Comment $record
 	 */
 	protected function newRow($total, $index, $record, $attributes, $content) {
 		if(!isset($attributes['class'])) {
