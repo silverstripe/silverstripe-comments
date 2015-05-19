@@ -2,11 +2,9 @@ nl:
   Comment:
     ALLOWCOMMENTS: 'Reacties toestaan'
     COMMENT: Reactie
-    COMMENTBY: 'Reactie door ''%s'''
     ISSPAM: 'Spam?'
     MODERATED: 'Gemodereerd?'
     NAME: 'Auteur'
-    ON: op
     PLURALNAME: Reacties
     SINGULARNAME: Reactie
   CommentAdmin:
@@ -37,6 +35,7 @@ nl:
     PREV: vorige
     RSSFEEDALLCOMMENTS: 'RSS feed voor alle reacties'
     RSSFEEDCOMMENTS: 'RSS feed voor reacties op deze pagina'
+    DELETEALLCOMMENTS: 'Verwijder alle reacties op deze pagina'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
   CommentsInterface_singlecomment_ss:
@@ -45,5 +44,3 @@ nl:
     ISSPAM: 'deze reactie is spam'
     PBY: 'Geplaatst door'
     REMCOM: 'verwijder deze reactie'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Verwijder alle reacties op deze pagina'

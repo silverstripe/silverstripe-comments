@@ -41,7 +41,7 @@
 		
 		<% if $DeleteAllLink %>
 			<p class="delete-comments">
-				<a href="$DeleteAllLink"><% _t('CommentsInterface_ss.PageCommentInterface.DELETEALLCOMMENTS','Delete all comments on this page') %></a>
+				<a href="$DeleteAllLink"><% _t('CommentsInterface_ss.DELETEALLCOMMENTS','Delete all comments on this page') %></a>
 			</p>
 		<% end_if %>
 

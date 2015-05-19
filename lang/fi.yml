@@ -1,23 +1,33 @@
 fi:
   Comment:
     ALLOWCOMMENTS: 'Salli kommentointi'
-    COMMENT: 'Komentti'
-    COMMENTBY: '''%s'' kommentoi'
+    COMMENT: Komentti
+    COMMENTBY: 'Kommentoija: %s'
     ISSPAM: 'Spämmiä?'
     MODERATED: 'Moderoitu?'
     NAME: 'Kirjoittajan nimi'
-    ON: ':'
-    PLURALNAME: 'Kommentit'
-    SINGULARNAME: 'Komentti'
+    PLURALNAME: Kommentit
+    SINGULARNAME: Komentti
+    CREATED: 'Kirjoitettu'
+    EMAIL: Sähköposti
+    PARENTTITLE: Isäntä
+    URL: URL-osoite
   CommentAdmin:
-    Moderated: 'Moderoitu'
+    Moderated: Moderoitu
     NeedsModeration: 'Tarvitsee moderointia'
-    MENUTITLE: 'Kommentit'
+    MENUTITLE: Kommentit
   CommentInterface:
-    POST: 'Lähetä'
+    POST: Lähetä
     YOURNAME: 'Nimesi'
+    COMMENT_MESSAGE_REQUIRED: 'Ole hyvä ja kommentoi'
+    COMMENT_MESSAGE_URL: 'URL-osoitteen on oltava kelvollinen'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Sähköpostiosoitteen on oltava kelvollinen'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Sähköpostiosoitteesi'
+    PREVIEW: Esikatselu
+    PREVIEWLABEL: Esikatselu
+    YOURNAME_MESSAGE_REQUIRED: 'Nimesi'
   CommentingController:
-    COMMENTS: 'Kommentit'
+    COMMENTS: Kommentit
     EMAILADDRESS: 'Sähköpostiosoitteesi (ei julkaista)'
     PERMISSIONFAILURE: 'Et voi kommentoida tätä sivua. Varmista, että olet kirjatuneena ja että käyttöoikeutesi ovat riittävät.'
     RSSTITLE: 'Kommenttien RSS-syöte'
@@ -28,15 +38,17 @@ fi:
     COMMENTLOGINERROR: 'Et voi kommentoida ennen kuin olet kirjautunut sisään'
     COMMENTPERMISSIONERROR: 'ja käyttöoikeustasosi on oltava riittävä'
     COMMENTPOSTLOGIN: 'Kirjaudu tästä'
-    COMMENTS: 'Comments'
+    COMMENTS: Comments
     COMMENTSDISABLED: 'Kommentointi on lukittu'
     LOGINTOPOSTCOMMENT: 'Kirjaudu kommentoidaksesi'
-    NEXT: 'seuraava'
+    NEXT: seuraava
     NOCOMMENTSYET: 'Kukaan ei ole vielä kommentoinut tätä sivua.'
     POSTCOM: 'Lähetä kommenttisi'
-    PREV: 'edellinen'
+    PREV: edellinen
     RSSFEEDALLCOMMENTS: 'RSS-syöte kaikista kommenteista'
     RSSFEEDCOMMENTS: 'RSS-syöte tämän sivun kommenteista'
+    AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
+    DELETEALLCOMMENTS: 'Poista kaikki tämän sivun kommentit'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
   CommentsInterface_singlecomment_ss:

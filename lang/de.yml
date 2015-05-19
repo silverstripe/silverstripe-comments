@@ -6,9 +6,12 @@ de:
     ISSPAM: 'Spam?'
     MODERATED: 'Moderiert?'
     NAME: 'Autor Name'
-    ON: on
     PLURALNAME: Kommentare
     SINGULARNAME: Kommentar
+    CREATED: 'Datum geschrieben'
+    EMAIL: E-Mail
+    PARENTTITLE: Parent
+    URL: URL
   CommentAdmin:
     Moderated: Moderiert
     NeedsModeration: 'Benötigt Moderation'
@@ -16,6 +19,13 @@ de:
   CommentInterface:
     POST: Absenden
     YOURNAME: 'Name'
+    COMMENT_MESSAGE_REQUIRED: 'Bitte geben Sie Ihren Kommentar ein'
+    COMMENT_MESSAGE_URL: 'Bitte geben Sie eine gültige URL ein'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Bitte geben Sie eine gültige E-Mail-Adresse ein'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Bitte geben Sie Ihre E-Mail-Adresse ein'
+    PREVIEW: Vorschau
+    PREVIEWLABEL: Vorschau
+    YOURNAME_MESSAGE_REQUIRED: 'Bitte geben Sie Ihren Namen ein'
   CommentingController:
     COMMENTS: Kommentare
     EMAILADDRESS: 'E-Mail Adresse (wird nicht angezeigt)'
@@ -32,11 +42,13 @@ de:
     COMMENTSDISABLED: 'Kommentare sind deaktiviert'
     LOGINTOPOSTCOMMENT: 'Login um zu kommentieren'
     NEXT: weiter
-    NOCOMMENTSYET: 'Noch keine Kommentare auf diese Seite.'
+    NOCOMMENTSYET: 'Noch keine Kommentare auf dieser Seite.'
     POSTCOM: 'Kommentieren'
     PREV: zurück
     RSSFEEDALLCOMMENTS: 'RSS Feed für alle Kommentare'
     RSSFEEDCOMMENTS: 'RSS Feed für Kommentare auf dieser Seite'
+    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
+    DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite löschen'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
   CommentsInterface_singlecomment_ss:
