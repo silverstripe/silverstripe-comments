@@ -50,8 +50,7 @@ en:
     RSSFEEDALLCOMMENTS: 'RSS feed for all comments'
     RSSFEEDCOMMENTS: 'RSS feed for comments on this page'
     AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
-    PageCommentInterface:
-      DELETEALLCOMMENTS: 'Delete all comments on this page'
+    DELETEALLCOMMENTS: 'Delete all comments on this page'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
   CommentsInterface_singlecomment_ss:

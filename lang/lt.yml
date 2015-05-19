@@ -6,16 +6,27 @@ lt:
     ISSPAM: 'Šlamštas?'
     MODERATED: 'Moderated?'
     NAME: 'Autoriaus Vardas'
-    ON: puslapyje
     PLURALNAME: Komentarai
     SINGULARNAME: Komentaras
+    CREATED: 'Paskelbimo data'
+    EMAIL: E. paštas
+    PARENTTITLE: Priklauso
+    URL: URL adresas
   CommentAdmin:
-    Moderated: Patvirtinti
+    Moderated: Patvirtintas
     NeedsModeration: 'Laukia patvirtinimo'
     MENUTITLE: Komentarai
+    ADMIN_PERMISSION: "Patekti į 'Komentarų' dalį"
   CommentInterface:
     POST: Skelbti
     YOURNAME: 'Jūsų vardas'
+    COMMENT_MESSAGE_REQUIRED: 'Prašome parašyti savo komentarą'
+    COMMENT_MESSAGE_URL: 'Prašome įvesti teisingą URL adresą'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Prašome įvesti teisingą el. pašto adresą'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Prašome įvesti el. pašto adresą'
+    PREVIEW: Peržiūra
+    PREVIEWLABEL: Peržiūra
+    YOURNAME_MESSAGE_REQUIRED: 'Prašome įvesti savo vardą'
   CommentingController:
     COMMENTS: Komentarai
     EMAILADDRESS: 'Jūsų el.pašto adresas (nebus skelbiamas)'
@@ -25,7 +36,7 @@ lt:
   CommentsAdmin:
     NeedsModeration: 'Laukia patvirtinimo'
   CommentsInterface_ss:
-    COMMENTLOGINERROR: 'Negalite rašyti komentarų neprisijungęs'
+    COMMENTLOGINERROR: 'Negalite rašyti komentarų jeigu nesate prisijungęs'
     COMMENTPERMISSIONERROR: 'ir neturėdamas atitinkamo teisių lygio'
     COMMENTPOSTLOGIN: 'Prisijungti čia'
     COMMENTS: Komentarai
@@ -37,13 +48,15 @@ lt:
     PREV: ankstesni
     RSSFEEDALLCOMMENTS: 'Visų komentarų RSS'
     RSSFEEDCOMMENTS: 'Šio puslapio komentarų RSS'
+    AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
+    DELETEALLCOMMENTS: 'Ištrinti visus komentarus šiame puslapyje'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
   CommentsInterface_singlecomment_ss:
     APPROVE: 'patvirtinti šį komentarą'
     ISNTSPAM: 'šis komentaras nėra šlamštas'
     ISSPAM: 'šis komentaras yra šlamštas'
-    PBY: Parašė
+    PBY: 'Paskelbė'
     REMCOM: 'ištrinti šį komentarą'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Ištrinti visus komentarus šiame puslapyje'
