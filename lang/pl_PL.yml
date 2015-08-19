@@ -1,0 +1,42 @@
+pl_PL:
+  Comment:
+    ALLOWCOMMENTS: 'Zezwól na komentarze'
+    COMMENT: Komentarz
+    ISSPAM: 'Spam?'
+    MODERATED: 'Moderowane?'
+    NAME: 'Autor'
+    PLURALNAME: Komentarze
+    SINGULARNAME: Komentarz
+  CommentAdmin:
+    Moderated: Moderowane
+    MENUTITLE: Komentarze
+  CommentInterface:
+    POST: Post
+    YOURNAME: 'Twoja nazwa'
+  CommentingController:
+    COMMENTS: Komentarze
+    EMAILADDRESS: 'Twój adres email (nie będzie widoczny)'
+    PERMISSIONFAILURE: 'Nie można dodać komentarza na tej stronie. Upewnij się, że jesteś zalogowany i masz odpowednie uprawnienia.'
+    RSSTITLE: 'Komentarze z RSS'
+    WEBSITEURL: 'Adres Twojej strony'
+  CommentsInterface_ss:
+    COMMENTLOGINERROR: 'Nie można dodać komentarza dopóki nie będziesz zalogowany'
+    COMMENTPERMISSIONERROR: 'i że masz odpowiednie uprawnienia'
+    COMMENTPOSTLOGIN: 'Zaloguj'
+    COMMENTS: Komentarze
+    COMMENTSDISABLED: 'Dodawanie komentarzy zostało wyłączone'
+    LOGINTOPOSTCOMMENT: 'Zalogouj się aby dodać komentarz'
+    NEXT: następny
+    NOCOMMENTSYET: 'Nikt jeszcze nie skomentował'
+    POSTCOM: 'Dodaj komentarz'
+    PREV: poprzedni
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Twój komentarz został wysłany i czeka na akceptację przez moderatora.'
+  CommentsInterface_singlecomment_ss:
+    APPROVE: 'zaakceptuj ten komentarz'
+    ISNTSPAM: 'ten komentarz nie jest spamem'
+    ISSPAM: 'komentarz jest spamem'
+    PBY: 'Dodany przez'
+    REMCOM: 'usuń ten komentarz'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Usuń wszystkie komentarze na tej stronie'

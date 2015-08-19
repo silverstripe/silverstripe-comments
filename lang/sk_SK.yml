@@ -1,0 +1,37 @@
+sk_SK:
+  Comment:
+    ALLOWCOMMENTS: 'Povoliť komentáre'
+    COMMENT: Komentár
+    COMMENTBY: 'Komentáre od %s'
+    ISSPAM: 'Spam?'
+    MODERATED: 'Odsúhlasený?'
+    NAME: 'Meno autora'
+    PLURALNAME: Komentáre
+    SINGULARNAME: Komentár
+    CREATED: 'Dátum zverejnenia'
+    EMAIL: E-mail
+    PARENTTITLE: Rodič
+    URL: Web adresa
+  CommentAdmin:
+    Moderated: Odsúhlasený
+    NeedsModeration: 'Vyžaduje odsúhlasenie'
+    MENUTITLE: Komentáre
+  CommentInterface:
+    POST: Odoslať
+    YOURNAME: 'Vaše meno'
+    COMMENT_MESSAGE_REQUIRED: 'Pridaj scoj komentár'
+    COMMENT_MESSAGE_URL: 'Vlož platbú adresu URL'
+    PREVIEW: Náhľad
+    PREVIEWLABEL: Náhľad
+    YOURNAME_MESSAGE_REQUIRED: 'Vlož svoje meno'
+  CommentingController:
+    COMMENTS: Komentáre
+    EMAILADDRESS: 'Váš e-mail (nebude zverejnený)'
+    RSSTITLE: 'RSS feed komentárov'
+    WEBSITEURL: 'Vaša web stránka'
+  CommentsAdmin:
+    NeedsModeration: 'Vyžaduje schválenie'
+  CommentsInterface_ss:
+    COMMENTLOGINERROR: 'Komentáre môže pridávať len prihlásený užívateľ'
+    COMMENTS: Komentáre
+    COMMENTSDISABLED: 'Už nie je možné pridávať nové komentáre'

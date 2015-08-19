@@ -1,0 +1,60 @@
+sv:
+  Comment:
+    ALLOWCOMMENTS: 'Tillåt kommentarer'
+    COMMENT: Kommentarer
+    COMMENTBY: 'Kommentar av %s'
+    ISSPAM: 'Spam?'
+    MODERATED: 'Modererad?'
+    NAME: 'Författare'
+    PLURALNAME: Kommentarer
+    SINGULARNAME: Kommentar
+    CREATED: 'Datum'
+    EMAIL: E-post
+    PARENTTITLE: Överordnad sida
+    URL: URL
+  CommentAdmin:
+    Moderated: Modererad
+    NeedsModeration: 'Kräver moderering'
+    MENUTITLE: Kommentarer
+  CommentInterface:
+    POST: Inlägg
+    YOURNAME: 'Ditt namn'
+    COMMENT_MESSAGE_REQUIRED: 'Var vänlig och skriv in din kommentar'
+    COMMENT_MESSAGE_URL: 'Var vänlig och ange en korrekt URL'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Var vänlig och ange an korrekt e-postadress'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Var vänlig och skriv in din e-postadress'
+    PREVIEW: Förhandsgranska
+    PREVIEWLABEL: Förhandsgranska
+    YOURNAME_MESSAGE_REQUIRED: 'Var vänlig och skriv in ditt namn'
+  CommentingController:
+    COMMENTS: Kommentarer
+    EMAILADDRESS: 'Din e-postadress (kommer inte att publiceras)'
+    PERMISSIONFAILURE: 'Du kan inte skriva kommentarer på denna sida. Vänligen kontrollera att du är inloggad och har de användarrättigheter som krävs.'
+    RSSTITLE: 'RSS-flöde med kommentarer'
+    WEBSITEURL: 'Din hemsidas URL'
+  CommentsAdmin:
+    NeedsModeration: 'Kräver moderering'
+  CommentsInterface_ss:
+    COMMENTLOGINERROR: 'Du måste logga in för att kunna skriva kommentarer'
+    COMMENTPERMISSIONERROR: 'och att du har de användarrättigheter som krävs'
+    COMMENTPOSTLOGIN: 'Logga in'
+    COMMENTS: Kommentarer
+    COMMENTSDISABLED: 'Möjligheten att skriva kommentarer har spärrats'
+    LOGINTOPOSTCOMMENT: 'Logga in för att skriva en kommentar'
+    NEXT: nästa
+    NOCOMMENTSYET: 'Inga har kommenterat på denna sida ännu'
+    POSTCOM: 'Posta din kommentar'
+    PREV: föregående
+    RSSFEEDALLCOMMENTS: 'RSS-flöde för samtliga kommentarer'
+    RSSFEEDCOMMENTS: 'RSS-flöde för kommentarer på denna sida'
+    AWAITINGMODERATION: 'Din kommentar har skickats och väntar nu på moderering'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Din kommentar har skickats och väntar nu på moderering'
+  CommentsInterface_singlecomment_ss:
+    APPROVE: 'godkänn denna kommentar'
+    ISNTSPAM: 'den här kommentarer är inte spam'
+    ISSPAM: 'den här kommentaren är spam'
+    PBY: 'Skriven av'
+    REMCOM: 'Radera den här kommentaren'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Radera alla kommenterar på den här sidan'

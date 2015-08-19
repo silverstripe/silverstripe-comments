@@ -3,30 +3,36 @@ en:
     ALLOWCOMMENTS: 'Allow Comments'
     COMMENT: Comment
     COMMENTBY: 'Comment by %s'
+    CREATED: 'Date posted'
+    EMAIL: Email
     ISSPAM: 'Spam?'
     MODERATED: 'Moderated?'
     NAME: 'Author Name'
-    ON: on
-    PLURALNAME: Comments
-    SINGULARNAME: Comment
-    CREATED: 'Date posted'
-    EMAIL: Email
+    'ON': 'on'
+    OPTION_DESCRIPTION: 'Unmoderated and spam comments will not be displayed until approved'
     PARENTTITLE: Parent
+    PLURALNAME: Comments
+    ParentComment_Title: 'This comment is a reply to the below'
+    SINGULARNAME: Comment
     URL: URL
   CommentAdmin:
+    ADMIN_PERMISSION: 'Access to ''Comments'' section'
+    ApprovedComments: Approved
+    Comments: Approved
+    MENUTITLE: Comments
     Moderated: Moderated
     NeedsModeration: 'Needs Moderation'
-    MENUTITLE: Comments
-    ADMIN_PERMISSION: "Access to 'Comments' section"
+    NewComments: New
+    SpamComments: Spam
   CommentInterface:
-    POST: Post
-    YOURNAME: 'Your name'
     COMMENT_MESSAGE_REQUIRED: 'Please enter your comment'
     COMMENT_MESSAGE_URL: 'Please enter a valid URL'
     EMAILADDRESS_MESSAGE_EMAIL: 'Please enter a valid email address'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Please enter your email address'
+    POST: Post
     PREVIEW: Preview
     PREVIEWLABEL: Preview
+    YOURNAME: 'Your name'
     YOURNAME_MESSAGE_REQUIRED: 'Please enter your name'
   CommentingController:
     COMMENTS: Comments
@@ -34,14 +40,35 @@ en:
     PERMISSIONFAILURE: 'You''re not able to post comments to this page. Please ensure you are logged in and have an appropriate permission level.'
     RSSTITLE: 'Comments RSS Feed'
     WEBSITEURL: 'Your website URL'
+  Comments:
+    COMMENTSREQUIRELOGIN: 'Require login to comment'
   CommentsAdmin:
+    ApprovedComments: Approved
+    Comments: Approved
     NeedsModeration: 'Needs Moderation'
+    NewComments: New
+    SpamComments: Spam
+  CommentsExtension:
+    COMMENTOPTIONS: Comments
+    MODERATIONREQUIRED_NONE: 'No moderation required'
+    MODERATIONREQUIRED_NONMEMBERSONLY: 'Only moderate non-members'
+    MODERATIONREQUIRED_REQUIRED: 'Moderate all comments'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
+  CommentsInterface_singlecomment_ss:
+    APPROVE: 'approve it'
+    ISNTSPAM: 'not spam'
+    ISSPAM: 'spam it'
+    PBY: 'Posted by'
+    REMCOM: 'reject it'
   CommentsInterface_ss:
+    AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
     COMMENTLOGINERROR: 'You cannot post comments until you have logged in'
     COMMENTPERMISSIONERROR: 'and that you have an appropriate permission level'
     COMMENTPOSTLOGIN: 'Login Here'
     COMMENTS: Comments
     COMMENTSDISABLED: 'Posting comments has been disabled'
+    DELETEALLCOMMENTS: 'Delete all comments on this page'
     LOGINTOPOSTCOMMENT: 'Login to post a comment'
     NEXT: next
     NOCOMMENTSYET: 'No one has commented on this page yet.'
@@ -49,15 +76,5 @@ en:
     PREV: previous
     RSSFEEDALLCOMMENTS: 'RSS feed for all comments'
     RSSFEEDCOMMENTS: 'RSS feed for comments on this page'
-    AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
-    DELETEALLCOMMENTS: 'Delete all comments on this page'
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: 'approve this comment'
-    ISNTSPAM: 'this comment is not spam'
-    ISSPAM: 'this comment is spam'
-    PBY: 'Posted by'
-    REMCOM: 'remove this comment'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Delete all comments on this page'

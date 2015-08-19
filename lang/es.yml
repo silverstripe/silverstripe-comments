@@ -1,0 +1,59 @@
+es:
+  Comment:
+    ALLOWCOMMENTS: 'Permitir comentarios'
+    COMMENT: Comentario
+    COMMENTBY: 'Comentario por %s'
+    ISSPAM: '¿Spam?'
+    MODERATED: '¿Moderado?'
+    NAME: 'Nombre del autor'
+    PLURALNAME: Comentarios
+    SINGULARNAME: Comentario
+    CREATED: 'Fecha de publicación'
+    EMAIL: Email
+    PARENTTITLE: Padre
+    URL: URL
+  CommentAdmin:
+    Moderated: Moderado
+    NeedsModeration: 'Necesita moderación'
+    MENUTITLE: Comentarios
+    ADMIN_PERMISSION: "Acceder a la sección 'Comentarios'"
+  CommentInterface:
+    POST: Publicar
+    YOURNAME: 'Su nombre'
+    COMMENT_MESSAGE_REQUIRED: 'Por favor, ingres su comentario'
+    COMMENT_MESSAGE_URL: 'Por favor, ingrese una URL válida'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Por favor, ingrse una dirección de correo válida'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Por favor, ingrese su dirección de correo'
+    PREVIEW: Vista previa
+    PREVIEWLABEL: Vista previa
+    YOURNAME_MESSAGE_REQUIRED: 'Por favor, ingrese su nombre'
+  CommentingController:
+    COMMENTS: Comentarios
+    EMAILADDRESS: 'Su dirección de correo (no se publicará)'
+    PERMISSIONFAILURE: 'Ud no puede publicar comentarios en esta página. Por favor asegúrese que haya iniciado sesión y que tenga el adecuado nivel de permisos.'
+    WEBSITEURL: 'URL de su sitio Web'
+  CommentsAdmin:
+    NeedsModeration: 'Necesita moderación'
+  CommentsInterface_ss:
+    COMMENTLOGINERROR: 'Ud no puede comentar hasta que haya iniciado sesión'
+    COMMENTPERMISSIONERROR: 'y que tenga un nivel de permisos adecuado'
+    COMMENTPOSTLOGIN: 'Iniciar sesión aquí'
+    COMMENTS: Comentarios
+    COMMENTSDISABLED: 'Se deshabilitó la publicación de comentarios'
+    LOGINTOPOSTCOMMENT: 'Iniciar sesión para publicar un comentario'
+    NEXT: siguiente
+    NOCOMMENTSYET: 'Nadie comentó en esta página todavía.'
+    POSTCOM: 'Publicar su mensaje'
+    PREV: anterior
+    AWAITINGMODERATION: 'Se envió su comentario y ahora está esperando la moderación.'
+    DELETEALLCOMMENTS: 'Eliminar todos los comentarios de esta página'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Se envió su comentario y ahora está esperando la moderación.'
+  CommentsInterface_singlecomment_ss:
+    APPROVE: 'aprobar este comentario'
+    ISNTSPAM: 'este comentario no es spam'
+    ISSPAM: 'este comentario es spam'
+    PBY: 'Publicado por'
+    REMCOM: 'eliminar este comentario'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Eliminar todos los comentarios de esta página'

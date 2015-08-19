@@ -1,0 +1,60 @@
+fr:
+  Comment:
+    ALLOWCOMMENTS: 'Autoriser Commentaires'
+    COMMENT: Commentaire
+    COMMENTBY: 'Commentaire par %s'
+    ISSPAM: 'Spam?'
+    MODERATED: 'Modéré?'
+    NAME: 'Nom de l''Auteur'
+    PLURALNAME: Commentaires
+    SINGULARNAME: Commentaire
+    CREATED: 'Date de publication'
+    EMAIL: Email
+    PARENTTITLE: Parent
+    URL: URL
+  CommentAdmin:
+    Moderated: Modéré
+    NeedsModeration: 'Besoin de modération'
+    MENUTITLE: Commentaires
+  CommentInterface:
+    POST: Publier
+    YOURNAME: 'Votre Nom'
+    COMMENT_MESSAGE_REQUIRED: 'Saisissez votre commentaire'
+    COMMENT_MESSAGE_URL: 'Saisissez une URl valide'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Saisissez une adresse mail valide'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Saisissez votre adresse e-mail'
+    PREVIEW: Aperçu
+    PREVIEWLABEL: Aperçu
+    YOURNAME_MESSAGE_REQUIRED: 'Saisissez votre nom'
+  CommentingController:
+    COMMENTS: Commentaires
+    EMAILADDRESS: 'Votre adresse e-mail (ne sera pas publiée)'
+    PERMISSIONFAILURE: 'Vous n''avez pas l''autorisation de commenter cette page. Assurez vous d''être connecté et d''avoir le bon niveau de d''autorisation.'
+    RSSTITLE: 'Flux RSS de Commentaires'
+    WEBSITEURL: 'URl de votre site web'
+  CommentsAdmin:
+    NeedsModeration: 'Besoin de Modération'
+  CommentsInterface_ss:
+    COMMENTLOGINERROR: 'Vous ne pouvez pas poster de commentaires sans être connecté'
+    COMMENTPERMISSIONERROR: 'et d''avoir le bon niveau de d''autorisation'
+    COMMENTPOSTLOGIN: 'Se connecter'
+    COMMENTS: Commentaires
+    COMMENTSDISABLED: 'La publication de commentaires est désactivée'
+    LOGINTOPOSTCOMMENT: 'Connectez vous pour poster un commentaire'
+    NEXT: suivant
+    NOCOMMENTSYET: 'Il n''y a pas encore de commentaire.'
+    POSTCOM: 'Publiez votre commentaire'
+    PREV: précédent
+    RSSFEEDALLCOMMENTS: 'Flux RSS de tous les commentaires'
+    RSSFEEDCOMMENTS: 'Flux RSS de commentaires de cette page'
+    AWAITINGMODERATION: 'Votre commentaire a été soumis à modération.'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Votre commentaire a été soumis à modération.'
+  CommentsInterface_singlecomment_ss:
+    APPROVE: 'approuver ce commentaire'
+    ISNTSPAM: 'ce commentaire n''est pas un spam'
+    ISSPAM: 'ce commentaire est un spam'
+    PBY: 'Posté par'
+    REMCOM: 'supprimer ce commentaire'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Supprimer tout les commentaires de cette page'

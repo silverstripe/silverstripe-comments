@@ -16,6 +16,7 @@ de:
     Moderated: Moderiert
     NeedsModeration: 'Benötigt Moderation'
     MENUTITLE: Kommentare
+    ADMIN_PERMISSION: "Zugang zum Bereich 'Kommentare'"
   CommentInterface:
     POST: Absenden
     YOURNAME: 'Name'

@@ -48,7 +48,6 @@ fi:
     RSSFEEDALLCOMMENTS: 'RSS-syöte kaikista kommenteista'
     RSSFEEDCOMMENTS: 'RSS-syöte tämän sivun kommenteista'
     AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
-    DELETEALLCOMMENTS: 'Poista kaikki tämän sivun kommentit'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
   CommentsInterface_singlecomment_ss:

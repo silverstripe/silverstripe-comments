@@ -1,0 +1,42 @@
+ru:
+  Comment:
+    ALLOWCOMMENTS: 'Разрешить комментарии'
+    COMMENT: Комментарий
+    COMMENTBY: 'Комментарий автора %s'
+    ISSPAM: 'Спам?'
+    NAME: 'Автор'
+    PLURALNAME: Комментарии
+    SINGULARNAME: Комментарий
+    EMAIL: Email
+    URL: URL
+  CommentAdmin:
+    MENUTITLE: Комментарии
+  CommentInterface:
+    POST: Отправить
+    YOURNAME: 'Имя'
+    COMMENT_MESSAGE_URL: 'Пожалуйста, задайте действительный URL-адрес'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Пожалуйста, укажите действительный электронный адрес'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Пожалуйста, укажите свой электронный адрес'
+    PREVIEW: Просмотр
+    PREVIEWLABEL: Просмотр
+  CommentingController:
+    COMMENTS: Комментарии
+    EMAILADDRESS: 'Ваш электронный адрес (не будет опубликован)'
+    RSSTITLE: 'RSS-лента комментариев'
+    WEBSITEURL: 'Адрес вашего сайта'
+  CommentsInterface_ss:
+    COMMENTS: Комментарии
+    COMMENTSDISABLED: 'Комментарии отключены'
+    NOCOMMENTSYET: 'Комментариев на этой странице пока нет.'
+    AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
+    DELETEALLCOMMENTS: 'удалить все комментарии со страницы'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
+  CommentsInterface_singlecomment_ss:
+    APPROVE: 'подтвердить комментарий'
+    ISNTSPAM: 'этот комментарий - не спам'
+    ISSPAM: 'этот комментарий - спам'
+    PBY: 'Автор:'
+    REMCOM: 'удалить комментарий'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Удалить все комментарии на этой странице'

@@ -35,7 +35,6 @@ nb:
     PREV: forrige
     RSSFEEDALLCOMMENTS: 'RSS-feed for alle kommentarer'
     RSSFEEDCOMMENTS: 'RSS-feed for kommentarer på denne siden'
-    DELETEALLCOMMENTS: 'Fjern alle kommentarer på denne siden'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Kommentaren din har blitt lagret og er lagt i kø for moderering.'
   CommentsInterface_singlecomment_ss:
@@ -44,3 +43,5 @@ nb:
     ISSPAM: 'Merk som spam'
     PBY: 'Skrevet av'
     REMCOM: 'Fjern kommentar'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Fjern alle kommentarer på denne siden'

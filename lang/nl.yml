@@ -35,7 +35,6 @@ nl:
     PREV: vorige
     RSSFEEDALLCOMMENTS: 'RSS feed voor alle reacties'
     RSSFEEDCOMMENTS: 'RSS feed voor reacties op deze pagina'
-    DELETEALLCOMMENTS: 'Verwijder alle reacties op deze pagina'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
   CommentsInterface_singlecomment_ss:
@@ -44,3 +43,5 @@ nl:
     ISSPAM: 'deze reactie is spam'
     PBY: 'Geplaatst door'
     REMCOM: 'verwijder deze reactie'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Verwijder alle reacties op deze pagina'

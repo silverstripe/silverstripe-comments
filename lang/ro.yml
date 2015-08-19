@@ -1,0 +1,60 @@
+ro:
+  Comment:
+    ALLOWCOMMENTS: 'Acceptare comentarii'
+    COMMENT: Comentariu
+    COMMENTBY: 'Comentat de %s'
+    ISSPAM: 'Spam?'
+    MODERATED: 'Moderare?'
+    NAME: 'Nume autor'
+    PLURALNAME: Comentarii
+    SINGULARNAME: Comentariu
+    CREATED: 'Data publicării'
+    EMAIL: E-mail
+    PARENTTITLE: Părinte
+    URL: URL
+  CommentAdmin:
+    Moderated: Moderat
+    NeedsModeration: 'Necesită moderare'
+    MENUTITLE: Commentarii
+  CommentInterface:
+    POST: Publică
+    YOURNAME: 'Numele dvs.'
+    COMMENT_MESSAGE_REQUIRED: 'Vă rugăm să introduceți un comentariu'
+    COMMENT_MESSAGE_URL: 'Vă rugăm să introduceți un URL valid'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Vă rugăm să introduceți uo adresă de e-mail validă'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Vă rugăm să vă introduceți adresa de e-mail'
+    PREVIEW: Vizualizare înaintea publicării
+    PREVIEWLABEL: Vizualizare înaintea publicării
+    YOURNAME_MESSAGE_REQUIRED: 'Vă rugăm să vă introduceți numele'
+  CommentingController:
+    COMMENTS: Commentarii
+    EMAILADDRESS: 'Adresa dvs. de e-mail (nu va fi publicată)'
+    PERMISSIONFAILURE: 'Nu puteţi publica comentarii pe această pagină. Vă rugăm să vă asiguaţi că sunteți autentificat și că aveşi nivelul de permisiune corespunzător.'
+    RSSTITLE: 'RSS feed pentru comentarii'
+    WEBSITEURL: 'URL Site web'
+  CommentsAdmin:
+    NeedsModeration: 'Necesită moderare'
+  CommentsInterface_ss:
+    COMMENTLOGINERROR: 'Publicarea de comentarii necesită autentificare pe site'
+    COMMENTPERMISSIONERROR: 'și că aveți nivelul de permisiune corespunzător'
+    COMMENTPOSTLOGIN: 'Autentificare'
+    COMMENTS: Comentarii
+    COMMENTSDISABLED: 'Postarea de comentarii a fost dezactivată'
+    LOGINTOPOSTCOMMENT: 'Autentificaţi-vă pentru a publica un comentariu'
+    NEXT: următorul
+    NOCOMMENTSYET: 'Nimeni nu a comentat încă pe aceasta pagină.'
+    POSTCOM: 'Publicaţi-vă comentariul'
+    PREV: anteriorul
+    RSSFEEDALLCOMMENTS: 'RSS pentru toate comentariile'
+    RSSFEEDCOMMENTS: 'RSS pentru comentariile de pe această pagină'
+    AWAITINGMODERATION: 'Comentariul dvs. a fost trimis și așteaptă să fie moderat.'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Comentariul dvs. a fost trimis și așteaptă să fie moderat.'
+  CommentsInterface_singlecomment_ss:
+    APPROVE: 'aprobaţi acest comentariu'
+    ISNTSPAM: 'acest comentariu nu este spam'
+    ISSPAM: 'acest comentariu este spam'
+    PBY: 'Publicat de'
+    REMCOM: 'eliminaţi acest comentariu'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Ştergeţi toate comentariile de pe această pagină'

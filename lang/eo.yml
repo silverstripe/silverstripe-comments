@@ -1,0 +1,60 @@
+eo:
+  Comment:
+    ALLOWCOMMENTS: 'Ebligi komentojn'
+    COMMENT: Komento
+    COMMENTBY: 'Komento de %s'
+    ISSPAM: 'Ĉu spamo?'
+    MODERATED: 'Ĉu kontrolata?'
+    NAME: 'Nomo de aŭtoro'
+    PLURALNAME: Komentoj
+    SINGULARNAME: Komento
+    CREATED: 'Dato de afiŝo'
+    EMAIL: Retpoŝto
+    PARENTTITLE: Patra
+    URL: URL
+  CommentAdmin:
+    Moderated: Kontrolata
+    NeedsModeration: 'Bezonas kontrolon'
+    MENUTITLE: Komentoj
+  CommentInterface:
+    POST: Afiŝo
+    YOURNAME: 'Via nomo'
+    COMMENT_MESSAGE_REQUIRED: 'Bonvole enigu vian komenton'
+    COMMENT_MESSAGE_URL: 'Bonvole enigu validan URL-on'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Bonvolu enigi validan retadreson'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Bonvolu enigi vian retadreson'
+    PREVIEW: Antaŭvido
+    PREVIEWLABEL: Antaŭvido
+    YOURNAME_MESSAGE_REQUIRED: 'Bonvole enigu vian nomon'
+  CommentingController:
+    COMMENTS: Komentoj
+    EMAILADDRESS: 'Via retadreso (ne publikiĝos)'
+    PERMISSIONFAILURE: 'Vi ne povas afiŝi komentojn al ĉi tiu paĝo. Bonvole certigu ke vi jam ensalutis kaj havas taŭgan permeson.'
+    RSSTITLE: 'RSS-fluo de komentoj'
+    WEBSITEURL: 'Via reteja URL'
+  CommentsAdmin:
+    NeedsModeration: 'Bezonas kontrolon'
+  CommentsInterface_ss:
+    COMMENTLOGINERROR: 'Vi ne povas afiŝi komenton ĝis vi ensalutis'
+    COMMENTPERMISSIONERROR: 'kaj le vi havas taŭgan permeson'
+    COMMENTPOSTLOGIN: 'Ensaluti ĉi tie'
+    COMMENTS: Komentoj
+    COMMENTSDISABLED: 'Afiŝi komentojn estas malŝaltita'
+    LOGINTOPOSTCOMMENT: 'Ensaluti por afiŝi komenton'
+    NEXT: sekva
+    NOCOMMENTSYET: 'Neniu komentis pri ĉi tiu paĝo ĝis nun.'
+    POSTCOM: 'Afiŝi vian komenton'
+    PREV: antaŭa
+    RSSFEEDALLCOMMENTS: 'RSS-fluo por ĉiuj komentoj'
+    RSSFEEDCOMMENTS: 'RSS-fluo por komentoj pri ĉi tiu paĝo'
+    AWAITINGMODERATION: 'Via komento afiŝiĝis kaj nun atendas kontrolon.'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Via komento afiŝiĝis kaj nun atendas kontrolon.'
+  CommentsInterface_singlecomment_ss:
+    APPROVE: 'aprobi la komenton'
+    ISNTSPAM: 'la komento ne estas spamo'
+    ISSPAM: 'la komento estas spamo'
+    PBY: 'Afiŝita de'
+    REMCOM: 'forigi la komenton'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Forigi ĉiujn komentojn pri ĉi tiu paĝo'
