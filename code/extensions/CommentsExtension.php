@@ -75,14 +75,23 @@ class CommentsExtension extends DataExtension {
 	);
 
 	/**
-	 * CMS configurable options should default to the config values
+	 * CMS configurable options should default to the config values, but respect
+	 * default values specified by the object
 	 */
 	public function populateDefaults() {
+		$defaults = $this->owner->config()->defaults;
+		
 		// Set if comments should be enabled by default
-		$this->owner->ProvideComments = $this->owner->getCommentsOption('enabled') ? 1 : 0;
+		if(isset($defaults['ProvideComments'])) {
+			$this->owner->ProvideComments = $defaults['ProvideComments'];
+		} else {
+			$this->owner->ProvideComments = $this->owner->getCommentsOption('enabled') ? 1 : 0;
+		}
 
 		// If moderation options should be configurable via the CMS then
-		if($this->owner->getCommentsOption('require_moderation')) {
+		if(isset($defaults['ModerationRequired'])) {
+			$this->owner->ModerationRequired = $defaults['ModerationRequired'];
+		} elseif($this->owner->getCommentsOption('require_moderation')) {
 			$this->owner->ModerationRequired = 'Required';
 		} elseif($this->owner->getCommentsOption('require_moderation_nonmembers')) {
 			$this->owner->ModerationRequired = 'NonMembersOnly';
@@ -90,7 +99,12 @@ class CommentsExtension extends DataExtension {
 			$this->owner->ModerationRequired = 'None';
 		}
 
-		$this->owner->CommentsRequireLogin = $this->owner->getCommentsOption('require_login') ? 1 : 0;
+		// Set login required
+		if(isset($defaults['CommentsRequireLogin'])) {
+			$this->owner->CommentsRequireLogin = $defaults['CommentsRequireLogin'];
+		} else {
+			$this->owner->CommentsRequireLogin = $this->owner->getCommentsOption('require_login') ? 1 : 0;
+		}
 	}
 
 

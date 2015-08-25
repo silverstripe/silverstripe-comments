@@ -8,7 +8,9 @@ class CommentsTest extends FunctionalTest {
 	public static $fixture_file = 'comments/tests/CommentsTest.yml';
 	
 	protected $extraDataObjects = array(
-		'CommentableItem'
+		'CommentableItem',
+		'CommentableItemEnabled',
+		'CommentableItemDisabled'
 	);
 
 	public function setUp() {
@@ -504,6 +506,59 @@ class CommentsTest extends FunctionalTest {
 		Commenting::set_config_value('CommentableItem','html_allowed', $origAllowed);
 	}
 
+
+	/**
+	 * Tests whether comments are enabled or disabled by default
+	 */
+	public function testDefaultEnabled() {
+		// Ensure values are set via cms (not via config)
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'enabled_cms' => true,
+			'require_moderation_cms' => true,
+			'require_login_cms' => true
+		));
+
+		// With default = true
+		$obj = new CommentableItem();
+		$this->assertTrue((bool)$obj->getCommentsOption('enabled'), "Default setting is enabled");
+		$this->assertTrue((bool)$obj->ProvideComments);
+		$this->assertEquals('None', $obj->ModerationRequired);
+		$this->assertFalse((bool)$obj->CommentsRequireLogin);
+
+		$obj = new CommentableItemEnabled();
+		$this->assertTrue((bool)$obj->ProvideComments);
+		$this->assertEquals('Required', $obj->ModerationRequired);
+		$this->assertTrue((bool)$obj->CommentsRequireLogin);
+
+		$obj = new CommentableItemDisabled();
+		$this->assertFalse((bool)$obj->ProvideComments);
+		$this->assertEquals('None', $obj->ModerationRequired);
+		$this->assertFalse((bool)$obj->CommentsRequireLogin);
+
+		// With default = false
+		// Because of config rules about falsey values, apply config to object directly
+		Config::inst()->update('CommentableItem', 'comments', array(
+			'enabled' => false,
+			'require_login' => true,
+			'require_moderation' => true
+		));
+		$obj = new CommentableItem();
+		$this->assertFalse((bool)$obj->getCommentsOption('enabled'), "Default setting is disabled");
+		$this->assertFalse((bool)$obj->ProvideComments);
+		$this->assertEquals('Required', $obj->ModerationRequired);
+		$this->assertTrue((bool)$obj->CommentsRequireLogin);
+
+		$obj = new CommentableItemEnabled();
+		$this->assertTrue((bool)$obj->ProvideComments);
+		$this->assertEquals('Required', $obj->ModerationRequired);
+		$this->assertTrue((bool)$obj->CommentsRequireLogin);
+
+		$obj = new CommentableItemDisabled();
+		$this->assertFalse((bool)$obj->ProvideComments);
+		$this->assertEquals('None', $obj->ModerationRequired);
+		$this->assertFalse((bool)$obj->CommentsRequireLogin);
+	}
+
 }
 
 
@@ -514,7 +569,6 @@ class CommentsTest extends FunctionalTest {
 class CommentableItem extends DataObject implements TestOnly {
 
 	private static $db = array(
-		'ProvideComments' => 'Boolean',
 		'Title' => 'Varchar'
 	);
 
@@ -537,6 +591,23 @@ class CommentableItem extends DataObject implements TestOnly {
 	public function AbsoluteLink() {
 		return Director::absoluteURL($this->RelativeLink());
 	}
+}
+
+class CommentableItemEnabled extends CommentableItem {
+	private static $defaults = array(
+		'ProvideComments' => true,
+		'ModerationRequired' => 'Required',
+		'CommentsRequireLogin' => true
+	);
+}
+
+
+class CommentableItemDisabled extends CommentableItem {
+	private static $defaults = array(
+		'ProvideComments' => false,
+		'ModerationRequired' => 'None',
+		'CommentsRequireLogin' => false
+	);
 }
 
 /**
