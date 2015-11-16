@@ -46,15 +46,13 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 			return Security::permissionFailure($this);
 		}
 
-		$commentsConfig = CommentsGridFieldConfig::create();
-
 		$newComments = Comment::get()->filter('Moderated', 0);
 
 		$newGrid = new CommentsGridField(
 			'NewComments',
 			_t('CommentsAdmin.NewComments', 'New'),
 			$newComments,
-			$commentsConfig
+			CommentsGridFieldConfig::create()
 		);
 
 		$approvedComments = Comment::get()->filter('Moderated', 1)->filter('IsSpam', 0);
@@ -63,7 +61,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 			'ApprovedComments',
 			_t('CommentsAdmin.ApprovedComments', 'Approved'),
 			$approvedComments,
-			$commentsConfig
+			CommentsGridFieldConfig::create()
 		);
 
 		$spamComments = Comment::get()->filter('Moderated', 1)->filter('IsSpam', 1);
@@ -72,7 +70,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider {
 			'SpamComments',
 			_t('CommentsAdmin.SpamComments', 'Spam'),
 			$spamComments,
-			$commentsConfig
+			CommentsGridFieldConfig::create()
 		);
 
 		$newCount = '(' . count($newComments) . ')';
