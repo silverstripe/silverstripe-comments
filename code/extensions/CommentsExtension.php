@@ -495,15 +495,13 @@ class CommentsExtension extends DataExtension {
 	protected function updateModerationFields(FieldList $fields) {
 		Requirements::css(COMMENTS_DIR . '/css/cms.css');
 
-		$commentsConfig = CommentsGridFieldConfig::create();
-
 		$newComments = $this->owner->AllComments()->filter('Moderated', 0);
 
 		$newGrid = new CommentsGridField(
 			'NewComments',
 			_t('CommentsAdmin.NewComments', 'New'),
 			$newComments,
-			$commentsConfig
+			CommentsGridFieldConfig::create()
 		);
 
 		$approvedComments = $this->owner->AllComments()->filter('Moderated', 1)->filter('IsSpam', 0);
@@ -512,7 +510,7 @@ class CommentsExtension extends DataExtension {
 			'ApprovedComments',
 			_t('CommentsAdmin.Comments', 'Approved'),
 			$approvedComments,
-			$commentsConfig
+			CommentsGridFieldConfig::create()
 		);
 
 		$spamComments = $this->owner->AllComments()->filter('Moderated', 1)->filter('IsSpam', 1);
@@ -521,7 +519,7 @@ class CommentsExtension extends DataExtension {
 			'SpamComments',
 			_t('CommentsAdmin.SpamComments', 'Spam'),
 			$spamComments,
-			$commentsConfig
+			CommentsGridFieldConfig::create()
 		);
 
 		$newCount = '(' . count($newComments) . ')';
