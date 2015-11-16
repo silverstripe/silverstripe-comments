@@ -202,15 +202,17 @@ class Comment extends DataObject {
 	public function getOption($key) {
 		// If possible use the current record
 		$record = $this->getParent();
+		
 		if(!$record && $this->BaseClass) {
 			// Otherwise a singleton of that record
 			$record = singleton($this->BaseClass);
-		} elseif(!$record) {
+		} 
+		else if(!$record) {
 			// Otherwise just use the default options
 			$record = singleton('CommentsExtension');
 		}
 
-		return $record->getCommentsOption($key);
+		return ($record->hasMethod('getCommentsOption')) ? $record->getCommentsOption($key) : null;
 	}
 
 	/**
