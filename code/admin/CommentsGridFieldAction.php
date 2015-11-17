@@ -44,7 +44,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 		if(!$record->IsSpam || !$record->Moderated) {
 			$field .= GridField_FormAction::create(
 				$gridField,
-				'CustomAction' . $record->ID,
+				'CustomAction' . $record->ID . 'Spam',
 				'Spam',
 				'spam',
 				array('RecordID' => $record->ID)
@@ -54,7 +54,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
 		if($record->IsSpam || !$record->Moderated) {
 			$field .= GridField_FormAction::create(
 				$gridField,
-				'CustomAction' . $record->ID,
+				'CustomAction' . $record->ID . 'Approve',
 				'Approve',
 				'approve',
 				array('RecordID' => $record->ID)
