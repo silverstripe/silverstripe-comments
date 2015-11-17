@@ -3,28 +3,28 @@ sv:
     ALLOWCOMMENTS: 'Tillåt kommentarer'
     COMMENT: Kommentarer
     COMMENTBY: 'Kommentar av %s'
+    CREATED: 'Datum'
+    EMAIL: E-post
     ISSPAM: 'Spam?'
     MODERATED: 'Modererad?'
     NAME: 'Författare'
+    PARENTTITLE: Överordnad sida
     PLURALNAME: Kommentarer
     SINGULARNAME: Kommentar
-    CREATED: 'Datum'
-    EMAIL: E-post
-    PARENTTITLE: Överordnad sida
     URL: URL
   CommentAdmin:
+    MENUTITLE: Kommentarer
     Moderated: Modererad
     NeedsModeration: 'Kräver moderering'
-    MENUTITLE: Kommentarer
   CommentInterface:
-    POST: Inlägg
-    YOURNAME: 'Ditt namn'
     COMMENT_MESSAGE_REQUIRED: 'Var vänlig och skriv in din kommentar'
     COMMENT_MESSAGE_URL: 'Var vänlig och ange en korrekt URL'
     EMAILADDRESS_MESSAGE_EMAIL: 'Var vänlig och ange an korrekt e-postadress'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Var vänlig och skriv in din e-postadress'
+    POST: Inlägg
     PREVIEW: Förhandsgranska
     PREVIEWLABEL: Förhandsgranska
+    YOURNAME: 'Ditt namn'
     YOURNAME_MESSAGE_REQUIRED: 'Var vänlig och skriv in ditt namn'
   CommentingController:
     COMMENTS: Kommentarer
@@ -34,7 +34,12 @@ sv:
     WEBSITEURL: 'Din hemsidas URL'
   CommentsAdmin:
     NeedsModeration: 'Kräver moderering'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Din kommentar har skickats och väntar nu på moderering'
+  CommentsInterface_singlecomment_ss:
+    PBY: 'Skriven av'
   CommentsInterface_ss:
+    AWAITINGMODERATION: 'Din kommentar har skickats och väntar nu på moderering'
     COMMENTLOGINERROR: 'Du måste logga in för att kunna skriva kommentarer'
     COMMENTPERMISSIONERROR: 'och att du har de användarrättigheter som krävs'
     COMMENTPOSTLOGIN: 'Logga in'
@@ -47,14 +52,5 @@ sv:
     PREV: föregående
     RSSFEEDALLCOMMENTS: 'RSS-flöde för samtliga kommentarer'
     RSSFEEDCOMMENTS: 'RSS-flöde för kommentarer på denna sida'
-    AWAITINGMODERATION: 'Din kommentar har skickats och väntar nu på moderering'
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Din kommentar har skickats och väntar nu på moderering'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: 'godkänn denna kommentar'
-    ISNTSPAM: 'den här kommentarer är inte spam'
-    ISSPAM: 'den här kommentaren är spam'
-    PBY: 'Skriven av'
-    REMCOM: 'Radera den här kommentaren'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Radera alla kommenterar på den här sidan'

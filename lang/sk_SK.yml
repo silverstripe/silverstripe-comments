@@ -3,26 +3,26 @@ sk_SK:
     ALLOWCOMMENTS: 'Povoliť komentáre'
     COMMENT: Komentár
     COMMENTBY: 'Komentáre od %s'
+    CREATED: 'Dátum zverejnenia'
+    EMAIL: E-mail
     ISSPAM: 'Spam?'
     MODERATED: 'Odsúhlasený?'
     NAME: 'Meno autora'
+    PARENTTITLE: Rodič
     PLURALNAME: Komentáre
     SINGULARNAME: Komentár
-    CREATED: 'Dátum zverejnenia'
-    EMAIL: E-mail
-    PARENTTITLE: Rodič
     URL: Web adresa
   CommentAdmin:
+    MENUTITLE: Komentáre
     Moderated: Odsúhlasený
     NeedsModeration: 'Vyžaduje odsúhlasenie'
-    MENUTITLE: Komentáre
   CommentInterface:
-    POST: Odoslať
-    YOURNAME: 'Vaše meno'
     COMMENT_MESSAGE_REQUIRED: 'Pridaj scoj komentár'
     COMMENT_MESSAGE_URL: 'Vlož platbú adresu URL'
+    POST: Odoslať
     PREVIEW: Náhľad
     PREVIEWLABEL: Náhľad
+    YOURNAME: 'Vaše meno'
     YOURNAME_MESSAGE_REQUIRED: 'Vlož svoje meno'
   CommentingController:
     COMMENTS: Komentáre

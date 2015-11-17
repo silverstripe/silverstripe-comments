@@ -3,28 +3,28 @@ sr@latin:
     ALLOWCOMMENTS: 'Dozvoli komentare'
     COMMENT: Komentar
     COMMENTBY: 'Autor komentara %s'
+    CREATED: 'Datum objavljivanja'
+    EMAIL: Elektronska pošta
     ISSPAM: 'Zlonameran?'
     MODERATED: 'Uređen?'
     NAME: 'Ime autora'
+    PARENTTITLE: Roditelj
     PLURALNAME: Komentari
     SINGULARNAME: Komentar
-    CREATED: 'Datum objavljivanja'
-    EMAIL: Elektronska pošta
-    PARENTTITLE: Roditelj
     URL: URL
   CommentAdmin:
+    MENUTITLE: Komentari
     Moderated: Uređen
     NeedsModeration: 'Potrebno uređivanje'
-    MENUTITLE: Komentari
   CommentInterface:
-    POST: Objavljivanje
-    YOURNAME: 'Vaše ime'
     COMMENT_MESSAGE_REQUIRED: 'Molimo unesite komentar'
     COMMENT_MESSAGE_URL: 'Molimo Vas da unesete ispravan URL'
     EMAILADDRESS_MESSAGE_EMAIL: 'Molimo Vas da unesete ispravnu adresu elektronske pošte'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Molimo vas da unesete adresu elektronske pošte'
+    POST: Objavljivanje
     PREVIEW: Prikaz
     PREVIEWLABEL: Prikaz
+    YOURNAME: 'Vaše ime'
     YOURNAME_MESSAGE_REQUIRED: 'Molimo Vas da unesete Vaše ime'
   CommentingController:
     COMMENTS: Komentari
@@ -34,7 +34,12 @@ sr@latin:
     WEBSITEURL: 'URL Vašeg sajta'
   CommentsAdmin:
     NeedsModeration: 'Potrebno uređivanje'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Vaš komentar je prosleđen i sada čeka uređivanje.'
+  CommentsInterface_singlecomment_ss:
+    PBY: 'Objavio'
   CommentsInterface_ss:
+    AWAITINGMODERATION: 'Vaš komentar je prosleđen i sada čeka uređivanje.'
     COMMENTLOGINERROR: 'Ne možete objavljivati komentare dok se ne prijavite'
     COMMENTPERMISSIONERROR: 'i da imate odgovarajući nivo ovlašćenja'
     COMMENTPOSTLOGIN: 'Prijavite se ovde'
@@ -47,14 +52,5 @@ sr@latin:
     PREV: prethodni
     RSSFEEDALLCOMMENTS: 'RSS feed za sve komentare'
     RSSFEEDCOMMENTS: 'RSS feed za komentare na ovoj strani'
-    AWAITINGMODERATION: 'Vaš komentar je prosleđen i sada čeka uređivanje.'
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Vaš komentar je prosleđen i sada čeka uređivanje.'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: 'odobri ovaj komentar'
-    ISNTSPAM: 'ovaj komentar nije zlonameran'
-    ISSPAM: 'ovaj komentar je zlonameran'
-    PBY: 'Objavio'
-    REMCOM: 'ukloni ovaj komentar'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Obriši sve komentare na ovoj strani'

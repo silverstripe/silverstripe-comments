@@ -5,12 +5,13 @@ nl:
     ISSPAM: 'Spam?'
     MODERATED: 'Gemodereerd?'
     NAME: 'Auteur'
+    'ON': 'op'
     PLURALNAME: Reacties
     SINGULARNAME: Reactie
   CommentAdmin:
+    MENUTITLE: Reacties
     Moderated: Gemodereerd
     NeedsModeration: 'Wacht op moderatie'
-    MENUTITLE: Reacties
   CommentInterface:
     POST: Plaats reactie
     YOURNAME: 'Naam'
@@ -22,6 +23,12 @@ nl:
     WEBSITEURL: 'Website URL'
   CommentsAdmin:
     NeedsModeration: 'Wacht op moderatie'
+  CommentsExtension:
+    COMMENTOPTIONS: Reacties
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
+  CommentsInterface_singlecomment_ss:
+    PBY: 'Geplaatst door'
   CommentsInterface_ss:
     COMMENTLOGINERROR: 'Je moet ingelogd zijn om reacties te kunnen plaatsen'
     COMMENTPERMISSIONERROR: 'en controleer je gebruikersrechten'
@@ -35,13 +42,5 @@ nl:
     PREV: vorige
     RSSFEEDALLCOMMENTS: 'RSS feed voor alle reacties'
     RSSFEEDCOMMENTS: 'RSS feed voor reacties op deze pagina'
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: 'reactie goedkeuren'
-    ISNTSPAM: 'deze reactie is geen spam'
-    ISSPAM: 'deze reactie is spam'
-    PBY: 'Geplaatst door'
-    REMCOM: 'verwijder deze reactie'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Verwijder alle reacties op deze pagina'

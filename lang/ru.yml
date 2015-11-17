@@ -3,40 +3,44 @@ ru:
     ALLOWCOMMENTS: 'Разрешить комментарии'
     COMMENT: Комментарий
     COMMENTBY: 'Комментарий автора %s'
+    CREATED: 'Дата добавления'
+    EMAIL: Email
     ISSPAM: 'Спам?'
+    MODERATED: 'Проверено?'
     NAME: 'Автор'
+    PARENTTITLE: Родительская
     PLURALNAME: Комментарии
     SINGULARNAME: Комментарий
-    EMAIL: Email
     URL: URL
   CommentAdmin:
     MENUTITLE: Комментарии
+    NewComments: Новый
+    SpamComments: Спам
   CommentInterface:
-    POST: Отправить
-    YOURNAME: 'Имя'
     COMMENT_MESSAGE_URL: 'Пожалуйста, задайте действительный URL-адрес'
     EMAILADDRESS_MESSAGE_EMAIL: 'Пожалуйста, укажите действительный электронный адрес'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Пожалуйста, укажите свой электронный адрес'
+    POST: Отправить
     PREVIEW: Просмотр
     PREVIEWLABEL: Просмотр
+    YOURNAME: 'Имя'
+    YOURNAME_MESSAGE_REQUIRED: 'Пожалуйста, укажите своё имя'
   CommentingController:
     COMMENTS: Комментарии
     EMAILADDRESS: 'Ваш электронный адрес (не будет опубликован)'
     RSSTITLE: 'RSS-лента комментариев'
     WEBSITEURL: 'Адрес вашего сайта'
-  CommentsInterface_ss:
-    COMMENTS: Комментарии
-    COMMENTSDISABLED: 'Комментарии отключены'
-    NOCOMMENTSYET: 'Комментариев на этой странице пока нет.'
-    AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
-    DELETEALLCOMMENTS: 'удалить все комментарии со страницы'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
   CommentsInterface_singlecomment_ss:
-    APPROVE: 'подтвердить комментарий'
-    ISNTSPAM: 'этот комментарий - не спам'
-    ISSPAM: 'этот комментарий - спам'
     PBY: 'Автор:'
-    REMCOM: 'удалить комментарий'
+  CommentsInterface_ss:
+    AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
+    COMMENTS: Комментарии
+    COMMENTSDISABLED: 'Комментарии отключены'
+    DELETEALLCOMMENTS: 'удалить все комментарии со страницы'
+    LOGINTOPOSTCOMMENT: 'Войдите чтобы получить возможность отправлять комментарии'
+    NEXT: следующий
+    NOCOMMENTSYET: 'Комментариев на этой странице пока нет.'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Удалить все комментарии на этой странице'

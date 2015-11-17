@@ -8,8 +8,8 @@ pl_PL:
     PLURALNAME: Komentarze
     SINGULARNAME: Komentarz
   CommentAdmin:
-    Moderated: Moderowane
     MENUTITLE: Komentarze
+    Moderated: Moderowane
   CommentInterface:
     POST: Post
     YOURNAME: 'Twoja nazwa'
@@ -19,6 +19,10 @@ pl_PL:
     PERMISSIONFAILURE: 'Nie można dodać komentarza na tej stronie. Upewnij się, że jesteś zalogowany i masz odpowednie uprawnienia.'
     RSSTITLE: 'Komentarze z RSS'
     WEBSITEURL: 'Adres Twojej strony'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Twój komentarz został wysłany i czeka na akceptację przez moderatora.'
+  CommentsInterface_singlecomment_ss:
+    PBY: 'Dodany przez'
   CommentsInterface_ss:
     COMMENTLOGINERROR: 'Nie można dodać komentarza dopóki nie będziesz zalogowany'
     COMMENTPERMISSIONERROR: 'i że masz odpowiednie uprawnienia'
@@ -30,13 +34,5 @@ pl_PL:
     NOCOMMENTSYET: 'Nikt jeszcze nie skomentował'
     POSTCOM: 'Dodaj komentarz'
     PREV: poprzedni
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Twój komentarz został wysłany i czeka na akceptację przez moderatora.'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: 'zaakceptuj ten komentarz'
-    ISNTSPAM: 'ten komentarz nie jest spamem'
-    ISSPAM: 'komentarz jest spamem'
-    PBY: 'Dodany przez'
-    REMCOM: 'usuń ten komentarz'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Usuń wszystkie komentarze na tej stronie'

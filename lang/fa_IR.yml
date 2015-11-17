@@ -1,0 +1,74 @@
+fa_IR:
+  Comment:
+    ALLOWCOMMENTS: 'اجازه نشر دیدگاه'
+    COMMENT: دیدگاه
+    COMMENTBY: 'دیدگاه از %s'
+    CREATED: 'تاریخ ارسال'
+    EMAIL: ای‌میل
+    ISSPAM: 'هرزنوشت؟'
+    MODERATED: 'مدیریت شده؟'
+    NAME: 'نام نگارنده'
+    'ON': 'در'
+    OPTION_DESCRIPTION: 'دیدگاه‌های مدیریت نشده و هرزنوشت‌ها تا زمان تایید به نمایش در نخواهند آمد'
+    PARENTTITLE: مادر
+    PLURALNAME: دیدگاه‌ها
+    ParentComment_Title: 'این دیدگاه پاسخی است به زیر'
+    SINGULARNAME: دیدگاه
+    URL: نشانی اینترنتی
+  CommentAdmin:
+    ADMIN_PERMISSION: 'دسترسی به بخش ''Comments'''
+    ApprovedComments: مجاز
+    Comments: مجاز
+    MENUTITLE: دیدگاه‌ها
+    Moderated: مدیریت شده
+    NeedsModeration: 'نیازمند مدیریت'
+    NewComments: تازه
+    SpamComments: هرزنوشت
+  CommentInterface:
+    COMMENT_MESSAGE_REQUIRED: 'لطفاً دیدگاه خود را وارد نمایید'
+    COMMENT_MESSAGE_URL: 'لطفاً نشانی اینترنتی معتبر وارد نمایید'
+    EMAILADDRESS_MESSAGE_EMAIL: 'لطفاً نشانی ای‌میل معتبر وارد نمایید'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'لطفاً نشانی ای‌میل خود را وارد نمایید'
+    POST: ارسال
+    PREVIEW: پیش‌نمایش
+    PREVIEWLABEL: پیش‌نمایش
+    YOURNAME: 'نام شما'
+    YOURNAME_MESSAGE_REQUIRED: 'لطفاً نام خود را وارد نمایید'
+  CommentingController:
+    COMMENTS: دیدگاه‌ها
+    EMAILADDRESS: 'نشانی ای‌میل شما (منتشر نخواهد شد)'
+    PERMISSIONFAILURE: 'لطفا مطمئن شوید وارد سایت شده اید و از سطح دسترسی مناسب برخودار هستید.'
+    RSSTITLE: 'خوراک آراس‌اس دیدگاه‌ها'
+    WEBSITEURL: 'نشانی وب‌سایت شما'
+  Comments:
+    COMMENTSREQUIRELOGIN: 'درج دیدگاه نیازمند ورود شما به سایت است'
+  CommentsAdmin:
+    ApprovedComments: مجاز
+    Comments: مجاز
+    NeedsModeration: 'نیازمند مدیریت'
+    NewComments: تازه
+    SpamComments: هرزنوشت
+  CommentsExtension:
+    COMMENTOPTIONS: دیدگاه‌ها
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'نظر شما ارسال شد و در حال بررسی می باشد.'
+  CommentsInterface_singlecomment_ss:
+    ISNTSPAM: 'هرزنوشت نیست'
+    ISSPAM: 'هرزنوشته'
+    PBY: 'ارسال شده توسط'
+    REMCOM: 'رد کردن'
+  CommentsInterface_ss:
+    AWAITINGMODERATION: 'نظر شما ارسال شد و در حال بررسی می باشد.'
+    COMMENTLOGINERROR: 'شما تا زمانی که وارد سایت نشده اید نمی توانید نظری ارسال کنید'
+    COMMENTPOSTLOGIN: 'از اینجا وارد سایت شوید'
+    COMMENTS: نظرات
+    COMMENTSDISABLED: 'ارسال نظر مسدود می باشد'
+    DELETEALLCOMMENTS: 'حذف تمامی نظرات در این صفحه'
+    LOGINTOPOSTCOMMENT: 'برای ارسال نظر،لاگین کنید'
+    NEXT: بعدی
+    POSTCOM: 'ارسال نظر'
+    PREV: قبلی
+    RSSFEEDALLCOMMENTS: 'RSS feed برای تمامی نظرات'
+    RSSFEEDCOMMENTS: 'RSS feed برای نظرات در این صفحه'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'حذف تمامی نظرات در این صفحه'

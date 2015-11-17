@@ -3,28 +3,28 @@ fi:
     ALLOWCOMMENTS: 'Salli kommentointi'
     COMMENT: Komentti
     COMMENTBY: 'Kommentoija: %s'
+    CREATED: 'Kirjoitettu'
+    EMAIL: Sähköposti
     ISSPAM: 'Spämmiä?'
     MODERATED: 'Moderoitu?'
     NAME: 'Kirjoittajan nimi'
+    PARENTTITLE: Isäntä
     PLURALNAME: Kommentit
     SINGULARNAME: Komentti
-    CREATED: 'Kirjoitettu'
-    EMAIL: Sähköposti
-    PARENTTITLE: Isäntä
     URL: URL-osoite
   CommentAdmin:
+    MENUTITLE: Kommentit
     Moderated: Moderoitu
     NeedsModeration: 'Tarvitsee moderointia'
-    MENUTITLE: Kommentit
   CommentInterface:
-    POST: Lähetä
-    YOURNAME: 'Nimesi'
     COMMENT_MESSAGE_REQUIRED: 'Ole hyvä ja kommentoi'
     COMMENT_MESSAGE_URL: 'URL-osoitteen on oltava kelvollinen'
     EMAILADDRESS_MESSAGE_EMAIL: 'Sähköpostiosoitteen on oltava kelvollinen'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Sähköpostiosoitteesi'
+    POST: Lähetä
     PREVIEW: Esikatselu
     PREVIEWLABEL: Esikatselu
+    YOURNAME: 'Nimesi'
     YOURNAME_MESSAGE_REQUIRED: 'Nimesi'
   CommentingController:
     COMMENTS: Kommentit
@@ -34,7 +34,12 @@ fi:
     WEBSITEURL: 'WWW-sivustosi osoite'
   CommentsAdmin:
     NeedsModeration: 'Tarvitsee moderointia'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
+  CommentsInterface_singlecomment_ss:
+    PBY: 'Lähettänyt'
   CommentsInterface_ss:
+    AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
     COMMENTLOGINERROR: 'Et voi kommentoida ennen kuin olet kirjautunut sisään'
     COMMENTPERMISSIONERROR: 'ja käyttöoikeustasosi on oltava riittävä'
     COMMENTPOSTLOGIN: 'Kirjaudu tästä'
@@ -47,14 +52,5 @@ fi:
     PREV: edellinen
     RSSFEEDALLCOMMENTS: 'RSS-syöte kaikista kommenteista'
     RSSFEEDCOMMENTS: 'RSS-syöte tämän sivun kommenteista'
-    AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: 'hyväksy kommentti'
-    ISNTSPAM: 'kommentti ei ole spämmiä'
-    ISSPAM: 'kommentti on spämmiä'
-    PBY: 'Lähettänyt'
-    REMCOM: 'poista kommentti'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Poista kaikki tämän sivun kommentit'

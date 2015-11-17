@@ -8,9 +8,9 @@ nb:
     PLURALNAME: Kommentarer
     SINGULARNAME: Kommentar
   CommentAdmin:
+    MENUTITLE: Kommentarer
     Moderated: Moderert
     NeedsModeration: 'Trenger moderering'
-    MENUTITLE: Kommentarer
   CommentInterface:
     POST: Legg ut
     YOURNAME: 'Navn'
@@ -22,6 +22,10 @@ nb:
     WEBSITEURL: 'Hjemmeside'
   CommentsAdmin:
     NeedsModeration: 'Trenger moderering'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Kommentaren din har blitt lagret og er lagt i kø for moderering.'
+  CommentsInterface_singlecomment_ss:
+    PBY: 'Skrevet av'
   CommentsInterface_ss:
     COMMENTLOGINERROR: 'Du kan ikke skrive kommentarer før du har logget inn'
     COMMENTPERMISSIONERROR: 'og at du har et passende tilgangsnivå'
@@ -35,13 +39,5 @@ nb:
     PREV: forrige
     RSSFEEDALLCOMMENTS: 'RSS-feed for alle kommentarer'
     RSSFEEDCOMMENTS: 'RSS-feed for kommentarer på denne siden'
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Kommentaren din har blitt lagret og er lagt i kø for moderering.'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: 'Godta kommentar'
-    ISNTSPAM: 'Kommentaren er ikke spam'
-    ISSPAM: 'Merk som spam'
-    PBY: 'Skrevet av'
-    REMCOM: 'Fjern kommentar'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Fjern alle kommentarer på denne siden'

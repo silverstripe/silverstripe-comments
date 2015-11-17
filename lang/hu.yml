@@ -3,29 +3,29 @@ hu:
     ALLOWCOMMENTS: 'Hozzászólások engedélyezve'
     COMMENT: Hozzászólás
     COMMENTBY: 'Létrehozta %s'
+    CREATED: 'Létrehozás dátuma'
+    EMAIL: E-mail
     ISSPAM: 'SPAM?'
     MODERATED: 'Moderált?'
     NAME: 'Hozzászóló neve'
+    PARENTTITLE: Szülő
     PLURALNAME: Hozzászólások
     SINGULARNAME: Hozzászólás
-    CREATED: 'Létrehozás dátuma'
-    EMAIL: E-mail
-    PARENTTITLE: Szülő
     URL: Link
   CommentAdmin:
+    ADMIN_PERMISSION: '''Hozzászólások'' mező elérése'
+    MENUTITLE: Hozzászólások
     Moderated: Moderált
     NeedsModeration: 'Moderálás szükséges'
-    MENUTITLE: Hozzászólások
-    ADMIN_PERMISSION: "'Hozzászólások' mező elérése"
   CommentInterface:
-    POST: Elküld
-    YOURNAME: 'Az Ön neve'
     COMMENT_MESSAGE_REQUIRED: 'Szöveg  megadása'
     COMMENT_MESSAGE_URL: 'Kérjük adjon meg egy működő linket'
     EMAILADDRESS_MESSAGE_EMAIL: 'Kérjük adjon meg egy e-mail címet'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Kérjük adja meg az e-mail címét'
+    POST: Elküld
     PREVIEW: Előnézet
     PREVIEWLABEL: Előnézet
+    YOURNAME: 'Az Ön neve'
     YOURNAME_MESSAGE_REQUIRED: 'Kérjük adja meg nevét'
   CommentingController:
     COMMENTS: A hosszászólás szövege
@@ -35,7 +35,12 @@ hu:
     WEBSITEURL: 'Az Ön webcíme'
   CommentsAdmin:
     NeedsModeration: 'Moderálás szükséges'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
+  CommentsInterface_singlecomment_ss:
+    PBY: 'Feladó'
   CommentsInterface_ss:
+    AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
     COMMENTLOGINERROR: 'A hozzászóláshoz be kell jelentkeznie'
     COMMENTPERMISSIONERROR: 'és rendelkeznie kell a megfelelő jogosultsággal'
     COMMENTPOSTLOGIN: 'Bejelentkezés'
@@ -48,14 +53,5 @@ hu:
     PREV: előző
     RSSFEEDALLCOMMENTS: 'Összes hozzászólás RSS-ben'
     RSSFEEDCOMMENTS: 'Oldal hozzászólásai RSS-ben'
-    AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: 'engedélyezze ezt a hozzászólást'
-    ISNTSPAM: 'ez a hozzászólás nem SPAM'
-    ISSPAM: 'ez a hozzászólás SPAM'
-    PBY: 'Feladó'
-    REMCOM: 'hozzászólás törlése'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Oldal összes hozzászólásának törlése'

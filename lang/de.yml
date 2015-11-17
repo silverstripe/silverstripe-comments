@@ -3,29 +3,29 @@ de:
     ALLOWCOMMENTS: 'Kommentare Erlauben'
     COMMENT: Kommentar
     COMMENTBY: 'Kommentar von ''%s'''
+    CREATED: 'Datum geschrieben'
+    EMAIL: E-Mail
     ISSPAM: 'Spam?'
     MODERATED: 'Moderiert?'
     NAME: 'Autor Name'
+    PARENTTITLE: Parent
     PLURALNAME: Kommentare
     SINGULARNAME: Kommentar
-    CREATED: 'Datum geschrieben'
-    EMAIL: E-Mail
-    PARENTTITLE: Parent
     URL: URL
   CommentAdmin:
+    ADMIN_PERMISSION: 'Zugang zum Bereich ''Kommentare'''
+    MENUTITLE: Kommentare
     Moderated: Moderiert
     NeedsModeration: 'Benötigt Moderation'
-    MENUTITLE: Kommentare
-    ADMIN_PERMISSION: "Zugang zum Bereich 'Kommentare'"
   CommentInterface:
-    POST: Absenden
-    YOURNAME: 'Name'
     COMMENT_MESSAGE_REQUIRED: 'Bitte geben Sie Ihren Kommentar ein'
     COMMENT_MESSAGE_URL: 'Bitte geben Sie eine gültige URL ein'
     EMAILADDRESS_MESSAGE_EMAIL: 'Bitte geben Sie eine gültige E-Mail-Adresse ein'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Bitte geben Sie Ihre E-Mail-Adresse ein'
+    POST: Absenden
     PREVIEW: Vorschau
     PREVIEWLABEL: Vorschau
+    YOURNAME: 'Name'
     YOURNAME_MESSAGE_REQUIRED: 'Bitte geben Sie Ihren Namen ein'
   CommentingController:
     COMMENTS: Kommentare
@@ -35,12 +35,18 @@ de:
     WEBSITEURL: 'Website URL'
   CommentsAdmin:
     NeedsModeration: 'Benötigt Moderation'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
+  CommentsInterface_singlecomment_ss:
+    PBY: 'Geschrieben von'
   CommentsInterface_ss:
+    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
     COMMENTLOGINERROR: 'Sie können diese Seite nur kommentieren, wenn Sie eingeloggt sind'
     COMMENTPERMISSIONERROR: 'und die nötige Berechtigung besitzen'
     COMMENTPOSTLOGIN: 'Login'
     COMMENTS: Kommentare
     COMMENTSDISABLED: 'Kommentare sind deaktiviert'
+    DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite löschen'
     LOGINTOPOSTCOMMENT: 'Login um zu kommentieren'
     NEXT: weiter
     NOCOMMENTSYET: 'Noch keine Kommentare auf dieser Seite.'
@@ -48,15 +54,5 @@ de:
     PREV: zurück
     RSSFEEDALLCOMMENTS: 'RSS Feed für alle Kommentare'
     RSSFEEDCOMMENTS: 'RSS Feed für Kommentare auf dieser Seite'
-    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
-    DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite löschen'
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: 'Diesen Kommetar akzeptieren'
-    ISNTSPAM: 'Dieser Kommentar ist kein Spam'
-    ISSPAM: 'Dieser Kommentar ist Spam'
-    PBY: 'Geschrieben von'
-    REMCOM: 'Diesen Kommentar entfernen'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite entfernen'
