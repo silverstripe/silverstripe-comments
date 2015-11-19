@@ -2,6 +2,8 @@
 
 [![Build Status](https://secure.travis-ci.org/silverstripe/silverstripe-comments.png?branch=master)](http://travis-ci.org/silverstripe/silverstripe-comments)
 
+[Changelog](CHANGELOG.md)
+
 ## Maintainers
 
  * Will Rossiter (Nickname: willr, wrossiter)
