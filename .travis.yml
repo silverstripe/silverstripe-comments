@@ -1,8 +1,11 @@
-# See https://github.com/silverstripe-labs/silverstripe-travis-support for setup details
-
-sudo: false
-
 language: php
+
+sudo: true
+
+addons:
+  apt:
+    packages:
+      - tidy
 
 php:
   - 5.3
@@ -11,11 +14,22 @@ php:
   - 5.6
   - 7.0
 
+before_install:
+  - pip install --user codecov
+
 env:
-  - DB=MYSQL CORE_RELEASE=3.2
+  global:
+    - DB=MYSQL CORE_RELEASE=3.1
+    - MODULE_PATH=comments
+
+    # Set to 1 in the matrix to enable code coverage
+    - COVERAGE=0
 
 matrix:
   include:
+    - php: 5.6
+      #CommentsListTest breaks with this env: DB=MYSQL CORE_RELEASE=3.2 COVERAGE=1
+      env: DB=SQLITE CORE_RELEASE=3.2 COVERAGE=1
     - php: 5.6
       env: DB=MYSQL CORE_RELEASE=3
     - php: 5.6
@@ -26,11 +40,23 @@ matrix:
     - php: 7.0
 
 before_script:
+  - phpenv rehash
   - composer self-update || true
-  - git clone git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
-  - php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss
+  - git clone https://github.com/gordonbanderson/silverstripe-travis-support.git --branch pull-24 ~/travis-support
+# - git clone git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
+  # Install suggested modules in order to maximize test coverage
+  - php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss --require "ezyang/htmlpurifier:4.*,silverstripe/cms:~3.1"
   - cd ~/builds/ss
-  - composer install
 
 script:
-  - vendor/bin/phpunit comments/tests
+  # Execute tests with no coverage.  This is the fastest option
+  - "if [ \"$COVERAGE\" = \"0\" ]; then vendor/bin/phpunit $MODULE_PATH/tests/; fi"
+
+  # Execute tests with coverage.  Do this for a small
+  - "if [ \"$COVERAGE\" = \"1\" ]; then vendor/bin/phpunit --coverage-clover=coverage.clover $MODULE_PATH/tests/; fi"
+
+after_script:
+    - "if [ \"$COVERAGE\" = \"1\" ]; then mv coverage.clover ~/build/$TRAVIS_REPO_SLUG/; fi"
+    - cd ~/build/$TRAVIS_REPO_SLUG
+    - wget https://scrutinizer-ci.com/ocular.phar
+    - "if [ \"$COVERAGE\" = \"1\" ]; then travis_retry codecov && travis_retry php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi"

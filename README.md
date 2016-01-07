@@ -1,6 +1,21 @@
 # Comments
+[![Build Status](https://travis-ci.org/gordonbanderson/silverstripe-comments.svg?branch=testing)](https://travis-ci.org/gordonbanderson/silverstripe-comments)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/badges/quality-score.png?b=testing)](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/?branch=testing)
+[![Code Coverage](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/badges/coverage.png?b=testing)](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/?branch=testing)
+[![Build Status](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/badges/build.png?b=testing)](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/build-status/testing)
+[![codecov.io](https://codecov.io/github/gordonbanderson/silverstripe-comments/coverage.svg?branch=testing)](https://codecov.io/github/gordonbanderson/silverstripe-comments?branch=testing)
 
-[![Build Status](https://secure.travis-ci.org/silverstripe/silverstripe-comments.png?branch=master)](http://travis-ci.org/silverstripe/silverstripe-comments)
+[![Latest Stable Version](https://poser.pugx.org/silverstripe/comments/version)](https://packagist.org/packages/silverstripe/comments)
+[![Latest Unstable Version](https://poser.pugx.org/silverstripe/comments/v/unstable)](//packagist.org/packages/silverstripe/comments)
+[![Total Downloads](https://poser.pugx.org/silverstripe/comments/downloads)](https://packagist.org/packages/silverstripe/comments)
+[![License](https://poser.pugx.org/silverstripe/comments/license)](https://packagist.org/packages/silverstripe/comments)
+[![Monthly Downloads](https://poser.pugx.org/silverstripe/comments/d/monthly)](https://packagist.org/packages/silverstripe/comments)
+[![Daily Downloads](https://poser.pugx.org/silverstripe/comments/d/daily)](https://packagist.org/packages/silverstripe/comments)
+
+[![Dependency Status](https://www.versioneye.com/php/silverstripe:comments/badge.svg)](https://www.versioneye.com/php/silverstripe:comments)
+[![Reference Status](https://www.versioneye.com/php/silverstripe:comments/reference_badge.svg?style=flat)](https://www.versioneye.com/php/silverstripe:comments/references)
+
+![codecov.io](https://codecov.io/github/gordonbanderson/silverstripe-comments/branch.svg?branch=testing)
 
 [Changelog](CHANGELOG.md)
 
@@ -12,7 +27,7 @@
 ## Introduction
 
 This module provides commenting functionality for Pages and other DataObjects
-on your SilverStripe site. 
+on your SilverStripe site.
 
 For more documentation about the module see the provided documentation located
 inside the docs folder.
