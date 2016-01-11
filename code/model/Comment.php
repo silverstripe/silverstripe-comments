@@ -619,8 +619,14 @@ class Comment extends DataObject {
 	 */
 	public function getHtmlPurifierService() {
 		$config = HTMLPurifier_Config::createDefault();
-		$config->set('HTML.AllowedElements', $this->getOption('html_allowed_elements'));
-		$config->set('AutoFormat.AutoParagraph', true);
+        $allowedElements = $this->getOption('html_allowed_elements');
+        $config->set('HTML.AllowedElements', $allowedElements);
+
+        // This injector cannot be set unless the 'p' element is allowed
+        if (in_array('p', $allowedElements)) {
+            $config->set('AutoFormat.AutoParagraph', true);
+        }
+
 		$config->set('AutoFormat.Linkify', true);
 		$config->set('URI.DisableExternalResources', true);
 		$config->set('Cache.SerializerPath', getTempFolder());
