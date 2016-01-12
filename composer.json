@@ -13,7 +13,8 @@
 		"colymba/gridfield-bulk-editing-tools": "~2.1"
 	},
 	"suggest": {
-		"ezyang/htmlpurifier": "4.*"
+        "ezyang/htmlpurifier": "4.*",
+        "silverstripe/cms": "~3.1"
 	},
 	"require-dev": {
 		"phpunit/PHPUnit": "~3.7@stable"
