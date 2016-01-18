@@ -202,11 +202,11 @@ class Comment extends DataObject {
 	public function getOption($key) {
 		// If possible use the current record
 		$record = $this->getParent();
-		
+
 		if(!$record && $this->BaseClass) {
 			// Otherwise a singleton of that record
 			$record = singleton($this->BaseClass);
-		} 
+		}
 		else if(!$record) {
 			// Otherwise just use the default options
 			$record = singleton('CommentsExtension');
@@ -500,7 +500,7 @@ class Comment extends DataObject {
 		$this->write();
 		$this->extend('afterMarkUnapproved');
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -570,14 +570,15 @@ class Comment extends DataObject {
 				_t('Comment.ParentComment_Title', 'This comment is a reply to the below')
 			));
 			// Created date
-			$fields->push(
-				$parent
-					->obj('Created')
-					->scaffoldFormField($parent->fieldLabel('Created'))
-					->setName('ParentComment_Created')
-					->setValue($parent->Created)
-					->performReadonlyTransformation()
-			);
+            // FIXME - the method setName in DatetimeField is not chainable, hence
+            // the lack of chaining here
+            $createdField = $parent
+                    ->obj('Created')
+                    ->scaffoldFormField($parent->fieldLabel('Created'));
+            $createdField->setName('ParentComment_Created');
+            $createdField->setValue($parent->Created);
+            $createdField->performReadonlyTransformation();
+            $fields->push($createdField);
 
 			// Name (could be member or string value)
 			$fields->push(
@@ -619,8 +620,14 @@ class Comment extends DataObject {
 	 */
 	public function getHtmlPurifierService() {
 		$config = HTMLPurifier_Config::createDefault();
-		$config->set('HTML.AllowedElements', $this->getOption('html_allowed_elements'));
-		$config->set('AutoFormat.AutoParagraph', true);
+        $allowedElements = $this->getOption('html_allowed_elements');
+        $config->set('HTML.AllowedElements', $allowedElements);
+
+        // This injector cannot be set unless the 'p' element is allowed
+        if (in_array('p', $allowedElements)) {
+            $config->set('AutoFormat.AutoParagraph', true);
+        }
+
 		$config->set('AutoFormat.Linkify', true);
 		$config->set('URI.DisableExternalResources', true);
 		$config->set('Cache.SerializerPath', getTempFolder());
@@ -672,7 +679,7 @@ class Comment extends DataObject {
 		if(!$this->getRepliesEnabled()) {
 			return new ArrayList();
 		}
-		
+
 		// Get all non-spam comments
 		$order = $this->getOption('order_replies_by')
 			?: $this->getOption('order_comments_by');
@@ -695,7 +702,7 @@ class Comment extends DataObject {
 			return new ArrayList();
 		}
 		$list = $this->AllReplies();
-		
+
 		// Filter spam comments for non-administrators if configured
 		$parent = $this->getParent();
 		$showSpam = $this->getOption('frontend_spam') && $parent && $parent->canModerateComments();

@@ -43,7 +43,35 @@ Comment:
     Comment: textFA
     BaseClass: CommentableItem
     Moderated: 1
+    IsSpam:
+    Depth: 1
+  firstComAChild1:
+    ParentID: =>CommentableItem.first
+    ParentCommentID: =>Comment.firstComA
+    Name: John Smith
+    Comment: Reply to firstComA 1
+    BaseClass: CommentableItem
+    Moderated: 1
     IsSpam: 0
+    Depth: 2
+  firstComAChild2:
+    ParentID: =>CommentableItem.first
+    ParentCommentID: =>Comment.firstComA
+    Name: John Smith
+    Comment: Reply to firstComA 2
+    BaseClass: CommentableItem
+    Moderated: 1
+    IsSpam: 0
+    Depth: 2
+  firstComAChild3:
+    ParentID: =>CommentableItem.first
+    ParentCommentID: =>Comment.firstComA
+    Name: John Smith
+    Comment: Reply to firstComA 3
+    BaseClass: CommentableItem
+    Moderated: 1
+    IsSpam: 0
+    Depth: 2
   secondComA:
     ParentID: =>CommentableItem.second
     Name: SA
