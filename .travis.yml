@@ -42,8 +42,7 @@ matrix:
 before_script:
   - phpenv rehash
   - composer self-update || true
-  - git clone https://github.com/gordonbanderson/silverstripe-travis-support.git --branch pull-24 ~/travis-support
-# - git clone git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
+  - git clone git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
   # Install suggested modules in order to maximize test coverage
   - php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss --require "ezyang/htmlpurifier:4.*,silverstripe/cms:~3.1"
   - cd ~/builds/ss
