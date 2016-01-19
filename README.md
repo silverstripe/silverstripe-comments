@@ -1,9 +1,9 @@
 # Comments
-[![Build Status](https://travis-ci.org/gordonbanderson/silverstripe-comments.svg?branch=testing)](https://travis-ci.org/gordonbanderson/silverstripe-comments)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/badges/quality-score.png?b=testing)](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/?branch=testing)
-[![Code Coverage](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/badges/coverage.png?b=testing)](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/?branch=testing)
-[![Build Status](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/badges/build.png?b=testing)](https://scrutinizer-ci.com/g/gordonbanderson/silverstripe-comments/build-status/testing)
-[![codecov.io](https://codecov.io/github/gordonbanderson/silverstripe-comments/coverage.svg?branch=testing)](https://codecov.io/github/gordonbanderson/silverstripe-comments?branch=testing)
+[![Build Status](https://travis-ci.org/silverstripe/silverstripe-comments.svg?branch=master)](https://travis-ci.org/silverstripe/silverstripe-comments)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/badges/build.png?b=master)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/build-status/master)
+[![codecov.io](https://codecov.io/github/silverstripe/silverstripe-comments/coverage.svg?branch=master)](https://codecov.io/github/silverstripe/silverstripe-comments?branch=master)
 
 [![Latest Stable Version](https://poser.pugx.org/silverstripe/comments/version)](https://packagist.org/packages/silverstripe/comments)
 [![Latest Unstable Version](https://poser.pugx.org/silverstripe/comments/v/unstable)](//packagist.org/packages/silverstripe/comments)
@@ -15,7 +15,7 @@
 [![Dependency Status](https://www.versioneye.com/php/silverstripe:comments/badge.svg)](https://www.versioneye.com/php/silverstripe:comments)
 [![Reference Status](https://www.versioneye.com/php/silverstripe:comments/reference_badge.svg?style=flat)](https://www.versioneye.com/php/silverstripe:comments/references)
 
-![codecov.io](https://codecov.io/github/gordonbanderson/silverstripe-comments/branch.svg?branch=testing)
+![codecov.io](https://codecov.io/github/silverstripe/silverstripe-comments/branch.svg?branch=master)
 
 [Changelog](CHANGELOG.md)
 
