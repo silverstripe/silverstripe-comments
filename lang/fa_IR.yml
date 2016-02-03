@@ -2,23 +2,23 @@ fa_IR:
   Comment:
     ALLOWCOMMENTS: 'اجازه نشر دیدگاه'
     COMMENT: دیدگاه
-    COMMENTBY: 'دیدگاه از %s'
+    COMMENTBY: 'دیدگاه توسط %s'
     CREATED: 'تاریخ ارسال'
-    EMAIL: ای‌میل
+    EMAIL: ایمیل
     ISSPAM: 'هرزنوشت؟'
     MODERATED: 'مدیریت شده؟'
     NAME: 'نام نگارنده'
     'ON': 'در'
     OPTION_DESCRIPTION: 'دیدگاه‌های مدیریت نشده و هرزنوشت‌ها تا زمان تایید به نمایش در نخواهند آمد'
-    PARENTTITLE: مادر
+    PARENTTITLE: والد
     PLURALNAME: دیدگاه‌ها
     ParentComment_Title: 'این دیدگاه پاسخی است به زیر'
     SINGULARNAME: دیدگاه
     URL: نشانی اینترنتی
   CommentAdmin:
-    ADMIN_PERMISSION: 'دسترسی به بخش ''Comments'''
-    ApprovedComments: مجاز
-    Comments: مجاز
+    ADMIN_PERMISSION: 'دسترسی به بخش ''دیدگاه‌ها'''
+    ApprovedComments: تایید شده
+    Comments: تایید شده
     MENUTITLE: دیدگاه‌ها
     Moderated: مدیریت شده
     NeedsModeration: 'نیازمند مدیریت'
@@ -27,8 +27,8 @@ fa_IR:
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'لطفاً دیدگاه خود را وارد نمایید'
     COMMENT_MESSAGE_URL: 'لطفاً نشانی اینترنتی معتبر وارد نمایید'
-    EMAILADDRESS_MESSAGE_EMAIL: 'لطفاً نشانی ای‌میل معتبر وارد نمایید'
-    EMAILADDRESS_MESSAGE_REQUIRED: 'لطفاً نشانی ای‌میل خود را وارد نمایید'
+    EMAILADDRESS_MESSAGE_EMAIL: 'لطفاً نشانی ایمیل معتبر وارد نمایید'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'لطفاً نشانی ایمیل خود را وارد نمایید'
     POST: ارسال
     PREVIEW: پیش‌نمایش
     PREVIEWLABEL: پیش‌نمایش
@@ -36,39 +36,45 @@ fa_IR:
     YOURNAME_MESSAGE_REQUIRED: 'لطفاً نام خود را وارد نمایید'
   CommentingController:
     COMMENTS: دیدگاه‌ها
-    EMAILADDRESS: 'نشانی ای‌میل شما (منتشر نخواهد شد)'
-    PERMISSIONFAILURE: 'لطفا مطمئن شوید وارد سایت شده اید و از سطح دسترسی مناسب برخودار هستید.'
+    EMAILADDRESS: 'ایمیل شما (منتشر نخواهد شد)'
+    PERMISSIONFAILURE: 'شما نمی‌توانید در این صفحه دیدگاهی درج نمایید. لطفاً اطمینان حاصل نمایید که وارد سایت شده‌اید و از سطح دسترسی دسترسی مناسب برخوردار هستید.'
     RSSTITLE: 'خوراک آراس‌اس دیدگاه‌ها'
     WEBSITEURL: 'نشانی وب‌سایت شما'
   Comments:
     COMMENTSREQUIRELOGIN: 'درج دیدگاه نیازمند ورود شما به سایت است'
   CommentsAdmin:
-    ApprovedComments: مجاز
-    Comments: مجاز
+    ApprovedComments: تایید شده
+    Comments: تایید شده
     NeedsModeration: 'نیازمند مدیریت'
     NewComments: تازه
     SpamComments: هرزنوشت
   CommentsExtension:
     COMMENTOPTIONS: دیدگاه‌ها
+    MODERATIONREQUIRED_NONE: 'نیاز به مدیریت ندارد'
+    MODERATIONREQUIRED_NONMEMBERSONLY: 'تنها مدیریت کاربران غیر عضو'
+    MODERATIONREQUIRED_REQUIRED: 'مدیریت تمامی دیدگاه‌ها'
   CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'نظر شما ارسال شد و در حال بررسی می باشد.'
+    AWAITINGMODERATION: 'دیدگاه شما ارسال شده و هم‌اکنون در انتظار بررسی است.'
   CommentsInterface_singlecomment_ss:
+    APPROVE: 'تایید کن'
     ISNTSPAM: 'هرزنوشت نیست'
     ISSPAM: 'هرزنوشته'
     PBY: 'ارسال شده توسط'
     REMCOM: 'رد کردن'
   CommentsInterface_ss:
-    AWAITINGMODERATION: 'نظر شما ارسال شد و در حال بررسی می باشد.'
-    COMMENTLOGINERROR: 'شما تا زمانی که وارد سایت نشده اید نمی توانید نظری ارسال کنید'
+    AWAITINGMODERATION: 'دیدگاه شما ارسال شده و هم‌اکنون در انتظار بررسی است.'
+    COMMENTLOGINERROR: 'تا زمانی‌که وارد سایت نشده‌اید نمی‌توانید دیدگاهی درج نمایید'
+    COMMENTPERMISSIONERROR: 'و اینکه شما دارای سطح دسترسی مناسب هستید'
     COMMENTPOSTLOGIN: 'از اینجا وارد سایت شوید'
-    COMMENTS: نظرات
-    COMMENTSDISABLED: 'ارسال نظر مسدود می باشد'
-    DELETEALLCOMMENTS: 'حذف تمامی نظرات در این صفحه'
-    LOGINTOPOSTCOMMENT: 'برای ارسال نظر،لاگین کنید'
+    COMMENTS: دیدگاه‌ها
+    COMMENTSDISABLED: 'ارسال دیدگاه مسدود است'
+    DELETEALLCOMMENTS: 'حذف تمامی دیدگاه‌ها در این صفحه'
+    LOGINTOPOSTCOMMENT: 'برای ارسال دیدگاه وارد شوید'
     NEXT: بعدی
-    POSTCOM: 'ارسال نظر'
-    PREV: قبلی
-    RSSFEEDALLCOMMENTS: 'RSS feed برای تمامی نظرات'
-    RSSFEEDCOMMENTS: 'RSS feed برای نظرات در این صفحه'
+    NOCOMMENTSYET: 'هنوز هیچکس در این صفحه دیدگاهی ننگاشته است.'
+    POSTCOM: 'ارسال دیدگاه'
+    PREV: پیشین
+    RSSFEEDALLCOMMENTS: 'خوراک آر‌اس‌اس تمامی دیدگاه‌ها'
+    RSSFEEDCOMMENTS: 'خوراک آر‌اس‌اس دیدگاه‌های این صفحه'
   PageCommentInterface:
-    DELETEALLCOMMENTS: 'حذف تمامی نظرات در این صفحه'
+    DELETEALLCOMMENTS: 'حذف تمامی دیدگاه‌ها در این صفحه'

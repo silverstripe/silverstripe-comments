@@ -34,6 +34,8 @@ fr:
     WEBSITEURL: 'URl de votre site web'
   CommentsAdmin:
     NeedsModeration: 'Besoin de Modération'
+  CommentsExtension:
+    COMMENTOPTIONS: Commentaires
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Votre commentaire a été soumis à modération.'
   CommentsInterface_singlecomment_ss:

@@ -8,6 +8,7 @@ fi:
     ISSPAM: 'Spämmiä?'
     MODERATED: 'Moderoitu?'
     NAME: 'Kirjoittajan nimi'
+    'ON': 'pvm'
     PARENTTITLE: Isäntä
     PLURALNAME: Kommentit
     SINGULARNAME: Komentti
