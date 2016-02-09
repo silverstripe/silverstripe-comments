@@ -42,7 +42,7 @@ See docs/en/Installing.md
 
 ## Related
 
- * [tractorcow/silverstripe-comments-notifications](https://github.com/tractorcow/silverstripe-comments-notifications): Comment admin email notifications module
+ * [silverstripe/silverstripe-comments-notifications](https://github.com/silverstripe/silverstripe-comments-notifications): Comment admin email notifications module
 
 ## Contributing
 
