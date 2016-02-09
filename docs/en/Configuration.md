@@ -51,6 +51,8 @@ SiteTree:
       - i
       - b
     use_preview: false # preview formatted comment (when allowing HTML). Requires include_js=true
+    nested_comments: false # If true comments can be replied to up to nested_depth levels
+    nested_depth: 2 # The maximum depth of the comment hierarchy for comment reply purposes
 ```
 
 Enabling any of the *_cms options will instead allow these options to be configured under the settings tab
