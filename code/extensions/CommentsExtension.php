@@ -451,12 +451,20 @@ class CommentsExtension extends DataExtension
         // Check if enabled
         $enabled = $this->getCommentsEnabled();
         if ($enabled && $this->owner->getCommentsOption('include_js')) {
-            Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
-            Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-            Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/lib/jquery.form.js');
-            Requirements::javascript(COMMENTS_THIRDPARTY . '/jquery-validate/jquery.validate.min.js');
-            Requirements::add_i18n_javascript('comments/javascript/lang');
+            Requirements::javascript(THIRDPARTY_DIR.'/jquery/jquery.js');
+            Requirements::javascript(THIRDPARTY_DIR.'/jquery-entwine/dist/jquery.entwine-dist.js');
+            Requirements::javascript(THIRDPARTY_DIR.'/jquery-validate/lib/jquery.form.js');
+            Requirements::javascript(COMMENTS_THIRDPARTY.'/jquery-validate/jquery.validate.min.js');
             Requirements::javascript('comments/javascript/CommentsInterface.js');
+            Requirements::javascript('comments/javascript/jquery.timeago.js');
+
+            // Use current locale or fall back to English
+            $locale = substr(i18n::default_locale(), 0, 2);
+            $available = Config::inst()->get('TimeAgo', 'locales');
+            if (!in_array($locale, $available)) {
+                $locale = 'en';
+            }
+            Requirements::javascript('comments/javascript/timeago-locales/jquery.timeago.'.$locale.'.js');
         }
 
         $controller = CommentingController::create();

@@ -7,3 +7,58 @@ only:
 SiteTree:
   comments:
     enabled_cms: true
+
+#TimeAgo locales
+TimeAgo:
+  locales:
+    - af
+    - ar
+    - bg
+    - bs
+    - ca
+    - cs
+    - cy
+    - da
+    - de
+    - dv
+    - el
+    - en
+    - es
+    - et
+    - eu
+    - fa
+    - fi
+    - fr
+    - gl
+    - he
+    - hr
+    - hu
+    - hy
+    - id
+    - is
+    - it
+    - ja
+    - jv
+    - ko
+    - ky
+    - lt
+    - lv
+    - mk
+    - nl
+    - no
+    - pl
+    - pt
+    - ro
+    - rs
+    - ru
+    - rw
+    - si
+    - sk
+    - sl
+    - sv
+    - th
+    - tr
+    - uk
+    - uz
+    - vi
+    - zh
