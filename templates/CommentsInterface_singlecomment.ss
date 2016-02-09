@@ -1,5 +1,5 @@
 <% if not $isPreview %>
-	<p class="info">
+	<p class="info" id="$Permalink">
 		<% if $URL %>
 			<a class="author" href="$URL.URL" rel="nofollow">$AuthorName.XML</a>
 		<% else %>
@@ -11,8 +11,8 @@
 		<% end_if %>
 	</p>
 <% end_if %>
-	
-<div class="comment-text" id="<% if $isPreview %>comment-preview<% else %>$Permalink<% end_if %>">
+
+<div class="comment-text" id="<% if $isPreview %>comment-preview<% end_if %>">
 	<p>$EscapedComment</p>
 </div>
 
@@ -38,6 +38,6 @@
 			<% end_if %>
 		</div>
 	<% end_if %>
-	
+
 	<% include CommentReplies %>
 <% end_if %>
