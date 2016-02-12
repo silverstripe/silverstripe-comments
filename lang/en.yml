@@ -61,6 +61,8 @@ en:
     ISSPAM: 'spam it'
     PBY: 'Posted by'
     REMCOM: 'reject it'
+    REPLY_TO: 'Reply to'
+    CANCEL_REPLY: 'Cancel Reply'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
     COMMENTLOGINERROR: 'You cannot post comments until you have logged in'
