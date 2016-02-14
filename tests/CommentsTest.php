@@ -966,6 +966,25 @@ class CommentsTest extends FunctionalTest {
 
         $comment->Depth = 4;
         $this->assertFalse($comment->getRepliesEnabled());
+
+
+        // 0 indicates no limit for nested_depth
+        Config::inst()->update('CommentableItem', 'comments', array(
+            'nested_comments' => true,
+            'nested_depth' => 0
+        ));
+
+        $comment->Depth = 234;
+        $this->assertTrue($comment->getRepliesEnabled());
+        $comment->markUnapproved();
+        $this->assertFalse($comment->getRepliesEnabled());
+        $comment->markSpam();
+        $this->assertFalse($comment->getRepliesEnabled());
+
+        $comment->markApproved();
+        $this->assertTrue($comment->getRepliesEnabled());
+
+
     }
 
     public function testAllReplies() {
