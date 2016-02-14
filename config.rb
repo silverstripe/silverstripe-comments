@@ -5,6 +5,7 @@ http_path = "/"
 css_dir = "css"
 sass_dir = "scss"
 javascripts_dir = "javascript"
+sourcemap = "true"
 
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed
@@ -13,7 +14,7 @@ javascripts_dir = "javascript"
 relative_assets = true
 
 # To disable debugging comments that display the original location of your selectors. Uncomment:
-line_comments = true
+line_comments = false
 
 
 # If you prefer the indented syntax, you might want to regenerate this
