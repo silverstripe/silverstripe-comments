@@ -79,7 +79,7 @@
 	clear:both;
 	list-style-type: none;
 	overflow: hidden;
-	padding: 20px 0 10px;
+	padding: 20px 0 20px 0;
 	position: relative;
 
 	&.author-comment {
@@ -105,12 +105,21 @@
 		}
 	}
 
+    img.gravatar {
+        float: left;
+        margin: 20px;
+        width: 90px;
+        height: 90px;
+        border: none;
+    }
+
 	.comment-text {
 		background-color: #fff;
 		border: 1px solid #ddd;
 		box-shadow: none;
 		margin: 0;
-		padding: 0 15% 0 20px;
+		padding: 0 20px 0 20px;
+        min-height: 130px;
 		white-space: pre;
 		white-space: pre-wrap;
 		white-space: pre-line;
@@ -120,6 +129,14 @@
 			margin-bottom: 0;
 		}
 	}
+
+    .comment-text.hasGravatar {
+        // leave enough space on the left for the default gravatar size
+        padding: 0 20px 0 130px;
+
+        // Ensure there is enough vertical space for the Gravatar
+        min-height: 130px;
+    }
 
 	.date {
 		font-size: 16px;
