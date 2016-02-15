@@ -9,7 +9,7 @@
 		 */
 		$('.comments-holder-container form').entwine({
 			onmatch: function() {
-				
+
 				// @todo Reinstate preview-comment functionality
 
 				/**
@@ -56,7 +56,7 @@
 				this._super();
 			}
 		});
-		
+
 		/**
 		 * Comment reply form
 		 */
@@ -74,7 +74,7 @@
 				this._super();
 			}
 		});
-			
+
 		/**
 		 * Toggle on/off reply form
 		 */
@@ -83,7 +83,7 @@
 				var allForms = $( ".comment-reply-form-holder" ),
 					formID = $( this ).prop('href').replace(/^[^#]*#/, '#'),
 					form = $(formID).closest('.comment-reply-form-holder');
-				
+
 				// Prevent focus
 				e.preventDefault();
 				if(form.is(':visible')) {
@@ -94,7 +94,7 @@
 				}
 			}
 		});
-		
+
 
 		/**
 		 * Preview comment by fetching it from the server via ajax.
@@ -132,16 +132,24 @@
 		$(':input', form).on('change keydown', function() {
 		   previewEl.removeClass('loading').hide();
 		});*/
-		
+
 		/**
 		 * Clicking one of the metalinks performs the operation via ajax
 		 * this inclues the spam and approve links
 		 */
-		/* @todo Migrate to work with nested comments
-		commentsList.on('click', '.action-links a', function(e) {
+
+		$('.comments-holder .comments-list').on('click', 'div.comment-moderation-options a', function(e) {
 			var link = $(this);
+            if (link.hasClass('delete')) {
+                var confirmationMsg = ss.i18n._t('CommentsInterface_singlecomment_ss.DELETE_CONFIRMATION');
+                var confirmation = window.confirm(confirmationMsg);
+                if (!confirmation) {
+                    e.preventDefault();
+                    return false;
+                }
+            }
 			var comment = link.parents('.comment:first');
-			
+
 			$.ajax({
 				url: $(this).attr('href'),
 				cache: false,
@@ -149,34 +157,34 @@
 					if(link.hasClass('ham')) {
 						// comment has been marked as not spam
 						comment.html(html);
-						comment.removeClass('spam').hide().fadeIn();
+						comment.removeClass('spam');
 					}
 					else if(link.hasClass('approve')) {
 						// comment has been approved
 						comment.html(html);
-						comment.removeClass('unmoderated').hide().fadeIn();
+						comment.removeClass('unmoderated');
 					}
 					else if(link.hasClass('delete')) {
 						comment.fadeOut(1000, function() {
-							comment.remove();
-									
-							if(commentsList.children().length == 0) {
+                            comment.remove();
+
+							if(commentsList.children().length === 0) {
 								noCommentsYet.show();
 							}
 						});
 					}
 					else if(link.hasClass('spam')) {
-						comment.html(html).addClass('spam').hide().fadeIn();
+						comment.html(html).addClass('spam');
 					}
 				},
 				failure: function(html) {
-					alert(html)
+					var errorMsg = ss.i18n._t('CommentsInterface_singlecomment_ss.AJAX_ERROR');
+                    alert(errorMsg);
 				}
 			});
-			
+
 			e.preventDefault();
 		});
-		*/
 
 		/**
 		 * Ajax pagination

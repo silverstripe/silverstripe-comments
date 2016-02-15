@@ -243,12 +243,14 @@ class CommentsExtensionTest extends SapphireTest {
         $cf = $item->CommentsForm();
 
         $backend = Requirements::backend();
-         $this->assertEquals(
+        $this->assertEquals(
             array(
                 'framework/thirdparty/jquery/jquery.js',
                 'framework/thirdparty/jquery-entwine/dist/jquery.entwine-dist.js',
                 'framework/thirdparty/jquery-validate/lib/jquery.form.js',
                 'comments/thirdparty/jquery-validate/jquery.validate.min.js',
+                'framework/javascript/i18n.js',
+                'comments/javascript/lang/en.js',
                 'comments/javascript/CommentsInterface.js'
             ),
             $backend->get_javascript()
