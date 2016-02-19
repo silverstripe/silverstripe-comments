@@ -1,6 +1,7 @@
 <?php
 
-class CommentsGridFieldActionTest extends SapphireTest {
+class CommentsGridFieldActionTest extends SapphireTest
+{
 
     /** @var ArrayList */
     protected $list;
@@ -11,7 +12,8 @@ class CommentsGridFieldActionTest extends SapphireTest {
     /** @var Form */
     protected $form;
 
-     public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         $this->list = new DataList('GridFieldAction_Delete_Team');
         $config = CommentsGridFieldConfig::create()->addComponent(new GridFieldDeleteAction());
@@ -19,7 +21,8 @@ class CommentsGridFieldActionTest extends SapphireTest {
         $this->form = new Form(new Controller(), 'mockform', new FieldList(array($this->gridField)), new FieldList());
     }
 
-	public function testAugmentColumns() {
+    public function testAugmentColumns()
+    {
         $action = new CommentsGridFieldAction();
 
         // an entry called 'Actions' is added to the columns array
@@ -32,32 +35,36 @@ class CommentsGridFieldActionTest extends SapphireTest {
         $action->augmentColumns($this->gridField, $columns);
         $expected = array('Actions');
         $this->assertEquals($expected, $columns);
-	}
+    }
 
-	public function testGetColumnAttributes() {
-		$action = new CommentsGridFieldAction();
+    public function testGetColumnAttributes()
+    {
+        $action = new CommentsGridFieldAction();
         $record = new Comment();
         $attrs = $action->getColumnAttributes($this->gridField, $record, 'Comment');
         $this->assertEquals(array('class' => 'col-buttons'), $attrs);
-	}
+    }
 
-	public function testGetColumnMetadata() {
-		$action = new CommentsGridFieldAction();
+    public function testGetColumnMetadata()
+    {
+        $action = new CommentsGridFieldAction();
         $result = $action->getColumnMetadata($this->gridField, 'Actions');
         $this->assertEquals(array('title' => ''), $result);
         $result = $action->getColumnMetadata($this->gridField, 'SomethingElse');
         $this->assertNull($result);
-	}
+    }
 
-	public function testGetColumnsHandled() {
-		$action = new CommentsGridFieldAction();
+    public function testGetColumnsHandled()
+    {
+        $action = new CommentsGridFieldAction();
         $result = $action->getColumnsHandled($this->gridField);
         $this->assertEquals(array('Actions'), $result);
-	}
+    }
 
-	public function testGetColumnContent() {
+    public function testGetColumnContent()
+    {
         $this->logInWithPermission('CMS_ACCESS_CommentAdmin');
-		$action = new CommentsGridFieldAction();
+        $action = new CommentsGridFieldAction();
         $record = new Comment();
         $record->Name = 'Name of commeter';
         $record->Comment = 'This is a comment';
@@ -87,17 +94,19 @@ class CommentsGridFieldActionTest extends SapphireTest {
         $html = $action->getColumnContent($this->gridField, $record, 'Comment');
         $this->assertNotContains($approveAction, $html);
         $this->assertContains($spamAction, $html);
-	}
+    }
 
-	public function testGetActions() {
-		$action = new CommentsGridFieldAction();
+    public function testGetActions()
+    {
+        $action = new CommentsGridFieldAction();
         $result = $action->getActions($this->gridField);
         $this->assertEquals(array('spam', 'approve'), $result);
-	}
+    }
 
 
-	public function testHandleAction() {
-		$action = new CommentsGridFieldAction();
+    public function testHandleAction()
+    {
+        $action = new CommentsGridFieldAction();
         $record = new Comment();
         $record->Name = 'Name of commeter';
         $record->Comment = 'This is a comment';
@@ -105,7 +114,7 @@ class CommentsGridFieldActionTest extends SapphireTest {
         $recordID = $record->ID;
         $arguments = array('RecordID' => $recordID);
         $data = array();
-        $result = $action->handleAction($this->gridField, 'spam', $arguments, $data );
+        $result = $action->handleAction($this->gridField, 'spam', $arguments, $data);
         $this->assertEquals(200, Controller::curr()->getResponse()->getStatusCode());
         $this->assertEquals(
             'Comment marked as spam.',
@@ -116,7 +125,7 @@ class CommentsGridFieldActionTest extends SapphireTest {
         $this->assertEquals(1, $record->IsSpam);
 
 //getStatusDescription
-        $result = $action->handleAction($this->gridField, 'approve', $arguments, $data );
+        $result = $action->handleAction($this->gridField, 'approve', $arguments, $data);
         $this->assertEquals(200, Controller::curr()->getResponse()->getStatusCode());
         $this->assertEquals(
             'Comment approved.',
@@ -128,6 +137,5 @@ class CommentsGridFieldActionTest extends SapphireTest {
         $this->assertEquals(0, $record->IsSpam);
 
         error_log(Controller::curr()->getResponse()->getStatusCode());
-	}
-
+    }
 }

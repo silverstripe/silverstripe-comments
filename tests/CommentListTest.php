@@ -1,6 +1,7 @@
 <?php
 
-class CommentListTest extends FunctionalTest {
+class CommentListTest extends FunctionalTest
+{
 
     public static $fixture_file = 'comments/tests/CommentsTest.yml';
 
@@ -10,7 +11,8 @@ class CommentListTest extends FunctionalTest {
         'CommentableItemDisabled'
     );
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         Config::nest();
 
@@ -34,20 +36,23 @@ class CommentListTest extends FunctionalTest {
         ));
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         Config::unnest();
         parent::tearDown();
     }
 
-	public function testGetForeignClass() {
+    public function testGetForeignClass()
+    {
         $item = $this->objFromFixture('CommentableItem', 'first');
 
         // This is the class the Comments are related to
         $this->assertEquals('CommentableItem',
                                 $item->Comments()->getForeignClass());
-	}
+    }
 
-    public function testAddNonComment() {
+    public function testAddNonComment()
+    {
         $item = $this->objFromFixture('CommentableItem', 'first');
         $comments = $item->Comments();
         $this->assertEquals(4, $comments->count());
@@ -63,7 +68,8 @@ class CommentListTest extends FunctionalTest {
         }
     }
 
-	public function testAddComment() {
+    public function testAddComment()
+    {
         $item = $this->objFromFixture('CommentableItem', 'first');
         $firstComment = $this->objFromFixture('Comment', 'firstComA');
         $comments = $item->Comments();//->sort('Created');
@@ -97,9 +103,10 @@ class CommentListTest extends FunctionalTest {
         );
         $list = new CommentList('CommentableItem');
         $list->add($newComment);
-	}
+    }
 
-	public function testRemoveComment() {
+    public function testRemoveComment()
+    {
         // remove by comment
         $item = $this->objFromFixture('CommentableItem', 'first');
         $this->assertEquals(4, $item->Comments()->count());
@@ -114,7 +121,8 @@ class CommentListTest extends FunctionalTest {
         $this->assertEquals(2, $item->Comments()->count());
     }
 
-    public function testRemoveNonComment() {
+    public function testRemoveNonComment()
+    {
         $item = $this->objFromFixture('CommentableItem', 'first');
         $this->assertEquals(4, $item->Comments()->count());
         $comments = $item->Comments();
@@ -134,5 +142,4 @@ class CommentListTest extends FunctionalTest {
             );
         }
     }
-
 }
