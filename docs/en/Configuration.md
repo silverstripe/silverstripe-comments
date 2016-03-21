@@ -96,16 +96,16 @@ properly sanitized. Don't allow tags like `<script>` or arbitrary attributes.
 
 ## Gravatars
 
-Gravatars can be turned on by adding this to your mysite/_config.php file
+Gravatars can be turned on by adding this to your mysite/_config/config.yml file
 
 ```yaml
 SiteTree:
   comments:
-    use_gravitar: true
+    use_gravatar: true
 ````
 
 The default size is 80 pixels, as per the gravatar site if the 's' parameter is 
-omitted. To change this add the following (again to mysite/_config.php):
+omitted. To change this add the following (again to mysite/_config/config.yml):
 
 ```yaml
 SiteTree:
