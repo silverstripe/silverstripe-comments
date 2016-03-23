@@ -1,22 +1,22 @@
 <?php
 
-class CommentsGridFieldTest extends SapphireTest {
-	public function testNewRow() {
-	   $gridfield = new CommentsGridField('testfield', 'testfield');
+class CommentsGridFieldTest extends SapphireTest
+{
+    public function testNewRow()
+    {
+        $gridfield = new CommentsGridField('testfield', 'testfield');
        //   protected function newRow($total, $index, $record, $attributes, $content) {
        $comment = new Comment();
-       $comment->Name = 'Fred Bloggs';
-       $comment->Comment = 'This is a comment';
-       $attr = array();
+        $comment->Name = 'Fred Bloggs';
+        $comment->Comment = 'This is a comment';
+        $attr = array();
 
 
-       try {
+        try {
             $class  = new ReflectionClass($gridfield);
             $method = $class->getMethod('newRow');
             $method->setAccessible(true);
-        }
-
-        catch (ReflectionException $e) {
+        } catch (ReflectionException $e) {
             $this->fail($e->getMessage());
         }
 
@@ -33,8 +33,5 @@ class CommentsGridFieldTest extends SapphireTest {
         $params = array(1, 1, $comment, $attr, $comment->Comment);
         $newRow = $method->invokeArgs($gridfield, $params);
         $this->assertEquals('<tr class="cssClass spam">This is a comment</tr>', $newRow);
-
-
-	}
-
+    }
 }

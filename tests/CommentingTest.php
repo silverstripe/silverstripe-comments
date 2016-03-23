@@ -1,12 +1,15 @@
 <?php
 
-class CommentingTest extends SapphireTest {
+class CommentingTest extends SapphireTest
+{
 
-    public function setUpOnce() {
+    public function setUpOnce()
+    {
         parent::setUpOnce();
     }
 
-    public function testDeprecatedMethods() {
+    public function testDeprecatedMethods()
+    {
         $methods = array('add', 'remove', 'has_commenting');
         foreach ($methods as $methodName) {
             try {
@@ -20,8 +23,9 @@ class CommentingTest extends SapphireTest {
     }
 
 
-	public function test_set_config_value() {
-		//    public static function set_config_value($class, $key, $value = false) {
+    public function test_set_config_value()
+    {
+        //    public static function set_config_value($class, $key, $value = false) {
         Commenting::set_config_value(
             'CommentableItem',
             'comments_holder_id',
@@ -44,7 +48,7 @@ class CommentingTest extends SapphireTest {
             'all_items_actually_commentsextension'
         );
 
-         $config = Config::inst()->get(
+        $config = Config::inst()->get(
             'CommentsExtension',
             'comments'
         );
@@ -53,10 +57,11 @@ class CommentingTest extends SapphireTest {
             'all_items_actually_commentsextension',
             $actual
         );
-	}
+    }
 
-	public function test_get_config_value() {
-		Config::inst()->update('CommentableItem', 'comments',
+    public function test_get_config_value()
+    {
+        Config::inst()->update('CommentableItem', 'comments',
             array(
             'comments_holder_id' => 'commentable_item'
             )
@@ -82,10 +87,11 @@ class CommentingTest extends SapphireTest {
             'Member does not have commenting enabled'
         );
         Commenting::get_config_value('Member', 'comments_holder_id');
-	}
+    }
 
-	public function test_config_value_equals() {
-		Config::inst()->update('CommentableItem', 'comments',
+    public function test_config_value_equals()
+    {
+        Config::inst()->update('CommentableItem', 'comments',
             array(
             'comments_holder_id' => 'some_value'
             )
@@ -106,9 +112,10 @@ class CommentingTest extends SapphireTest {
                 'not_some_value'
             )
         );
-	}
+    }
 
-    public function test_add() {
+    public function test_add()
+    {
         Commenting::add('Member', array('comments_holder_id' => 'test_add_value'));
 
         $config = Config::inst()->get(
@@ -136,13 +143,14 @@ class CommentingTest extends SapphireTest {
 
         $this->setExpectedException('InvalidArgumentException', "\$settings needs to be an array or null");
         Commenting::add('Member', 'illegal format, not an array');
-
-
     }
 
-	public function test_can_member_post() {
+    public function test_can_member_post()
+    {
         // logout
-        if($member = Member::currentUser()) $member->logOut();
+        if ($member = Member::currentUser()) {
+            $member->logOut();
+        }
 
         Config::inst()->update('CommentableItem', 'comments',
             array(
@@ -168,6 +176,5 @@ class CommentingTest extends SapphireTest {
         );
 
         $this->assertTrue(Commenting::can_member_post('CommentableItem'));
-	}
-
+    }
 }

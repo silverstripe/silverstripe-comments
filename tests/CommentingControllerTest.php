@@ -4,31 +4,35 @@
  * @package comments
  * @subpackage tests
  */
-class CommentingControllerTest extends FunctionalTest {
+class CommentingControllerTest extends FunctionalTest
+{
 
-	public static $fixture_file = 'CommentsTest.yml';
+    public static $fixture_file = 'CommentsTest.yml';
 
-	protected $extraDataObjects = array(
-		'CommentableItem'
-	);
+    protected $extraDataObjects = array(
+        'CommentableItem'
+    );
 
-	protected $securityEnabled;
+    protected $securityEnabled;
 
-	public function tearDown() {
-		if($this->securityEnabled) {
-			SecurityToken::enable();
-		} else {
-			SecurityToken::disable();
-		}
-		parent::tearDown();
-	}
+    public function tearDown()
+    {
+        if ($this->securityEnabled) {
+            SecurityToken::enable();
+        } else {
+            SecurityToken::disable();
+        }
+        parent::tearDown();
+    }
 
-	public function setUp() {
-		parent::setUp();
-		$this->securityEnabled = SecurityToken::is_enabled();
-	}
+    public function setUp()
+    {
+        parent::setUp();
+        $this->securityEnabled = SecurityToken::is_enabled();
+    }
 
-    public function testApprove() {
+    public function testApprove()
+    {
         SecurityToken::disable();
 
         // mark a comment as spam then approve it
@@ -49,10 +53,10 @@ class CommentingControllerTest extends FunctionalTest {
         // try and approve a non existent comment
         $response = $this->get('CommentingController/approve/100000');
         $this->assertEquals(404, $response->getStatusCode());
-
     }
 
-    public function testSetGetOwnerController() {
+    public function testSetGetOwnerController()
+    {
         $commController = new CommentingController();
         $commController->setOwnerController(Controller::curr());
         $this->assertEquals(Controller::curr(), $commController->getOwnerController());
@@ -60,7 +64,8 @@ class CommentingControllerTest extends FunctionalTest {
         $this->assertNull($commController->getOwnerController());
     }
 
-    public function testHam() {
+    public function testHam()
+    {
         SecurityToken::disable();
 
         // mark a comment as spam then ham it
@@ -81,10 +86,10 @@ class CommentingControllerTest extends FunctionalTest {
         // try and ham a non existent comment
         $response = $this->get('CommentingController/ham/100000');
         $this->assertEquals(404, $response->getStatusCode());
-
     }
 
-    public function testSpam() {
+    public function testSpam()
+    {
         // mark a comment as approved then spam it
         $this->logInWithPermission('CMS_ACCESS_CommentAdmin');
         $comment = $this->objFromFixture('Comment', 'firstComA');
@@ -103,10 +108,10 @@ class CommentingControllerTest extends FunctionalTest {
         // try and spam a non existent comment
         $response = $this->get('CommentingController/spam/100000');
         $this->assertEquals(404, $response->getStatusCode());
-
     }
 
-	public function testRSS() {
+    public function testRSS()
+    {
         // Delete the newly added children of firstComA so as not to have to recalculate values below
         $this->objFromFixture('Comment', 'firstComAChild1')->delete();
         $this->objFromFixture('Comment', 'firstComAChild2')->delete();
@@ -115,29 +120,29 @@ class CommentingControllerTest extends FunctionalTest {
         $item = $this->objFromFixture('CommentableItem', 'first');
 
 
-		// comments sitewide
-		$response = $this->get('CommentingController/rss');
-		$this->assertEquals(10, substr_count($response->getBody(), "<item>"), "10 approved, non spam comments on page 1");
+        // comments sitewide
+        $response = $this->get('CommentingController/rss');
+        $this->assertEquals(10, substr_count($response->getBody(), "<item>"), "10 approved, non spam comments on page 1");
 
-		$response = $this->get('CommentingController/rss?start=10');
-		$this->assertEquals(4, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
+        $response = $this->get('CommentingController/rss?start=10');
+        $this->assertEquals(4, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
 
-		// all comments on a type
-		$response = $this->get('CommentingController/rss/CommentableItem');
-		$this->assertEquals(10, substr_count($response->getBody(), "<item>"));
+        // all comments on a type
+        $response = $this->get('CommentingController/rss/CommentableItem');
+        $this->assertEquals(10, substr_count($response->getBody(), "<item>"));
 
-		$response = $this->get('CommentingController/rss/CommentableItem?start=10');
-		$this->assertEquals(4, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
+        $response = $this->get('CommentingController/rss/CommentableItem?start=10');
+        $this->assertEquals(4, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
 
-		// specific page
-		$response = $this->get('CommentingController/rss/CommentableItem/'.$item->ID);
-		$this->assertEquals(1, substr_count($response->getBody(), "<item>"));
-		$this->assertContains('<dc:creator>FA</dc:creator>', $response->getBody());
+        // specific page
+        $response = $this->get('CommentingController/rss/CommentableItem/'.$item->ID);
+        $this->assertEquals(1, substr_count($response->getBody(), "<item>"));
+        $this->assertContains('<dc:creator>FA</dc:creator>', $response->getBody());
 
-		// test accessing comments on a type that doesn't exist
-		$response = $this->get('CommentingController/rss/Fake');
-		$this->assertEquals(404, $response->getStatusCode());
-	}
+        // test accessing comments on a type that doesn't exist
+        $response = $this->get('CommentingController/rss/Fake');
+        $this->assertEquals(404, $response->getStatusCode());
+    }
 
     // This is returning a 404 which looks logical code wise but also a bit weird.
     // Test module on a clean install and check what the actual URL is first
@@ -177,7 +182,8 @@ class CommentingControllerTest extends FunctionalTest {
     }
 */
 
-    public function testCommentsFormUsePreview() {
+    public function testCommentsFormUsePreview()
+    {
         // test with preview on
         Config::inst()->update('CommentableItem', 'comments', array(
             'use_preview' => true
@@ -208,67 +214,66 @@ class CommentingControllerTest extends FunctionalTest {
         CommentTestHelper::assertFieldNames($this, $expected, $commentsFields);
     }
 
-	public function testCommentsForm() {
+    public function testCommentsForm()
+    {
         // Delete the newly added children of firstComA so as not to change this test
         $this->objFromFixture('Comment', 'firstComAChild1')->delete();
         $this->objFromFixture('Comment', 'firstComAChild2')->delete();
         $this->objFromFixture('Comment', 'firstComAChild3')->delete();
 
-		SecurityToken::disable();
-		$this->autoFollowRedirection = false;
-		$parent = $this->objFromFixture('CommentableItem', 'first');
+        SecurityToken::disable();
+        $this->autoFollowRedirection = false;
+        $parent = $this->objFromFixture('CommentableItem', 'first');
 
-		// Test posting to base comment
-		$response = $this->post('CommentingController/CommentsForm',
-			array(
-				'Name' => 'Poster',
-				'Email' => 'guy@test.com',
-				'Comment' => 'My Comment',
-				'ParentID' => $parent->ID,
-				'BaseClass' => 'CommentableItem',
-				'action_doPostComment' => 'Post'
-			)
-		);
-		$this->assertEquals(302, $response->getStatusCode());
-		$this->assertStringStartsWith('CommentableItem_Controller#comment-', $response->getHeader('Location'));
-		$this->assertDOSEquals(
-			array(array(
-				'Name' => 'Poster',
-				'Email' => 'guy@test.com',
-				'Comment' => 'My Comment',
-				'ParentID' => $parent->ID,
-				'BaseClass' => 'CommentableItem',
-			)),
-			Comment::get()->filter('Email', 'guy@test.com')
-		);
+        // Test posting to base comment
+        $response = $this->post('CommentingController/CommentsForm',
+            array(
+                'Name' => 'Poster',
+                'Email' => 'guy@test.com',
+                'Comment' => 'My Comment',
+                'ParentID' => $parent->ID,
+                'BaseClass' => 'CommentableItem',
+                'action_doPostComment' => 'Post'
+            )
+        );
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertStringStartsWith('CommentableItem_Controller#comment-', $response->getHeader('Location'));
+        $this->assertDOSEquals(
+            array(array(
+                'Name' => 'Poster',
+                'Email' => 'guy@test.com',
+                'Comment' => 'My Comment',
+                'ParentID' => $parent->ID,
+                'BaseClass' => 'CommentableItem',
+            )),
+            Comment::get()->filter('Email', 'guy@test.com')
+        );
 
-		// Test posting to parent comment
-		$parentComment = $this->objFromFixture('Comment', 'firstComA');
-		$this->assertEquals(0, $parentComment->ChildComments()->count());
+        // Test posting to parent comment
+        $parentComment = $this->objFromFixture('Comment', 'firstComA');
+        $this->assertEquals(0, $parentComment->ChildComments()->count());
 
-		$response = $this->post(
-			'CommentingController/reply/'.$parentComment->ID,
-			array(
-				'Name' => 'Test Author',
-				'Email' => 'test@test.com',
-				'Comment' => 'Making a reply to firstComA',
-				'ParentID' => $parent->ID,
-				'BaseClass' => 'CommentableItem',
-				'ParentCommentID' => $parentComment->ID,
-				'action_doPostComment' => 'Post'
-			)
-		);
-		$this->assertEquals(302, $response->getStatusCode());
-		$this->assertStringStartsWith('CommentableItem_Controller#comment-', $response->getHeader('Location'));
-		$this->assertDOSEquals(array(array(
-			'Name' => 'Test Author',
-				'Email' => 'test@test.com',
-				'Comment' => 'Making a reply to firstComA',
-				'ParentID' => $parent->ID,
-				'BaseClass' => 'CommentableItem',
-				'ParentCommentID' => $parentComment->ID
-		)), $parentComment->ChildComments());
-
-
-	}
+        $response = $this->post(
+            'CommentingController/reply/'.$parentComment->ID,
+            array(
+                'Name' => 'Test Author',
+                'Email' => 'test@test.com',
+                'Comment' => 'Making a reply to firstComA',
+                'ParentID' => $parent->ID,
+                'BaseClass' => 'CommentableItem',
+                'ParentCommentID' => $parentComment->ID,
+                'action_doPostComment' => 'Post'
+            )
+        );
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertStringStartsWith('CommentableItem_Controller#comment-', $response->getHeader('Location'));
+        $this->assertDOSEquals(array(array(
+            'Name' => 'Test Author',
+                'Email' => 'test@test.com',
+                'Comment' => 'Making a reply to firstComA',
+                'ParentID' => $parent->ID,
+                'BaseClass' => 'CommentableItem',
+                'ParentCommentID' => $parentComment->ID
+        )), $parentComment->ChildComments());
+    }
 }

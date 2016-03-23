@@ -1,6 +1,7 @@
 <?php
 
-class CommentsExtensionTest extends SapphireTest {
+class CommentsExtensionTest extends SapphireTest
+{
 
     public static $fixture_file = 'comments/tests/CommentsTest.yml';
 
@@ -10,7 +11,8 @@ class CommentsExtensionTest extends SapphireTest {
         'CommentableItemDisabled'
     );
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         Config::nest();
 
@@ -38,20 +40,24 @@ class CommentsExtensionTest extends SapphireTest {
         ));
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         Config::unnest();
         parent::tearDown();
     }
 
-	public function testPopulateDefaults() {
-		$this->markTestSkipped('TODO');
-	}
+    public function testPopulateDefaults()
+    {
+        $this->markTestSkipped('TODO');
+    }
 
-	public function testUpdateSettingsFields() {
+    public function testUpdateSettingsFields()
+    {
         $this->markTestSkipped('This needs SiteTree installed');
-	}
+    }
 
-	public function testGetModerationRequired() {
+    public function testGetModerationRequired()
+    {
 
         // the 3 options take precedence in this order, executed if true
         Config::inst()->update('CommentableItem', 'comments', array(
@@ -90,10 +96,11 @@ class CommentsExtensionTest extends SapphireTest {
             'require_moderation_nonmembers' => false
         ));
         $this->assertEquals('None', $item->getModerationRequired());
-	}
+    }
 
-	public function testGetCommentsRequireLogin() {
-		Config::inst()->update('CommentableItem', 'comments', array(
+    public function testGetCommentsRequireLogin()
+    {
+        Config::inst()->update('CommentableItem', 'comments', array(
             'require_login_cms' => true
         ));
 
@@ -115,26 +122,30 @@ class CommentsExtensionTest extends SapphireTest {
             'require_login' => true
         ));
         $this->assertTrue($item->getCommentsRequireLogin());
+    }
 
-	}
+    public function testAllComments()
+    {
+        $this->markTestSkipped('TODO');
+    }
 
-	public function testAllComments() {
-		$this->markTestSkipped('TODO');
-	}
+    public function testAllVisibleComments()
+    {
+        $this->markTestSkipped('TODO');
+    }
 
-	public function testAllVisibleComments() {
-		$this->markTestSkipped('TODO');
-	}
+    public function testComments()
+    {
+        $this->markTestSkipped('TODO');
+    }
 
-	public function testComments() {
-		$this->markTestSkipped('TODO');
-	}
+    public function testGetCommentsEnabled()
+    {
+        $this->markTestSkipped('TODO');
+    }
 
-	public function testGetCommentsEnabled() {
-		$this->markTestSkipped('TODO');
-	}
-
-	public function testGetCommentHolderID() {
+    public function testGetCommentHolderID()
+    {
         $item = $this->objFromFixture('CommentableItem', 'first');
         Config::inst()->update('CommentableItem', 'comments', array(
             'comments_holder_id' => 'commentid_test1',
@@ -145,47 +156,53 @@ class CommentsExtensionTest extends SapphireTest {
             'comments_holder_id' => 'commtentid_test_another',
         ));
         $this->assertEquals('commtentid_test_another', $item->getCommentHolderID());
-	}
+    }
 
 
-	public function testGetPostingRequiredPermission() {
-		$this->markTestSkipped('TODO');
-	}
+    public function testGetPostingRequiredPermission()
+    {
+        $this->markTestSkipped('TODO');
+    }
 
-	public function testCanModerateComments() {
+    public function testCanModerateComments()
+    {
         // ensure nobody logged in
-        if(Member::currentUser()) { Member::currentUser()->logOut(); }
+        if (Member::currentUser()) {
+            Member::currentUser()->logOut();
+        }
 
-		$item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture('CommentableItem', 'first');
         $this->assertFalse($item->canModerateComments());
 
         $this->logInWithPermission('CMS_ACCESS_CommentAdmin');
         $this->assertTrue($item->canModerateComments());
+    }
 
-	}
+    public function testGetCommentRSSLink()
+    {
+        $item = $this->objFromFixture('CommentableItem', 'first');
+        $link = $item->getCommentRSSLink();
+        $this->assertEquals('/CommentingController/rss', $link);
+    }
 
-	public function testGetCommentRSSLink() {
-	   $item = $this->objFromFixture('CommentableItem', 'first');
-       $link = $item->getCommentRSSLink();
-       $this->assertEquals('/CommentingController/rss', $link);
-	}
 
-
-	public function testGetCommentRSSLinkPage() {
-		$item = $this->objFromFixture('CommentableItem', 'first');
+    public function testGetCommentRSSLinkPage()
+    {
+        $item = $this->objFromFixture('CommentableItem', 'first');
         $page = $item->getCommentRSSLinkPage();
         $this->assertEquals(
             '/CommentingController/rss/CommentableItem/' . $item->ID,
             $page
         );
-	}
+    }
 
-	public function testCommentsForm() {
+    public function testCommentsForm()
+    {
         Config::inst()->update('CommentableItem', 'comments', array(
             'include_js' => false
             )
         );
-		$item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture('CommentableItem', 'first');
 
         // The comments form is HTML to do assertions by contains
         $cf = $item->CommentsForm();
@@ -255,13 +272,15 @@ class CommentsExtensionTest extends SapphireTest {
             ),
             $backend->get_javascript()
         );
-	}
+    }
 
-	public function testAttachedToSiteTree() {
-		$this->markTestSkipped('TODO');
-	}
+    public function testAttachedToSiteTree()
+    {
+        $this->markTestSkipped('TODO');
+    }
 
-	public function testPagedComments() {
+    public function testPagedComments()
+    {
         $item = $this->objFromFixture('CommentableItem', 'first');
         // Ensure Created times are set, as order not guaranteed if all set to 0
         $comments = $item->PagedComments()->sort('ID');
@@ -276,7 +295,7 @@ class CommentsExtensionTest extends SapphireTest {
         $results = $item->PagedComments()->toArray();
 
         foreach ($results as $result) {
-           $result->sourceQueryParams = null;
+            $result->sourceQueryParams = null;
         }
 
         $this->assertEquals(
@@ -297,23 +316,26 @@ class CommentsExtensionTest extends SapphireTest {
         );
 
         $this->assertEquals(4, sizeof($results));
-	}
+    }
 
-	public function testGetCommentsOption() {
-		$this->markTestSkipped('TODO');
-	}
+    public function testGetCommentsOption()
+    {
+        $this->markTestSkipped('TODO');
+    }
 
-	public function testUpdateModerationFields() {
-		$this->markTestSkipped('TODO');
-	}
+    public function testUpdateModerationFields()
+    {
+        $this->markTestSkipped('TODO');
+    }
 
-	public function testUpdateCMSFields() {
+    public function testUpdateCMSFields()
+    {
         Config::inst()->update('CommentableItem', 'comments', array(
             'require_login_cms' => false
             )
         );
         $this->logInWithPermission('ADMIN');
-		$item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture('CommentableItem', 'first');
         $item->ProvideComments = true;
         $item->write();
         $fields = $item->getCMSFields();
@@ -376,11 +398,12 @@ class CommentsExtensionTest extends SapphireTest {
             array('ProvideComments', 'CommentsRequireLogin'),
             $fields
         );
-	}
+    }
 
 
 
-    public function testDeprecatedMethods() {
+    public function testDeprecatedMethods()
+    {
         $item = $this->objFromFixture('CommentableItem', 'first');
         $methodNames = array(
             'getRssLinkPage',
@@ -403,7 +426,5 @@ class CommentsExtensionTest extends SapphireTest {
         }
 
         // ooh,  $this->setExpectedException('ExpectedException', 'Expected Message');
-
     }
-
 }

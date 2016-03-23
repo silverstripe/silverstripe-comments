@@ -1,7 +1,9 @@
 <?php
 
-class CommentAdminTest extends SapphireTest {
-	public function testProvidePermissions() {
+class CommentAdminTest extends SapphireTest
+{
+    public function testProvidePermissions()
+    {
         $commentAdmin = new CommentAdmin();
         $locale = i18n::get_locale();
 
@@ -24,12 +26,13 @@ class CommentAdminTest extends SapphireTest {
             )
         );
         $this->assertEquals($expected, $commentAdmin->providePermissions());
-	}
+    }
 
-	public function testGetEditForm() {
+    public function testGetEditForm()
+    {
         $commentAdmin = new CommentAdmin();
         $this->logInWithPermission('CMS_ACCESS_CommentAdmin');
-		$form = $commentAdmin->getEditForm();
+        $form = $commentAdmin->getEditForm();
         $names = $this->getFormFieldNames($form);
         $expected = array(
             'NewComments',
@@ -38,12 +41,15 @@ class CommentAdminTest extends SapphireTest {
         );
         $this->assertEquals($expected, $names);
 
-        if($member = Member::currentUser()) $member->logOut();
+        if ($member = Member::currentUser()) {
+            $member->logOut();
+        }
 
         $form = $commentAdmin->getEditForm();
-	}
+    }
 
-    private function getFormFieldNames($form) {
+    private function getFormFieldNames($form)
+    {
         $result = array();
         $fields = $form->Fields();
         $tab = $fields->findOrMakeTab('Root');
@@ -53,5 +59,4 @@ class CommentAdminTest extends SapphireTest {
         }
         return $result;
     }
-
 }
