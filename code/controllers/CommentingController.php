@@ -497,9 +497,9 @@ class CommentingController extends Controller
             // we do not want to read a new URL when the form has already been submitted
             // which in here, it hasn't been.
             $form->loadDataFrom(array(
-                'ParentID'        => $record->ID,
-                'ReturnURL'        => $this->request->getURL(),
-                'BaseClass'        => $this->getBaseClass()
+                'ParentID'      => $record->ID,
+                'ReturnURL'     => $this->request->getURL(),
+                'BaseClass'     => $this->getBaseClass()
             ));
         }
 
@@ -550,7 +550,6 @@ class CommentingController extends Controller
         if (!$this->getOwnerRecord()) {
             return $this->httpError(404);
         }
-
         // cache users data
         Cookie::set("CommentsForm_UserData", Convert::raw2json($data));
         Cookie::set("CommentsForm_Comment", $data['Comment']);
