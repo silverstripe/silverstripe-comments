@@ -132,7 +132,7 @@ class Comment extends DataObject
             $comments = DB::query('SELECT * FROM "PageComment"');
 
             if ($comments) {
-                while ($pageComment = $comments->nextRecord()) {
+                while ($pageComment = $comments->next()) {
                     // create a new comment from the older page comment
                     $comment = new Comment();
                     $comment->update($pageComment);
