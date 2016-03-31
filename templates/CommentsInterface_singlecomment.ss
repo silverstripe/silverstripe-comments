@@ -33,10 +33,12 @@
 				<% end_if %>
 			</div>
 			<% if $RepliesEnabled %>
-				<a class="comment-reply-link" href="#{$ReplyForm.FormName}">Reply to $AuthorName.XML</a>
+				<a data-comment-id="$ID" class="comment-reply-link" href="$Parent.Link?replyTo=$ID#Form_ReplyForm_$ID"><% _t('CommentsInterface_singlecomment_ss.REPLY_TO','Reply to') %>&nbsp;$AuthorName.XML</a>
 			<% end_if %>
 		</div>
 	<% end_if %>
+
+    <div class="comment-replies-container" id="reply-form-container-$ID"></div>
 
 	<% include CommentReplies %>
 <% end_if %>

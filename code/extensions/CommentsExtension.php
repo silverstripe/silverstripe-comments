@@ -480,6 +480,22 @@ class CommentsExtension extends DataExtension
             ->renderWith('CommentsInterface');
     }
 
+    /*
+    JavaScript form reply requires an empty form, when the reply button is
+    clicked the correct values are inserted, the form moved, and then shown
+     */
+    public function getReplyFormForJavaScript() {
+        // Build reply controller
+        $controller = CommentingController::create();
+        $controller->setOwnerRecord($this->owner);
+        $controller->setBaseClass($this->owner->ClassName);
+        $controller->setOwnerController(Controller::curr());
+        $comment = new Comment();
+        $comment->ID='JSOnly';
+        $comment->ParentID = $this->owner->ID;
+        return $controller->ReplyForm($comment);
+    }
+
     /**
      * Returns whether this extension instance is attached to a {@link SiteTree} object
      *

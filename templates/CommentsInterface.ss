@@ -25,7 +25,7 @@
 			<% if $PagedComments %>
 				<ul class="comments-list root-level">
 					<% loop $PagedComments %>
-						<li class="comment $EvenOdd<% if FirstLast %> $FirstLast <% end_if %> $SpamClass">
+                        <li class="comment $EvenOdd<% if FirstLast %> $FirstLast <% end_if %> $SpamClass">
 							<% include CommentsInterface_singlecomment %>
 						</li>
 					<% end_loop %>
@@ -51,3 +51,5 @@
 		</p>
 	</div>
 <% end_if %>
+<%-- include a hidden form for JS use when replying --%>
+<div id="replyFormJS" style="display:none;">$ReplyFormForJavaScript</div>

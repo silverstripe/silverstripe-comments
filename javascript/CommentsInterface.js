@@ -58,43 +58,80 @@
 		});
 
 		/**
-		 * Comment reply form
-		 */
-		$( ".comment-replies-container .comment-reply-form-holder" ).entwine({
-			onmatch: function() {
-				// If and only if this is not the currently selected form, hide it on page load
-				var selectedHash = window.document.location.hash.substr(1),
-					form = $(this).children('.reply-form');
-				if( !selectedHash || selectedHash !== form.prop( 'id' ) ) {
-					this.hide();
-				}
-				this._super();
-			},
-			onunmatch: function() {
-				this._super();
-			}
-		});
-
-		/**
 		 * Toggle on/off reply form
 		 */
 		$( ".comment-reply-link" ).entwine({
 			onclick: function( e ) {
-				var allForms = $( ".comment-reply-form-holder" ),
-					formID = $( this ).prop('href').replace(/^[^#]*#/, '#'),
-					form = $(formID).closest('.comment-reply-form-holder');
+                // Prevent focus
+                e.preventDefault();
 
-				// Prevent focus
-				e.preventDefault();
-				if(form.is(':visible')) {
-					allForms.slideUp();
-				} else {
-					allForms.not(form).slideUp();
-					form.slideDown();
-				}
+                var jqTarget = $(e.target);
+                var commentID = jqTarget.attr('data-comment-id');
+                container = $('#replyFormJS');
+                var state = jqTarget.attr('data-state');
+
+                // Show possibly hidden reply form, alter state so that it works
+                // in context of relevant comment
+                if (state != 'replying') {
+                    cancelTheCancels();
+                    toggleButtonText(jqTarget);
+
+                    // hide the form if it's visible
+                    if(container.is(':visible')) {
+                        container.toggle();
+                    }
+
+                    var jqComment = $('#reply-form-container-' + commentID);
+                    var form = container.find('form');
+                    action = form.attr('action');
+                    form.attr('action', '/CommentingController/reply/' + commentID);
+                    var inputParemtCommentID = container.find("input[name='ParentCommentID']");
+                    var inputComment = container.find("input[name='Comment']");
+                    inputParemtCommentID.attr('value', commentID);
+                    inputComment.attr('value', '');
+                    container.detach().appendTo(jqComment);
+
+                    var allForms = $( ".comment-reply-form-holder" ),
+                        formID = $( this ).prop('href').replace(/^[^#]*#/, '#'),
+                        form = $(formID).closest('.comment-reply-form-holder');
+
+                    // Show the form
+                    container.toggle();
+
+                    $('html, body').animate({
+                        scrollTop: container.offset().top - 30
+                    }, 200);
+
+                } else {
+                    // Cancel reply, hide form, change button text
+                    toggleButtonText(jqTarget);
+                    container.slideUp();
+                }
 			}
 		});
 
+        /**
+         * Revert buttons in a state of replying to that of cancelled, changing
+         * text back to 'Reply to <person>'
+         */
+        function toggleButtonText(node) {
+            var state = node.attr('data-state');
+            if (state != 'replying') {
+                node.html(ss.i18n._t('CommentsInterface_singlecomment_ss.CANCEL_REPLY'));
+                node.attr('data-state', 'replying');
+            } else {
+                node.html(ss.i18n._t('CommentsInterface_singlecomment_ss.REPLY_TO'));
+                node.attr('data-state', 'cancelled');
+            }
+        }
+
+        function cancelTheCancels() {
+            var toFix = $("a[data-state='replying']");
+            toFix.each(function(index) {
+                var jqTarget = $(this);
+                toggleButtonText(jqTarget);
+            });
+        }
 
 		/**
 		 * Preview comment by fetching it from the server via ajax.
@@ -166,7 +203,7 @@
 					}
 					else if(link.hasClass('delete')) {
 						comment.fadeOut(1000, function() {
-                            comment.remove();
+							comment.remove();
 
 							if(commentsList.children().length === 0) {
 								noCommentsYet.show();
@@ -212,5 +249,3 @@
 		});*/
 	});
 })(jQuery);
-
-

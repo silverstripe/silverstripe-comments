@@ -46,7 +46,7 @@ class Comment extends DataObject
     );
 
     private static $has_many = array(
-        "ChildComments"    => "Comment"
+        "ChildComments" => "Comment"
     );
 
     private static $default_sort = '"Created" DESC';
@@ -732,6 +732,17 @@ class Comment extends DataObject
 
         $this->extend('updateAllReplies', $list);
         return $list;
+    }
+
+    /**
+     * Ascertains whether or not to show the reply form
+     */
+    public function ShowReplyToForm() {
+        $controller = Controller::curr();
+        $request = $controller->getRequest();
+        $replyTo = $request->getVar('replyTo');
+        $result = $replyTo == $this->ID;
+        return $result;
     }
 
     /**
