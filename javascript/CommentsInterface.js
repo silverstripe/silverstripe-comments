@@ -211,6 +211,11 @@
 			return false;
 		});*/
 	});
+
+    // Initiate Time Ago
+    $(document).ready(function() {
+        $("time.timeago").timeago();
+    });
 })(jQuery);
 
 

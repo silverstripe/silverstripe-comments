@@ -1,3 +1,7 @@
+.typography ul.comments-list {
+  list-style-type: none;
+}
+
 .comments-holder-container {
   clear: both;
 }
@@ -62,11 +66,17 @@
   margin-top: 10px;
 }
 
+.timeago {
+  color: #999;
+  padding-left: 0px;
+  margin-left: 10px;
+}
+
 .comment {
   clear: both;
   list-style-type: none;
   overflow: hidden;
-  padding: 20px 0 20px 0;
+  padding: 20px 0 10px;
   position: relative;
 }
 .comment.author-comment:after {
@@ -78,37 +88,41 @@
   font-size: 1em;
   font-weight: bold;
 }
-.comment.author-comment > .comment-text {
+.comment.author-comment > .comment-text-box {
   border: 1px solid blue;
 }
-.comment.spam .comment-text {
+.comment.spam .comment-text-box {
   border: 1px dashed orange;
 }
 .comment img.gravatar {
   float: left;
-  margin: 20px;
+  margin: 0px 20px 20px 0px;
   width: 90px;
   height: 90px;
   border: none;
 }
-.comment .comment-text {
+.comment .comment-text-box {
   background-color: #fff;
   border: 1px solid #ddd;
   box-shadow: none;
   margin: 0;
-  padding: 0 20px 0 20px;
   min-height: 130px;
-  white-space: pre;
-  white-space: pre-wrap;
-  white-space: pre-line;
-  word-wrap: break-word;
+  padding: 20px;
+        /*
+		white-space: pre;
+		white-space: pre-wrap;
+		white-space: pre-line;
+		word-wrap: break-word;
+        */
 }
-.comment .comment-text p:last-child {
+.comment .comment-text-box p:last-child {
   margin-bottom: 0;
 }
-.comment .comment-text.hasGravatar {
-  padding: 0 20px 0 130px;
+.comment .comment-text-box.hasGravatar {
   min-height: 130px;
+}
+.comment .comment-text-box.hasGravatar .comment-text {
+  padding-left: 110px;
 }
 .comment .date {
   font-size: 16px;
@@ -116,7 +130,7 @@
 .comment .date:before {
   content: '\0000a0\0000a0\0000a0\0000a0';
 }
-.comment.unmoderated > .comment-text {
+.comment.unmoderated > .comment-text-box {
   border: 1px solid yellow;
 }
 .comment .info {
