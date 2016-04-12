@@ -628,8 +628,7 @@ class CommentingController extends Controller
             $hash = $form->FormName();
         } elseif (!$comment->Moderated) {
             // Display the "awaiting moderation" text
-            $holder = $this->getOption('comments_holder_id');
-            $hash = "{$holder}_PostCommentForm_error";
+            $hash = "moderated";
         } else {
             // Link to the moderated, non-spam comment
             $hash = $comment->Permalink();
