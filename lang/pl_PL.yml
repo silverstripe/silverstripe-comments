@@ -2,37 +2,79 @@ pl_PL:
   Comment:
     ALLOWCOMMENTS: 'Zezwól na komentarze'
     COMMENT: Komentarz
+    COMMENTBY: 'Komentarz %s'
+    CREATED: 'Data opublikowania'
+    EMAIL: Email
     ISSPAM: 'Spam?'
     MODERATED: 'Moderowane?'
     NAME: 'Autor'
+    'ON': 'na'
+    OPTION_DESCRIPTION: 'Niemoderowane i oznaczone jako spam komentarze nie będą wyświetlane do momentu zatwierdzenia'
+    PARENTTITLE: Rodzic
     PLURALNAME: Komentarze
+    ParentComment_Title: 'Ten komentarz jest odpowiedzią na komentarz poniżej'
     SINGULARNAME: Komentarz
+    URL: URL
   CommentAdmin:
+    ADMIN_PERMISSION: 'Dostęp do sekcji "Komentarze"'
+    ApprovedComments: Zatwierdzone
+    Comments: Zatwierdzone
     MENUTITLE: Komentarze
     Moderated: Moderowane
+    NeedsModeration: 'Wymaga moderacji'
+    NewComments: Nowy
+    SpamComments: Spam
   CommentInterface:
+    COMMENT_MESSAGE_REQUIRED: 'Wprowadź swój komentarz'
+    COMMENT_MESSAGE_URL: 'Wprowadź poprawny adres URL'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Wprowadź poprawny adres email'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Wprowadź swój adres email'
     POST: Post
+    PREVIEW: Podgląd
+    PREVIEWLABEL: Podgląd
     YOURNAME: 'Twoja nazwa'
+    YOURNAME_MESSAGE_REQUIRED: 'Wprowadź swoje imie'
   CommentingController:
     COMMENTS: Komentarze
     EMAILADDRESS: 'Twój adres email (nie będzie widoczny)'
     PERMISSIONFAILURE: 'Nie można dodać komentarza na tej stronie. Upewnij się, że jesteś zalogowany i masz odpowednie uprawnienia.'
     RSSTITLE: 'Komentarze z RSS'
     WEBSITEURL: 'Adres Twojej strony'
+  Comments:
+    COMMENTSREQUIRELOGIN: 'Zaloguj się aby dodać komentarz'
+  CommentsAdmin:
+    ApprovedComments: Zatwierdzone
+    Comments: Zatwierdzone
+    NeedsModeration: 'Wymagają moderacji'
+    NewComments: Nowe
+    SpamComments: Spam
+  CommentsExtension:
+    COMMENTOPTIONS: Komentarze
+    MODERATIONREQUIRED_NONE: 'Komentarze nie wymagają moderacji'
+    MODERATIONREQUIRED_NONMEMBERSONLY: 'Moderuj tylko niezarejestrowanych użytkowników'
+    MODERATIONREQUIRED_REQUIRED: 'Moderuj wszystkie komentarze'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Twój komentarz został wysłany i czeka na akceptację przez moderatora.'
   CommentsInterface_singlecomment_ss:
+    APPROVE: 'zatwierdź'
+    ISNTSPAM: 'nie spam'
+    ISSPAM: 'oznacz spam'
     PBY: 'Dodany przez'
+    REMCOM: 'odrzuć'
   CommentsInterface_ss:
+    AWAITINGMODERATION: 'Twój komentarz został wysłany i czeka na akceptację przez moderatora.'
     COMMENTLOGINERROR: 'Nie można dodać komentarza dopóki nie będziesz zalogowany'
     COMMENTPERMISSIONERROR: 'i że masz odpowiednie uprawnienia'
     COMMENTPOSTLOGIN: 'Zaloguj'
     COMMENTS: Komentarze
     COMMENTSDISABLED: 'Dodawanie komentarzy zostało wyłączone'
+    DELETEALLCOMMENTS: 'Usuń wszystkie komentarze na tej stronie'
     LOGINTOPOSTCOMMENT: 'Zalogouj się aby dodać komentarz'
     NEXT: następny
     NOCOMMENTSYET: 'Nikt jeszcze nie skomentował'
     POSTCOM: 'Dodaj komentarz'
     PREV: poprzedni
+    RSSFEEDALLCOMMENTS: 'Kanał RSS dla wszystkich komentarzy'
+    RSSFEEDCOMMENTS: 'Kanał RSS dla komentarzy na tej stronie'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Usuń wszystkie komentarze na tej stronie'
