@@ -17,6 +17,8 @@
 
 ![codecov.io](https://codecov.io/github/silverstripe/silverstripe-comments/branch.svg?branch=master)
 
+![helpfulrobot](https://helpfulrobot.io/silverstripe/comments/badge)
+
 [Changelog](CHANGELOG.md)
 
 ## Maintainers
