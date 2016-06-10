@@ -53,7 +53,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
             $field .= GridField_FormAction::create(
                 $gridField,
                 'CustomAction' . $record->ID . 'Spam',
-                'Spam',
+                _t('CommentsGridFieldAction.SPAM', 'Spam'),
                 'spam',
                 array('RecordID' => $record->ID)
             )->Field();
@@ -63,7 +63,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
             $field .= GridField_FormAction::create(
                 $gridField,
                 'CustomAction' . $record->ID . 'Approve',
-                'Approve',
+                _t('CommentsGridFieldAction.APPROVE', 'Approve'),
                 'approve',
                 array('RecordID' => $record->ID)
             )->Field();
@@ -92,7 +92,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
             // output a success message to the user
             Controller::curr()->getResponse()->setStatusCode(
                 200,
-                'Comment marked as spam.'
+                _t('CommentsGridFieldAction.COMMENTMARKEDSPAM', 'Comment marked as spam.')
             );
         }
 
@@ -103,7 +103,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
             // output a success message to the user
             Controller::curr()->getResponse()->setStatusCode(
                 200,
-                'Comment approved.'
+                _t('CommentsGridFieldAction.COMMENTAPPROVED', 'Comment approved.')
             );
         }
     }
