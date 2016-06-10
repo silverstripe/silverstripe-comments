@@ -576,7 +576,7 @@ class Comment extends DataObject
                 ->obj('Created')
                 ->scaffoldFormField($this->fieldLabel('Created'))
                 ->performReadonlyTransformation(),
-            TextField::create('Name', $this->fieldLabel('AuthorName')),
+            TextField::create('Name', $this->fieldLabel('Name')),
             $commentField::create('Comment', $this->fieldLabel('Comment')),
             EmailField::create('Email', $this->fieldLabel('Email')),
             TextField::create('URL', $this->fieldLabel('URL')),
@@ -584,7 +584,7 @@ class Comment extends DataObject
                 CheckboxField::create('Moderated', $this->fieldLabel('Moderated')),
                 CheckboxField::create('IsSpam', $this->fieldLabel('IsSpam')),
             ))
-                ->setTitle('Options')
+                ->setTitle(_t('Comment.OPTIONS', 'Options'))
                 ->setDescription(_t(
                     'Comment.OPTION_DESCRIPTION',
                     'Unmoderated and spam comments will not be displayed until approved'
