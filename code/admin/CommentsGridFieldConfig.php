@@ -26,7 +26,9 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         $manager = new GridFieldBulkManager();
 
         $manager->addBulkAction(
-            'spam', 'Spam', 'CommentsGridFieldBulkAction_Handlers',
+            'spam', 
+            _t('CommentsGridFieldConfig.SPAM', 'Spam'), 
+            'CommentsGridFieldBulkAction_Handlers',
             array(
                 'isAjax' => true,
                 'icon' => 'cross',
@@ -35,7 +37,9 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         );
 
         $manager->addBulkAction(
-            'approve', 'Approve', 'CommentsGridFieldBulkAction_Handlers',
+            'approve', 
+            _t('CommentsGridFieldConfig.APPROVE', 'Approve'), 
+            'CommentsGridFieldBulkAction_Handlers',
             array(
                 'isAjax' => true,
                 'icon' => 'cross',
