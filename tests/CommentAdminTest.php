@@ -2,6 +2,9 @@
 
 class CommentAdminTest extends SapphireTest
 {
+
+    protected $usesDatabase = true;
+    
     public function testProvidePermissions()
     {
         $commentAdmin = new CommentAdmin();
