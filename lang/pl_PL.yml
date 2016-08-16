@@ -29,7 +29,7 @@ pl_PL:
     COMMENT_MESSAGE_URL: 'Wprowadź poprawny adres URL'
     EMAILADDRESS_MESSAGE_EMAIL: 'Wprowadź poprawny adres email'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Wprowadź swój adres email'
-    POST: Post
+    POST: Wyślij
     PREVIEW: Podgląd
     PREVIEWLABEL: Podgląd
     YOURNAME: 'Twoja nazwa'

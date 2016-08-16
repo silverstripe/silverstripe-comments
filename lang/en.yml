@@ -9,6 +9,7 @@ en:
     MODERATED: 'Moderated?'
     NAME: 'Author Name'
     'ON': 'on'
+    OPTIONS: Options
     OPTION_DESCRIPTION: 'Unmoderated and spam comments will not be displayed until approved'
     PARENTTITLE: Parent
     PLURALNAME: Comments
@@ -53,6 +54,14 @@ en:
     MODERATIONREQUIRED_NONE: 'No moderation required'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Only moderate non-members'
     MODERATIONREQUIRED_REQUIRED: 'Moderate all comments'
+  CommentsGridFieldAction:
+    APPROVE: Approve
+    COMMENTAPPROVED: 'Comment approved.'
+    COMMENTMARKEDSPAM: 'Comment marked as spam.'
+    SPAM: Spam
+  CommentsGridFieldConfig:
+    APPROVE: Approve
+    SPAM: Spam
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
   CommentsInterface_singlecomment_ss:
