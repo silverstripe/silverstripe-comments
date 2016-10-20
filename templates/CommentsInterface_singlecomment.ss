@@ -8,7 +8,9 @@
 		<span class="date">$Created.Nice ($Created.Ago)</span>
 	</p>
 <% end_if %>
-<% if $Gravatar %>
+<% if $Author.BlogProfileImage && $Gravatar %>
+    <img class="gravatar" src="$Author.BlogProfileImage.URL" alt="Gravatar for $Author.Name.ATT" title="Gravatar for $Author.Name.ATT" />
+<% else_if $Gravatar %>
     <img class="gravatar" src="$Gravatar.ATT" alt="Gravatar for $Name.ATT" title="Gravatar for $Name.ATT" />
 <% end_if %>
 <div class="comment-text<% if $Gravatar %> hasGravatar<% end_if %>" id="<% if $isPreview %>comment-preview<% else %>$Permalink<% end_if %>">
