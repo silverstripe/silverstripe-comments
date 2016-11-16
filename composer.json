@@ -1,28 +1,29 @@
 {
-	"name": "silverstripe/comments",
-	"description": "This module provides commenting functionality for Pages and other DataObjects on your SilverStripe site.",
-	"type": "silverstripe-module",
-	"keywords": ["silverstripe", "comments"],
-	"authors": [{
-		"name": "Will Rossiter",
-		"email": "will@fullscreen.io"
-	}],
-	"require": {
-		"assertchris/hash-compat": "~1.0",
-		"silverstripe/framework": "~3.1",
-		"colymba/gridfield-bulk-editing-tools": "~2.1"
-	},
-	"suggest": {
-		"ezyang/htmlpurifier": "Standards compliant HTML filter written in PHP",
-		"silverstripe/cms": "The SilverStripe Content Management System"
-	},
-	"require-dev": {
-		"phpunit/PHPUnit": "~3.7@stable"
-	},
-	"extra": {
-		"branch-alias": {
-			"dev-master": "2.1.x-dev"
-		}
-	},
-	"license": "BSD-3-Clause"
+    "name": "silverstripe/comments",
+    "description": "This module provides commenting functionality for Pages and other DataObjects on your SilverStripe site.",
+    "type": "silverstripe-module",
+    "keywords": [
+        "silverstripe",
+        "comments"
+    ],
+    "authors": [
+        {
+            "name": "Will Rossiter",
+            "email": "will@fullscreen.io"
+        }
+    ],
+    "require": {
+        "assertchris/hash-compat": "~1.0",
+        "silverstripe/framework": "~3.1",
+        "colymba/gridfield-bulk-editing-tools": "~2.1"
+    },
+    "suggest": {
+        "ezyang/htmlpurifier": "Standards compliant HTML filter written in PHP",
+        "silverstripe/cms": "The SilverStripe Content Management System"
+    },
+    "require-dev": {
+        "phpunit/PHPUnit": "~3.7@stable"
+    },
+    "extra": [],
+    "license": "BSD-3-Clause"
 }
