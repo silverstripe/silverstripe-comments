@@ -3,12 +3,12 @@ fi:
     ALLOWCOMMENTS: 'Salli kommentointi'
     COMMENT: Komentti
     COMMENTBY: 'Kommentoija: %s'
-    CREATED: 'Kirjoitettu'
+    CREATED: Kirjoitettu
     EMAIL: Sähköposti
     ISSPAM: 'Spämmiä?'
     MODERATED: 'Moderoitu?'
     NAME: 'Kirjoittajan nimi'
-    'ON': 'pvm'
+    'ON': pvm
     PARENTTITLE: Isäntä
     PLURALNAME: Kommentit
     SINGULARNAME: Komentti
@@ -21,12 +21,12 @@ fi:
     COMMENT_MESSAGE_REQUIRED: 'Ole hyvä ja kommentoi'
     COMMENT_MESSAGE_URL: 'URL-osoitteen on oltava kelvollinen'
     EMAILADDRESS_MESSAGE_EMAIL: 'Sähköpostiosoitteen on oltava kelvollinen'
-    EMAILADDRESS_MESSAGE_REQUIRED: 'Sähköpostiosoitteesi'
+    EMAILADDRESS_MESSAGE_REQUIRED: Sähköpostiosoitteesi
     POST: Lähetä
     PREVIEW: Esikatselu
     PREVIEWLABEL: Esikatselu
-    YOURNAME: 'Nimesi'
-    YOURNAME_MESSAGE_REQUIRED: 'Nimesi'
+    YOURNAME: Nimesi
+    YOURNAME_MESSAGE_REQUIRED: Nimesi
   CommentingController:
     COMMENTS: Kommentit
     EMAILADDRESS: 'Sähköpostiosoitteesi (ei julkaista)'
@@ -38,7 +38,7 @@ fi:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
   CommentsInterface_singlecomment_ss:
-    PBY: 'Lähettänyt'
+    PBY: Lähettänyt
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
     COMMENTLOGINERROR: 'Et voi kommentoida ennen kuin olet kirjautunut sisään'

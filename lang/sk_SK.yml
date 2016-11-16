@@ -11,7 +11,7 @@ sk_SK:
     PARENTTITLE: Rodič
     PLURALNAME: Komentáre
     SINGULARNAME: Komentár
-    URL: Web adresa
+    URL: 'Web adresa'
   CommentAdmin:
     MENUTITLE: Komentáre
     Moderated: Odsúhlasený

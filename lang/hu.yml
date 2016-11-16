@@ -28,7 +28,7 @@ hu:
     YOURNAME: 'Az Ön neve'
     YOURNAME_MESSAGE_REQUIRED: 'Kérjük adja meg nevét'
   CommentingController:
-    COMMENTS: A hosszászólás szövege
+    COMMENTS: 'A hosszászólás szövege'
     EMAILADDRESS: 'Az Ön e-mail címe (nem látható)'
     PERMISSIONFAILURE: 'Ön csak a bejelentkezést követően, és a megfelelő jogosultság birtokában hozhat létre hozzászólást.'
     RSSTITLE: 'Hozzászólások RSS-ben'
@@ -38,12 +38,12 @@ hu:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
   CommentsInterface_singlecomment_ss:
-    PBY: 'Feladó'
+    PBY: Feladó
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
     COMMENTLOGINERROR: 'A hozzászóláshoz be kell jelentkeznie'
     COMMENTPERMISSIONERROR: 'és rendelkeznie kell a megfelelő jogosultsággal'
-    COMMENTPOSTLOGIN: 'Bejelentkezés'
+    COMMENTPOSTLOGIN: Bejelentkezés
     COMMENTS: Hozzászólások
     COMMENTSDISABLED: 'A hozzászólások le vannak tiltva '
     LOGINTOPOSTCOMMENT: 'A hozzászóláshoz jelentkezzen be '

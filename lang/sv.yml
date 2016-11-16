@@ -3,12 +3,12 @@ sv:
     ALLOWCOMMENTS: 'Tillåt kommentarer'
     COMMENT: Kommentarer
     COMMENTBY: 'Kommentar av %s'
-    CREATED: 'Datum'
+    CREATED: Datum
     EMAIL: E-post
     ISSPAM: 'Spam?'
     MODERATED: 'Modererad?'
-    NAME: 'Författare'
-    PARENTTITLE: Överordnad sida
+    NAME: Författare
+    PARENTTITLE: 'Överordnad sida'
     PLURALNAME: Kommentarer
     SINGULARNAME: Kommentar
     URL: URL

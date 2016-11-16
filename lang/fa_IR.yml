@@ -4,23 +4,24 @@ fa_IR:
     COMMENT: دیدگاه
     COMMENTBY: 'دیدگاه توسط %s'
     CREATED: 'تاریخ ارسال'
-    EMAIL: ایمیل
-    ISSPAM: 'هرزنوشت؟'
+    EMAIL: 'ایمیل'
+    ISSPAM: هرزنوشت؟
     MODERATED: 'مدیریت شده؟'
     NAME: 'نام نگارنده'
-    'ON': 'در'
+    'ON': در
+    OPTIONS: گزینه‌ها
     OPTION_DESCRIPTION: 'دیدگاه‌های مدیریت نشده و هرزنوشت‌ها تا زمان تایید به نمایش در نخواهند آمد'
     PARENTTITLE: والد
     PLURALNAME: دیدگاه‌ها
     ParentComment_Title: 'این دیدگاه پاسخی است به زیر'
     SINGULARNAME: دیدگاه
-    URL: نشانی اینترنتی
+    URL: 'نشانی اینترنتی'
   CommentAdmin:
     ADMIN_PERMISSION: 'دسترسی به بخش ''دیدگاه‌ها'''
-    ApprovedComments: تایید شده
-    Comments: تایید شده
+    ApprovedComments: 'تایید شده'
+    Comments: 'تایید شده'
     MENUTITLE: دیدگاه‌ها
-    Moderated: مدیریت شده
+    Moderated: 'مدیریت شده'
     NeedsModeration: 'نیازمند مدیریت'
     NewComments: تازه
     SpamComments: هرزنوشت
@@ -30,8 +31,8 @@ fa_IR:
     EMAILADDRESS_MESSAGE_EMAIL: 'لطفاً نشانی ایمیل معتبر وارد نمایید'
     EMAILADDRESS_MESSAGE_REQUIRED: 'لطفاً نشانی ایمیل خود را وارد نمایید'
     POST: ارسال
-    PREVIEW: پیش‌نمایش
-    PREVIEWLABEL: پیش‌نمایش
+    PREVIEW: 'پیش‌نمایش'
+    PREVIEWLABEL: 'پیش‌نمایش'
     YOURNAME: 'نام شما'
     YOURNAME_MESSAGE_REQUIRED: 'لطفاً نام خود را وارد نمایید'
   CommentingController:
@@ -43,8 +44,8 @@ fa_IR:
   Comments:
     COMMENTSREQUIRELOGIN: 'درج دیدگاه نیازمند ورود شما به سایت است'
   CommentsAdmin:
-    ApprovedComments: تایید شده
-    Comments: تایید شده
+    ApprovedComments: 'تایید شده'
+    Comments: 'تایید شده'
     NeedsModeration: 'نیازمند مدیریت'
     NewComments: تازه
     SpamComments: هرزنوشت
@@ -53,12 +54,20 @@ fa_IR:
     MODERATIONREQUIRED_NONE: 'نیاز به مدیریت ندارد'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'تنها مدیریت کاربران غیر عضو'
     MODERATIONREQUIRED_REQUIRED: 'مدیریت تمامی دیدگاه‌ها'
+  CommentsGridFieldAction:
+    APPROVE: تایید
+    COMMENTAPPROVED: 'دیدگاه تایید شد.'
+    COMMENTMARKEDSPAM: 'دیدگاه به عنوان هرزنوشت علامت‌گذاری شد.'
+    SPAM: هرزنوشت
+  CommentsGridFieldConfig:
+    APPROVE: تایید
+    SPAM: هرزنوشت
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'دیدگاه شما ارسال شده و هم‌اکنون در انتظار بررسی است.'
   CommentsInterface_singlecomment_ss:
     APPROVE: 'تایید کن'
     ISNTSPAM: 'هرزنوشت نیست'
-    ISSPAM: 'هرزنوشته'
+    ISSPAM: هرزنوشته
     PBY: 'ارسال شده توسط'
     REMCOM: 'رد کردن'
   CommentsInterface_ss:

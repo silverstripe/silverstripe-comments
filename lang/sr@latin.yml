@@ -4,7 +4,7 @@ sr@latin:
     COMMENT: Komentar
     COMMENTBY: 'Autor komentara %s'
     CREATED: 'Datum objavljivanja'
-    EMAIL: Elektronska pošta
+    EMAIL: 'Elektronska pošta'
     ISSPAM: 'Zlonameran?'
     MODERATED: 'Uređen?'
     NAME: 'Ime autora'
@@ -37,7 +37,7 @@ sr@latin:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Vaš komentar je prosleđen i sada čeka uređivanje.'
   CommentsInterface_singlecomment_ss:
-    PBY: 'Objavio'
+    PBY: Objavio
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Vaš komentar je prosleđen i sada čeka uređivanje.'
     COMMENTLOGINERROR: 'Ne možete objavljivati komentare dok se ne prijavite'

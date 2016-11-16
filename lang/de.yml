@@ -8,6 +8,9 @@ de:
     ISSPAM: 'Spam?'
     MODERATED: 'Moderiert?'
     NAME: 'Autor Name'
+    'ON': am
+    OPTIONS: Optionen
+    OPTION_DESCRIPTION: 'Unmoderierte und Spam-Kommentare werden nicht angezeigt, bis sie freigeschaltet sind'
     PARENTTITLE: Parent
     PLURALNAME: Kommentare
     SINGULARNAME: Kommentar
@@ -17,6 +20,8 @@ de:
     MENUTITLE: Kommentare
     Moderated: Moderiert
     NeedsModeration: 'Benötigt Moderation'
+    NewComments: Neu
+    SpamComments: Spam
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Bitte geben Sie Ihren Kommentar ein'
     COMMENT_MESSAGE_URL: 'Bitte geben Sie eine gültige URL ein'
@@ -25,7 +30,7 @@ de:
     POST: Absenden
     PREVIEW: Vorschau
     PREVIEWLABEL: Vorschau
-    YOURNAME: 'Name'
+    YOURNAME: Name
     YOURNAME_MESSAGE_REQUIRED: 'Bitte geben Sie Ihren Namen ein'
   CommentingController:
     COMMENTS: Kommentare
@@ -35,22 +40,31 @@ de:
     WEBSITEURL: 'Website URL'
   CommentsAdmin:
     NeedsModeration: 'Benötigt Moderation'
+    NewComments: Neu
+    SpamComments: Spam
+  CommentsExtension:
+    COMMENTOPTIONS: Kommentare
+  CommentsGridFieldAction:
+    SPAM: Spam
+  CommentsGridFieldConfig:
+    SPAM: Spam
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
   CommentsInterface_singlecomment_ss:
+    ISNTSPAM: 'kein Spam'
     PBY: 'Geschrieben von'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
     COMMENTLOGINERROR: 'Sie können diese Seite nur kommentieren, wenn Sie eingeloggt sind'
     COMMENTPERMISSIONERROR: 'und die nötige Berechtigung besitzen'
-    COMMENTPOSTLOGIN: 'Login'
+    COMMENTPOSTLOGIN: Login
     COMMENTS: Kommentare
     COMMENTSDISABLED: 'Kommentare sind deaktiviert'
     DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite löschen'
     LOGINTOPOSTCOMMENT: 'Login um zu kommentieren'
     NEXT: weiter
     NOCOMMENTSYET: 'Noch keine Kommentare auf dieser Seite.'
-    POSTCOM: 'Kommentieren'
+    POSTCOM: Kommentieren
     PREV: zurück
     RSSFEEDALLCOMMENTS: 'RSS Feed für alle Kommentare'
     RSSFEEDCOMMENTS: 'RSS Feed für Kommentare auf dieser Seite'

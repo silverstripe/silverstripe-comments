@@ -7,40 +7,83 @@ ru:
     EMAIL: Email
     ISSPAM: 'Спам?'
     MODERATED: 'Проверено?'
-    NAME: 'Автор'
-    PARENTTITLE: Родительская
+    NAME: Автор
+    'ON': на
+    OPTIONS: Опции
+    OPTION_DESCRIPTION: 'Комментарии не будут отображаться пока не будут одобрены модератором'
+    PARENTTITLE: 'Родительская'
     PLURALNAME: Комментарии
+    ParentComment_Title: 'Этот комментарий ответ на сообщение ниже'
     SINGULARNAME: Комментарий
     URL: URL
   CommentAdmin:
+    ADMIN_PERMISSION: 'Доступ к разделу ''Комментарии'''
+    ApprovedComments: Одобренные
+    Comments: Одобрен
     MENUTITLE: Комментарии
+    Moderated: Проверен
+    NeedsModeration: 'Необходима Проверка'
     NewComments: Новый
     SpamComments: Спам
   CommentInterface:
+    COMMENT_MESSAGE_REQUIRED: 'Введите ваш комментарий'
     COMMENT_MESSAGE_URL: 'Пожалуйста, задайте действительный URL-адрес'
     EMAILADDRESS_MESSAGE_EMAIL: 'Пожалуйста, укажите действительный электронный адрес'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Пожалуйста, укажите свой электронный адрес'
     POST: Отправить
     PREVIEW: Просмотр
     PREVIEWLABEL: Просмотр
-    YOURNAME: 'Имя'
+    YOURNAME: Имя
     YOURNAME_MESSAGE_REQUIRED: 'Пожалуйста, укажите своё имя'
   CommentingController:
     COMMENTS: Комментарии
     EMAILADDRESS: 'Ваш электронный адрес (не будет опубликован)'
+    PERMISSIONFAILURE: 'Вы не можете отправлять комментарии на эту страницу. Убедитесь что вы вошли в систему и имеете необходимые права доступа.'
     RSSTITLE: 'RSS-лента комментариев'
     WEBSITEURL: 'Адрес вашего сайта'
+  Comments:
+    COMMENTSREQUIRELOGIN: 'Необходимо войти в систему для комментирования'
+  CommentsAdmin:
+    ApprovedComments: Одобренные
+    Comments: Одобрен
+    NeedsModeration: 'Необходима Проверка'
+    NewComments: Новые
+    SpamComments: Спам
+  CommentsExtension:
+    COMMENTOPTIONS: Комментарии
+    MODERATIONREQUIRED_NONE: 'Проверка не требуется'
+    MODERATIONREQUIRED_NONMEMBERSONLY: 'Проверка требуется только для незарегистрированных пользователей'
+    MODERATIONREQUIRED_REQUIRED: 'Проверка требуется для всех комментариев'
+  CommentsGridFieldAction:
+    APPROVE: Одобрить
+    COMMENTAPPROVED: 'Комментарий одобрен.'
+    COMMENTMARKEDSPAM: 'Комментарий помечен как спам.'
+    SPAM: Спам
+  CommentsGridFieldConfig:
+    APPROVE: Одобрить
+    SPAM: Спам
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
   CommentsInterface_singlecomment_ss:
+    APPROVE: Одобрить
+    ISNTSPAM: 'не спам'
+    ISSPAM: 'это спам'
     PBY: 'Автор:'
+    REMCOM: удалить
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
+    COMMENTLOGINERROR: 'Вы не можете отправлять комментарии пока не войдёте в систему'
+    COMMENTPERMISSIONERROR: 'и пока не получите соответствующие права доступа'
+    COMMENTPOSTLOGIN: 'Вход в систему'
     COMMENTS: Комментарии
     COMMENTSDISABLED: 'Комментарии отключены'
     DELETEALLCOMMENTS: 'удалить все комментарии со страницы'
     LOGINTOPOSTCOMMENT: 'Войдите чтобы получить возможность отправлять комментарии'
     NEXT: следующий
     NOCOMMENTSYET: 'Комментариев на этой странице пока нет.'
+    POSTCOM: 'Отправить комментарий'
+    PREV: предыдущие
+    RSSFEEDALLCOMMENTS: 'RSS лента для всех комментариев'
+    RSSFEEDCOMMENTS: 'RSS лента для комментариев на этой странице'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Удалить все комментарии на этой странице'

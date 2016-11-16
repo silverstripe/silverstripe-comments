@@ -4,17 +4,17 @@ lt:
     COMMENT: Komentaras
     COMMENTBY: 'Komentarą parašė ''%s'''
     CREATED: 'Paskelbimo data'
-    EMAIL: E. paštas
+    EMAIL: 'E. paštas'
     ISSPAM: 'Šlamštas?'
     MODERATED: 'Patvirtintas?'
     NAME: 'Autoriaus Vardas'
-    'ON': 'į'
+    'ON': į
     OPTION_DESCRIPTION: 'Nepatvirtinti komentarai nebus rodomi, kol jie atskirai nebus patvirtinti'
     PARENTTITLE: Priklauso
     PLURALNAME: Komentarai
     ParentComment_Title: 'Šis komentaras yra atsakymas į žemiau esantį'
     SINGULARNAME: Komentaras
-    URL: URL adresas
+    URL: 'URL adresas'
   CommentAdmin:
     ADMIN_PERMISSION: 'Patekti į ''Komentarų'' dalį'
     ApprovedComments: Patvirtinti
@@ -23,7 +23,7 @@ lt:
     Moderated: Patvirtinti
     NeedsModeration: 'Laukia patvirtinimo'
     NewComments: Nauji
-    SpamComments: Šlamštas
+    SpamComments: 'Šlamštas'
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Prašome parašyti savo komentarą'
     COMMENT_MESSAGE_URL: 'Prašome įvesti teisingą URL adresą'
@@ -47,7 +47,7 @@ lt:
     Comments: Patvirtinti
     NeedsModeration: 'Laukia patvirtinimo'
     NewComments: Nauji
-    SpamComments: Šlamštas
+    SpamComments: 'Šlamštas'
   CommentsExtension:
     COMMENTOPTIONS: Komentarai
     MODERATIONREQUIRED_NONE: 'Nereikalauja patvirtinimo'
@@ -56,11 +56,11 @@ lt:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
   CommentsInterface_singlecomment_ss:
-    APPROVE: 'patvirtinti'
+    APPROVE: patvirtinti
     ISNTSPAM: 'ne šlamštas'
-    ISSPAM: 'šlamštas'
-    PBY: 'Paskelbė'
-    REMCOM: 'ištrinti'
+    ISSPAM: šlamštas
+    PBY: Paskelbė
+    REMCOM: ištrinti
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
     COMMENTLOGINERROR: 'Negalite rašyti komentarų, jeigu nesate prisijungę'

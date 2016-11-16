@@ -8,7 +8,8 @@ eo:
     ISSPAM: 'Ĉu spamo?'
     MODERATED: 'Ĉu kontrolata?'
     NAME: 'Nomo de aŭtoro'
-    'ON': 'en'
+    'ON': en
+    OPTIONS: Agordoj
     OPTION_DESCRIPTION: 'Ne vidigos nekontrolitajn aŭ spamajn komentojn antaŭ aprobo'
     PARENTTITLE: Patra
     PLURALNAME: Komentoj
@@ -53,6 +54,14 @@ eo:
     MODERATIONREQUIRED_NONE: 'Kontrolado ne bezonatas'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Kontroli nur nemembrojn'
     MODERATIONREQUIRED_REQUIRED: 'Kontroli ĉiujn komentojn'
+  CommentsGridFieldAction:
+    APPROVE: Aprobi
+    COMMENTAPPROVED: 'Komento aprobita.'
+    COMMENTMARKEDSPAM: 'Markis komenton kiel spamon'
+    SPAM: Spamo
+  CommentsGridFieldConfig:
+    APPROVE: Aprobi
+    SPAM: Spamo
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Via komento afiŝiĝis kaj nun atendas kontrolon.'
   CommentsInterface_singlecomment_ss:

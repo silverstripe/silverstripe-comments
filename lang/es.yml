@@ -23,8 +23,8 @@ es:
     EMAILADDRESS_MESSAGE_EMAIL: 'Por favor, ingrse una dirección de correo válida'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Por favor, ingrese su dirección de correo'
     POST: Publicar
-    PREVIEW: Vista previa
-    PREVIEWLABEL: Vista previa
+    PREVIEW: 'Vista previa'
+    PREVIEWLABEL: 'Vista previa'
     YOURNAME: 'Su nombre'
     YOURNAME_MESSAGE_REQUIRED: 'Por favor, ingrese su nombre'
   CommentingController:

@@ -4,8 +4,8 @@ nl:
     COMMENT: Reactie
     ISSPAM: 'Spam?'
     MODERATED: 'Gemodereerd?'
-    NAME: 'Auteur'
-    'ON': 'op'
+    NAME: Auteur
+    'ON': op
     PLURALNAME: Reacties
     SINGULARNAME: Reactie
   CommentAdmin:
@@ -13,8 +13,8 @@ nl:
     Moderated: Gemodereerd
     NeedsModeration: 'Wacht op moderatie'
   CommentInterface:
-    POST: Plaats reactie
-    YOURNAME: 'Naam'
+    POST: 'Plaats reactie'
+    YOURNAME: Naam
   CommentingController:
     COMMENTS: Reacties
     EMAILADDRESS: 'E-mail adres (wordt niet gepubliceerd)'
@@ -32,7 +32,7 @@ nl:
   CommentsInterface_ss:
     COMMENTLOGINERROR: 'Je moet ingelogd zijn om reacties te kunnen plaatsen'
     COMMENTPERMISSIONERROR: 'en controleer je gebruikersrechten'
-    COMMENTPOSTLOGIN: 'Inloggen'
+    COMMENTPOSTLOGIN: Inloggen
     COMMENTS: Reacties
     COMMENTSDISABLED: 'Reacties plaatsen is uitgeschakeld'
     LOGINTOPOSTCOMMENT: 'Log in om een reactie te plaatsen'

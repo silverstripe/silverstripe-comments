@@ -22,8 +22,8 @@ ro:
     EMAILADDRESS_MESSAGE_EMAIL: 'Vă rugăm să introduceți uo adresă de e-mail validă'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Vă rugăm să vă introduceți adresa de e-mail'
     POST: Publică
-    PREVIEW: Vizualizare înaintea publicării
-    PREVIEWLABEL: Vizualizare înaintea publicării
+    PREVIEW: 'Vizualizare înaintea publicării'
+    PREVIEWLABEL: 'Vizualizare înaintea publicării'
     YOURNAME: 'Numele dvs.'
     YOURNAME_MESSAGE_REQUIRED: 'Vă rugăm să vă introduceți numele'
   CommentingController:
@@ -42,7 +42,7 @@ ro:
     AWAITINGMODERATION: 'Comentariul dvs. a fost trimis și așteaptă să fie moderat.'
     COMMENTLOGINERROR: 'Publicarea de comentarii necesită autentificare pe site'
     COMMENTPERMISSIONERROR: 'și că aveți nivelul de permisiune corespunzător'
-    COMMENTPOSTLOGIN: 'Autentificare'
+    COMMENTPOSTLOGIN: Autentificare
     COMMENTS: Comentarii
     COMMENTSDISABLED: 'Postarea de comentarii a fost dezactivată'
     LOGINTOPOSTCOMMENT: 'Autentificaţi-vă pentru a publica un comentariu'

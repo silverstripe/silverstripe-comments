@@ -40,7 +40,6 @@ fr:
     AWAITINGMODERATION: 'Votre commentaire a été soumis à modération.'
   CommentsInterface_singlecomment_ss:
     PBY: 'Posté par'
-    REPLYTO: 'Répondre à'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Votre commentaire a été soumis à modération.'
     COMMENTLOGINERROR: 'Vous ne pouvez pas poster de commentaires sans être connecté'
