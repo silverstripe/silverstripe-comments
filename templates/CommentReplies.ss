@@ -6,15 +6,15 @@
 		</div>
 	
 		<div class="comment-replies-holder">
-			<% if $Replies %>
+			<% if $PagedReplies %>
 				<ul class="comments-list level-{$Depth}">
-					<% loop $Replies %>
+					<% loop $PagedReplies %>
 						<li class="comment $EvenOdd<% if FirstLast %> $FirstLast <% end_if %> $SpamClass">
 							<% include CommentsInterface_singlecomment %>
 						</li>
 					<% end_loop %>
 				</ul>
-				<% with $Replies %>
+				<% with $PagedReplies %>
 					<% include ReplyPagination %>
 				<% end_with %>
 			<% end_if %>
