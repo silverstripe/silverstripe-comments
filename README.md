@@ -36,7 +36,7 @@ inside the docs folder.
 
 ## Requirements
 
- * SilverStripe 3.1
+ * SilverStripe ^4.0
 
 ## Installation
 

@@ -4,6 +4,6 @@ Name: commentssitetree
 only:
   moduleexists: 'cms'
 ---
-SiteTree:
+SilverStripe\CMS\Model\SiteTree:
   comments:
     enabled_cms: true
