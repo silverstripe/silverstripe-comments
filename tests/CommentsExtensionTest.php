@@ -1,14 +1,33 @@
 <?php
 
+namespace SilverStripe\Comments\Tests;
+
+use PHPUnit_Framework_Error_Deprecated;
+use SilverStripe\Comments\Extensions\CommentsExtension;
+use SilverStripe\Comments\Model\Comment;
+use SilverStripe\Comments\Tests\CommentTestHelper;
+use SilverStripe\Comments\Tests\Stubs\CommentableItem;
+use SilverStripe\Comments\Tests\Stubs\CommentableItemDisabled;
+use SilverStripe\Comments\Tests\Stubs\CommentableItemEnabled;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Dev\SapphireTest;
+use SilverStripe\Security\Member;
+use SilverStripe\View\Requirements;
+
 class CommentsExtensionTest extends SapphireTest
 {
-
+    /**
+     * {@inheritDoc}
+     */
     public static $fixture_file = 'comments/tests/CommentsTest.yml';
 
+    /**
+     * {@inheritDoc}
+     */
     protected $extraDataObjects = array(
-        'CommentableItem',
-        'CommentableItemEnabled',
-        'CommentableItemDisabled'
+        CommentableItem::class,
+        CommentableItemEnabled::class,
+        CommentableItemDisabled::class
     );
 
     public function setUp()
@@ -17,7 +36,7 @@ class CommentsExtensionTest extends SapphireTest
         Config::nest();
 
         // Set good default values
-        Config::inst()->update('CommentsExtension', 'comments', array(
+        Config::inst()->update(CommentsExtension::class, 'comments', array(
             'enabled' => true,
             'enabled_cms' => false,
             'require_login' => false,
@@ -31,11 +50,11 @@ class CommentsExtensionTest extends SapphireTest
         ));
 
         $this->requiredExtensions = array(
-            'CommentableItem' => 'CommentsExtension'
+            'CommentableItem' => CommentsExtension::class
         );
 
         // Configure this dataobject
-        Config::inst()->update('CommentableItem', 'comments', array(
+        Config::inst()->update(CommentableItem::class, 'comments', array(
             'enabled_cms' => true
         ));
     }
@@ -60,7 +79,7 @@ class CommentsExtensionTest extends SapphireTest
     {
 
         // the 3 options take precedence in this order, executed if true
-        Config::inst()->update('CommentableItem', 'comments', array(
+        Config::inst()->update(CommentableItem::class, 'comments', array(
             'require_moderation_cms' => true,
             'require_moderation' => true,
             'require_moderation_nonmembers' => true
@@ -68,7 +87,7 @@ class CommentsExtensionTest extends SapphireTest
 
         // With require moderation CMS set to true, the value of the field
         // 'ModerationRequired' is returned
-        $item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
         $item->ModerationRequired = 'None';
         $this->assertEquals('None', $item->getModerationRequired());
         $item->ModerationRequired = 'Required';
@@ -76,21 +95,21 @@ class CommentsExtensionTest extends SapphireTest
         $item->ModerationRequired = 'NonMembersOnly';
         $this->assertEquals('NonMembersOnly', $item->getModerationRequired());
 
-        Config::inst()->update('CommentableItem', 'comments', array(
+        Config::inst()->update(CommentableItem::class, 'comments', array(
             'require_moderation_cms' => false,
             'require_moderation' => true,
             'require_moderation_nonmembers' => true
         ));
         $this->assertEquals('Required', $item->getModerationRequired());
 
-        Config::inst()->update('CommentableItem', 'comments', array(
+        Config::inst()->update(CommentableItem::class, 'comments', array(
             'require_moderation_cms' => false,
             'require_moderation' => false,
             'require_moderation_nonmembers' => true
         ));
         $this->assertEquals('NonMembersOnly', $item->getModerationRequired());
 
-        Config::inst()->update('CommentableItem', 'comments', array(
+        Config::inst()->update(CommentableItem::class, 'comments', array(
             'require_moderation_cms' => false,
             'require_moderation' => false,
             'require_moderation_nonmembers' => false
@@ -100,24 +119,24 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testGetCommentsRequireLogin()
     {
-        Config::inst()->update('CommentableItem', 'comments', array(
+        Config::inst()->update(CommentableItem::class, 'comments', array(
             'require_login_cms' => true
         ));
 
         // With require moderation CMS set to true, the value of the field
         // 'ModerationRequired' is returned
-        $item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
         $item->CommentsRequireLogin = true;
         $this->assertTrue($item->getCommentsRequireLogin());
         $item->CommentsRequireLogin = false;
         $this->assertFalse($item->getCommentsRequireLogin());
 
-        Config::inst()->update('CommentableItem', 'comments', array(
+        Config::inst()->update(CommentableItem::class, 'comments', array(
             'require_login_cms' => false,
             'require_login' => false
         ));
         $this->assertFalse($item->getCommentsRequireLogin());
-        Config::inst()->update('CommentableItem', 'comments', array(
+        Config::inst()->update(CommentableItem::class, 'comments', array(
             'require_login_cms' => false,
             'require_login' => true
         ));
@@ -146,13 +165,13 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testGetCommentHolderID()
     {
-        $item = $this->objFromFixture('CommentableItem', 'first');
-        Config::inst()->update('CommentableItem', 'comments', array(
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        Config::inst()->update(CommentableItem::class, 'comments', array(
             'comments_holder_id' => 'commentid_test1',
         ));
         $this->assertEquals('commentid_test1', $item->getCommentHolderID());
 
-        Config::inst()->update('CommentableItem', 'comments', array(
+        Config::inst()->update(CommentableItem::class, 'comments', array(
             'comments_holder_id' => 'commtentid_test_another',
         ));
         $this->assertEquals('commtentid_test_another', $item->getCommentHolderID());
@@ -171,7 +190,7 @@ class CommentsExtensionTest extends SapphireTest
             Member::currentUser()->logOut();
         }
 
-        $item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
         $this->assertFalse($item->canModerateComments());
 
         $this->logInWithPermission('CMS_ACCESS_CommentAdmin');
@@ -180,33 +199,36 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testGetCommentRSSLink()
     {
-        $item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
         $link = $item->getCommentRSSLink();
-        $this->assertEquals('/CommentingController/rss', $link);
+        $this->assertEquals('/comments/rss', $link);
     }
 
 
     public function testGetCommentRSSLinkPage()
     {
-        $item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
         $page = $item->getCommentRSSLinkPage();
         $this->assertEquals(
-            '/CommentingController/rss/CommentableItem/' . $item->ID,
+            '/comments/rss/SilverStripe-Comments-Tests-Stubs-CommentableItem/' . $item->ID,
             $page
         );
     }
 
     public function testCommentsForm()
     {
-        Config::inst()->update('CommentableItem', 'comments', array(
-            'include_js' => false
+        Config::inst()->update(
+            CommentableItem::class,
+            'comments',
+            array(
+                'include_js' => false
             )
         );
-        $item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
 
         // The comments form is HTML to do assertions by contains
         $cf = $item->CommentsForm();
-        $expected = '<form id="Form_CommentsForm" action="/CommentingController'
+        $expected = '<form id="Form_CommentsForm" action="/comments'
         . '/CommentsForm" method="post" enctype="application/x-www-form-urlenco'
         . 'ded">';
         $this->assertContains($expected, $cf);
@@ -231,13 +253,13 @@ class CommentsExtensionTest extends SapphireTest
         $expected = '<input type="submit" name="action_doPostComment" value="Post" class="action" id="Form_CommentsForm_action_doPostComment"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<a href="/CommentingController/spam/';
+        $expected = '<a href="/comments/spam/';
         $this->assertContains($expected, $cf);
 
         $expected = '<p>Reply to firstComA 1</p>';
         $this->assertContains($expected, $cf);
 
-        $expected = '<a href="/CommentingController/delete';
+        $expected = '<a href="/comments/delete';
         $this->assertContains($expected, $cf);
 
         $expected = '<p>Reply to firstComA 2</p>';
@@ -250,28 +272,36 @@ class CommentsExtensionTest extends SapphireTest
         $backend = Requirements::backend();
         $this->assertEquals(
             array(),
-            $backend->get_javascript()
+            $backend->getJavascript()
         );
 
-        Config::inst()->update('CommentableItem', 'comments', array(
-            'include_js' => true
+        Config::inst()->update(
+            CommentableItem::class,
+            'comments',
+            array(
+                'include_js' => true
             )
         );
         $cf = $item->CommentsForm();
 
         $backend = Requirements::backend();
-        $this->assertEquals(
-            array(
-                'framework/thirdparty/jquery/jquery.js',
-                'framework/thirdparty/jquery-entwine/dist/jquery.entwine-dist.js',
-                'framework/thirdparty/jquery-validate/lib/jquery.form.js',
-                'comments/thirdparty/jquery-validate/jquery.validate.min.js',
-                'framework/javascript/i18n.js',
-                'comments/javascript/lang/en.js',
-                'comments/javascript/CommentsInterface.js'
-            ),
-            $backend->get_javascript()
+        $javascriptRequirements = $backend->getJavascript();
+        $expected = array(
+            'framework/admin/thirdparty/jquery/jquery.js',
+            'framework/admin/thirdparty/jquery-entwine/dist/jquery.entwine-dist.js',
+            'framework/admin/thirdparty/jquery-form/jquery.form.js',
+            'comments/thirdparty/jquery-validate/jquery.validate.min.js',
+            /**
+             * @todo: Is there a replacement for this? The docs are unclear
+             */
+            // 'framework/admin/client/src/i18n.js',
+            'comments/javascript/lang/en.js',
+            'comments/javascript/CommentsInterface.js'
         );
+
+        foreach ($expected as $javascript) {
+            $this->assertArrayHasKey($javascript, $javascriptRequirements);
+        };
     }
 
     public function testAttachedToSiteTree()
@@ -281,7 +311,7 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testPagedComments()
     {
-        $item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
         // Ensure Created times are set, as order not guaranteed if all set to 0
         $comments = $item->PagedComments()->sort('ID');
         $ctr = 0;
@@ -299,19 +329,19 @@ class CommentsExtensionTest extends SapphireTest
         }
 
         $this->assertEquals(
-            $this->objFromFixture('Comment', 'firstComA')->Comment,
+            $this->objFromFixture(Comment::class, 'firstComA')->Comment,
             $results[3]->Comment
         );
         $this->assertEquals(
-            $this->objFromFixture('Comment', 'firstComAChild1')->Comment,
+            $this->objFromFixture(Comment::class, 'firstComAChild1')->Comment,
             $results[2]->Comment
         );
         $this->assertEquals(
-            $this->objFromFixture('Comment', 'firstComAChild2')->Comment,
+            $this->objFromFixture(Comment::class, 'firstComAChild2')->Comment,
             $results[1]->Comment
         );
         $this->assertEquals(
-            $this->objFromFixture('Comment', 'firstComAChild3')->Comment,
+            $this->objFromFixture(Comment::class, 'firstComAChild3')->Comment,
             $results[0]->Comment
         );
 
@@ -330,37 +360,51 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testUpdateCMSFields()
     {
-        Config::inst()->update('CommentableItem', 'comments', array(
-            'require_login_cms' => false
+        Config::inst()->update(
+            CommentableItem::class,
+            'comments',
+            array(
+                'require_login_cms' => false
             )
         );
         $this->logInWithPermission('ADMIN');
-        $item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
         $item->ProvideComments = true;
         $item->write();
         $fields = $item->getCMSFields();
-        CommentTestHelper::assertFieldsForTab($this, 'Root.Comments',
+        CommentTestHelper::assertFieldsForTab(
+            $this,
+            'Root.Comments',
             array('CommentsNewCommentsTab', 'CommentsCommentsTab', 'CommentsSpamCommentsTab'),
             $fields
         );
 
-        CommentTestHelper::assertFieldsForTab($this, 'Root.Comments.CommentsNewCommentsTab',
+        CommentTestHelper::assertFieldsForTab(
+            $this,
+            'Root.Comments.CommentsNewCommentsTab',
             array('NewComments'),
             $fields
         );
 
-        CommentTestHelper::assertFieldsForTab($this, 'Root.Comments.CommentsCommentsTab',
+        CommentTestHelper::assertFieldsForTab(
+            $this,
+            'Root.Comments.CommentsCommentsTab',
             array('ApprovedComments'),
             $fields
         );
 
-        CommentTestHelper::assertFieldsForTab($this,  'Root.Comments.CommentsSpamCommentsTab',
+        CommentTestHelper::assertFieldsForTab(
+            $this,
+            'Root.Comments.CommentsSpamCommentsTab',
             array('SpamComments'),
             $fields
         );
 
-        Config::inst()->update('CommentableItem', 'comments', array(
-            'require_login_cms' => true
+        Config::inst()->update(
+            CommentableItem::class,
+            'comments',
+            array(
+                'require_login_cms' => true
             )
         );
         $fields = $item->getCMSFields();
@@ -376,9 +420,12 @@ class CommentsExtensionTest extends SapphireTest
             $fields
         );
 
-        Config::inst()->update('CommentableItem', 'comments', array(
-            'require_login_cms' => true,
-            'require_moderation_cms' => true
+        Config::inst()->update(
+            CommentableItem::class,
+            'comments',
+            array(
+                'require_login_cms' => true,
+                'require_moderation_cms' => true
             )
         );
 
@@ -386,7 +433,8 @@ class CommentsExtensionTest extends SapphireTest
         CommentTestHelper::assertFieldsForTab(
             $this,
             'Root.Settings',
-            array('Comments', 'ModerationRequired'), $fields
+            array('Comments', 'ModerationRequired'),
+            $fields
         );
         $settingsTab = $fields->findOrMakeTab('Root.Settings');
         $settingsChildren = $settingsTab->getChildren();
@@ -400,11 +448,9 @@ class CommentsExtensionTest extends SapphireTest
         );
     }
 
-
-
     public function testDeprecatedMethods()
     {
-        $item = $this->objFromFixture('CommentableItem', 'first');
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
         $methodNames = array(
             'getRssLinkPage',
             'getRssLink',
@@ -419,8 +465,8 @@ class CommentsExtensionTest extends SapphireTest
                 $item->$methodName();
                 $this->fail('Method ' . $methodName .' should be depracated');
             } catch (PHPUnit_Framework_Error_Deprecated $e) {
-                $expected = 'CommentsExtension->' . $methodName . ' is '.
-                'deprecated.';
+                $expected = 'SilverStripe\\Comments\\Extensions\\CommentsExtension->' . $methodName . ' is '
+                . 'deprecated.';
                 $this->assertStringStartsWith($expected, $e->getMessage());
             }
         }

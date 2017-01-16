@@ -1,4 +1,4 @@
-Member:
+SilverStripe\Security\Member:
   commentadmin:
     FirstName: admin
   commentadmin2:
@@ -6,17 +6,17 @@ Member:
   visitor:
     FirstName: visitor
 
-Group:
+SilverStripe\Security\Group:
   commentadmins:
     Title: Admin
-    Members: =>Member.commentadmin, =>Member.commentadmin2
+    Members: =>SilverStripe\Security\Member.commentadmin, =>SilverStripe\Security\Member.commentadmin2
 
-Permission:
+SilverStripe\Security\Permission:
   admin:
     Code: CMS_ACCESS_CommentAdmin
-    Group: =>Group.commentadmins
+    Group: =>SilverStripe\Security\Group.commentadmins
 
-CommentableItem:
+SilverStripe\Comments\Tests\Stubs\CommentableItem:
   first:
     Title: First
     ProvideComments: 1
@@ -35,166 +35,158 @@ CommentableItem:
     ProvideComments: 1
     Title: spammed
     ModerationRequired: 'None'
+  moderated:
+    ProvideComments: 1
+    Title: Moderate everything
+    ModerationRequired: Required
+    CommentsRequireLogin: 0
 
-Comment:
+SilverStripe\Comments\Model\Comment:
   firstComA:
-    ParentID: =>CommentableItem.first
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.first
     Name: FA
     Comment: textFA
-    BaseClass: CommentableItem
     Moderated: 1
     IsSpam:
     Depth: 1
   firstComAChild1:
-    ParentID: =>CommentableItem.first
-    ParentCommentID: =>Comment.firstComA
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.first
+    ParentComment: =>SilverStripe\Comments\Model\Comment.firstComA
     Name: John Smith
     Comment: Reply to firstComA 1
-    BaseClass: CommentableItem
     Moderated: 1
     IsSpam: 0
     Depth: 2
   firstComAChild2:
-    ParentID: =>CommentableItem.first
-    ParentCommentID: =>Comment.firstComA
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.first
+    ParentComment: =>SilverStripe\Comments\Model\Comment.firstComA
     Name: John Smith
     Comment: Reply to firstComA 2
-    BaseClass: CommentableItem
     Moderated: 1
     IsSpam: 0
     Depth: 2
   firstComAChild3:
-    ParentID: =>CommentableItem.first
-    ParentCommentID: =>Comment.firstComA
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.first
+    ParentComment: =>SilverStripe\Comments\Model\Comment.firstComA
     Name: John Smith
     Comment: Reply to firstComA 3
-    BaseClass: CommentableItem
     Moderated: 1
     IsSpam: 0
     Depth: 2
   secondComA:
-    ParentID: =>CommentableItem.second
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.second
     Name: SA
     Comment: textSA
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   secondComB:
-    ParentID: =>CommentableItem.second
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.second
     Name: SB
     Comment: textSB
     Moderated: 0
     IsSpam: 0
-    BaseClass: CommentableItem
   secondComC:
-    ParentID: =>CommentableItem.second
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.second
     Name: SB
     Comment: textSB
     Moderated: 1
     IsSpam: 1
-    BaseClass: CommentableItem
   thirdComA:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TA
     Comment: textTA
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   thirdComB:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TB
     Comment: textTB
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   thirdComC:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   thirdComD:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TC
     Comment: textTC
     Moderated: 1
-    BaseClass: CommentableItem
   thirdComE:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TC
     Comment: textTC
     Moderated: 1
-    BaseClass: CommentableItem
   thirdComF:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   thirdComG:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   thirdComH:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   thirdComI:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   thirdComJ:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   thirdComK:
-    ParentID: =>CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   disabledCom:
-    ParentID: =>CommentableItem.nocomments
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.nocomments
     Name: Disabled
     Moderated: 0
     IsSpam: 1
-    BaseClass: CommentableItem
   testCommentList1:
-    ParentID: =>CommentableItem.spammed
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.spammed
     Name: Comment 1
     Moderated: 0
     IsSpam: 0
-    BaseClass: CommentableItem
   testCommentList2:
-    ParentID: =>CommentableItem.spammed
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.spammed
     Name: Comment 2
     Moderated: 1
     IsSpam: 1
-    BaseClass: CommentableItem
   testCommentList3:
-    ParentID: =>CommentableItem.spammed
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.spammed
     Name: Comment 3
     Moderated: 1
     IsSpam: 0
-    BaseClass: CommentableItem
   testCommentList4:
-    ParentID: =>CommentableItem.spammed
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.spammed
     Name: Comment 4
     Moderated: 0
     IsSpam: 1
-    BaseClass: CommentableItem
+  testModeratedComment1:
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.moderated
+    Name: Moderated comment 1
+    Moderated: 0
+    IsSpam: 0
+  testModeratedComment2:
+    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.moderated
+    Name: Moderated comment 2
+    Moderated: 0
+    IsSpam: 1

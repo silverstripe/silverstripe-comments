@@ -1,10 +1,14 @@
 <?php
 
+namespace SilverStripe\Comments\Tests;
+
+use SilverStripe\Dev\SapphireTest;
+
 class CommentsGridFieldConfigTest extends SapphireTest
 {
-    public function test__construct()
+    public function testConstruct()
     {
-        $config = new CommentsGridFieldConfigTest();
+        // $config = new CommentsGridFieldConfigTest();
         $this->markTestSkipped('TODO');
     }
 }

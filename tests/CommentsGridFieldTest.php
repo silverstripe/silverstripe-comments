@@ -1,16 +1,23 @@
 <?php
 
+namespace SilverStripe\Comments\Tests;
+
+use ReflectionClass;
+use ReflectionException;
+use SilverStripe\Comments\Model\Comment;
+use SilverStripe\Comments\Admin\CommentsGridField;
+use SilverStripe\Dev\SapphireTest;
+
 class CommentsGridFieldTest extends SapphireTest
 {
     public function testNewRow()
     {
         $gridfield = new CommentsGridField('testfield', 'testfield');
-       //   protected function newRow($total, $index, $record, $attributes, $content) {
-       $comment = new Comment();
+        //   protected function newRow($total, $index, $record, $attributes, $content) {
+        $comment = new Comment();
         $comment->Name = 'Fred Bloggs';
         $comment->Comment = 'This is a comment';
         $attr = array();
-
 
         try {
             $class  = new ReflectionClass($gridfield);

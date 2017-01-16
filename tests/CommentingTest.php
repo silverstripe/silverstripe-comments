@@ -1,8 +1,17 @@
 <?php
 
+namespace SilverStripe\Comments\Tests;
+
+use PHPUnit_Framework_Error_Deprecated;
+use SilverStripe\Comments\Commenting;
+use SilverStripe\Comments\Extensions\CommentsExtension;
+use SilverStripe\Comments\Tests\Stubs\CommentableItem;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Dev\SapphireTest;
+use SilverStripe\Security\Member;
+
 class CommentingTest extends SapphireTest
 {
-
     public function setUpOnce()
     {
         parent::setUpOnce();
@@ -13,7 +22,7 @@ class CommentingTest extends SapphireTest
         $methods = array('add', 'remove', 'has_commenting');
         foreach ($methods as $methodName) {
             try {
-                Commenting::$methodName('Member');
+                Commenting::$methodName(Member::class);
             } catch (PHPUnit_Framework_Error_Deprecated $e) {
                 $expected = 'Using Commenting:' . $methodName .' is deprecated.'
                           . ' Please use the config API instead';
@@ -22,18 +31,17 @@ class CommentingTest extends SapphireTest
         }
     }
 
-
-    public function test_set_config_value()
+    public function testSetConfigValue()
     {
         //    public static function set_config_value($class, $key, $value = false) {
         Commenting::set_config_value(
-            'CommentableItem',
+            CommentableItem::class,
             'comments_holder_id',
             'commentable_item'
         );
 
         $config = Config::inst()->get(
-            'CommentableItem',
+            CommentableItem::class,
             'comments'
         );
         $actual = $config['comments_holder_id'];
@@ -49,7 +57,7 @@ class CommentingTest extends SapphireTest
         );
 
         $config = Config::inst()->get(
-            'CommentsExtension',
+            CommentsExtension::class,
             'comments'
         );
         $actual = $config['comments_holder_id'];
@@ -59,19 +67,23 @@ class CommentingTest extends SapphireTest
         );
     }
 
-    public function test_get_config_value()
+    public function testGetConfigValue()
     {
-        Config::inst()->update('CommentableItem', 'comments',
+        Config::inst()->update(
+            CommentableItem::class,
+            'comments',
             array(
             'comments_holder_id' => 'commentable_item'
             )
         );
         $this->assertEquals(
             'commentable_item',
-            Commenting::get_config_value('CommentableItem', 'comments_holder_id')
+            Commenting::get_config_value(CommentableItem::class, 'comments_holder_id')
         );
 
-        Config::inst()->update('CommentsExtension', 'comments',
+        Config::inst()->update(
+            CommentsExtension::class,
+            'comments',
             array(
             'comments_holder_id' => 'comments_extension'
             )
@@ -86,12 +98,14 @@ class CommentingTest extends SapphireTest
             'InvalidArgumentException',
             'Member does not have commenting enabled'
         );
-        Commenting::get_config_value('Member', 'comments_holder_id');
+        Commenting::get_config_value(Member::class, 'comments_holder_id');
     }
 
-    public function test_config_value_equals()
+    public function testConfigValueEquals()
     {
-        Config::inst()->update('CommentableItem', 'comments',
+        Config::inst()->update(
+            CommentableItem::class,
+            'comments',
             array(
             'comments_holder_id' => 'some_value'
             )
@@ -99,7 +113,7 @@ class CommentingTest extends SapphireTest
 
         $this->assertTrue(
             Commenting::config_value_equals(
-                'CommentableItem',
+                CommentableItem::class,
                 'comments_holder_id',
                 'some_value'
             )
@@ -107,33 +121,33 @@ class CommentingTest extends SapphireTest
 
         $this->assertNull(
             Commenting::config_value_equals(
-                'CommentableItem',
+                CommentableItem::class,
                 'comments_holder_id',
                 'not_some_value'
             )
         );
     }
 
-    public function test_add()
+    public function testAdd()
     {
-        Commenting::add('Member', array('comments_holder_id' => 'test_add_value'));
+        Commenting::add(Member::class, array('comments_holder_id' => 'test_add_value'));
 
         $config = Config::inst()->get(
-                'Member',
-                'comments'
-            );
+            Member::class,
+            'comments'
+        );
         $actual = $config['comments_holder_id'];
         $this->assertEquals(
             'test_add_value',
             $actual
         );
 
-        Commenting::add('Member');
+        Commenting::add(Member::class);
 
         $config = Config::inst()->get(
-                'Member',
-                'comments'
-            );
+            Member::class,
+            'comments'
+        );
         $actual = $config['comments_holder_id'];
         // no settings updated
         $this->assertEquals(
@@ -142,39 +156,45 @@ class CommentingTest extends SapphireTest
         );
 
         $this->setExpectedException('InvalidArgumentException', "\$settings needs to be an array or null");
-        Commenting::add('Member', 'illegal format, not an array');
+        Commenting::add(Member::class, 'illegal format, not an array');
     }
 
-    public function test_can_member_post()
+    public function testCanMemberPost()
     {
         // logout
         if ($member = Member::currentUser()) {
             $member->logOut();
         }
 
-        Config::inst()->update('CommentableItem', 'comments',
+        Config::inst()->update(
+            CommentableItem::class,
+            'comments',
             array(
-            'require_login' => false
+                'require_login' => false
             )
         );
-        $this->assertTrue(Commenting::can_member_post('CommentableItem'));
+        $this->assertTrue(Commenting::can_member_post(CommentableItem::class));
 
-        Config::inst()->update('CommentableItem', 'comments',
+        Config::inst()->update(
+            CommentableItem::class,
+            'comments',
             array(
-            'require_login' => true
+                'require_login' => true
             )
         );
-        $this->assertFalse(Commenting::can_member_post('CommentableItem'));
+        $this->assertFalse(Commenting::can_member_post(CommentableItem::class));
 
         $this->logInWithPermission('CMS_ACCESS_CommentAdmin');
-        $this->assertTrue(Commenting::can_member_post('CommentableItem'));
+        $this->assertTrue(Commenting::can_member_post(CommentableItem::class));
 
-        Config::inst()->update('CommentableItem', 'comments',
+        Config::inst()->update(
+            CommentableItem::class,
+            'comments',
             array(
-            'require_login' => false
+                'require_login' => false
             )
         );
 
-        $this->assertTrue(Commenting::can_member_post('CommentableItem'));
+        $this->assertTrue(Commenting::can_member_post(CommentableItem::class));
     }
 }

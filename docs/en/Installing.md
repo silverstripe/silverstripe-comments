@@ -18,7 +18,7 @@ After you have finished downloading the file, extract the downloaded file to you
 
 ## All
 
-Run a database rebuild by visiting *http://yoursite.com/dev/build*. This will add the required database columns and tables for the module to function.
+Run a database rebuild by visiting *http://yoursite.com/dev/build?flush=1*. This will add the required database columns and tables for the module to function, and refresh the configuration manifest.
 
 If you previously had SilverStripe version 2.4 installed then you'll also need to run the migration script provided. More information on this is provided in the next section.
 
@@ -34,4 +34,4 @@ For more configuration options see [Configuration](Configuration.md).
 
 This module replaces the built-in commenting system available in versions up to SilverStripe 2.4. To migrate from that you'll need to run `dev/build` after installing the module.
 
-You can do this via sake (`sake dev/build`) or via a web browser by visiting `http://yoursite.com/dev/build`
+You can do this via sake (`sake dev/build flush=1`) or via a web browser by visiting `http://yoursite.com/dev/build?flush=1`

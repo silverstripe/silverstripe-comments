@@ -1,5 +1,10 @@
 <?php
 
+namespace SilverStripe\Comments\Admin;
+
+use SilverStripe\Forms\FormField;
+use SilverStripe\Forms\GridField\GridField;
+
 class CommentsGridField extends GridField
 {
     /**

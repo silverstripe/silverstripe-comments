@@ -1,5 +1,14 @@
 <?php
 
+namespace SilverStripe\Comments;
+
+use InvalidArgumentException;
+use SilverStripe\Comments\Extensions\CommentsExtension;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Dev\Deprecation;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+
 /**
  * Helper Class for storing the configuration options. Retains the mapping between
  * objects which have comments attached and the related configuration options.
@@ -15,7 +24,6 @@
  */
 class Commenting
 {
-
     /**
      * Adds commenting to a {@link DataObject}
      *
@@ -23,14 +31,14 @@ class Commenting
      *
      * @param string classname to add commenting to
      * @param array $settings Settings. See {@link self::$default_config} for
-     *			available settings
-     * 
+     *          available settings
+     *
      * @throws InvalidArgumentException
      */
     public static function add($class, $settings = false)
     {
         Deprecation::notice('2.0', 'Using Commenting::add is deprecated. Please use the config API instead');
-        Config::inst()->update($class, 'extensions', array('CommentsExtension'));
+        Config::inst()->update($class, 'extensions', array(CommentsExtension::class));
 
         // Check if settings must be customised
         if ($settings === false) {
@@ -53,7 +61,7 @@ class Commenting
     public static function remove($class)
     {
         Deprecation::notice('2.0', 'Using Commenting::remove is deprecated. Please use the config API instead');
-        $class::remove_extension('CommentsExtension');
+        $class::remove_extension(CommentsExtension::class);
     }
 
     /**
@@ -66,7 +74,7 @@ class Commenting
     public static function has_commenting($class)
     {
         Deprecation::notice('2.0', 'Using Commenting::has_commenting is deprecated. Please use the config API instead');
-        return $class::has_extension('CommentsExtension');
+        return $class::has_extension(CommentsExtension::class);
     }
 
     /**
@@ -75,16 +83,16 @@ class Commenting
      *
      * @deprecated since version 2.0
      *
-     * @param string $class Class to set the value on. Passing 'all' will set it to all 
-     *			active mappings
+     * @param string $class Class to set the value on. Passing 'all' will set it to all
+     *          active mappings
      * @param string $key setting to change
      * @param mixed $value value of the setting
      */
     public static function set_config_value($class, $key, $value = false)
     {
         Deprecation::notice('2.0', 'Commenting::set_config_value is deprecated. Use the config api instead');
-        if ($class === "all") {
-            $class = 'CommentsExtension';
+        if ($class === 'all') {
+            $class = CommentsExtension::class;
         }
         Config::inst()->update($class, 'comments', array($key => $value));
     }
@@ -93,7 +101,7 @@ class Commenting
      * Returns a given config value for a commenting class
      *
      * @deprecated since version 2.0
-     * 
+     *
      * @param string $class
      * @param string $key config value to return
      *
@@ -110,8 +118,8 @@ class Commenting
 
         // Get settings
         if (!$class) {
-            $class = 'CommentsExtension';
-        } elseif (!$class::has_extension('CommentsExtension')) {
+            $class = CommentsExtension::class;
+        } elseif (!$class::has_extension(CommentsExtension::class)) {
             throw new InvalidArgumentException("$class does not have commenting enabled");
         }
         return singleton($class)->getCommentsOption($key);
@@ -140,7 +148,7 @@ class Commenting
      * Return whether a user can post on a given commenting instance
      *
      * @deprecated since version 2.0
-     * 
+     *
      * @param string $class
      * @return boolean true
      */
