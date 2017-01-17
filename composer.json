@@ -12,6 +12,7 @@
         "colymba/gridfield-bulk-editing-tools": "~2.1"
     },
     "suggest": {
+        "ezyang/htmlpurifier": "Standards compliant HTML filter written in PHP",
         "silverstripe/cms": "The SilverStripe Content Management System"
     },
     "require-dev": {
