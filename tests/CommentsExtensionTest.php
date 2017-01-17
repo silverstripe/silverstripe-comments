@@ -2,7 +2,6 @@
 
 namespace SilverStripe\Comments\Tests;
 
-use PHPUnit_Framework_Error_Deprecated;
 use SilverStripe\Comments\Extensions\CommentsExtension;
 use SilverStripe\Comments\Model\Comment;
 use SilverStripe\Comments\Tests\CommentTestHelper;
@@ -199,18 +198,21 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testGetCommentRSSLink()
     {
+        Config::inst()->update('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
+
         $item = $this->objFromFixture(CommentableItem::class, 'first');
         $link = $item->getCommentRSSLink();
-        $this->assertEquals('/comments/rss', $link);
+        $this->assertEquals('http://unittesting.local/comments/rss', $link);
     }
-
 
     public function testGetCommentRSSLinkPage()
     {
+        Config::inst()->update('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
+
         $item = $this->objFromFixture(CommentableItem::class, 'first');
         $page = $item->getCommentRSSLinkPage();
         $this->assertEquals(
-            '/comments/rss/SilverStripe-Comments-Tests-Stubs-CommentableItem/' . $item->ID,
+            'http://unittesting.local/comments/rss/SilverStripe-Comments-Tests-Stubs-CommentableItem/' . $item->ID,
             $page
         );
     }
@@ -446,31 +448,5 @@ class CommentsExtensionTest extends SapphireTest
             array('ProvideComments', 'CommentsRequireLogin'),
             $fields
         );
-    }
-
-    public function testDeprecatedMethods()
-    {
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
-        $methodNames = array(
-            'getRssLinkPage',
-            'getRssLink',
-            'PageComments',
-            'getPostingRequiresPermission',
-            'canPost',
-            'getCommentsConfigured'
-        );
-
-        foreach ($methodNames as $methodName) {
-            try {
-                $item->$methodName();
-                $this->fail('Method ' . $methodName .' should be depracated');
-            } catch (PHPUnit_Framework_Error_Deprecated $e) {
-                $expected = 'SilverStripe\\Comments\\Extensions\\CommentsExtension->' . $methodName . ' is '
-                . 'deprecated.';
-                $this->assertStringStartsWith($expected, $e->getMessage());
-            }
-        }
-
-        // ooh,  $this->setExpectedException('ExpectedException', 'Expected Message');
     }
 }

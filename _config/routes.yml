@@ -5,7 +5,3 @@ After: framework/routes#coreroutes
 SilverStripe\Control\Director:
   rules:
     comments: SilverStripe\Comments\Controllers\CommentingController
-    # handle old 2.4 style urls
-    CommentingController//$Action/$ID/$OtherID: SilverStripe\Comments\Controllers\CommentingController
-    PageComments/$Action/$ID/$OtherID: SilverStripe\Comments\Controllers\CommentingController
-    PageCommentsController/$Action/$ID/$OtherID: SilverStripe\Comments\Controllers\CommentingController

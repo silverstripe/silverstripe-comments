@@ -24,14 +24,10 @@ use SilverStripe\Security\Permission;
  */
 class CommentsTest extends FunctionalTest
 {
-    /**
-     * {@inheritDoc}
-     */
+    
     public static $fixture_file = 'comments/tests/CommentsTest.yml';
 
-    /**
-     * {@inheritDoc}
-     */
+    
     protected $extraDataObjects = array(
         CommentableItem::class,
         CommentableItemEnabled::class,

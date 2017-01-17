@@ -1,9 +1,7 @@
 mappings:
-  Commenting: SilverStripe\Comments\Commenting
   CommentAdmin: SilverStripe\Comments\Admin\CommentAdmin
   CommentsGridField: SilverStripe\Comments\Admin\CommentsGridField
   CommentsGridFieldAction: SilverStripe\Comments\Admin\CommentsGridFieldAction
-  CommentsGridFieldBulkAction: SilverStripe\Comments\Admin\CommentsGridFieldBulkAction
   CommentsGridFieldBulkAction_Handlers: SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\Handlers
   CommentsGridFieldConfig: SilverStripe\Comments\Admin\CommentsGridFieldConfig
   CommentingController: SilverStripe\Comments\Controllers\CommentingController

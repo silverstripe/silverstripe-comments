@@ -2,6 +2,7 @@
 
 namespace SilverStripe\Comments\Tasks;
 
+use SilverStripe\Comments\Model\Comment;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\BuildTask;
 use SilverStripe\ORM\DB;
@@ -13,26 +14,24 @@ use SilverStripe\ORM\DB;
  */
 class MigrateCommentParentsTask extends BuildTask
 {
-    /**
-     * {@inheritDoc}
-     */
     private static $segment = 'MigrateCommentParentsTask';
 
-    /**
-     * {@inheritDoc}
-     */
     protected $title = 'Migrate Comment Parent classes from 3.x';
 
-    /**
-     * {@inheritDoc}
-     */
     protected $description = 'Migrates all 3.x Comment BaseClass fields to the new ParentClass fields in 4.0';
 
     /**
-     * {@inheritDoc}
+     * @param HTTPRequest $request
      */
     public function run($request)
     {
+        // Check if anything needs to be done
+        $tableName = Comment::getSchema()->tableName(Comment::class);
+        if (!DB::get_schema()->hasField($tableName, 'BaseClass')) {
+            DB::alteration_message('"BaseClass" does not exist on "' . $tableName . '", nothing to upgrade.', 'notice');
+            return;
+        }
+
         // Set the class names to fully qualified class names first
         $remapping = Config::inst()->get('SilverStripe\\ORM\\DatabaseAdmin', 'classname_value_remapping');
         $updateQuery = "UPDATE \"Comment\" SET \"BaseClass\" = ? WHERE \"BaseClass\" = ?";

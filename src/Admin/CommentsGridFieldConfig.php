@@ -3,14 +3,11 @@
 namespace SilverStripe\Comments\Admin;
 
 use Colymba\BulkManager\GridFieldBulkManager;
-use SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\Handlers;
+use SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\Handler;
 use SilverStripe\Core\Convert;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldDataColumns;
 
-/**
- * @package comments
- */
 class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
 {
     public function __construct($itemsPerPage = 25)
@@ -39,7 +36,7 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         $manager->addBulkAction(
             'spam',
             _t('CommentsGridFieldConfig.SPAM', 'Spam'),
-            Handlers::class,
+            Handler::class,
             array(
                 'isAjax' => true,
                 'icon' => 'cross',
@@ -50,7 +47,7 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         $manager->addBulkAction(
             'approve',
             _t('CommentsGridFieldConfig.APPROVE', 'Approve'),
-            Handlers::class,
+            Handler::class,
             array(
                 'isAjax' => true,
                 'icon' => 'cross',

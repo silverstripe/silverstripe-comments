@@ -310,20 +310,6 @@ class CommentsExtension extends DataExtension
     }
 
     /**
-     * Check if comments are configured for this page even if they are currently disabled.
-     * Do not include the comments on pages which don't have id's such as security pages
-     *
-     * @deprecated since version 2.0
-     *
-     * @return boolean
-     */
-    public function getCommentsConfigured()
-    {
-        Deprecation::notice('2.0', 'getCommentsConfigured is deprecated. Use getCommentsEnabled instead');
-        return true; // by virtue of all classes with this extension being 'configured'
-    }
-
-    /**
      * Determine if comments are enabled for this instance
      *
      * @return boolean
@@ -354,15 +340,6 @@ class CommentsExtension extends DataExtension
     }
 
     /**
-     * @deprecated since version 2.0
-     */
-    public function getPostingRequiresPermission()
-    {
-        Deprecation::notice('2.0', 'Use getPostingRequiredPermission instead');
-        return $this->getPostingRequiredPermission();
-    }
-
-    /**
      * Permission codes required in order to post (or empty if none required)
      *
      * @return string|array Permission or list of permissions, if required
@@ -370,12 +347,6 @@ class CommentsExtension extends DataExtension
     public function getPostingRequiredPermission()
     {
         return $this->owner->getCommentsOption('required_permission');
-    }
-
-    public function canPost()
-    {
-        Deprecation::notice('2.0', 'Use canPostComment instead');
-        return $this->canPostComment();
     }
 
     /**
@@ -431,12 +402,6 @@ class CommentsExtension extends DataExtension
         return $this->owner->canEdit($member);
     }
 
-    public function getRssLink()
-    {
-        Deprecation::notice('2.0', 'Use getCommentRSSLink instead');
-        return $this->getCommentRSSLink();
-    }
-
     /**
      * Gets the RSS link to all comments
      *
@@ -444,13 +409,7 @@ class CommentsExtension extends DataExtension
      */
     public function getCommentRSSLink()
     {
-        return Controller::join_links(Director::baseURL(), 'comments/rss');
-    }
-
-    public function getRssLinkPage()
-    {
-        Deprecation::notice('2.0', 'Use getCommentRSSLinkPage instead');
-        return $this->getCommentRSSLinkPage();
+        return Director::absoluteURL('comments/rss');
     }
 
     /**
@@ -522,16 +481,6 @@ class CommentsExtension extends DataExtension
         $class = $this->ownerBaseClass;
 
         return (is_subclass_of($class, SiteTree::class)) || ($class == SiteTree::class);
-    }
-
-    /**
-     * @deprecated 1.0 Please use {@link CommentsExtension->CommentsForm()}
-     */
-    public function PageComments()
-    {
-        // This method is very commonly used, don't throw a warning just yet
-        Deprecation::notice('1.0', '$PageComments is deprecated. Please use $CommentsForm');
-        return $this->CommentsForm();
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace SilverStripe\Comments\Admin\CommentsGridFieldBulkAction;
 
+use Colymba\BulkManager\GridFieldBulkActionHandler;
 use SilverStripe\Core\Convert;
-use SilverStripe\Comments\Admin\CommentsGridFieldBulkAction;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 
@@ -12,19 +12,13 @@ use SilverStripe\Control\HTTPResponse;
  *
  * @package comments
  */
-class Handlers extends CommentsGridFieldBulkAction
+class Handler extends GridFieldBulkActionHandler
 {
-    /**
-     * {@inheritDoc}
-     */
     private static $allowed_actions = array(
         'spam',
         'approve',
     );
 
-    /**
-     * {@inheritDoc}
-     */
     private static $url_handlers = array(
         'spam' => 'spam',
         'approve' => 'approve',
