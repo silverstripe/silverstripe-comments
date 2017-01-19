@@ -2,7 +2,7 @@
 
 namespace SilverStripe\Comments\Admin;
 
-use Colymba\BulkManager\GridFieldBulkManager;
+use Colymba\BulkManager\BulkManager;
 use SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\Handler;
 use SilverStripe\Core\Convert;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
@@ -31,7 +31,7 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         ));
 
         // Add bulk option
-        $manager = new GridFieldBulkManager();
+        $manager = new BulkManager();
 
         $manager->addBulkAction(
             'spam',
