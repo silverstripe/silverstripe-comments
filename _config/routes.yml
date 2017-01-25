@@ -2,9 +2,6 @@
 Name: commentroutes
 After: framework/routes#coreroutes
 ---
-Director:
+SilverStripe\Control\Director:
   rules:
-    # handle old 2.4 style urls
-    'CommentingController//$Action/$ID/$OtherID': 'CommentingController'
-    'PageComments/$Action/$ID/$OtherID': 'CommentingController'
-    'PageComments_Controller/$Action/$ID/$OtherID': 'CommentingController'
+    comments: SilverStripe\Comments\Controllers\CommentingController

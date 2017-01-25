@@ -1,5 +1,14 @@
 <?php
 
+namespace SilverStripe\Comments\Admin;
+
+use SilverStripe\Comments\Model\Comment;
+use SilverStripe\Control\Controller;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridField_ActionProvider;
+use SilverStripe\Forms\GridField\GridField_ColumnProvider;
+use SilverStripe\Forms\GridField\GridField_FormAction;
+
 class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_ActionProvider
 {
     /**
@@ -47,7 +56,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
             return;
         }
 
-        $field = "";
+        $field = '';
 
         if (!$record->IsSpam || !$record->Moderated) {
             $field .= GridField_FormAction::create(
@@ -86,7 +95,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
     public function handleAction(GridField $gridField, $actionName, $arguments, $data)
     {
         if ($actionName == 'spam') {
-            $comment = Comment::get()->byID($arguments["RecordID"]);
+            $comment = Comment::get()->byID($arguments['RecordID']);
             $comment->markSpam();
 
             // output a success message to the user
@@ -97,7 +106,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
         }
 
         if ($actionName == 'approve') {
-            $comment = Comment::get()->byID($arguments["RecordID"]);
+            $comment = Comment::get()->byID($arguments['RecordID']);
             $comment->markApproved();
 
             // output a success message to the user

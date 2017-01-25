@@ -1,5 +1,17 @@
 <?php
 
+namespace SilverStripe\Comments\Admin;
+
+use SilverStripe\Admin\LeftAndMain;
+use SilverStripe\Comments\Admin\CommentsGridField;
+use SilverStripe\Comments\Model\Comment;
+use SilverStripe\Forms\Tab;
+use SilverStripe\Forms\TabSet;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\Form;
+use SilverStripe\Security\PermissionProvider;
+use SilverStripe\Security\Security;
+
 /**
  * Comment administration system within the CMS
  *

@@ -1,5 +1,13 @@
 <?php
 
+namespace SilverStripe\Comments\Admin;
+
+use Colymba\BulkManager\BulkManager;
+use SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\Handler;
+use SilverStripe\Core\Convert;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\Forms\GridField\GridFieldDataColumns;
+
 class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
 {
     public function __construct($itemsPerPage = 25)
@@ -11,7 +19,7 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         $this->addComponent(new CommentsGridFieldAction());
 
         // Format column
-        $columns = $this->getComponentByType('GridFieldDataColumns');
+        $columns = $this->getComponentByType(GridFieldDataColumns::class);
         $columns->setFieldFormatting(array(
             'ParentTitle' => function ($value, &$item) {
                 return sprintf(
@@ -23,12 +31,12 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         ));
 
         // Add bulk option
-        $manager = new GridFieldBulkManager();
+        $manager = new BulkManager();
 
         $manager->addBulkAction(
-            'spam', 
-            _t('CommentsGridFieldConfig.SPAM', 'Spam'), 
-            'CommentsGridFieldBulkAction_Handlers',
+            'spam',
+            _t('CommentsGridFieldConfig.SPAM', 'Spam'),
+            Handler::class,
             array(
                 'isAjax' => true,
                 'icon' => 'cross',
@@ -37,9 +45,9 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         );
 
         $manager->addBulkAction(
-            'approve', 
-            _t('CommentsGridFieldConfig.APPROVE', 'Approve'), 
-            'CommentsGridFieldBulkAction_Handlers',
+            'approve',
+            _t('CommentsGridFieldConfig.APPROVE', 'Approve'),
+            Handler::class,
             array(
                 'isAjax' => true,
                 'icon' => 'cross',

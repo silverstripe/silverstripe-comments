@@ -32,7 +32,7 @@
 					<a href="$DeleteLink.ATT" class="delete"><% _t('CommentsInterface_singlecomment_ss.REMCOM','reject it') %></a>
 				<% end_if %>
 			</div>
-			<% if $RepliesEnabled %>
+			<% if $RepliesEnabled && $canPostComment %>
 				<a class="comment-reply-link" href="#{$ReplyForm.FormName}"><% _t('CommentsInterface_singlecomment_ss.REPLYTO','Reply to') %> $AuthorName.XML</a>
 			<% end_if %>
 		</div>

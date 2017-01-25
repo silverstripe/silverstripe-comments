@@ -1,20 +1,19 @@
 <?php
 
-/**
- * @package comments
- */
-class CommentsGridFieldBulkAction extends GridFieldBulkActionHandler
-{
-}
+namespace SilverStripe\Comments\Admin\CommentsGridFieldBulkAction;
+
+use Colymba\BulkManager\BulkAction\Handler as GridFieldBulkActionHandler;
+use SilverStripe\Core\Convert;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Control\HTTPResponse;
 
 /**
  * A {@link GridFieldBulkActionHandler} for bulk marking comments as spam
  *
  * @package comments
  */
-class CommentsGridFieldBulkAction_Handlers extends CommentsGridFieldBulkAction
+class Handler extends GridFieldBulkActionHandler
 {
-
     private static $allowed_actions = array(
         'spam',
         'approve',
@@ -25,8 +24,11 @@ class CommentsGridFieldBulkAction_Handlers extends CommentsGridFieldBulkAction
         'approve' => 'approve',
     );
 
-
-    public function spam(SS_HTTPRequest $request)
+    /**
+     * @param  HTTPRequest $request
+     * @return HTTPResponse
+     */
+    public function spam(HTTPRequest $request)
     {
         $ids = array();
 
@@ -35,7 +37,7 @@ class CommentsGridFieldBulkAction_Handlers extends CommentsGridFieldBulkAction
             $record->markSpam();
         }
 
-        $response = new SS_HTTPResponse(Convert::raw2json(array(
+        $response = new HTTPResponse(Convert::raw2json(array(
             'done' => true,
             'records' => $ids
         )));
@@ -45,8 +47,11 @@ class CommentsGridFieldBulkAction_Handlers extends CommentsGridFieldBulkAction
         return $response;
     }
 
-
-    public function approve(SS_HTTPRequest $request)
+    /**
+     * @param  HTTPRequest $request
+     * @return HTTPResponse
+     */
+    public function approve(HTTPRequest $request)
     {
         $ids = array();
 
@@ -55,7 +60,7 @@ class CommentsGridFieldBulkAction_Handlers extends CommentsGridFieldBulkAction
             $record->markApproved();
         }
 
-        $response = new SS_HTTPResponse(Convert::raw2json(array(
+        $response = new HTTPResponse(Convert::raw2json(array(
             'done' => true,
             'records' => $ids
         )));

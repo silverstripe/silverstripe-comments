@@ -1,5 +1,28 @@
 <?php
 
+namespace SilverStripe\Comments\Extensions;
+
+use SilverStripe\Comments\Admin\CommentsGridField;
+use SilverStripe\Comments\Admin\CommentsGridFieldConfig;
+use SilverStripe\Comments\Controllers\CommentingController;
+use SilverStripe\Comments\Model\Comment;
+use SilverStripe\Control\Controller;
+use SilverStripe\Control\Director;
+use SilverStripe\Control\Session;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Dev\Deprecation;
+use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\FieldGroup;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\Tab;
+use SilverStripe\Forms\TabSet;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\ORM\PaginatedList;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+use SilverStripe\View\Requirements;
+
 /**
  * Extension to {@link DataObject} to enable tracking comments.
  *
@@ -74,6 +97,13 @@ class CommentsExtension extends DataExtension
         'ModerationRequired' => 'Enum(\'None,Required,NonMembersOnly\',\'None\')',
         'CommentsRequireLogin' => 'Boolean',
     );
+
+    /**
+     * {@inheritDoc}
+     */
+    private static $has_many = [
+        'Commments' => 'SilverStripe\\Comments\\Model\\Comment.Parent'
+    ];
 
     /**
      * CMS configurable options should default to the config values, but respect
@@ -204,13 +234,13 @@ class CommentsExtension extends DataExtension
      * Returns the RelationList of all comments against this object. Can be used as a data source
      * for a gridfield with write access.
      *
-     * @return CommentList
+     * @return DataList
      */
     public function AllComments()
     {
         $order = $this->owner->getCommentsOption('order_comments_by');
-        $comments = CommentList::create($this->ownerBaseClass)
-            ->forForeignID($this->owner->ID)
+        $comments = Comment::get()
+            ->filter('ParentID', $this->owner->ID)
             ->sort($order);
         $this->owner->extend('updateAllComments', $comments);
         return $comments;
@@ -219,7 +249,7 @@ class CommentsExtension extends DataExtension
     /**
      * Returns all comments against this object, with with spam and unmoderated items excluded, for use in the frontend
      *
-     * @return CommentList
+     * @return DataList
      */
     public function AllVisibleComments()
     {
@@ -245,7 +275,7 @@ class CommentsExtension extends DataExtension
     /**
      * Returns the root level comments, with spam and unmoderated items excluded, for use in the frontend
      *
-     * @return CommentList
+     * @return DataList
      */
     public function Comments()
     {
@@ -280,20 +310,6 @@ class CommentsExtension extends DataExtension
     }
 
     /**
-     * Check if comments are configured for this page even if they are currently disabled.
-     * Do not include the comments on pages which don't have id's such as security pages
-     *
-     * @deprecated since version 2.0
-     *
-     * @return boolean
-     */
-    public function getCommentsConfigured()
-    {
-        Deprecation::notice('2.0', 'getCommentsConfigured is deprecated. Use getCommentsEnabled instead');
-        return true; // by virtue of all classes with this extension being 'configured'
-    }
-
-    /**
      * Determine if comments are enabled for this instance
      *
      * @return boolean
@@ -324,15 +340,6 @@ class CommentsExtension extends DataExtension
     }
 
     /**
-     * @deprecated since version 2.0
-     */
-    public function getPostingRequiresPermission()
-    {
-        Deprecation::notice('2.0', 'Use getPostingRequiredPermission instead');
-        return $this->getPostingRequiredPermission();
-    }
-
-    /**
      * Permission codes required in order to post (or empty if none required)
      *
      * @return string|array Permission or list of permissions, if required
@@ -340,12 +347,6 @@ class CommentsExtension extends DataExtension
     public function getPostingRequiredPermission()
     {
         return $this->owner->getCommentsOption('required_permission');
-    }
-
-    public function canPost()
-    {
-        Deprecation::notice('2.0', 'Use canPostComment instead');
-        return $this->canPostComment();
     }
 
     /**
@@ -401,12 +402,6 @@ class CommentsExtension extends DataExtension
         return $this->owner->canEdit($member);
     }
 
-    public function getRssLink()
-    {
-        Deprecation::notice('2.0', 'Use getCommentRSSLink instead');
-        return $this->getCommentRSSLink();
-    }
-
     /**
      * Gets the RSS link to all comments
      *
@@ -414,13 +409,7 @@ class CommentsExtension extends DataExtension
      */
     public function getCommentRSSLink()
     {
-        return Controller::join_links(Director::baseURL(), 'CommentingController/rss');
-    }
-
-    public function getRssLinkPage()
-    {
-        Deprecation::notice('2.0', 'Use getCommentRSSLinkPage instead');
-        return $this->getCommentRSSLinkPage();
+        return Director::absoluteURL('comments/rss');
     }
 
     /**
@@ -431,7 +420,9 @@ class CommentsExtension extends DataExtension
     public function getCommentRSSLinkPage()
     {
         return Controller::join_links(
-            $this->getCommentRSSLink(), $this->ownerBaseClass, $this->owner->ID
+            $this->getCommentRSSLink(),
+            str_replace('\\', '-', $this->ownerBaseClass),
+            $this->owner->ID
         );
     }
 
@@ -451,9 +442,9 @@ class CommentsExtension extends DataExtension
         // Check if enabled
         $enabled = $this->getCommentsEnabled();
         if ($enabled && $this->owner->getCommentsOption('include_js')) {
-            Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
-            Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-            Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/lib/jquery.form.js');
+            Requirements::javascript(ADMIN_THIRDPARTY_DIR . '/jquery/jquery.js');
+            Requirements::javascript(ADMIN_THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
+            Requirements::javascript(ADMIN_THIRDPARTY_DIR . '/jquery-form/jquery.form.js');
             Requirements::javascript(COMMENTS_THIRDPARTY . '/jquery-validate/jquery.validate.min.js');
             Requirements::add_i18n_javascript('comments/javascript/lang');
             Requirements::javascript('comments/javascript/CommentsInterface.js');
@@ -461,7 +452,7 @@ class CommentsExtension extends DataExtension
 
         $controller = CommentingController::create();
         $controller->setOwnerRecord($this->owner);
-        $controller->setBaseClass($this->ownerBaseClass);
+        $controller->setParentClass($this->owner->getClassName());
         $controller->setOwnerController(Controller::curr());
 
         $moderatedSubmitted = Session::get('CommentsModerated');
@@ -489,17 +480,7 @@ class CommentsExtension extends DataExtension
     {
         $class = $this->ownerBaseClass;
 
-        return (is_subclass_of($class, 'SiteTree')) || ($class == 'SiteTree');
-    }
-
-    /**
-     * @deprecated 1.0 Please use {@link CommentsExtension->CommentsForm()}
-     */
-    public function PageComments()
-    {
-        // This method is very commonly used, don't throw a warning just yet
-        Deprecation::notice('1.0', '$PageComments is deprecated. Please use $CommentsForm');
-        return $this->CommentsForm();
+        return (is_subclass_of($class, SiteTree::class)) || ($class == SiteTree::class);
     }
 
     /**

@@ -1,10 +1,19 @@
 <?php
 
+namespace SilverStripe\Comments\Tests;
+
+use SilverStripe\Comments\Admin\CommentAdmin;
+use SilverStripe\Dev\SapphireTest;
+use SilverStripe\i18n\i18n;
+use SilverStripe\Security\Member;
+
 class CommentAdminTest extends SapphireTest
 {
-
+    /**
+     * {@inheritDoc}
+     */
     protected $usesDatabase = true;
-    
+
     public function testProvidePermissions()
     {
         $commentAdmin = new CommentAdmin();
