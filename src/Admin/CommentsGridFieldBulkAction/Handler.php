@@ -2,7 +2,7 @@
 
 namespace SilverStripe\Comments\Admin\CommentsGridFieldBulkAction;
 
-use Colymba\BulkManager\GridFieldBulkActionHandler;
+use Colymba\BulkManager\BulkAction\Handler as GridFieldBulkActionHandler;
 use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
