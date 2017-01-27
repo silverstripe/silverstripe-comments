@@ -6,6 +6,7 @@ use SilverStripe\Comments\Admin\CommentsGridField;
 use SilverStripe\Comments\Admin\CommentsGridFieldAction;
 use SilverStripe\Comments\Admin\CommentsGridFieldConfig;
 use SilverStripe\Comments\Model\Comment;
+use SilverStripe\Comments\Tests\Stubs\CommentableItem;
 use SilverStripe\Control\Controller;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FieldList;
@@ -119,10 +120,15 @@ class CommentsGridFieldActionTest extends SapphireTest
     public function testHandleAction()
     {
         $this->logInWithPermission('CMS_ACCESS_CommentAdmin');
+        $item = new CommentableItem;
+        $item->write();
+
         $action = new CommentsGridFieldAction();
         $record = new Comment();
         $record->Name = 'Name of commenter';
         $record->Comment = 'This is a comment';
+        $record->ParentID = $item->ID;
+        $record->ParentClass = $item->class;
         $record->write();
         $recordID = $record->ID;
         $arguments = array('RecordID' => $recordID);
