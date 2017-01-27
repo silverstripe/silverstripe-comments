@@ -17,6 +17,8 @@ use SilverStripe\ORM\DataObject;
 
 class CommentsGridFieldActionTest extends SapphireTest
 {
+    protected $usesDatabase = true;
+
     /** @var ArrayList */
     protected $list;
 
