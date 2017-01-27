@@ -9,7 +9,7 @@
     }],
     "require": {
         "silverstripe/framework": "^4.0@dev",
-        "colymba/gridfield-bulk-editing-tools": "~2.1"
+        "colymba/gridfield-bulk-editing-tools": "^3.0"
     },
     "suggest": {
         "ezyang/htmlpurifier": "Standards compliant HTML filter written in PHP",
@@ -29,5 +29,7 @@
             "SilverStripe\\Comments\\Tests\\": "tests/"
         }
     },
-    "license": "BSD-3-Clause"
+    "license": "BSD-3-Clause",
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

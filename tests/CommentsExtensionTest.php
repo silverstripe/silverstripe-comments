@@ -18,7 +18,7 @@ class CommentsExtensionTest extends SapphireTest
     /**
      * {@inheritDoc}
      */
-    public static $fixture_file = 'comments/tests/CommentsTest.yml';
+    protected static $fixture_file = 'comments/tests/CommentsTest.yml';
 
     /**
      * {@inheritDoc}
