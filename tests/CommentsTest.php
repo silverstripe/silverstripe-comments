@@ -24,10 +24,8 @@ use SilverStripe\Security\Permission;
  */
 class CommentsTest extends FunctionalTest
 {
-    
-    public static $fixture_file = 'comments/tests/CommentsTest.yml';
+    protected static $fixture_file = 'comments/tests/CommentsTest.yml';
 
-    
     protected $extraDataObjects = array(
         CommentableItem::class,
         CommentableItemEnabled::class,
@@ -461,7 +459,7 @@ class CommentsTest extends FunctionalTest
         // Without HTML allowed
         $comment1 = new Comment();
         $comment1->AllowHtml = false;
-        $comment1->BaseClass = CommentableItem::class;
+        $comment1->ParentClass = CommentableItem::class;
         $comment1->Comment = '<p><script>alert("w00t")</script>my comment</p>';
         $comment1->write();
         $this->assertEquals(
@@ -502,7 +500,7 @@ class CommentsTest extends FunctionalTest
         $comment->Comment = '<p>my comment</p>';
         $comment->AllowHtml = false;
         $comment->ParentID = $item->ID;
-        $comment->BaseClass = CommentableItem::class;
+        $comment->ParentClass = CommentableItem::class;
         $comment->write();
 
         $html = $item->customise(array('CommentsEnabled' => true))->renderWith('CommentsInterface');

@@ -24,7 +24,7 @@ class CommentingControllerTest extends FunctionalTest
     /**
      * {@inheritDoc}
      */
-    public static $fixture_file = 'CommentsTest.yml';
+    protected static $fixture_file = 'CommentsTest.yml';
 
     /**
      * {@inheritDoc}
