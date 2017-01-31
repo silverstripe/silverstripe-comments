@@ -178,7 +178,7 @@ class CommentsExtension extends DataExtension
 
         // Check if moderation should be enabled via cms configurable
         if ($this->owner->getCommentsOption('require_moderation_cms')) {
-            $moderationField = new DropdownField('ModerationRequired', 'Comment Moderation', array(
+            $moderationField = new DropdownField('ModerationRequired', _t('CommentsExtension.COMMENTMODERATION', 'Comment Moderation'), array(
                 'None' => _t('CommentsExtension.MODERATIONREQUIRED_NONE', 'No moderation required'),
                 'Required' => _t('CommentsExtension.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
                 'NonMembersOnly' => _t(
