@@ -4,7 +4,7 @@ if (typeof(ss) == 'undefined' || typeof(ss.i18n) == 'undefined') {
     if (typeof(console) != 'undefined') console.error('Class ss.i18n not defined');
 } else {
     ss.i18n.addDictionary('en', {
-        "CommentsInterface_singlecomment_ss.DELETE_CONFIRMATION": "Are you sure?",
+        "CommentsInterface_singlecomment_ss.DELETE_CONFIRMATION": "Are you sure you want to delete this comment?",
         "CommentsInterface_singlecomment_ss.AJAX_ERROR": "An error occurred whilst updating the comment",
     });
 }
