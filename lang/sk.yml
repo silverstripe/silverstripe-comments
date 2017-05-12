@@ -1,9 +1,9 @@
-sk_SK:
+sk:
   Comment:
     ALLOWCOMMENTS: 'Povoliť komentáre'
     COMMENT: Komentár
     COMMENTBY: 'Komentáre od %s'
-    CREATED: 'Dátum zverejnenia'
+    CREATED: 'Dátum odoslania'
     EMAIL: E-mail
     ISSPAM: 'Spam?'
     MODERATED: 'Odsúhlasený?'
@@ -11,7 +11,7 @@ sk_SK:
     'ON': na
     OPTIONS: Možnosti
     OPTION_DESCRIPTION: 'Neodsúhlasené a spamové komentáre nebudú zobrazené'
-    PARENTTITLE: Rodič
+    PARENTTITLE: 'Komentovaný príspevok'
     PLURALNAME: Komentáre
     ParentComment_Title: 'Tento komentár je odpoveď na komentár zobrazený nižšie'
     SINGULARNAME: Komentár
@@ -79,10 +79,10 @@ sk_SK:
     COMMENTS: Komentáre
     COMMENTSDISABLED: 'Už nie je možné pridávať nové komentáre'
     DELETEALLCOMMENTS: 'Odstrániť všetky komentáre na tejto stránke'
-    LOGINTOPOSTCOMMENT: 'Prihláste sa, aby ste mohli písať komentáre'
+    LOGINTOPOSTCOMMENT: 'Pre komentovanie sa prihláste'
     NEXT: nasledujúce
     NOCOMMENTSYET: 'Táto stránka ešte nebola komentovaná.'
-    POSTCOM: 'Napíšte komentár'
+    POSTCOM: 'Napíšte komentárPridať komentár'
     PREV: predchádzajúce
     RSSFEEDALLCOMMENTS: 'RSS kanál pre všetky komentáre'
     RSSFEEDCOMMENTS: 'RSS kanál pre komentáre na tejto stránke'

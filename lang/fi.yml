@@ -9,14 +9,22 @@ fi:
     MODERATED: 'Moderoitu?'
     NAME: 'Kirjoittajan nimi'
     'ON': pvm
+    OPTIONS: Asetukset
+    OPTION_DESCRIPTION: 'Moderoimattomat ja roskakommentit eivät näy ennen hyväksymistä'
     PARENTTITLE: Isäntä
     PLURALNAME: Kommentit
-    SINGULARNAME: Komentti
+    ParentComment_Title: 'Tämä kommentti on vastaus alla olevaan'
+    SINGULARNAME: Kommentti
     URL: URL-osoite
   CommentAdmin:
+    ADMIN_PERMISSION: 'Pääsy Comments-osioon'
+    ApprovedComments: Hyväksytty
+    Comments: Hyväksytty
     MENUTITLE: Kommentit
     Moderated: Moderoitu
     NeedsModeration: 'Tarvitsee moderointia'
+    NewComments: Uusi
+    SpamComments: Spämmiä
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Ole hyvä ja kommentoi'
     COMMENT_MESSAGE_URL: 'URL-osoitteen on oltava kelvollinen'
@@ -33,19 +41,44 @@ fi:
     PERMISSIONFAILURE: 'Et voi kommentoida tätä sivua. Varmista, että olet kirjatuneena ja että käyttöoikeutesi ovat riittävät.'
     RSSTITLE: 'Kommenttien RSS-syöte'
     WEBSITEURL: 'WWW-sivustosi osoite'
+  Comments:
+    COMMENTSREQUIRELOGIN: 'Vaadi kirjautuminen kommentointiin'
   CommentsAdmin:
+    ApprovedComments: Hyväksytty
+    Comments: Hyväksytty
     NeedsModeration: 'Tarvitsee moderointia'
+    NewComments: Uusi
+    SpamComments: Spämmiä
+  CommentsExtension:
+    COMMENTOPTIONS: Kommentit
+    MODERATIONREQUIRED_NONE: 'Moderointia ei tarvita'
+    MODERATIONREQUIRED_NONMEMBERSONLY: 'Moderoi vain ei-jäsenet'
+    MODERATIONREQUIRED_REQUIRED: 'Moderoi kaikki kommentit'
+  CommentsGridFieldAction:
+    APPROVE: Hyväksy
+    COMMENTAPPROVED: 'Kommentti hyväksytty'
+    COMMENTMARKEDSPAM: 'Kommentti merkitty spämmiksi.'
+    SPAM: Spämmiä
+  CommentsGridFieldConfig:
+    APPROVE: Hyväksy
+    SPAM: Spämmiä
   CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
+    AWAITINGMODERATION: 'Kommenttisi on lähetetty ja odottaa moderointia.'
   CommentsInterface_singlecomment_ss:
+    APPROVE: 'hyväksy se'
+    ISNTSPAM: 'ei spämmiä'
+    ISSPAM: 'merkitse spämmiksi'
     PBY: Lähettänyt
+    REMCOM: 'hylkää se'
+    REPLYTO: Vastausosoite
   CommentsInterface_ss:
-    AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
+    AWAITINGMODERATION: 'Kommenttisi on lähetetty ja odottaa moderointia.'
     COMMENTLOGINERROR: 'Et voi kommentoida ennen kuin olet kirjautunut sisään'
     COMMENTPERMISSIONERROR: 'ja käyttöoikeustasosi on oltava riittävä'
     COMMENTPOSTLOGIN: 'Kirjaudu tästä'
     COMMENTS: Comments
     COMMENTSDISABLED: 'Kommentointi on lukittu'
+    DELETEALLCOMMENTS: 'Poista kaikki tämän sivun kommentit'
     LOGINTOPOSTCOMMENT: 'Kirjaudu kommentoidaksesi'
     NEXT: seuraava
     NOCOMMENTSYET: 'Kukaan ei ole vielä kommentoinut tätä sivua.'

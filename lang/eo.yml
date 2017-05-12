@@ -70,6 +70,7 @@ eo:
     ISSPAM: 'spamigi ĝin'
     PBY: 'Afiŝita de'
     REMCOM: 'malakcepti ĝin'
+    REPLYTO: 'Respondi al'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Via komento afiŝiĝis kaj nun atendas kontrolon.'
     COMMENTLOGINERROR: 'Vi ne povas afiŝi komenton ĝis vi ensalutis'

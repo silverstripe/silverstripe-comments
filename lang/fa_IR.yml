@@ -70,6 +70,7 @@ fa_IR:
     ISSPAM: هرزنوشته
     PBY: 'ارسال شده توسط'
     REMCOM: 'رد کردن'
+    REPLYTO: 'ارسال پاسخ به'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'دیدگاه شما ارسال شده و هم‌اکنون در انتظار بررسی است.'
     COMMENTLOGINERROR: 'تا زمانی‌که وارد سایت نشده‌اید نمی‌توانید دیدگاهی درج نمایید'
