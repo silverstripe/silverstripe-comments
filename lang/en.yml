@@ -51,6 +51,7 @@ en:
     SpamComments: Spam
   CommentsExtension:
     COMMENTOPTIONS: Comments
+    COMMENTSTABSET: Comments
     MODERATIONREQUIRED_NONE: 'No moderation required'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Only moderate non-members'
     MODERATIONREQUIRED_REQUIRED: 'Moderate all comments'
