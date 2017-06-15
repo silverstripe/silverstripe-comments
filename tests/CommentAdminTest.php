@@ -2,34 +2,7 @@
 
 class CommentAdminTest extends SapphireTest
 {
-
     protected $usesDatabase = true;
-    
-    public function testProvidePermissions()
-    {
-        $commentAdmin = new CommentAdmin();
-        $locale = i18n::get_locale();
-
-        i18n::set_locale('fr');
-        $expected = array(
-            'CMS_ACCESS_CommentAdmin' => array(
-                # FIXME - this is a bug, missing from lang.yml files
-                'name' => 'Access to \'Comments\' section',
-                'category' => 'Accès au CMS'
-            )
-        );
-        $this->assertEquals($expected, $commentAdmin->providePermissions());
-
-        i18n::set_locale($locale);
-        $expected = array(
-            'CMS_ACCESS_CommentAdmin' => array(
-                # FIXME - this is a bug, missing from lang.yml files
-                'name' => 'Access to \'Comments\' section',
-                'category' => 'CMS Access'
-            )
-        );
-        $this->assertEquals($expected, $commentAdmin->providePermissions());
-    }
 
     public function testGetEditForm()
     {
