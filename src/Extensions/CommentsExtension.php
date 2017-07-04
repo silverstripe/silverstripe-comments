@@ -10,6 +10,7 @@ use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
 use SilverStripe\Control\Session;
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Core\Manifest\ModuleLoader;
 use SilverStripe\Dev\Deprecation;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
@@ -442,9 +443,10 @@ class CommentsExtension extends DataExtension
         // Check if enabled
         $enabled = $this->getCommentsEnabled();
         if ($enabled && $this->owner->getCommentsOption('include_js')) {
-            Requirements::javascript(ADMIN_THIRDPARTY_DIR . '/jquery/jquery.js');
-            Requirements::javascript(ADMIN_THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-            Requirements::javascript(ADMIN_THIRDPARTY_DIR . '/jquery-form/jquery.form.js');
+            $adminThirdPartyDir = ModuleLoader::getModule('silverstripe/admin')->getRelativePath() . '/thirdparty';
+            Requirements::javascript($adminThirdPartyDir . '/jquery/jquery.js');
+            Requirements::javascript($adminThirdPartyDir . '/jquery-entwine/dist/jquery.entwine-dist.js');
+            Requirements::javascript($adminThirdPartyDir . '/jquery-form/jquery.form.js');
             Requirements::javascript(COMMENTS_THIRDPARTY . '/jquery-validate/jquery.validate.min.js');
             Requirements::add_i18n_javascript('comments/javascript/lang');
             Requirements::javascript('comments/javascript/CommentsInterface.js');
@@ -455,8 +457,9 @@ class CommentsExtension extends DataExtension
         $controller->setParentClass($this->owner->getClassName());
         $controller->setOwnerController(Controller::curr());
 
-        $moderatedSubmitted = Session::get('CommentsModerated');
-        Session::clear('CommentsModerated');
+        $session = Controller::curr()->getRequest()->getSession();
+        $moderatedSubmitted = $session->get('CommentsModerated');
+        $session->clear('CommentsModerated');
 
         $form = ($enabled) ? $controller->CommentsForm() : false;
 
