@@ -581,6 +581,8 @@ class CommentsExtension extends DataExtension
                     $spamGrid
                 )
             );
+            $tabs->setTitle(_t('CommentsExtension.COMMENTSTABSET', 'Comments'));
+
             $fields->addFieldToTab('Root', $tabs);
         } else {
             $fields->push($newGrid);
