@@ -22,8 +22,7 @@ class CommentList extends HasManyList
 
     public function __construct($parentClassName)
     {
-        parent::__construct('Comment', 'ParentID');
-
+        parent::__construct('Comment', 'Comment"."ParentID');
 
         // Ensure underlying DataQuery globally references the class filter
         $this->dataQuery->setQueryParam('Foreign.Class', $parentClassName);
