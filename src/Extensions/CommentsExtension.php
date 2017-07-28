@@ -363,6 +363,11 @@ class CommentsExtension extends DataExtension
         if (!$this->owner->CommentsEnabled) {
             return false;
         }
+        
+        if (!$this->owner->canView($member)) {
+            // deny if current user cannot view the underlying record.
+            return false;
+        }
 
         // Check if member is required
         $requireLogin = $this->owner->CommentsRequireLogin;
