@@ -70,6 +70,7 @@ ru:
     ISSPAM: 'это спам'
     PBY: 'Автор:'
     REMCOM: удалить
+    REPLYTO: Ответить
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
     COMMENTLOGINERROR: 'Вы не можете отправлять комментарии пока не войдёте в систему'
