@@ -21,24 +21,21 @@
 
 [Changelog](CHANGELOG.md)
 
-## Maintainers
-
- * Will Rossiter (Nickname: willr, wrossiter)
-  <will at silverstripe dot com>
-
 ## Introduction
 
-This module provides commenting functionality for Pages and other DataObjects
-on your SilverStripe site.
+This module provides commenting functionality for Pages and other DataObjects on your SilverStripe site.
 
-For more documentation about the module see the provided documentation located
-inside the docs folder.
+For more documentation about the module see the provided documentation located inside the docs folder.
 
 ## Requirements
 
  * SilverStripe ^4.0
 
 ## Installation
+
+```
+composer require silverstripe/comments
+```
 
 See docs/en/Installing.md
 
