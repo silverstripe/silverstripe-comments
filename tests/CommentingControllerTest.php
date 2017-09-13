@@ -29,9 +29,9 @@ class CommentingControllerTest extends FunctionalTest
     /**
      * {@inheritDoc}
      */
-    protected $extraDataObjects = array(
+    protected static $extra_dataobjects = [
         CommentableItem::class
-    );
+    ];
 
     protected $securityEnabled;
 

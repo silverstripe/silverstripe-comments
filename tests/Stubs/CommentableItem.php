@@ -23,6 +23,8 @@ class CommentableItem extends DataObject implements TestOnly
         CommentsExtension::class
     );
 
+    private static $table_name = 'CommentableItem';
+
     public function RelativeLink()
     {
         return 'CommentableItemController';

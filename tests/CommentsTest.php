@@ -26,7 +26,7 @@ class CommentsTest extends FunctionalTest
 {
     protected static $fixture_file = 'comments/tests/CommentsTest.yml';
 
-    protected $extraDataObjects = array(
+    protected static $extra_dataobjects = array(
         CommentableItem::class,
         CommentableItemEnabled::class,
         CommentableItemDisabled::class

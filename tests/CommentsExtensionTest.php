@@ -23,7 +23,7 @@ class CommentsExtensionTest extends SapphireTest
     /**
      * {@inheritDoc}
      */
-    protected $extraDataObjects = array(
+    protected static $extra_dataobjects = array(
         CommentableItem::class,
         CommentableItemEnabled::class,
         CommentableItemDisabled::class
