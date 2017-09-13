@@ -66,7 +66,28 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testPopulateDefaults()
     {
-        $this->markTestSkipped('TODO');
+        Config::inst()->update(CommentableItem::class, 'comments', array(
+            'require_moderation_cms' => true,
+            'require_moderation' => true,
+            'require_moderation_nonmembers' => true
+        ));
+
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item->populateDefaults();
+
+        $this->assertTrue($item->CommentsRequireLogin);
+
+        Config::inst()->update(CommentableItem::class, 'comments', array(
+            'require_moderation_cms' => true,
+            'require_moderation' => true,
+            'require_moderation_nonmembers' => true
+        ));
+
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item->populateDefaults();
+
+        $this->assertFalse($item->CommentsRequireLogin);
+
     }
 
     public function testUpdateSettingsFields()
@@ -88,10 +109,17 @@ class CommentsExtensionTest extends SapphireTest
         // 'ModerationRequired' is returned
         $item = $this->objFromFixture(CommentableItem::class, 'first');
         $item->ModerationRequired = 'None';
+        $item->write();
+
         $this->assertEquals('None', $item->getModerationRequired());
         $item->ModerationRequired = 'Required';
+        $item->write();
+
         $this->assertEquals('Required', $item->getModerationRequired());
+
         $item->ModerationRequired = 'NonMembersOnly';
+        $item->write();
+
         $this->assertEquals('NonMembersOnly', $item->getModerationRequired());
 
         Config::inst()->update(CommentableItem::class, 'comments', array(
@@ -144,29 +172,54 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testAllComments()
     {
-        $this->markTestSkipped('TODO');
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $this->assertEquals(4, $items->AllComments()->count());
     }
 
     public function testAllVisibleComments()
     {
-        $this->markTestSkipped('TODO');
+        if (Member::currentUser()) {
+            Member::currentUser()->logOut();
+        }
+
+        $item = $this->objFromFixture(CommentableItem::class, 'second');
+        $this->assertEquals(4, $items->AllVisibleComments()->count());
     }
 
     public function testComments()
     {
-        $this->markTestSkipped('TODO');
+        Config::inst()->update(CommentableItem::class, 'comments', array(
+            'nested_comments' => false
+        ));
+
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $this->assertEquals(4, $items->Comments()->count());
+
+        Config::inst()->update(CommentableItem::class, 'comments', array(
+            'nested_comments' => true
+        ));
+
+        $this->assertEquals(1, $items->Comments()->count());
     }
 
     public function testGetCommentsEnabled()
     {
-        $this->markTestSkipped('TODO');
+        Config::inst()->update(CommentableItem::class, 'comments', array(
+            'enabled_cms' => true
+        ));
+
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $this->assertTrue($item->getCommentsEnabled());
+
+        $item->ProvideComments = 0;
+        $this->assertFalse($item->getCommentsEnabled());
     }
 
     public function testGetCommentHolderID()
     {
         $item = $this->objFromFixture(CommentableItem::class, 'first');
         Config::inst()->update(CommentableItem::class, 'comments', array(
-            'comments_holder_id' => 'commentid_test1',
+            'comments_holder_id' => 'comments-holder',
         ));
         $this->assertEquals('commentid_test1', $item->getCommentHolderID());
 
@@ -219,40 +272,39 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testCommentsForm()
     {
-        Config::inst()->update(
-            CommentableItem::class,
-            'comments',
-            array(
-                'include_js' => false
-            )
-        );
+        Config::inst()->update(CommentableItem::class, 'comments', array(
+            'include_js' => false,
+            'comments_holder_id' => 'comments-holder',
+        ));
+
         $item = $this->objFromFixture(CommentableItem::class, 'first');
 
         // The comments form is HTML to do assertions by contains
         $cf = $item->CommentsForm();
-        $expected = '<form id="Form_CommentsForm" action="/comments'
-        . '/CommentsForm" method="post" enctype="application/x-www-form-urlenco'
+        $expected = '<form id="comments-holder" action="/comments'
+        . '/CommentsForm/" method="post" enctype="application/x-www-form-urlenco'
         . 'ded">';
+
         $this->assertContains($expected, $cf);
         $this->assertContains('<h4>Post your comment</h4>', $cf);
 
         // check the comments form exists
-        $expected = '<input type="text" name="Name" value="ADMIN User" class="text" id="Form_CommentsForm_Name" required="required"';
+        $expected = '<input type="text" name="Name" value="ADMIN User" class="text" id="comments-holder_Name" required="required"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<input type="email" name="Email" value="ADMIN@example.org" class="email text" id="Form_CommentsForm_Email"';
+        $expected = '<input type="email" name="Email" value="ADMIN@example.org" class="email text" id="comments-holder_Email"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<input type="text" name="URL" class="text" id="Form_CommentsForm_URL" data-msg-url="Please enter a valid URL"';
+        $expected = '<input type="text" name="URL" class="text" id="comments-holder_URL" data-msg-url="Please enter a valid URL"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<input type="hidden" name="ParentID" value="' . $item->ID . '" class="hidden" id="Form_CommentsForm_ParentID" />';
+        $expected = '<input type="hidden" name="ParentID" value="' . $item->ID . '" class="hidden" id="comments-holder_ParentID" />';
         $this->assertContains($expected, $cf);
 
-        $expected = '<textarea name="Comment" class="textarea" id="Form_CommentsForm_Comment" required="required"';
+        $expected = '<textarea name="Comment" class="textarea" id="comments-holder_Comment" required="required"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<input type="submit" name="action_doPostComment" value="Post" class="action" id="Form_CommentsForm_action_doPostComment"';
+        $expected = '<input type="submit" name="action_doPostComment" value="Post" class="action" id="comments-holder_action_doPostComment"';
         $this->assertContains($expected, $cf);
 
         $expected = '<a href="/comments/spam/';

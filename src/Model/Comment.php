@@ -718,8 +718,11 @@ class Comment extends DataObject
      */
     public function purifyHtml($dirtyHtml)
     {
-        $purifier = $this->getHtmlPurifierService();
-        return $purifier->purify($dirtyHtml);
+        if ($service = $this->getHtmlPurifierService()) {
+            return $service->purify($dirtyHtml);
+        }
+
+        return $dirtyHtml;
     }
 
     /**
@@ -727,6 +730,10 @@ class Comment extends DataObject
      */
     public function getHtmlPurifierService()
     {
+        if (!class_exists(HTMLPurifier_Config::class)) {
+            return null;
+        }
+
         $config = HTMLPurifier_Config::createDefault();
         $allowedElements = (array) $this->getOption('html_allowed_elements');
         if (!empty($allowedElements)) {

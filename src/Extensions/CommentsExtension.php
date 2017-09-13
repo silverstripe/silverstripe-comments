@@ -258,6 +258,7 @@ class CommentsExtension extends DataExtension
 
         // Filter spam comments for non-administrators if configured
         $showSpam = $this->owner->getCommentsOption('frontend_spam') && $this->owner->canModerateComments();
+
         if (!$showSpam) {
             $list = $list->filter('IsSpam', 0);
         }
@@ -363,7 +364,7 @@ class CommentsExtension extends DataExtension
         if (!$this->owner->CommentsEnabled) {
             return false;
         }
-        
+
         if (!$this->owner->canView($member)) {
             // deny if current user cannot view the underlying record.
             return false;
