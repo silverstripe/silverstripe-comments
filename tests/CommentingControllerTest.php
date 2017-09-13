@@ -143,7 +143,8 @@ class CommentingControllerTest extends FunctionalTest
 
         // comments sitewide
         $response = $this->get('comments/rss');
-        $this->assertEquals(10, substr_count($response->getBody(), "<item>"), "10 approved, non spam comments on page 1");
+        $comment = "10 approved, non spam comments on page 1";
+        $this->assertEquals(10, substr_count($response->getBody(), "<item>"), $comment);
 
         $response = $this->get('comments/rss?start=10');
         $this->assertEquals(4, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
