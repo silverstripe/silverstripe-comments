@@ -5,7 +5,6 @@ namespace SilverStripe\Comments\Controllers;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Comments\Extensions\CommentsExtension;
 use SilverStripe\Comments\Model\Comment;
-use SilverStripe\Control\Cookie;
 use SilverStripe\Control\Director;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Email\Email;
@@ -13,21 +12,12 @@ use SilverStripe\Control\HTTP;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\RSS\RSSFeed;
 use SilverStripe\Control\Session;
-use SilverStripe\Core\Convert;
-use SilverStripe\Forms\CompositeField;
-use SilverStripe\Forms\EmailField;
-use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\Form;
-use SilverStripe\Forms\FormAction;
-use SilverStripe\Forms\HiddenField;
-use SilverStripe\Forms\ReadonlyField;
-use SilverStripe\Forms\RequiredFields;
-use SilverStripe\Forms\TextareaField;
-use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\PaginatedList;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Security;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Comments\Forms\CommentForm;
 
 /**
  * @package comments
@@ -399,6 +389,7 @@ class CommentingController extends Controller
     public function getComment()
     {
         $id = isset($this->urlParams['ID']) ? $this->urlParams['ID'] : false;
+
         if ($id) {
             $comment = Comment::get()->byId($id);
             if ($comment) {
@@ -432,12 +423,14 @@ class CommentingController extends Controller
         $form->setFormAction($this->Link('reply', $comment->ID));
 
         $this->extend('updateReplyForm', $form);
+
         return $form;
     }
 
 
     /**
      * Request handler for reply form.
+     *
      * This method will disambiguate multiple reply forms in the same method
      *
      * @param  HTTPRequest $request
@@ -462,258 +455,9 @@ class CommentingController extends Controller
      */
     public function CommentsForm()
     {
-        $usePreview = $this->getOption('use_preview');
-
-        $nameRequired = _t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name');
-        $emailRequired = _t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address');
-        $emailInvalid = _t('CommentInterface.EMAILADDRESS_MESSAGE_EMAIL', 'Please enter a valid email address');
-        $urlInvalid = _t('CommentInterface.COMMENT_MESSAGE_URL', 'Please enter a valid URL');
-        $commentRequired = _t('CommentInterface.COMMENT_MESSAGE_REQUIRED', 'Please enter your comment');
-
-        $fields = new FieldList(
-            $dataFields = new CompositeField(
-                // Name
-                $a = TextField::create('Name', _t('CommentInterface.YOURNAME', 'Your name'))
-                    ->setCustomValidationMessage($nameRequired)
-                    ->setAttribute('data-msg-required', $nameRequired),
-                // Email
-                EmailField::create(
-                    'Email',
-                    _t('CommentingController.EMAILADDRESS', 'Your email address (will not be published)')
-                )
-                    ->setCustomValidationMessage($emailRequired)
-                    ->setAttribute('data-msg-required', $emailRequired)
-                    ->setAttribute('data-msg-email', $emailInvalid)
-                    ->setAttribute('data-rule-email', true),
-                // Url
-                TextField::create('URL', _t('CommentingController.WEBSITEURL', 'Your website URL'))
-                    ->setAttribute('data-msg-url', $urlInvalid)
-                    ->setAttribute('data-rule-url', true),
-                // Comment
-                TextareaField::create('Comment', _t('CommentingController.COMMENTS', 'Comments'))
-                    ->setCustomValidationMessage($commentRequired)
-                    ->setAttribute('data-msg-required', $commentRequired)
-            ),
-            HiddenField::create('ParentID'),
-            HiddenField::create('ParentClassName'),
-            HiddenField::create('ReturnURL'),
-            HiddenField::create('ParentCommentID')
-        );
-
-        // Preview formatted comment. Makes most sense when shortcodes or
-        // limited HTML is allowed. Populated by JS/Ajax.
-        if ($usePreview) {
-            $fields->insertAfter(
-                ReadonlyField::create('PreviewComment', _t('CommentInterface.PREVIEWLABEL', 'Preview'))
-                    ->setAttribute('style', 'display: none'), // enable through JS
-                'Comment'
-            );
-        }
-
-        $dataFields->addExtraClass('data-fields');
-
-        // save actions
-        $actions = new FieldList(
-            $postAction = new FormAction('doPostComment', _t('CommentInterface.POST', 'Post'))
-        );
-        if ($usePreview) {
-            $actions->push(
-                FormAction::create('doPreviewComment', _t('CommentInterface.PREVIEW', 'Preview'))
-                    ->addExtraClass('action-minor')
-                    ->setAttribute('style', 'display: none') // enable through JS
-            );
-        }
-
-        // required fields for server side
-        $required = new RequiredFields($this->config()->required_fields);
-
-        // create the comment form
-        $form = new Form($this, 'CommentsForm', $fields, $actions, $required);
-
-        // if the record exists load the extra required data
-        if ($record = $this->getOwnerRecord()) {
-            // Load member data
-            $member = Member::currentUser();
-            if (($record->CommentsRequireLogin || $record->PostingRequiredPermission) && $member) {
-                $fields = $form->Fields();
-
-                $fields->removeByName('Name');
-                $fields->removeByName('Email');
-                $fields->insertBefore(
-                    new ReadonlyField(
-                        'NameView',
-                        _t('CommentInterface.YOURNAME', 'Your name'),
-                        $member->getName()
-                    ),
-                    'URL'
-                );
-                $fields->push(new HiddenField('Name', '', $member->getName()));
-                $fields->push(new HiddenField('Email', '', $member->Email));
-            }
-
-            // we do not want to read a new URL when the form has already been submitted
-            // which in here, it hasn't been.
-            $form->loadDataFrom(array(
-                'ParentID'        => $record->ID,
-                'ReturnURL'       => $this->request->getURL(),
-                'ParentClassName' => $this->getParentClass()
-            ));
-
-            if ($holder = $record->getCommentHolderID()) {
-                $form->setHTMLID($holder);
-            }
-        }
-
-        // Set it so the user gets redirected back down to the form upon form fail
-        $form->setRedirectToFormOnValidationError(true);
-
-        // load any data from the cookies
-        if ($data = Cookie::get('CommentsForm_UserData')) {
-            $data = Convert::json2array($data);
-
-            $form->loadDataFrom(array(
-                'Name'  => isset($data['Name']) ? $data['Name'] : '',
-                'URL'   => isset($data['URL']) ? $data['URL'] : '',
-                'Email' => isset($data['Email']) ? $data['Email'] : ''
-            ));
-            // allow previous value to fill if comment not stored in cookie (i.e. validation error)
-            $prevComment = Cookie::get('CommentsForm_Comment');
-            if ($prevComment && $prevComment != '') {
-                $form->loadDataFrom(array('Comment' => $prevComment));
-            }
-        }
-
-        if (!empty($member)) {
-            $form->loadDataFrom($member);
-        }
-
-        // hook to allow further extensions to alter the comments form
-        $this->extend('alterCommentForm', $form);
-
-        return $form;
+        return Injector::inst()->create(CommentForm::class, __FUNCTION__, $this->owner);
     }
 
-    /**
-     * Process which creates a {@link Comment} once a user submits a comment from this form.
-     *
-     * @param  array $data
-     * @param  Form $form
-     * @return HTTPResponse
-     */
-    public function doPostComment($data, $form)
-    {
-        // Load class and parent from data
-        if (isset($data['ParentClassName'])) {
-            $this->setParentClass($data['ParentClassName']);
-        }
-        if (isset($data['ParentID']) && ($class = $this->getParentClass())) {
-            $this->setOwnerRecord($class::get()->byID($data['ParentID']));
-        }
-        if (!$this->getOwnerRecord()) {
-            return $this->httpError(404);
-        }
-
-        // cache users data
-        Cookie::set('CommentsForm_UserData', Convert::raw2json($data));
-        Cookie::set('CommentsForm_Comment', $data['Comment']);
-
-        // extend hook to allow extensions. Also see onAfterPostComment
-        $this->extend('onBeforePostComment', $form);
-
-        // If commenting can only be done by logged in users, make sure the user is logged in
-        if (!$this->getOwnerRecord()->canPostComment()) {
-            return Security::permissionFailure(
-                $this,
-                _t(
-                    'CommentingController.PERMISSIONFAILURE',
-                    "You're not able to post comments to this page. Please ensure you are logged in and have an "
-                    . 'appropriate permission level.'
-                )
-            );
-        }
-
-        if ($member = Member::currentUser()) {
-            $form->Fields()->push(new HiddenField('AuthorID', 'Author ID', $member->ID));
-        }
-
-        // What kind of moderation is required?
-        switch ($this->getOwnerRecord()->ModerationRequired) {
-            case 'Required':
-                $requireModeration = true;
-                break;
-            case 'NonMembersOnly':
-                $requireModeration = empty($member);
-                break;
-            case 'None':
-            default:
-                $requireModeration = false;
-                break;
-        }
-
-        $comment = new Comment();
-        $form->saveInto($comment);
-
-        $comment->ParentID = $data['ParentID'];
-        $comment->ParentClass = $data['ParentClassName'];
-
-        $comment->AllowHtml = $this->getOption('html_allowed');
-        $comment->Moderated = !$requireModeration;
-
-        // Save into DB, or call pre-save hooks to give accurate preview
-        $usePreview = $this->getOption('use_preview');
-        $isPreview = $usePreview && !empty($data['IsPreview']);
-        if ($isPreview) {
-            $comment->extend('onBeforeWrite');
-        } else {
-            $comment->write();
-
-            // extend hook to allow extensions. Also see onBeforePostComment
-            $this->extend('onAfterPostComment', $comment);
-        }
-
-        // we want to show a notification if comments are moderated
-        if ($requireModeration && !$comment->IsSpam) {
-            Session::set('CommentsModerated', 1);
-        }
-
-        // clear the users comment since it passed validation
-        Cookie::set('CommentsForm_Comment', false);
-
-        // Find parent link
-        if (!empty($data['ReturnURL'])) {
-            $url = $data['ReturnURL'];
-        } elseif ($parent = $comment->Parent()) {
-            $url = $parent->Link();
-        } else {
-            return $this->redirectBack();
-        }
-
-        // Given a redirect page exists, attempt to link to the correct anchor
-        if ($comment->IsSpam) {
-            // Link to the form with the error message contained
-            $hash = $form->FormName();
-        } elseif (!$comment->Moderated) {
-            // Display the "awaiting moderation" text
-            $hash = 'moderated';
-        } else {
-            // Link to the moderated, non-spam comment
-            $hash = $comment->Permalink();
-        }
-
-        return $this->redirect(Controller::join_links($url, "#{$hash}"));
-    }
-
-    /**
-     * @param  array $data
-     * @param  Form $form
-     * @return HTTPResponse
-     */
-    public function doPreviewComment($data, $form)
-    {
-        $data['IsPreview'] = 1;
-
-        return $this->doPostComment($data, $form);
-    }
 
     /**
      * @return HTTPResponse|false
