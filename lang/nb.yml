@@ -1,25 +1,7 @@
 nb:
-  Comment:
-    ALLOWCOMMENTS: 'Tillat kommentarer'
-    COMMENT: Kommentar
-    ISSPAM: 'Spam?'
-    MODERATED: 'Moderert?'
-    NAME: 'Navn'
-    PLURALNAME: Kommentarer
-    SINGULARNAME: Kommentar
-  CommentAdmin:
-    MENUTITLE: Kommentarer
-    Moderated: Moderert
-    NeedsModeration: 'Trenger moderering'
   CommentInterface:
-    POST: Legg ut
-    YOURNAME: 'Navn'
-  CommentingController:
-    COMMENTS: Kommentar
-    EMAILADDRESS: 'Epostadresse (blir ikke publisert)'
-    PERMISSIONFAILURE: 'Du kan ikke kommentere på denne siden. Vennligst sjekk at du er innlogget og har et passende tilgangsnivå.'
-    RSSTITLE: 'RSS-feed for kommentarer'
-    WEBSITEURL: 'Hjemmeside'
+    POST: 'Legg ut'
+    YOURNAME: Navn
   CommentsAdmin:
     NeedsModeration: 'Trenger moderering'
   CommentsInterface_pendingcomment_ss:
@@ -41,3 +23,21 @@ nb:
     RSSFEEDCOMMENTS: 'RSS-feed for kommentarer på denne siden'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Fjern alle kommentarer på denne siden'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Kommentarer
+    Moderated: Moderert
+    NeedsModeration: 'Trenger moderering'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Kommentar
+    EMAILADDRESS: 'Epostadresse (blir ikke publisert)'
+    PERMISSIONFAILURE: 'Du kan ikke kommentere på denne siden. Vennligst sjekk at du er innlogget og har et passende tilgangsnivå.'
+    RSSTITLE: 'RSS-feed for kommentarer'
+    WEBSITEURL: Hjemmeside
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Tillat kommentarer'
+    COMMENT: Kommentar
+    ISSPAM: 'Spam?'
+    MODERATED: 'Moderert?'
+    NAME: Navn
+    PLURALNAME: Kommentarer
+    SINGULARNAME: Kommentar

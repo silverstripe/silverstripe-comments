@@ -18,13 +18,18 @@ use SilverStripe\Core\Convert;
 use SilverStripe\Security\Security;
 use SilverStripe\Comments\Model\Comment;
 use SilverStripe\Control\Controller;
+use SilverStripe\Comments\Controllers\CommentingController;
+use SilverStripe\Core\Config\Config;
 
 class CommentForm extends Form
 {
-    public function __construct($name, $controller)
+    /**
+     * @param string $name
+     * @param CommentingController $controller
+     */
+    public function __construct($name, CommentingController $controller)
     {
         $usePreview = $controller->getOption('use_preview');
-
         $nameRequired = _t('CommentInterface.YOURNAME_MESSAGE_REQUIRED', 'Please enter your name');
         $emailRequired = _t('CommentInterface.EMAILADDRESS_MESSAGE_REQUIRED', 'Please enter your email address');
         $emailInvalid = _t('CommentInterface.EMAILADDRESS_MESSAGE_EMAIL', 'Please enter a valid email address');
@@ -40,18 +45,18 @@ class CommentForm extends Form
                 // Email
                 EmailField::create(
                     'Email',
-                    _t('CommentingController.EMAILADDRESS', 'Your email address (will not be published)')
+                    _t('SilverStripe\\Comments\\Controllers\\CommentingController.EMAILADDRESS', 'Your email address (will not be published)')
                 )
                     ->setCustomValidationMessage($emailRequired)
                     ->setAttribute('data-msg-required', $emailRequired)
                     ->setAttribute('data-msg-email', $emailInvalid)
                     ->setAttribute('data-rule-email', true),
                 // Url
-                TextField::create('URL', _t('CommentingController.WEBSITEURL', 'Your website URL'))
+                TextField::create('URL', _t('SilverStripe\\Comments\\Controllers\\CommentingController.WEBSITEURL', 'Your website URL'))
                     ->setAttribute('data-msg-url', $urlInvalid)
                     ->setAttribute('data-rule-url', true),
                 // Comment
-                TextareaField::create('Comment', _t('CommentingController.COMMENTS', 'Comments'))
+                TextareaField::create('Comment', _t('SilverStripe\\Comments\\Controllers\\CommentingController.COMMENTS', 'Comments'))
                     ->setCustomValidationMessage($commentRequired)
                     ->setAttribute('data-msg-required', $commentRequired)
             ),
@@ -139,13 +144,14 @@ class CommentForm extends Form
                 'URL'   => isset($data['URL']) ? $data['URL'] : '',
                 'Email' => isset($data['Email']) ? $data['Email'] : ''
             ));
+
             // allow previous value to fill if comment not stored in cookie (i.e. validation error)
             $prevComment = Cookie::get('CommentsForm_Comment');
+
             if ($prevComment && $prevComment != '') {
                 $this->loadDataFrom(array('Comment' => $prevComment));
             }
         }
-
     }
 
     /**
@@ -192,7 +198,7 @@ class CommentForm extends Form
             return Security::permissionFailure(
                 $this,
                 _t(
-                    'CommentingController.PERMISSIONFAILURE',
+                    'SilverStripe\\Comments\\Controllers\\CommentingController.PERMISSIONFAILURE',
                     "You're not able to post comments to this page. Please ensure you are logged in and have an "
                     . 'appropriate permission level.'
                 )
@@ -269,5 +275,4 @@ class CommentForm extends Form
 
         return $this->controller->redirect(Controller::join_links($url, "#{$hash}"));
     }
-
 }

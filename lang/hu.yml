@@ -1,5 +1,48 @@
 hu:
-  Comment:
+  CommentInterface:
+    COMMENT_MESSAGE_REQUIRED: 'Szöveg  megadása'
+    COMMENT_MESSAGE_URL: 'Kérjük adjon meg egy működő linket'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Kérjük adjon meg egy e-mail címet'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Kérjük adja meg az e-mail címét'
+    POST: Elküld
+    PREVIEW: Előnézet
+    PREVIEWLABEL: Előnézet
+    YOURNAME: 'Az Ön neve'
+    YOURNAME_MESSAGE_REQUIRED: 'Kérjük adja meg nevét'
+  CommentsAdmin:
+    NeedsModeration: 'Moderálás szükséges'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
+  CommentsInterface_singlecomment_ss:
+    PBY: Feladó
+  CommentsInterface_ss:
+    AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
+    COMMENTLOGINERROR: 'A hozzászóláshoz be kell jelentkeznie'
+    COMMENTPERMISSIONERROR: 'és rendelkeznie kell a megfelelő jogosultsággal'
+    COMMENTPOSTLOGIN: Bejelentkezés
+    COMMENTS: Hozzászólások
+    COMMENTSDISABLED: 'A hozzászólások le vannak tiltva '
+    LOGINTOPOSTCOMMENT: 'A hozzászóláshoz jelentkezzen be '
+    NEXT: következő
+    NOCOMMENTSYET: 'Nem érkeztek hozzászólások'
+    POSTCOM: 'Küldjön egy hozzászólást'
+    PREV: előző
+    RSSFEEDALLCOMMENTS: 'Összes hozzászólás RSS-ben'
+    RSSFEEDCOMMENTS: 'Oldal hozzászólásai RSS-ben'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Oldal összes hozzászólásának törlése'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    ADMIN_PERMISSION: '''Hozzászólások'' mező elérése'
+    MENUTITLE: Hozzászólások
+    Moderated: Moderált
+    NeedsModeration: 'Moderálás szükséges'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: 'A hosszászólás szövege'
+    EMAILADDRESS: 'Az Ön e-mail címe (nem látható)'
+    PERMISSIONFAILURE: 'Ön csak a bejelentkezést követően, és a megfelelő jogosultság birtokában hozhat létre hozzászólást.'
+    RSSTITLE: 'Hozzászólások RSS-ben'
+    WEBSITEURL: 'Az Ön webcíme'
+  SilverStripe\Comments\Model\Comment:
     ALLOWCOMMENTS: 'Hozzászólások engedélyezve'
     COMMENT: Hozzászólás
     COMMENTBY: 'Létrehozta %s'
@@ -12,46 +55,3 @@ hu:
     PLURALNAME: Hozzászólások
     SINGULARNAME: Hozzászólás
     URL: Link
-  CommentAdmin:
-    ADMIN_PERMISSION: '''Hozzászólások'' mező elérése'
-    MENUTITLE: Hozzászólások
-    Moderated: Moderált
-    NeedsModeration: 'Moderálás szükséges'
-  CommentInterface:
-    COMMENT_MESSAGE_REQUIRED: 'Szöveg  megadása'
-    COMMENT_MESSAGE_URL: 'Kérjük adjon meg egy működő linket'
-    EMAILADDRESS_MESSAGE_EMAIL: 'Kérjük adjon meg egy e-mail címet'
-    EMAILADDRESS_MESSAGE_REQUIRED: 'Kérjük adja meg az e-mail címét'
-    POST: Elküld
-    PREVIEW: Előnézet
-    PREVIEWLABEL: Előnézet
-    YOURNAME: 'Az Ön neve'
-    YOURNAME_MESSAGE_REQUIRED: 'Kérjük adja meg nevét'
-  CommentingController:
-    COMMENTS: A hosszászólás szövege
-    EMAILADDRESS: 'Az Ön e-mail címe (nem látható)'
-    PERMISSIONFAILURE: 'Ön csak a bejelentkezést követően, és a megfelelő jogosultság birtokában hozhat létre hozzászólást.'
-    RSSTITLE: 'Hozzászólások RSS-ben'
-    WEBSITEURL: 'Az Ön webcíme'
-  CommentsAdmin:
-    NeedsModeration: 'Moderálás szükséges'
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
-  CommentsInterface_singlecomment_ss:
-    PBY: 'Feladó'
-  CommentsInterface_ss:
-    AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
-    COMMENTLOGINERROR: 'A hozzászóláshoz be kell jelentkeznie'
-    COMMENTPERMISSIONERROR: 'és rendelkeznie kell a megfelelő jogosultsággal'
-    COMMENTPOSTLOGIN: 'Bejelentkezés'
-    COMMENTS: Hozzászólások
-    COMMENTSDISABLED: 'A hozzászólások le vannak tiltva '
-    LOGINTOPOSTCOMMENT: 'A hozzászóláshoz jelentkezzen be '
-    NEXT: következő
-    NOCOMMENTSYET: 'Nem érkeztek hozzászólások'
-    POSTCOM: 'Küldjön egy hozzászólást'
-    PREV: előző
-    RSSFEEDALLCOMMENTS: 'Összes hozzászólás RSS-ben'
-    RSSFEEDCOMMENTS: 'Oldal hozzászólásai RSS-ben'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Oldal összes hozzászólásának törlése'

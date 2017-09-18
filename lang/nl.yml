@@ -1,30 +1,9 @@
 nl:
-  Comment:
-    ALLOWCOMMENTS: 'Reacties toestaan'
-    COMMENT: Reactie
-    ISSPAM: 'Spam?'
-    MODERATED: 'Gemodereerd?'
-    NAME: 'Auteur'
-    'ON': 'op'
-    PLURALNAME: Reacties
-    SINGULARNAME: Reactie
-  CommentAdmin:
-    MENUTITLE: Reacties
-    Moderated: Gemodereerd
-    NeedsModeration: 'Wacht op moderatie'
   CommentInterface:
-    POST: Plaats reactie
-    YOURNAME: 'Naam'
-  CommentingController:
-    COMMENTS: Reacties
-    EMAILADDRESS: 'E-mail adres (wordt niet gepubliceerd)'
-    PERMISSIONFAILURE: 'Je mag geen reacties plaatsen op deze pagina. Log a.u.b. eerst in en controleer je gebruikersrechten.'
-    RSSTITLE: 'Reacties RSS feed'
-    WEBSITEURL: 'Website URL'
+    POST: 'Plaats reactie'
+    YOURNAME: Naam
   CommentsAdmin:
     NeedsModeration: 'Wacht op moderatie'
-  CommentsExtension:
-    COMMENTOPTIONS: Reacties
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
   CommentsInterface_singlecomment_ss:
@@ -32,7 +11,7 @@ nl:
   CommentsInterface_ss:
     COMMENTLOGINERROR: 'Je moet ingelogd zijn om reacties te kunnen plaatsen'
     COMMENTPERMISSIONERROR: 'en controleer je gebruikersrechten'
-    COMMENTPOSTLOGIN: 'Inloggen'
+    COMMENTPOSTLOGIN: Inloggen
     COMMENTS: Reacties
     COMMENTSDISABLED: 'Reacties plaatsen is uitgeschakeld'
     LOGINTOPOSTCOMMENT: 'Log in om een reactie te plaatsen'
@@ -44,3 +23,24 @@ nl:
     RSSFEEDCOMMENTS: 'RSS feed voor reacties op deze pagina'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Verwijder alle reacties op deze pagina'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Reacties
+    Moderated: Gemodereerd
+    NeedsModeration: 'Wacht op moderatie'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Reacties
+    EMAILADDRESS: 'E-mail adres (wordt niet gepubliceerd)'
+    PERMISSIONFAILURE: 'Je mag geen reacties plaatsen op deze pagina. Log a.u.b. eerst in en controleer je gebruikersrechten.'
+    RSSTITLE: 'Reacties RSS feed'
+    WEBSITEURL: 'Website URL'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Reacties
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Reacties toestaan'
+    COMMENT: Reactie
+    ISSPAM: 'Spam?'
+    MODERATED: 'Gemodereerd?'
+    NAME: Auteur
+    'ON': op
+    PLURALNAME: Reacties
+    SINGULARNAME: Reactie

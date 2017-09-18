@@ -1,21 +1,4 @@
 sr@latin:
-  Comment:
-    ALLOWCOMMENTS: 'Dozvoli komentare'
-    COMMENT: Komentar
-    COMMENTBY: 'Autor komentara %s'
-    CREATED: 'Datum objavljivanja'
-    EMAIL: Elektronska pošta
-    ISSPAM: 'Zlonameran?'
-    MODERATED: 'Uređen?'
-    NAME: 'Ime autora'
-    PARENTTITLE: Roditelj
-    PLURALNAME: Komentari
-    SINGULARNAME: Komentar
-    URL: URL
-  CommentAdmin:
-    MENUTITLE: Komentari
-    Moderated: Uređen
-    NeedsModeration: 'Potrebno uređivanje'
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Molimo unesite komentar'
     COMMENT_MESSAGE_URL: 'Molimo Vas da unesete ispravan URL'
@@ -26,18 +9,12 @@ sr@latin:
     PREVIEWLABEL: Prikaz
     YOURNAME: 'Vaše ime'
     YOURNAME_MESSAGE_REQUIRED: 'Molimo Vas da unesete Vaše ime'
-  CommentingController:
-    COMMENTS: Komentari
-    EMAILADDRESS: 'Vaša adresa elektronske pošte (neće biti objavljeno)'
-    PERMISSIONFAILURE: 'Niste u mogućnosti da objavljujete komentare na ovoj strani. Molimo Vas da proverite da li ste prijavljeni i da li imate odgovarajući nivo ovlašćenja.'
-    RSSTITLE: 'RSS Feed komentara'
-    WEBSITEURL: 'URL Vašeg sajta'
   CommentsAdmin:
     NeedsModeration: 'Potrebno uređivanje'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Vaš komentar je prosleđen i sada čeka uređivanje.'
   CommentsInterface_singlecomment_ss:
-    PBY: 'Objavio'
+    PBY: Objavio
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Vaš komentar je prosleđen i sada čeka uređivanje.'
     COMMENTLOGINERROR: 'Ne možete objavljivati komentare dok se ne prijavite'
@@ -54,3 +31,26 @@ sr@latin:
     RSSFEEDCOMMENTS: 'RSS feed za komentare na ovoj strani'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Obriši sve komentare na ovoj strani'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Komentari
+    Moderated: Uređen
+    NeedsModeration: 'Potrebno uređivanje'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentari
+    EMAILADDRESS: 'Vaša adresa elektronske pošte (neće biti objavljeno)'
+    PERMISSIONFAILURE: 'Niste u mogućnosti da objavljujete komentare na ovoj strani. Molimo Vas da proverite da li ste prijavljeni i da li imate odgovarajući nivo ovlašćenja.'
+    RSSTITLE: 'RSS Feed komentara'
+    WEBSITEURL: 'URL Vašeg sajta'
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Dozvoli komentare'
+    COMMENT: Komentar
+    COMMENTBY: 'Autor komentara %s'
+    CREATED: 'Datum objavljivanja'
+    EMAIL: 'Elektronska pošta'
+    ISSPAM: 'Zlonameran?'
+    MODERATED: 'Uređen?'
+    NAME: 'Ime autora'
+    PARENTTITLE: Roditelj
+    PLURALNAME: Komentari
+    SINGULARNAME: Komentar
+    URL: URL

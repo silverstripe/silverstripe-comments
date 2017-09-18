@@ -1,30 +1,4 @@
 en:
-  Comment:
-    ALLOWCOMMENTS: 'Allow Comments'
-    COMMENT: Comment
-    COMMENTBY: 'Comment by %s'
-    CREATED: 'Date posted'
-    EMAIL: Email
-    ISSPAM: 'Spam?'
-    MODERATED: 'Moderated?'
-    NAME: 'Author Name'
-    'ON': 'on'
-    OPTIONS: Options
-    OPTION_DESCRIPTION: 'Unmoderated and spam comments will not be displayed until approved'
-    PARENTTITLE: Parent
-    PLURALNAME: Comments
-    ParentComment_Title: 'This comment is a reply to the below'
-    SINGULARNAME: Comment
-    URL: URL
-  CommentAdmin:
-    ADMIN_PERMISSION: 'Access to ''Comments'' section'
-    ApprovedComments: Approved
-    Comments: Approved
-    MENUTITLE: Comments
-    Moderated: Moderated
-    NeedsModeration: 'Needs Moderation'
-    NewComments: New
-    SpamComments: Spam
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Please enter your comment'
     COMMENT_MESSAGE_URL: 'Please enter a valid URL'
@@ -35,12 +9,6 @@ en:
     PREVIEWLABEL: Preview
     YOURNAME: 'Your name'
     YOURNAME_MESSAGE_REQUIRED: 'Please enter your name'
-  CommentingController:
-    COMMENTS: Comments
-    EMAILADDRESS: 'Your email address (will not be published)'
-    PERMISSIONFAILURE: 'You''re not able to post comments to this page. Please ensure you are logged in and have an appropriate permission level.'
-    RSSTITLE: 'Comments RSS Feed'
-    WEBSITEURL: 'Your website URL'
   Comments:
     COMMENTSREQUIRELOGIN: 'Require login to comment'
   CommentsAdmin:
@@ -49,19 +17,6 @@ en:
     NeedsModeration: 'Needs Moderation'
     NewComments: New
     SpamComments: Spam
-  CommentsExtension:
-    COMMENTOPTIONS: Comments
-    MODERATIONREQUIRED_NONE: 'No moderation required'
-    MODERATIONREQUIRED_NONMEMBERSONLY: 'Only moderate non-members'
-    MODERATIONREQUIRED_REQUIRED: 'Moderate all comments'
-  CommentsGridFieldAction:
-    APPROVE: Approve
-    COMMENTAPPROVED: 'Comment approved.'
-    COMMENTMARKEDSPAM: 'Comment marked as spam.'
-    SPAM: Spam
-  CommentsGridFieldConfig:
-    APPROVE: Approve
-    SPAM: Spam
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
   CommentsInterface_singlecomment_ss:
@@ -87,3 +42,48 @@ en:
     RSSFEEDCOMMENTS: 'RSS feed for comments on this page'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Delete all comments on this page'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    ADMIN_PERMISSION: 'Access to ''Comments'' section'
+    ApprovedComments: Approved
+    Comments: Approved
+    MENUTITLE: Comments
+    Moderated: Moderated
+    NeedsModeration: 'Needs Moderation'
+    NewComments: New
+    SpamComments: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldAction:
+    APPROVE: Approve
+    COMMENTAPPROVED: 'Comment approved.'
+    COMMENTMARKEDSPAM: 'Comment marked as spam.'
+    SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldConfig:
+    APPROVE: Approve
+    SPAM: Spam
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Comments
+    EMAILADDRESS: 'Your email address (will not be published)'
+    PERMISSIONFAILURE: 'You''re not able to post comments to this page. Please ensure you are logged in and have an appropriate permission level.'
+    RSSTITLE: 'Comments RSS Feed'
+    WEBSITEURL: 'Your website URL'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Comments
+    MODERATIONREQUIRED_NONE: 'No moderation required'
+    MODERATIONREQUIRED_NONMEMBERSONLY: 'Only moderate non-members'
+    MODERATIONREQUIRED_REQUIRED: 'Moderate all comments'
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Allow Comments'
+    COMMENT: Comment
+    COMMENTBY: 'Comment by %s'
+    CREATED: 'Date posted'
+    EMAIL: Email
+    ISSPAM: 'Spam?'
+    MODERATED: 'Moderated?'
+    NAME: 'Author Name'
+    'ON': 'on'
+    OPTIONS: Options
+    OPTION_DESCRIPTION: 'Unmoderated and spam comments will not be displayed until approved'
+    PARENTTITLE: Parent
+    PLURALNAME: Comments
+    ParentComment_Title: 'This comment is a reply to the below'
+    SINGULARNAME: Comment
+    URL: URL

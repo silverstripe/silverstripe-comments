@@ -1,44 +1,20 @@
 fi:
-  Comment:
-    ALLOWCOMMENTS: 'Salli kommentointi'
-    COMMENT: Komentti
-    COMMENTBY: 'Kommentoija: %s'
-    CREATED: 'Kirjoitettu'
-    EMAIL: Sähköposti
-    ISSPAM: 'Spämmiä?'
-    MODERATED: 'Moderoitu?'
-    NAME: 'Kirjoittajan nimi'
-    'ON': 'pvm'
-    PARENTTITLE: Isäntä
-    PLURALNAME: Kommentit
-    SINGULARNAME: Komentti
-    URL: URL-osoite
-  CommentAdmin:
-    MENUTITLE: Kommentit
-    Moderated: Moderoitu
-    NeedsModeration: 'Tarvitsee moderointia'
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Ole hyvä ja kommentoi'
     COMMENT_MESSAGE_URL: 'URL-osoitteen on oltava kelvollinen'
     EMAILADDRESS_MESSAGE_EMAIL: 'Sähköpostiosoitteen on oltava kelvollinen'
-    EMAILADDRESS_MESSAGE_REQUIRED: 'Sähköpostiosoitteesi'
+    EMAILADDRESS_MESSAGE_REQUIRED: Sähköpostiosoitteesi
     POST: Lähetä
     PREVIEW: Esikatselu
     PREVIEWLABEL: Esikatselu
-    YOURNAME: 'Nimesi'
-    YOURNAME_MESSAGE_REQUIRED: 'Nimesi'
-  CommentingController:
-    COMMENTS: Kommentit
-    EMAILADDRESS: 'Sähköpostiosoitteesi (ei julkaista)'
-    PERMISSIONFAILURE: 'Et voi kommentoida tätä sivua. Varmista, että olet kirjatuneena ja että käyttöoikeutesi ovat riittävät.'
-    RSSTITLE: 'Kommenttien RSS-syöte'
-    WEBSITEURL: 'WWW-sivustosi osoite'
+    YOURNAME: Nimesi
+    YOURNAME_MESSAGE_REQUIRED: Nimesi
   CommentsAdmin:
     NeedsModeration: 'Tarvitsee moderointia'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
   CommentsInterface_singlecomment_ss:
-    PBY: 'Lähettänyt'
+    PBY: Lähettänyt
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Kommenttisi on lähetetty ja on moderoitavana.'
     COMMENTLOGINERROR: 'Et voi kommentoida ennen kuin olet kirjautunut sisään'
@@ -55,3 +31,27 @@ fi:
     RSSFEEDCOMMENTS: 'RSS-syöte tämän sivun kommenteista'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Poista kaikki tämän sivun kommentit'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Kommentit
+    Moderated: Moderoitu
+    NeedsModeration: 'Tarvitsee moderointia'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Kommentit
+    EMAILADDRESS: 'Sähköpostiosoitteesi (ei julkaista)'
+    PERMISSIONFAILURE: 'Et voi kommentoida tätä sivua. Varmista, että olet kirjatuneena ja että käyttöoikeutesi ovat riittävät.'
+    RSSTITLE: 'Kommenttien RSS-syöte'
+    WEBSITEURL: 'WWW-sivustosi osoite'
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Salli kommentointi'
+    COMMENT: Komentti
+    COMMENTBY: 'Kommentoija: %s'
+    CREATED: Kirjoitettu
+    EMAIL: Sähköposti
+    ISSPAM: 'Spämmiä?'
+    MODERATED: 'Moderoitu?'
+    NAME: 'Kirjoittajan nimi'
+    'ON': pvm
+    PARENTTITLE: Isäntä
+    PLURALNAME: Kommentit
+    SINGULARNAME: Komentti
+    URL: URL-osoite

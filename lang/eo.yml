@@ -1,29 +1,4 @@
 eo:
-  Comment:
-    ALLOWCOMMENTS: 'Ebligi komentojn'
-    COMMENT: Komento
-    COMMENTBY: 'Komento de %s'
-    CREATED: 'Dato de afiŝo'
-    EMAIL: Retpoŝto
-    ISSPAM: 'Ĉu spamo?'
-    MODERATED: 'Ĉu kontrolata?'
-    NAME: 'Nomo de aŭtoro'
-    'ON': 'en'
-    OPTION_DESCRIPTION: 'Ne vidigos nekontrolitajn aŭ spamajn komentojn antaŭ aprobo'
-    PARENTTITLE: Patra
-    PLURALNAME: Komentoj
-    ParentComment_Title: 'Tiu komento estas respondo al la suba'
-    SINGULARNAME: Komento
-    URL: URL
-  CommentAdmin:
-    ADMIN_PERMISSION: 'Aliro al sekcio ''Komentoj'''
-    ApprovedComments: Aprobita
-    Comments: Aprobita
-    MENUTITLE: Komentoj
-    Moderated: Kontrolata
-    NeedsModeration: 'Bezonas kontrolon'
-    NewComments: Nova
-    SpamComments: Spamo
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Bonvole enigu vian komenton'
     COMMENT_MESSAGE_URL: 'Bonvole enigu validan URL-on'
@@ -34,12 +9,6 @@ eo:
     PREVIEWLABEL: Antaŭvido
     YOURNAME: 'Via nomo'
     YOURNAME_MESSAGE_REQUIRED: 'Bonvole enigu vian nomon'
-  CommentingController:
-    COMMENTS: Komentoj
-    EMAILADDRESS: 'Via retadreso (ne publikiĝos)'
-    PERMISSIONFAILURE: 'Vi ne povas afiŝi komentojn al ĉi tiu paĝo. Bonvole certigu ke vi jam ensalutis kaj havas taŭgan permeson.'
-    RSSTITLE: 'RSS-fluo de komentoj'
-    WEBSITEURL: 'Via reteja URL'
   Comments:
     COMMENTSREQUIRELOGIN: 'Necesas ensaluti por komenti'
   CommentsAdmin:
@@ -48,11 +17,6 @@ eo:
     NeedsModeration: 'Bezonas kontrolon'
     NewComments: Nova
     SpamComments: Spamo
-  CommentsExtension:
-    COMMENTOPTIONS: Komentoj
-    MODERATIONREQUIRED_NONE: 'Kontrolado ne bezonatas'
-    MODERATIONREQUIRED_NONMEMBERSONLY: 'Kontroli nur nemembrojn'
-    MODERATIONREQUIRED_REQUIRED: 'Kontroli ĉiujn komentojn'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Via komento afiŝiĝis kaj nun atendas kontrolon.'
   CommentsInterface_singlecomment_ss:
@@ -78,3 +42,39 @@ eo:
     RSSFEEDCOMMENTS: 'RSS-fluo por komentoj pri ĉi tiu paĝo'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Forigi ĉiujn komentojn pri ĉi tiu paĝo'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    ADMIN_PERMISSION: 'Aliro al sekcio ''Komentoj'''
+    ApprovedComments: Aprobita
+    Comments: Aprobita
+    MENUTITLE: Komentoj
+    Moderated: Kontrolata
+    NeedsModeration: 'Bezonas kontrolon'
+    NewComments: Nova
+    SpamComments: Spamo
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentoj
+    EMAILADDRESS: 'Via retadreso (ne publikiĝos)'
+    PERMISSIONFAILURE: 'Vi ne povas afiŝi komentojn al ĉi tiu paĝo. Bonvole certigu ke vi jam ensalutis kaj havas taŭgan permeson.'
+    RSSTITLE: 'RSS-fluo de komentoj'
+    WEBSITEURL: 'Via reteja URL'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentoj
+    MODERATIONREQUIRED_NONE: 'Kontrolado ne bezonatas'
+    MODERATIONREQUIRED_NONMEMBERSONLY: 'Kontroli nur nemembrojn'
+    MODERATIONREQUIRED_REQUIRED: 'Kontroli ĉiujn komentojn'
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Ebligi komentojn'
+    COMMENT: Komento
+    COMMENTBY: 'Komento de %s'
+    CREATED: 'Dato de afiŝo'
+    EMAIL: Retpoŝto
+    ISSPAM: 'Ĉu spamo?'
+    MODERATED: 'Ĉu kontrolata?'
+    NAME: 'Nomo de aŭtoro'
+    'ON': en
+    OPTION_DESCRIPTION: 'Ne vidigos nekontrolitajn aŭ spamajn komentojn antaŭ aprobo'
+    PARENTTITLE: Patra
+    PLURALNAME: Komentoj
+    ParentComment_Title: 'Tiu komento estas respondo al la suba'
+    SINGULARNAME: Komento
+    URL: URL

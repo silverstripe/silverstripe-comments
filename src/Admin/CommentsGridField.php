@@ -4,6 +4,7 @@ namespace SilverStripe\Comments\Admin;
 
 use SilverStripe\Forms\FormField;
 use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\View\HTML;
 
 class CommentsGridField extends GridField
 {
@@ -20,7 +21,7 @@ class CommentsGridField extends GridField
             $attributes['class'] .= ' spam';
         }
 
-        return FormField::create_tag(
+        return HTML::createTag(
             'tr',
             $attributes,
             $content

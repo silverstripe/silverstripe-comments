@@ -61,43 +61,43 @@ class CommentsExtension extends DataExtension
      *
      * @config
      */
-    private static $comments = array(
+    private static $comments = [
         'enabled' => true,
-        'enabled_cms' => false,
-        'require_login' => false,
-        'require_login_cms' => false,
-        'required_permission' => false,
+        // 'enabled_cms' => false,
+        // 'require_login' => false,
+        // 'require_login_cms' => false,
+        // 'required_permission' => false,
         'include_js' => true,
-        'use_gravatar' => false,
+        // 'use_gravatar' => false,
         'gravatar_size' => 80,
         'gravatar_default' => 'identicon',
         'gravatar_rating' => 'g',
-        'show_comments_when_disabled' => false,
+        // 'show_comments_when_disabled' => false,
         'order_comments_by' => '"Created" DESC',
-        'order_replies_by' => false,
+        // 'order_replies_by' => false,
         'comments_per_page' => 10,
         'comments_holder_id' => 'comments-holder',
         'comment_permalink_prefix' => 'comment-',
-        'require_moderation' => false,
-        'require_moderation_nonmembers' => false,
-        'require_moderation_cms' => false,
-        'frontend_moderation' => false,
-        'frontend_spam' => false,
-        'html_allowed' => false,
-        'html_allowed_elements' => array('a', 'img', 'i', 'b'),
-        'use_preview' => false,
-        'nested_comments' => false,
+        // 'require_moderation' => false,
+        // 'require_moderation_nonmembers' => false,
+        // 'require_moderation_cms' => false,
+        // 'frontend_moderation' => false,
+        // 'frontend_spam' => false,
+        // 'html_allowed' => false,
+        'html_allowed_elements' => ['a', 'img', 'i', 'b'],
+        // 'use_preview' => false,
+        // 'nested_comments' => false,
         'nested_depth' => 2,
-    );
+    ];
 
     /**
      * @var array
      */
-    private static $db = array(
+    private static $db = [
         'ProvideComments' => 'Boolean',
         'ModerationRequired' => 'Enum(\'None,Required,NonMembersOnly\',\'None\')',
         'CommentsRequireLogin' => 'Boolean',
-    );
+    ];
 
     /**
      * {@inheritDoc}
@@ -152,11 +152,11 @@ class CommentsExtension extends DataExtension
      */
     public function updateSettingsFields(FieldList $fields)
     {
-        $options = FieldGroup::create()->setTitle(_t('CommentsExtension.COMMENTOPTIONS', 'Comments'));
+        $options = FieldGroup::create()->setTitle(_t('SilverStripe\\Comments\\Extensions\\CommentsExtension.COMMENTOPTIONS', 'Comments'));
 
         // Check if enabled setting should be cms configurable
         if ($this->owner->getCommentsOption('enabled_cms')) {
-            $options->push(new CheckboxField('ProvideComments', _t('Comment.ALLOWCOMMENTS', 'Allow Comments')));
+            $options->push(new CheckboxField('ProvideComments', _t('SilverStripe\\Comments\\Model\\Comment.ALLOWCOMMENTS', 'Allow Comments')));
         }
 
         // Check if we should require users to login to comment
@@ -179,11 +179,11 @@ class CommentsExtension extends DataExtension
 
         // Check if moderation should be enabled via cms configurable
         if ($this->owner->getCommentsOption('require_moderation_cms')) {
-            $moderationField = new DropdownField('ModerationRequired', _t('CommentsExtension.COMMENTMODERATION', 'Comment Moderation'), array(
-                'None' => _t('CommentsExtension.MODERATIONREQUIRED_NONE', 'No moderation required'),
-                'Required' => _t('CommentsExtension.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
+            $moderationField = new DropdownField('ModerationRequired', _t('SilverStripe\\Comments\\Extensions\\CommentsExtension.COMMENTMODERATION', 'Comment Moderation'), array(
+                'None' => _t('SilverStripe\\Comments\\Extensions\\CommentsExtension.MODERATIONREQUIRED_NONE', 'No moderation required'),
+                'Required' => _t('SilverStripe\\Comments\\Extensions\\CommentsExtension.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
                 'NonMembersOnly' => _t(
-                    'CommentsExtension.MODERATIONREQUIRED_NONMEMBERSONLY',
+                    'SilverStripe\\Comments\\Extensions\\CommentsExtension.MODERATIONREQUIRED_NONMEMBERSONLY',
                     'Only moderate non-members'
                 ),
             ));
@@ -493,9 +493,10 @@ class CommentsExtension extends DataExtension
     }
 
     /**
-     * Get the commenting option for this object
+     * Get the commenting option for this object.
      *
-     * This can be overridden in any instance or extension to customise the option available
+     * This can be overridden in any instance or extension to customise the
+     * option available.
      *
      * @param string $key
      *
@@ -503,10 +504,9 @@ class CommentsExtension extends DataExtension
      */
     public function getCommentsOption($key)
     {
-        $settings = $this->owner // In case singleton is called on the extension directly
-            ? $this->owner->config()->comments
-            : Config::inst()->get(__CLASS__, 'comments');
+        $settings = $this->getCommentsOptions();
         $value = null;
+
         if (isset($settings[$key])) {
             $value = $settings[$key];
         }
@@ -515,7 +515,22 @@ class CommentsExtension extends DataExtension
         if ($this->owner) {
             $this->owner->extend('updateCommentsOption', $key, $value);
         }
+
         return $value;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCommentsOptions()
+    {
+        if ($this->owner) {
+            $settings = $this->owner->config()->comments;
+        } else {
+            $settings = Config::inst()->get(__CLASS__, 'comments');
+        }
+
+        return $settings;
     }
 
     /**
@@ -561,13 +576,19 @@ class CommentsExtension extends DataExtension
         if ($fields->hasTabSet()) {
             $tabs = new TabSet(
                 'Comments',
-                new Tab('CommentsNewCommentsTab', _t('CommentAdmin.NewComments', 'New') . ' ' . $newCount,
+                new Tab(
+                    'CommentsNewCommentsTab',
+                    _t('SilverStripe\\Comments\\Admin\\CommentAdmin.NewComments', 'New') . ' ' . $newCount,
                     $newGrid
                 ),
-                new Tab('CommentsCommentsTab', _t('CommentAdmin.Comments', 'Approved') . ' ' . $approvedCount,
+                new Tab(
+                    'CommentsCommentsTab',
+                    _t('SilverStripe\\Comments\\Admin\\CommentAdmin.Comments', 'Approved') . ' ' . $approvedCount,
                     $approvedGrid
                 ),
-                new Tab('CommentsSpamCommentsTab', _t('CommentAdmin.SpamComments', 'Spam') . ' ' . $spamCount,
+                new Tab(
+                    'CommentsSpamCommentsTab',
+                    _t('SilverStripe\\Comments\\Admin\\CommentAdmin.SpamComments', 'Spam') . ' ' . $spamCount,
                     $spamGrid
                 )
             );

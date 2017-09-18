@@ -1,29 +1,4 @@
 lt:
-  Comment:
-    ALLOWCOMMENTS: 'Leisti komentarus'
-    COMMENT: Komentaras
-    COMMENTBY: 'Komentarą parašė ''%s'''
-    CREATED: 'Paskelbimo data'
-    EMAIL: E. paštas
-    ISSPAM: 'Šlamštas?'
-    MODERATED: 'Patvirtintas?'
-    NAME: 'Autoriaus Vardas'
-    'ON': 'į'
-    OPTION_DESCRIPTION: 'Nepatvirtinti komentarai nebus rodomi, kol jie atskirai nebus patvirtinti'
-    PARENTTITLE: Priklauso
-    PLURALNAME: Komentarai
-    ParentComment_Title: 'Šis komentaras yra atsakymas į žemiau esantį'
-    SINGULARNAME: Komentaras
-    URL: URL adresas
-  CommentAdmin:
-    ADMIN_PERMISSION: 'Patekti į ''Komentarų'' dalį'
-    ApprovedComments: Patvirtinti
-    Comments: Patvirtinti
-    MENUTITLE: Komentarai
-    Moderated: Patvirtinti
-    NeedsModeration: 'Laukia patvirtinimo'
-    NewComments: Nauji
-    SpamComments: Šlamštas
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Prašome parašyti savo komentarą'
     COMMENT_MESSAGE_URL: 'Prašome įvesti teisingą URL adresą'
@@ -34,12 +9,6 @@ lt:
     PREVIEWLABEL: Peržiūra
     YOURNAME: 'Jūsų vardas'
     YOURNAME_MESSAGE_REQUIRED: 'Prašome įvesti savo vardą'
-  CommentingController:
-    COMMENTS: Komentarai
-    EMAILADDRESS: 'Jūsų el.pašto adresas (nebus skelbiamas)'
-    PERMISSIONFAILURE: 'Jūs negalite skelbti komentarų šiame puslapyje. Įsitikinkite, kad esate prisijungęs ir turite atitinkamą teisių lygį.'
-    RSSTITLE: 'Komentarų RSS srautas'
-    WEBSITEURL: 'Jūsų svetainės nuoroda'
   Comments:
     COMMENTSREQUIRELOGIN: 'Būtina prisijungti komentavimui'
   CommentsAdmin:
@@ -47,20 +16,15 @@ lt:
     Comments: Patvirtinti
     NeedsModeration: 'Laukia patvirtinimo'
     NewComments: Nauji
-    SpamComments: Šlamštas
-  CommentsExtension:
-    COMMENTOPTIONS: Komentarai
-    MODERATIONREQUIRED_NONE: 'Nereikalauja patvirtinimo'
-    MODERATIONREQUIRED_NONMEMBERSONLY: 'Tvirtinti tik neregistruotų vartotojų'
-    MODERATIONREQUIRED_REQUIRED: 'Tvirtinti visus komentarus'
+    SpamComments: 'Šlamštas'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
   CommentsInterface_singlecomment_ss:
-    APPROVE: 'patvirtinti'
+    APPROVE: patvirtinti
     ISNTSPAM: 'ne šlamštas'
-    ISSPAM: 'šlamštas'
-    PBY: 'Paskelbė'
-    REMCOM: 'ištrinti'
+    ISSPAM: šlamštas
+    PBY: Paskelbė
+    REMCOM: ištrinti
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
     COMMENTLOGINERROR: 'Negalite rašyti komentarų, jeigu nesate prisijungę'
@@ -78,3 +42,39 @@ lt:
     RSSFEEDCOMMENTS: 'Šio puslapio komentarų RSS'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Ištrinti visus komentarus šiame puslapyje'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    ADMIN_PERMISSION: 'Patekti į ''Komentarų'' dalį'
+    ApprovedComments: Patvirtinti
+    Comments: Patvirtinti
+    MENUTITLE: Komentarai
+    Moderated: Patvirtinti
+    NeedsModeration: 'Laukia patvirtinimo'
+    NewComments: Nauji
+    SpamComments: 'Šlamštas'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentarai
+    EMAILADDRESS: 'Jūsų el.pašto adresas (nebus skelbiamas)'
+    PERMISSIONFAILURE: 'Jūs negalite skelbti komentarų šiame puslapyje. Įsitikinkite, kad esate prisijungęs ir turite atitinkamą teisių lygį.'
+    RSSTITLE: 'Komentarų RSS srautas'
+    WEBSITEURL: 'Jūsų svetainės nuoroda'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentarai
+    MODERATIONREQUIRED_NONE: 'Nereikalauja patvirtinimo'
+    MODERATIONREQUIRED_NONMEMBERSONLY: 'Tvirtinti tik neregistruotų vartotojų'
+    MODERATIONREQUIRED_REQUIRED: 'Tvirtinti visus komentarus'
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Leisti komentarus'
+    COMMENT: Komentaras
+    COMMENTBY: 'Komentarą parašė ''%s'''
+    CREATED: 'Paskelbimo data'
+    EMAIL: 'E. paštas'
+    ISSPAM: 'Šlamštas?'
+    MODERATED: 'Patvirtintas?'
+    NAME: 'Autoriaus Vardas'
+    'ON': į
+    OPTION_DESCRIPTION: 'Nepatvirtinti komentarai nebus rodomi, kol jie atskirai nebus patvirtinti'
+    PARENTTITLE: Priklauso
+    PLURALNAME: Komentarai
+    ParentComment_Title: 'Šis komentaras yra atsakymas į žemiau esantį'
+    SINGULARNAME: Komentaras
+    URL: 'URL adresas'

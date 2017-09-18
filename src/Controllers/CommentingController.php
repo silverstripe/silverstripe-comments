@@ -191,6 +191,26 @@ class CommentingController extends Controller
     }
 
     /**
+     * Returns all the commenting options for the current instance.
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        if ($record = $this->getOwnerRecord()) {
+            return $record->getCommentsOptions();
+        }
+
+        // Otherwise a singleton of that record
+        if ($class = $this->getParentClass()) {
+            return singleton($class)->getCommentsOptions();
+        }
+
+        // Otherwise just use the default options
+        return singleton(CommentsExtension::class)->getCommentsOptions();
+    }
+
+    /**
      * Workaround for generating the link to this controller
      *
      * @param  string $action
@@ -254,7 +274,7 @@ class CommentingController extends Controller
             }
         }
 
-        $title = _t('CommentingController.RSSTITLE', "Comments RSS Feed");
+        $title = _t('SilverStripe\\Comments\\Controllers\\CommentingController.RSSTITLE', "Comments RSS Feed");
         $comments = new PaginatedList($comments, $request);
         $comments->setPageLength($this->getOption('comments_per_page'));
 
@@ -455,7 +475,7 @@ class CommentingController extends Controller
      */
     public function CommentsForm()
     {
-        return Injector::inst()->create(CommentForm::class, __FUNCTION__, $this->owner);
+        return Injector::inst()->create(CommentForm::class, __FUNCTION__, $this);
     }
 
 

@@ -9,10 +9,6 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
 
-/**
- * @package comments
- * @subpackage tests
- */
 class CommentableItem extends DataObject implements TestOnly
 {
     private static $db = array(

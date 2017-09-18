@@ -18,7 +18,7 @@ class CommentsExtensionTest extends SapphireTest
     /**
      * {@inheritDoc}
      */
-    protected static $fixture_file = 'comments/tests/CommentsTest.yml';
+    protected static $fixture_file = 'CommentsTest.yml';
 
     /**
      * {@inheritDoc}
@@ -35,7 +35,7 @@ class CommentsExtensionTest extends SapphireTest
         Config::nest();
 
         // Set good default values
-        Config::inst()->update(CommentsExtension::class, 'comments', array(
+        Config::modify()->set(CommentsExtension::class, 'comments', array(
             'enabled' => true,
             'enabled_cms' => false,
             'require_login' => false,
@@ -53,7 +53,7 @@ class CommentsExtensionTest extends SapphireTest
         );
 
         // Configure this dataobject
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'enabled_cms' => true
         ));
     }
@@ -64,9 +64,20 @@ class CommentsExtensionTest extends SapphireTest
         parent::tearDown();
     }
 
+
+    public function testGetCommentsOption()
+    {
+        Config::modify()->set(CommentableItem::class, 'comments', [
+            'comments_holder_id' => 'some-option'
+        ]);
+
+        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $this->assertEquals('some-option', $item->getCommentsOption('comments_holder_id'));
+    }
+
     public function testPopulateDefaults()
     {
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'require_moderation_cms' => true,
             'require_moderation' => true,
             'require_moderation_nonmembers' => true
@@ -77,7 +88,7 @@ class CommentsExtensionTest extends SapphireTest
 
         $this->assertTrue($item->CommentsRequireLogin);
 
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'require_moderation_cms' => true,
             'require_moderation' => true,
             'require_moderation_nonmembers' => true
@@ -87,7 +98,6 @@ class CommentsExtensionTest extends SapphireTest
         $item->populateDefaults();
 
         $this->assertFalse($item->CommentsRequireLogin);
-
     }
 
     public function testUpdateSettingsFields()
@@ -99,7 +109,7 @@ class CommentsExtensionTest extends SapphireTest
     {
 
         // the 3 options take precedence in this order, executed if true
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'require_moderation_cms' => true,
             'require_moderation' => true,
             'require_moderation_nonmembers' => true
@@ -122,21 +132,21 @@ class CommentsExtensionTest extends SapphireTest
 
         $this->assertEquals('NonMembersOnly', $item->getModerationRequired());
 
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'require_moderation_cms' => false,
             'require_moderation' => true,
             'require_moderation_nonmembers' => true
         ));
         $this->assertEquals('Required', $item->getModerationRequired());
 
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'require_moderation_cms' => false,
             'require_moderation' => false,
             'require_moderation_nonmembers' => true
         ));
         $this->assertEquals('NonMembersOnly', $item->getModerationRequired());
 
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'require_moderation_cms' => false,
             'require_moderation' => false,
             'require_moderation_nonmembers' => false
@@ -146,7 +156,7 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testGetCommentsRequireLogin()
     {
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'require_login_cms' => true
         ));
 
@@ -158,12 +168,12 @@ class CommentsExtensionTest extends SapphireTest
         $item->CommentsRequireLogin = false;
         $this->assertFalse($item->getCommentsRequireLogin());
 
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'require_login_cms' => false,
             'require_login' => false
         ));
         $this->assertFalse($item->getCommentsRequireLogin());
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'require_login_cms' => false,
             'require_login' => true
         ));
@@ -173,7 +183,7 @@ class CommentsExtensionTest extends SapphireTest
     public function testAllComments()
     {
         $item = $this->objFromFixture(CommentableItem::class, 'first');
-        $this->assertEquals(4, $items->AllComments()->count());
+        $this->assertEquals(4, $item->AllComments()->count());
     }
 
     public function testAllVisibleComments()
@@ -183,28 +193,28 @@ class CommentsExtensionTest extends SapphireTest
         }
 
         $item = $this->objFromFixture(CommentableItem::class, 'second');
-        $this->assertEquals(4, $items->AllVisibleComments()->count());
+        $this->assertEquals(4, $item->AllVisibleComments()->count());
     }
 
     public function testComments()
     {
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'nested_comments' => false
         ));
 
         $item = $this->objFromFixture(CommentableItem::class, 'first');
-        $this->assertEquals(4, $items->Comments()->count());
+        $this->assertEquals(4, $item->Comments()->count());
 
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'nested_comments' => true
         ));
 
-        $this->assertEquals(1, $items->Comments()->count());
+        $this->assertEquals(1, $item->Comments()->count());
     }
 
     public function testGetCommentsEnabled()
     {
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'enabled_cms' => true
         ));
 
@@ -218,12 +228,12 @@ class CommentsExtensionTest extends SapphireTest
     public function testGetCommentHolderID()
     {
         $item = $this->objFromFixture(CommentableItem::class, 'first');
-        Config::inst()->update(CommentableItem::class, 'comments', array(
-            'comments_holder_id' => 'comments-holder',
+        Config::modify()->set(CommentableItem::class, 'comments', array(
+            'comments_holder_id' => 'commentid_test1',
         ));
         $this->assertEquals('commentid_test1', $item->getCommentHolderID());
 
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'comments_holder_id' => 'commtentid_test_another',
         ));
         $this->assertEquals('commtentid_test_another', $item->getCommentHolderID());
@@ -251,7 +261,7 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testGetCommentRSSLink()
     {
-        Config::inst()->update('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
+        Config::modify()->set('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
 
         $item = $this->objFromFixture(CommentableItem::class, 'first');
         $link = $item->getCommentRSSLink();
@@ -260,7 +270,7 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testGetCommentRSSLinkPage()
     {
-        Config::inst()->update('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
+        Config::modify()->set('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
 
         $item = $this->objFromFixture(CommentableItem::class, 'first');
         $page = $item->getCommentRSSLinkPage();
@@ -272,7 +282,7 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testCommentsForm()
     {
-        Config::inst()->update(CommentableItem::class, 'comments', array(
+        Config::modify()->set(CommentableItem::class, 'comments', array(
             'include_js' => false,
             'comments_holder_id' => 'comments-holder',
         ));
@@ -287,21 +297,20 @@ class CommentsExtensionTest extends SapphireTest
 
         $this->assertContains($expected, $cf);
         $this->assertContains('<h4>Post your comment</h4>', $cf);
-
         // check the comments form exists
-        $expected = '<input type="text" name="Name" value="ADMIN User" class="text" id="comments-holder_Name" required="required"';
+        $expected = '<input type="text" name="Name"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<input type="email" name="Email" value="ADMIN@example.org" class="email text" id="comments-holder_Email"';
+        $expected = '<input type="email" name="Email"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<input type="text" name="URL" class="text" id="comments-holder_URL" data-msg-url="Please enter a valid URL"';
+        $expected = '<input type="text" name="URL"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<input type="hidden" name="ParentID" value="' . $item->ID . '" class="hidden" id="comments-holder_ParentID" />';
+        $expected = '<input type="hidden" name="ParentID"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<textarea name="Comment" class="textarea" id="comments-holder_Comment" required="required"';
+        $expected = '<textarea name="Comment"';
         $this->assertContains($expected, $cf);
 
         $expected = '<input type="submit" name="action_doPostComment" value="Post" class="action" id="comments-holder_action_doPostComment"';
@@ -321,41 +330,6 @@ class CommentsExtensionTest extends SapphireTest
 
         $expected = '<p>Reply to firstComA 3</p>';
         $this->assertContains($expected, $cf);
-
-        // Check for JS inclusion
-        $backend = Requirements::backend();
-        $this->assertEquals(
-            array(),
-            $backend->getJavascript()
-        );
-
-        Config::inst()->update(
-            CommentableItem::class,
-            'comments',
-            array(
-                'include_js' => true
-            )
-        );
-        $cf = $item->CommentsForm();
-
-        $backend = Requirements::backend();
-        $javascriptRequirements = $backend->getJavascript();
-        $expected = array(
-            'framework/admin/thirdparty/jquery/jquery.js',
-            'framework/admin/thirdparty/jquery-entwine/dist/jquery.entwine-dist.js',
-            'framework/admin/thirdparty/jquery-form/jquery.form.js',
-            'comments/thirdparty/jquery-validate/jquery.validate.min.js',
-            /**
-             * @todo: Is there a replacement for this? The docs are unclear
-             */
-            // 'framework/admin/client/src/i18n.js',
-            'comments/javascript/lang/en.js',
-            'comments/javascript/CommentsInterface.js'
-        );
-
-        foreach ($expected as $javascript) {
-            $this->assertArrayHasKey($javascript, $javascriptRequirements);
-        };
     }
 
     public function testAttachedToSiteTree()
@@ -402,11 +376,6 @@ class CommentsExtensionTest extends SapphireTest
         $this->assertEquals(4, sizeof($results));
     }
 
-    public function testGetCommentsOption()
-    {
-        $this->markTestSkipped('TODO');
-    }
-
     public function testUpdateModerationFields()
     {
         $this->markTestSkipped('TODO');
@@ -414,7 +383,7 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testUpdateCMSFields()
     {
-        Config::inst()->update(
+        Config::modify()->set(
             CommentableItem::class,
             'comments',
             array(
@@ -426,35 +395,29 @@ class CommentsExtensionTest extends SapphireTest
         $item->ProvideComments = true;
         $item->write();
         $fields = $item->getCMSFields();
-        CommentTestHelper::assertFieldsForTab(
-            $this,
-            'Root.Comments',
-            array('CommentsNewCommentsTab', 'CommentsCommentsTab', 'CommentsSpamCommentsTab'),
-            $fields
-        );
 
         CommentTestHelper::assertFieldsForTab(
             $this,
-            'Root.Comments.CommentsNewCommentsTab',
+            'Comments.CommentsNewCommentsTab',
             array('NewComments'),
             $fields
         );
 
         CommentTestHelper::assertFieldsForTab(
             $this,
-            'Root.Comments.CommentsCommentsTab',
+            'Comments.CommentsCommentsTab',
             array('ApprovedComments'),
             $fields
         );
 
         CommentTestHelper::assertFieldsForTab(
             $this,
-            'Root.Comments.CommentsSpamCommentsTab',
+            'Comments.CommentsSpamCommentsTab',
             array('SpamComments'),
             $fields
         );
 
-        Config::inst()->update(
+        Config::modify()->set(
             CommentableItem::class,
             'comments',
             array(
@@ -474,7 +437,7 @@ class CommentsExtensionTest extends SapphireTest
             $fields
         );
 
-        Config::inst()->update(
+        Config::modify()->set(
             CommentableItem::class,
             'comments',
             array(

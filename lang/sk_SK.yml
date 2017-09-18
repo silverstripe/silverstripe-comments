@@ -1,5 +1,28 @@
 sk_SK:
-  Comment:
+  CommentInterface:
+    COMMENT_MESSAGE_REQUIRED: 'Pridaj scoj komentár'
+    COMMENT_MESSAGE_URL: 'Vlož platbú adresu URL'
+    POST: Odoslať
+    PREVIEW: Náhľad
+    PREVIEWLABEL: Náhľad
+    YOURNAME: 'Vaše meno'
+    YOURNAME_MESSAGE_REQUIRED: 'Vlož svoje meno'
+  CommentsAdmin:
+    NeedsModeration: 'Vyžaduje schválenie'
+  CommentsInterface_ss:
+    COMMENTLOGINERROR: 'Komentáre môže pridávať len prihlásený užívateľ'
+    COMMENTS: Komentáre
+    COMMENTSDISABLED: 'Už nie je možné pridávať nové komentáre'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Komentáre
+    Moderated: Odsúhlasený
+    NeedsModeration: 'Vyžaduje odsúhlasenie'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentáre
+    EMAILADDRESS: 'Váš e-mail (nebude zverejnený)'
+    RSSTITLE: 'RSS feed komentárov'
+    WEBSITEURL: 'Vaša web stránka'
+  SilverStripe\Comments\Model\Comment:
     ALLOWCOMMENTS: 'Povoliť komentáre'
     COMMENT: Komentár
     COMMENTBY: 'Komentáre od %s'
@@ -11,27 +34,4 @@ sk_SK:
     PARENTTITLE: Rodič
     PLURALNAME: Komentáre
     SINGULARNAME: Komentár
-    URL: Web adresa
-  CommentAdmin:
-    MENUTITLE: Komentáre
-    Moderated: Odsúhlasený
-    NeedsModeration: 'Vyžaduje odsúhlasenie'
-  CommentInterface:
-    COMMENT_MESSAGE_REQUIRED: 'Pridaj scoj komentár'
-    COMMENT_MESSAGE_URL: 'Vlož platbú adresu URL'
-    POST: Odoslať
-    PREVIEW: Náhľad
-    PREVIEWLABEL: Náhľad
-    YOURNAME: 'Vaše meno'
-    YOURNAME_MESSAGE_REQUIRED: 'Vlož svoje meno'
-  CommentingController:
-    COMMENTS: Komentáre
-    EMAILADDRESS: 'Váš e-mail (nebude zverejnený)'
-    RSSTITLE: 'RSS feed komentárov'
-    WEBSITEURL: 'Vaša web stránka'
-  CommentsAdmin:
-    NeedsModeration: 'Vyžaduje schválenie'
-  CommentsInterface_ss:
-    COMMENTLOGINERROR: 'Komentáre môže pridávať len prihlásený užívateľ'
-    COMMENTS: Komentáre
-    COMMENTSDISABLED: 'Už nie je možné pridávať nové komentáre'
+    URL: 'Web adresa'

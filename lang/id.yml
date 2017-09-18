@@ -1,21 +1,4 @@
 id:
-  Comment:
-    ALLOWCOMMENTS: 'Bolehkan Komentar'
-    COMMENT: Komentar
-    COMMENTBY: 'Komentar oleh %s'
-    CREATED: 'Tanggal kirim'
-    EMAIL: Email
-    ISSPAM: 'Spam?'
-    MODERATED: 'Moderasi?'
-    NAME: 'Nama Penulis'
-    PARENTTITLE: Induk
-    PLURALNAME: Komentar
-    SINGULARNAME: Komentar
-    URL: URL
-  CommentAdmin:
-    MENUTITLE: Komentar
-    Moderated: Dimoderasi
-    NeedsModeration: 'Perlu Moderasi'
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Ketikkan komentar Anda'
     COMMENT_MESSAGE_URL: 'Isikan URL yang valid'
@@ -26,12 +9,6 @@ id:
     PREVIEWLABEL: Pratinjau
     YOURNAME: 'Nama Anda'
     YOURNAME_MESSAGE_REQUIRED: 'Isikan nama Anda'
-  CommentingController:
-    COMMENTS: Komentar
-    EMAILADDRESS: 'Alamat email Anda (tidak akan diterbitkan)'
-    PERMISSIONFAILURE: 'Anda tidak dapat mengomentari laman ini. Mohon pastikan Anda sudah login dan mendapatkan hak akses yang sesuai.'
-    RSSTITLE: 'Sindikasi RSS Komentar'
-    WEBSITEURL: 'URL situs Anda'
   CommentsAdmin:
     NeedsModeration: 'Perlu Moderasi'
   CommentsInterface_pendingcomment_ss:
@@ -54,3 +31,26 @@ id:
     RSSFEEDCOMMENTS: 'Sindikasi RSS untuk komentar di laman ini'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Hapus semua komentar di laman ini'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Komentar
+    Moderated: Dimoderasi
+    NeedsModeration: 'Perlu Moderasi'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentar
+    EMAILADDRESS: 'Alamat email Anda (tidak akan diterbitkan)'
+    PERMISSIONFAILURE: 'Anda tidak dapat mengomentari laman ini. Mohon pastikan Anda sudah login dan mendapatkan hak akses yang sesuai.'
+    RSSTITLE: 'Sindikasi RSS Komentar'
+    WEBSITEURL: 'URL situs Anda'
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Bolehkan Komentar'
+    COMMENT: Komentar
+    COMMENTBY: 'Komentar oleh %s'
+    CREATED: 'Tanggal kirim'
+    EMAIL: Email
+    ISSPAM: 'Spam?'
+    MODERATED: 'Moderasi?'
+    NAME: 'Nama Penulis'
+    PARENTTITLE: Induk
+    PLURALNAME: Komentar
+    SINGULARNAME: Komentar
+    URL: URL
