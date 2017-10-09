@@ -35,7 +35,6 @@ class CommentsTest extends FunctionalTest
     public function setUp()
     {
         parent::setUp();
-        Config::nest();
 
         // Set good default values
         Config::modify()->merge(CommentsExtension::class, 'comments', array(
@@ -44,17 +43,11 @@ class CommentsTest extends FunctionalTest
         ));
     }
 
-    public function tearDown()
-    {
-        Config::unnest();
-        parent::tearDown();
-    }
-
     public function testCommentsList()
     {
         // comments don't require moderation so unmoderated comments can be
         // shown but not spam posts
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'require_moderation_nonmembers' => false,
             'require_moderation' => false,
             'require_moderation_cms' => false,
@@ -68,10 +61,10 @@ class CommentsTest extends FunctionalTest
         ), $item->Comments(), 'Only 2 non spam posts should be shown');
 
         // when moderated, only moderated, non spam posts should be shown.
-        Config::modify()->set(CommentableItem::class, 'comments', array('require_moderation_nonmembers' => true));
+        Config::modify()->merge(CommentableItem::class, 'comments', array('require_moderation_nonmembers' => true));
 
         // Check that require_moderation overrides this option
-        Config::modify()->set(CommentableItem::class, 'comments', array('require_moderation' => true));
+        Config::modify()->merge(CommentableItem::class, 'comments', array('require_moderation' => true));
 
         $this->assertDOSEquals(array(
             array('Name' => 'Comment 3')
@@ -79,14 +72,14 @@ class CommentsTest extends FunctionalTest
         $this->assertEquals(1, $item->Comments()->Count());
 
         // require_moderation_nonmembers still filters out unmoderated comments
-        Config::modify()->set(CommentableItem::class, 'comments', array('require_moderation' => false));
+        Config::modify()->merge(CommentableItem::class, 'comments', array('require_moderation' => false));
         $this->assertEquals(1, $item->Comments()->Count());
 
-        Config::modify()->set(CommentableItem::class, 'comments', array('require_moderation_nonmembers' => false));
+        Config::modify()->merge(CommentableItem::class, 'comments', array('require_moderation_nonmembers' => false));
         $this->assertEquals(2, $item->Comments()->Count());
 
         // With unmoderated comments set to display in frontend
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'require_moderation' => true,
             'frontend_moderation' => true
         ));
@@ -96,7 +89,7 @@ class CommentsTest extends FunctionalTest
         $this->assertEquals(2, $item->Comments()->Count());
 
         // With spam comments set to display in frontend
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'require_moderation' => true,
             'frontend_moderation' => false,
             'frontend_spam' => true,
@@ -111,7 +104,7 @@ class CommentsTest extends FunctionalTest
 
 
         // With spam and unmoderated comments set to display in frontend
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'require_moderation' => true,
             'frontend_moderation' => true,
             'frontend_spam' => true,
@@ -172,7 +165,7 @@ class CommentsTest extends FunctionalTest
 
     public function testCanPostComment()
     {
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'require_login' => false,
             'require_login_cms' => false,
             'required_permission' => false,
@@ -188,7 +181,7 @@ class CommentsTest extends FunctionalTest
         $this->assertTrue($item->canPostComment());
 
         // Test permission required to post
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'require_login' => true,
             'required_permission' => 'POSTING_PERMISSION',
         ));
@@ -202,7 +195,7 @@ class CommentsTest extends FunctionalTest
         $this->assertTrue($item->canPostComment());
 
         // Test require login to post, but not any permissions
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'required_permission' => false,
         ));
         $this->assertTrue($item->CommentsRequireLogin);
@@ -214,7 +207,7 @@ class CommentsTest extends FunctionalTest
         $this->assertTrue($item->canPostComment());
 
         // Test options set via CMS
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'require_login' => true,
             'require_login_cms' => true,
         ));
@@ -436,7 +429,7 @@ class CommentsTest extends FunctionalTest
 
         // Add p for paragraph
         // NOTE: The config method appears to append to the existing array
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'html_allowed_elements' => array('p'),
         ));
 
@@ -472,7 +465,7 @@ class CommentsTest extends FunctionalTest
             $this->markTestSkipped('HTMLPurifier class not found');
         }
 
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'html_allowed_elements' => array('p'),
         ));
 
@@ -533,7 +526,7 @@ class CommentsTest extends FunctionalTest
 
         // With default = false
         // Because of config rules about falsey values, apply config to object directly
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'enabled' => false,
             'require_login' => true,
             'require_moderation' => true
@@ -989,7 +982,7 @@ class CommentsTest extends FunctionalTest
     public function testGravatar()
     {
         // Turn gravatars on
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'use_gravatar' => true,
             'gravatar_size' => 80,
             'gravatar_default' => 'identicon',
@@ -1005,7 +998,7 @@ class CommentsTest extends FunctionalTest
         );
 
         // Turn gravatars off
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'use_gravatar' => false
         ));
 
@@ -1038,7 +1031,7 @@ class CommentsTest extends FunctionalTest
 
 
         // 0 indicates no limit for nested_depth
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'nested_comments' => true,
             'nested_depth' => 0
         ));
@@ -1058,7 +1051,7 @@ class CommentsTest extends FunctionalTest
 
     public function testAllReplies()
     {
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'nested_comments' => true,
             'nested_depth' => 4
         ));
@@ -1084,7 +1077,7 @@ class CommentsTest extends FunctionalTest
             $comment->allReplies()->count()
         );
 
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'nested_comments' => false
         ));
 
@@ -1095,7 +1088,7 @@ class CommentsTest extends FunctionalTest
     {
         CommentableItem::add_extension(CommentsExtension::class);
         $this->logInWithPermission('ADMIN');
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'nested_comments' => true,
             'nested_depth' => 4
         ));
@@ -1133,7 +1126,7 @@ class CommentsTest extends FunctionalTest
         $item->ModerationRequired = 'Required';
         $item->write();
 
-        Config::modify()->set(CommentableItemDisabled::class, 'comments', array(
+        Config::modify()->merge(CommentableItemDisabled::class, 'comments', array(
             'nested_comments' => true,
             'nested_depth' => 4,
             'frontend_moderation' => true
@@ -1147,7 +1140,7 @@ class CommentsTest extends FunctionalTest
         );
 
         // Turn off nesting, empty array should be returned
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'nested_comments' => false
         ));
 
@@ -1180,7 +1173,7 @@ class CommentsTest extends FunctionalTest
             $pagedList->getTotalItems()
         );
 
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'nested_comments' => false
         ));
 
@@ -1189,7 +1182,7 @@ class CommentsTest extends FunctionalTest
 
     public function testReplyForm()
     {
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'nested_comments' => false,
             'nested_depth' => 4
         ));
@@ -1201,7 +1194,7 @@ class CommentsTest extends FunctionalTest
         $this->assertNull($form);
 
         // parent item so show form
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'nested_comments' => true,
             'nested_depth' => 4
         ));
@@ -1235,7 +1228,7 @@ class CommentsTest extends FunctionalTest
 
     public function testUpdateDepth()
     {
-        Config::modify()->set(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
             'nested_comments' => true,
             'nested_depth' => 4
         ));

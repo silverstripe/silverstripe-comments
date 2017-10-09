@@ -16,7 +16,8 @@
         "silverstripe/cms": "The SilverStripe Content Management System"
     },
     "require-dev": {
-        "phpunit/PHPUnit": "^5.7"
+        "phpunit/phpunit": "^5.7",
+        "squizlabs/php_codesniffer": "^3.0"
     },
     "extra": {
         "branch-alias": {
@@ -24,8 +25,8 @@
         }
     },
     "scripts": {
-        "lint": "phpcs src/ tests/",
-        "fix": "php-cs-fixer fix src/ && php-cs-fixer fix tests/"
+        "lint": "vendor/bin/phpcs src/ tests/",
+        "fix": "vendor/bin/phpcbf src/ tests/"
     },
     "autoload": {
         "psr-4": {

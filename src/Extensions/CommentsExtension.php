@@ -63,30 +63,30 @@ class CommentsExtension extends DataExtension
      */
     private static $comments = [
         'enabled' => true,
-        // 'enabled_cms' => false,
-        // 'require_login' => false,
-        // 'require_login_cms' => false,
-        // 'required_permission' => false,
+        'enabled_cms' => false,
+        'require_login' => false,
+        'require_login_cms' => false,
+        'required_permission' => false,
         'include_js' => true,
-        // 'use_gravatar' => false,
+        'use_gravatar' => false,
         'gravatar_size' => 80,
         'gravatar_default' => 'identicon',
         'gravatar_rating' => 'g',
-        // 'show_comments_when_disabled' => false,
+        'show_comments_when_disabled' => false,
         'order_comments_by' => '"Created" DESC',
-        // 'order_replies_by' => false,
+        'order_replies_by' => false,
         'comments_per_page' => 10,
         'comments_holder_id' => 'comments-holder',
         'comment_permalink_prefix' => 'comment-',
-        // 'require_moderation' => false,
-        // 'require_moderation_nonmembers' => false,
-        // 'require_moderation_cms' => false,
-        // 'frontend_moderation' => false,
-        // 'frontend_spam' => false,
-        // 'html_allowed' => false,
+        'require_moderation' => false,
+        'require_moderation_nonmembers' => false,
+        'require_moderation_cms' => false,
+        'frontend_moderation' => false,
+        'frontend_spam' => false,
+        'html_allowed' => false,
         'html_allowed_elements' => ['a', 'img', 'i', 'b'],
-        // 'use_preview' => false,
-        // 'nested_comments' => false,
+        'use_preview' => false,
+        'nested_comments' => false,
         'nested_depth' => 2,
     ];
 
@@ -103,7 +103,7 @@ class CommentsExtension extends DataExtension
      * {@inheritDoc}
      */
     private static $has_many = [
-        'Commments' => 'SilverStripe\\Comments\\Model\\Comment.Parent'
+        'Commments' => Comment::class . '.Parent'
     ];
 
     /**
@@ -112,7 +112,7 @@ class CommentsExtension extends DataExtension
      */
     public function populateDefaults()
     {
-        $defaults = $this->owner->config()->defaults;
+        $defaults = $this->owner->config()->get('defaults');
 
         // Set if comments should be enabled by default
         if (isset($defaults['ProvideComments'])) {
@@ -325,10 +325,10 @@ class CommentsExtension extends DataExtension
 
         // Determine which flag should be used to determine if this is enabled
         if ($this->owner->getCommentsOption('enabled_cms')) {
-            return $this->owner->ProvideComments;
-        } else {
-            return $this->owner->getCommentsOption('enabled');
+            return (bool) $this->owner->ProvideComments;
         }
+
+        return (bool) $this->owner->getCommentsOption('enabled');
     }
 
     /**
@@ -428,7 +428,7 @@ class CommentsExtension extends DataExtension
     {
         return Controller::join_links(
             $this->getCommentRSSLink(),
-            str_replace('\\', '-', $this->ownerBaseClass),
+            str_replace('\\', '-', $this->owner->baseClass()),
             $this->owner->ID
         );
     }
@@ -453,9 +453,9 @@ class CommentsExtension extends DataExtension
             Requirements::javascript($adminThirdPartyDir . '/jquery/jquery.js');
             Requirements::javascript($adminThirdPartyDir . '/jquery-entwine/dist/jquery.entwine-dist.js');
             Requirements::javascript($adminThirdPartyDir . '/jquery-form/jquery.form.js');
-            Requirements::javascript(COMMENTS_THIRDPARTY . '/jquery-validate/jquery.validate.min.js');
-            Requirements::add_i18n_javascript('comments/javascript/lang');
-            Requirements::javascript('comments/javascript/CommentsInterface.js');
+            Requirements::javascript('silverstripe/comments:thirdparty/jquery-validate/jquery.validate.min.js');
+            Requirements::add_i18n_javascript('silverstripe/comments:javascript/lang');
+            Requirements::javascript('silverstripe/comments:javascript/CommentsInterface.js');
         }
 
         $controller = CommentingController::create();
@@ -487,7 +487,7 @@ class CommentsExtension extends DataExtension
      */
     public function attachedToSiteTree()
     {
-        $class = $this->ownerBaseClass;
+        $class = $this->owner->baseClass();
 
         return (is_subclass_of($class, SiteTree::class)) || ($class == SiteTree::class);
     }
@@ -524,8 +524,10 @@ class CommentsExtension extends DataExtension
      */
     public function getCommentsOptions()
     {
+        $settings = [];
+
         if ($this->owner) {
-            $settings = $this->owner->config()->comments;
+            $settings = $this->owner->config()->get('comments');
         } else {
             $settings = Config::inst()->get(__CLASS__, 'comments');
         }
@@ -540,7 +542,7 @@ class CommentsExtension extends DataExtension
      */
     protected function updateModerationFields(FieldList $fields)
     {
-        Requirements::css(COMMENTS_DIR . '/css/cms.css');
+        Requirements::css('silverstripe/comments:css/cms.css');
 
         $newComments = $this->owner->AllComments()->filter('Moderated', 0);
 

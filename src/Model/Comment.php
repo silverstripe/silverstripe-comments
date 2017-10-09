@@ -11,6 +11,7 @@ use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Email\Email;
 use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Core\TempFolder;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\EmailField;
 use SilverStripe\Forms\FieldGroup;
@@ -747,7 +748,7 @@ class Comment extends DataObject
 
         $config->set('AutoFormat.Linkify', true);
         $config->set('URI.DisableExternalResources', true);
-        $config->set('Cache.SerializerPath', getTempFolder());
+        $config->set('Cache.SerializerPath', TempFolder::getTempFolder(BASE_PATH));
         return new HTMLPurifier($config);
     }
 

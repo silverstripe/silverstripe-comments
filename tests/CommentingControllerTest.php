@@ -31,7 +31,7 @@ class CommentingControllerTest extends FunctionalTest
 
     protected $securityEnabled;
 
-    public function tearDown()
+    protected function tearDown()
     {
         if ($this->securityEnabled) {
             SecurityToken::inst()->enable();
@@ -39,14 +39,10 @@ class CommentingControllerTest extends FunctionalTest
             SecurityToken::inst()->disable();
         }
         parent::tearDown();
-
-        Config::unnest();
     }
 
-    public function setUp()
+    protected function setUp()
     {
-        Config::nest(); // additional nesting here necessary
-
         parent::setUp();
         $this->securityEnabled = SecurityToken::inst()->is_enabled();
 
