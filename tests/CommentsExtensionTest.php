@@ -258,9 +258,7 @@ class CommentsExtensionTest extends SapphireTest
 
         // The comments form is HTML to do assertions by contains
         $cf = $item->CommentsForm();
-        $expected = '<form id="comments-holder" action="/comments'
-        . '/CommentsForm/" method="post" enctype="application/x-www-form-urlenco'
-        . 'ded">';
+        $expected = '/comments/CommentsForm/" method="post" enctype="application/x-www-form-urlencoded">';
 
         $this->assertContains($expected, $cf);
         $this->assertContains('<h4>Post your comment</h4>', $cf);
@@ -283,13 +281,13 @@ class CommentsExtensionTest extends SapphireTest
         $expected = '<input type="submit" name="action_doPostComment" value="Post" class="action" id="comments-holder_action_doPostComment"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<a href="/comments/spam/';
+        $expected = '/comments/spam/';
         $this->assertContains($expected, $cf);
 
         $expected = '<p>Reply to firstComA 1</p>';
         $this->assertContains($expected, $cf);
 
-        $expected = '<a href="/comments/delete';
+        $expected = '/comments/delete';
         $this->assertContains($expected, $cf);
 
         $expected = '<p>Reply to firstComA 2</p>';

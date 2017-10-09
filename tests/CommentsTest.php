@@ -819,30 +819,30 @@ class CommentsTest extends FunctionalTest
         $method = $this->getMethod('ActionLink');
 
         // test with starts of strings and tokens and salts change each time
-        $this->assertStringStartsWith(
+        $this->assertContains(
             '/comments/theaction/' . $comment->ID,
             $method->invokeArgs($comment, array('theaction'))
         );
 
-        $this->assertStringStartsWith(
+        $this->assertContains(
             '/comments/delete/' . $comment->ID,
             $comment->DeleteLink()
         );
 
-        $this->assertStringStartsWith(
+        $this->assertContains(
             '/comments/spam/' . $comment->ID,
             $comment->SpamLink()
         );
 
         $comment->markSpam();
-        $this->assertStringStartsWith(
+        $this->assertContains(
             '/comments/ham/' . $comment->ID,
             $comment->HamLink()
         );
 
         //markApproved
         $comment->markUnapproved();
-        $this->assertStringStartsWith(
+        $this->assertContains(
             '/comments/approve/' . $comment->ID,
             $comment->ApproveLink()
         );
