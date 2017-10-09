@@ -1,5 +1,49 @@
 de:
-  Comment:
+  CommentInterface:
+    COMMENT_MESSAGE_REQUIRED: 'Bitte geben Sie Ihren Kommentar ein'
+    COMMENT_MESSAGE_URL: 'Bitte geben Sie eine gültige URL ein'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Bitte geben Sie eine gültige E-Mail-Adresse ein'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Bitte geben Sie Ihre E-Mail-Adresse ein'
+    POST: Absenden
+    PREVIEW: Vorschau
+    PREVIEWLABEL: Vorschau
+    YOURNAME: Name
+    YOURNAME_MESSAGE_REQUIRED: 'Bitte geben Sie Ihren Namen ein'
+  CommentsAdmin:
+    NeedsModeration: 'Benötigt Moderation'
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
+  CommentsInterface_singlecomment_ss:
+    PBY: 'Geschrieben von'
+  CommentsInterface_ss:
+    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
+    COMMENTLOGINERROR: 'Sie können diese Seite nur kommentieren, wenn Sie eingeloggt sind'
+    COMMENTPERMISSIONERROR: 'und die nötige Berechtigung besitzen'
+    COMMENTPOSTLOGIN: Login
+    COMMENTS: Kommentare
+    COMMENTSDISABLED: 'Kommentare sind deaktiviert'
+    DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite löschen'
+    LOGINTOPOSTCOMMENT: 'Login um zu kommentieren'
+    NEXT: weiter
+    NOCOMMENTSYET: 'Noch keine Kommentare auf dieser Seite.'
+    POSTCOM: Kommentieren
+    PREV: zurück
+    RSSFEEDALLCOMMENTS: 'RSS Feed für alle Kommentare'
+    RSSFEEDCOMMENTS: 'RSS Feed für Kommentare auf dieser Seite'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite entfernen'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    ADMIN_PERMISSION: 'Zugang zum Bereich ''Kommentare'''
+    MENUTITLE: Kommentare
+    Moderated: Moderiert
+    NeedsModeration: 'Benötigt Moderation'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Kommentare
+    EMAILADDRESS: 'E-Mail Adresse (wird nicht angezeigt)'
+    PERMISSIONFAILURE: 'Sie sind nicht berechtigt diese Seite zu kommentieren. Bitte stellen Sie sicher das Sie eingeloggt sind und die nötige Berechtigung besitzen.'
+    RSSTITLE: 'Kommentare RSS Feed'
+    WEBSITEURL: 'Website URL'
+  SilverStripe\Comments\Model\Comment:
     ALLOWCOMMENTS: 'Kommentare Erlauben'
     COMMENT: Kommentar
     COMMENTBY: 'Kommentar von ''%s'''
@@ -12,47 +56,3 @@ de:
     PLURALNAME: Kommentare
     SINGULARNAME: Kommentar
     URL: URL
-  CommentAdmin:
-    ADMIN_PERMISSION: 'Zugang zum Bereich ''Kommentare'''
-    MENUTITLE: Kommentare
-    Moderated: Moderiert
-    NeedsModeration: 'Benötigt Moderation'
-  CommentInterface:
-    COMMENT_MESSAGE_REQUIRED: 'Bitte geben Sie Ihren Kommentar ein'
-    COMMENT_MESSAGE_URL: 'Bitte geben Sie eine gültige URL ein'
-    EMAILADDRESS_MESSAGE_EMAIL: 'Bitte geben Sie eine gültige E-Mail-Adresse ein'
-    EMAILADDRESS_MESSAGE_REQUIRED: 'Bitte geben Sie Ihre E-Mail-Adresse ein'
-    POST: Absenden
-    PREVIEW: Vorschau
-    PREVIEWLABEL: Vorschau
-    YOURNAME: 'Name'
-    YOURNAME_MESSAGE_REQUIRED: 'Bitte geben Sie Ihren Namen ein'
-  CommentingController:
-    COMMENTS: Kommentare
-    EMAILADDRESS: 'E-Mail Adresse (wird nicht angezeigt)'
-    PERMISSIONFAILURE: 'Sie sind nicht berechtigt diese Seite zu kommentieren. Bitte stellen Sie sicher das Sie eingeloggt sind und die nötige Berechtigung besitzen.'
-    RSSTITLE: 'Kommentare RSS Feed'
-    WEBSITEURL: 'Website URL'
-  CommentsAdmin:
-    NeedsModeration: 'Benötigt Moderation'
-  CommentsInterface_pendingcomment_ss:
-    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
-  CommentsInterface_singlecomment_ss:
-    PBY: 'Geschrieben von'
-  CommentsInterface_ss:
-    AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
-    COMMENTLOGINERROR: 'Sie können diese Seite nur kommentieren, wenn Sie eingeloggt sind'
-    COMMENTPERMISSIONERROR: 'und die nötige Berechtigung besitzen'
-    COMMENTPOSTLOGIN: 'Login'
-    COMMENTS: Kommentare
-    COMMENTSDISABLED: 'Kommentare sind deaktiviert'
-    DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite löschen'
-    LOGINTOPOSTCOMMENT: 'Login um zu kommentieren'
-    NEXT: weiter
-    NOCOMMENTSYET: 'Noch keine Kommentare auf dieser Seite.'
-    POSTCOM: 'Kommentieren'
-    PREV: zurück
-    RSSFEEDALLCOMMENTS: 'RSS Feed für alle Kommentare'
-    RSSFEEDCOMMENTS: 'RSS Feed für Kommentare auf dieser Seite'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Alle Kommentare auf dieser Seite entfernen'

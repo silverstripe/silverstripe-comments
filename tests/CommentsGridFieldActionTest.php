@@ -2,6 +2,7 @@
 
 namespace SilverStripe\Comments\Tests;
 
+use SilverStripe\Comments\Admin\CommentAdmin;
 use SilverStripe\Comments\Admin\CommentsGridField;
 use SilverStripe\Comments\Admin\CommentsGridFieldAction;
 use SilverStripe\Comments\Admin\CommentsGridFieldConfig;
@@ -35,7 +36,7 @@ class CommentsGridFieldActionTest extends SapphireTest
         $this->list = new DataList(Team::class);
         $config = CommentsGridFieldConfig::create()->addComponent(new GridFieldDeleteAction());
         $this->gridField = new CommentsGridField('testfield', 'testfield', $this->list, $config);
-        $this->form = new Form(new Controller(), 'mockform', new FieldList(array($this->gridField)), new FieldList());
+        $this->form = new Form(new CommentAdmin(), 'mockform', new FieldList(array($this->gridField)), new FieldList());
     }
 
     public function testAugmentColumns()
@@ -88,7 +89,7 @@ class CommentsGridFieldActionTest extends SapphireTest
         $record->write();
         $recordID = $record->ID;
         $html = $action->getColumnContent($this->gridField, $record, Comment::class);
-        $this->assertContains('data-url="Controller/mockform/field/testfield', $html);
+        $this->assertContains('data-url="admin/comments/mockform/field/testfield', $html);
         $spamAction = 'value="Spam" class="action" id="action_CustomAction' . $recordID . 'Spam"';
         $this->assertContains($spamAction, $html);
 

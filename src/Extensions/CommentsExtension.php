@@ -61,7 +61,7 @@ class CommentsExtension extends DataExtension
      *
      * @config
      */
-    private static $comments = array(
+    private static $comments = [
         'enabled' => true,
         'enabled_cms' => false,
         'require_login' => false,
@@ -84,26 +84,26 @@ class CommentsExtension extends DataExtension
         'frontend_moderation' => false,
         'frontend_spam' => false,
         'html_allowed' => false,
-        'html_allowed_elements' => array('a', 'img', 'i', 'b'),
+        'html_allowed_elements' => ['a', 'img', 'i', 'b'],
         'use_preview' => false,
         'nested_comments' => false,
         'nested_depth' => 2,
-    );
+    ];
 
     /**
      * @var array
      */
-    private static $db = array(
+    private static $db = [
         'ProvideComments' => 'Boolean',
         'ModerationRequired' => 'Enum(\'None,Required,NonMembersOnly\',\'None\')',
         'CommentsRequireLogin' => 'Boolean',
-    );
+    ];
 
     /**
      * {@inheritDoc}
      */
     private static $has_many = [
-        'Commments' => 'SilverStripe\\Comments\\Model\\Comment.Parent'
+        'Commments' => Comment::class . '.Parent'
     ];
 
     /**
@@ -112,7 +112,7 @@ class CommentsExtension extends DataExtension
      */
     public function populateDefaults()
     {
-        $defaults = $this->owner->config()->defaults;
+        $defaults = $this->owner->config()->get('defaults');
 
         // Set if comments should be enabled by default
         if (isset($defaults['ProvideComments'])) {
@@ -152,11 +152,11 @@ class CommentsExtension extends DataExtension
      */
     public function updateSettingsFields(FieldList $fields)
     {
-        $options = FieldGroup::create()->setTitle(_t('CommentsExtension.COMMENTOPTIONS', 'Comments'));
+        $options = FieldGroup::create()->setTitle(_t('SilverStripe\\Comments\\Extensions\\CommentsExtension.COMMENTOPTIONS', 'Comments'));
 
         // Check if enabled setting should be cms configurable
         if ($this->owner->getCommentsOption('enabled_cms')) {
-            $options->push(new CheckboxField('ProvideComments', _t('Comment.ALLOWCOMMENTS', 'Allow Comments')));
+            $options->push(new CheckboxField('ProvideComments', _t('SilverStripe\\Comments\\Model\\Comment.ALLOWCOMMENTS', 'Allow Comments')));
         }
 
         // Check if we should require users to login to comment
@@ -179,11 +179,11 @@ class CommentsExtension extends DataExtension
 
         // Check if moderation should be enabled via cms configurable
         if ($this->owner->getCommentsOption('require_moderation_cms')) {
-            $moderationField = new DropdownField('ModerationRequired', _t('CommentsExtension.COMMENTMODERATION', 'Comment Moderation'), array(
-                'None' => _t('CommentsExtension.MODERATIONREQUIRED_NONE', 'No moderation required'),
-                'Required' => _t('CommentsExtension.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
+            $moderationField = new DropdownField('ModerationRequired', _t('SilverStripe\\Comments\\Extensions\\CommentsExtension.COMMENTMODERATION', 'Comment Moderation'), array(
+                'None' => _t('SilverStripe\\Comments\\Extensions\\CommentsExtension.MODERATIONREQUIRED_NONE', 'No moderation required'),
+                'Required' => _t('SilverStripe\\Comments\\Extensions\\CommentsExtension.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
                 'NonMembersOnly' => _t(
-                    'CommentsExtension.MODERATIONREQUIRED_NONMEMBERSONLY',
+                    'SilverStripe\\Comments\\Extensions\\CommentsExtension.MODERATIONREQUIRED_NONMEMBERSONLY',
                     'Only moderate non-members'
                 ),
             ));
@@ -258,6 +258,7 @@ class CommentsExtension extends DataExtension
 
         // Filter spam comments for non-administrators if configured
         $showSpam = $this->owner->getCommentsOption('frontend_spam') && $this->owner->canModerateComments();
+
         if (!$showSpam) {
             $list = $list->filter('IsSpam', 0);
         }
@@ -324,10 +325,10 @@ class CommentsExtension extends DataExtension
 
         // Determine which flag should be used to determine if this is enabled
         if ($this->owner->getCommentsOption('enabled_cms')) {
-            return $this->owner->ProvideComments;
-        } else {
-            return $this->owner->getCommentsOption('enabled');
+            return (bool) $this->owner->ProvideComments;
         }
+
+        return (bool) $this->owner->getCommentsOption('enabled');
     }
 
     /**
@@ -363,7 +364,7 @@ class CommentsExtension extends DataExtension
         if (!$this->owner->CommentsEnabled) {
             return false;
         }
-        
+
         if (!$this->owner->canView($member)) {
             // deny if current user cannot view the underlying record.
             return false;
@@ -427,7 +428,7 @@ class CommentsExtension extends DataExtension
     {
         return Controller::join_links(
             $this->getCommentRSSLink(),
-            str_replace('\\', '-', $this->ownerBaseClass),
+            str_replace('\\', '-', $this->owner->baseClass()),
             $this->owner->ID
         );
     }
@@ -452,9 +453,9 @@ class CommentsExtension extends DataExtension
             Requirements::javascript($adminThirdPartyDir . '/jquery/jquery.js');
             Requirements::javascript($adminThirdPartyDir . '/jquery-entwine/dist/jquery.entwine-dist.js');
             Requirements::javascript($adminThirdPartyDir . '/jquery-form/jquery.form.js');
-            Requirements::javascript(COMMENTS_THIRDPARTY . '/jquery-validate/jquery.validate.min.js');
-            Requirements::add_i18n_javascript('comments/javascript/lang');
-            Requirements::javascript('comments/javascript/CommentsInterface.js');
+            Requirements::javascript('silverstripe/comments:thirdparty/jquery-validate/jquery.validate.min.js');
+            Requirements::add_i18n_javascript('silverstripe/comments:javascript/lang');
+            Requirements::javascript('silverstripe/comments:javascript/CommentsInterface.js');
         }
 
         $controller = CommentingController::create();
@@ -486,15 +487,16 @@ class CommentsExtension extends DataExtension
      */
     public function attachedToSiteTree()
     {
-        $class = $this->ownerBaseClass;
+        $class = $this->owner->baseClass();
 
         return (is_subclass_of($class, SiteTree::class)) || ($class == SiteTree::class);
     }
 
     /**
-     * Get the commenting option for this object
+     * Get the commenting option for this object.
      *
-     * This can be overridden in any instance or extension to customise the option available
+     * This can be overridden in any instance or extension to customise the
+     * option available.
      *
      * @param string $key
      *
@@ -502,10 +504,9 @@ class CommentsExtension extends DataExtension
      */
     public function getCommentsOption($key)
     {
-        $settings = $this->owner // In case singleton is called on the extension directly
-            ? $this->owner->config()->comments
-            : Config::inst()->get(__CLASS__, 'comments');
+        $settings = $this->getCommentsOptions();
         $value = null;
+
         if (isset($settings[$key])) {
             $value = $settings[$key];
         }
@@ -514,7 +515,24 @@ class CommentsExtension extends DataExtension
         if ($this->owner) {
             $this->owner->extend('updateCommentsOption', $key, $value);
         }
+
         return $value;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCommentsOptions()
+    {
+        $settings = [];
+
+        if ($this->owner) {
+            $settings = $this->owner->config()->get('comments');
+        } else {
+            $settings = Config::inst()->get(__CLASS__, 'comments');
+        }
+
+        return $settings;
     }
 
     /**
@@ -524,7 +542,7 @@ class CommentsExtension extends DataExtension
      */
     protected function updateModerationFields(FieldList $fields)
     {
-        Requirements::css(COMMENTS_DIR . '/css/cms.css');
+        Requirements::css('silverstripe/comments:css/cms.css');
 
         $newComments = $this->owner->AllComments()->filter('Moderated', 0);
 
@@ -560,13 +578,19 @@ class CommentsExtension extends DataExtension
         if ($fields->hasTabSet()) {
             $tabs = new TabSet(
                 'Comments',
-                new Tab('CommentsNewCommentsTab', _t('CommentAdmin.NewComments', 'New') . ' ' . $newCount,
+                new Tab(
+                    'CommentsNewCommentsTab',
+                    _t('SilverStripe\\Comments\\Admin\\CommentAdmin.NewComments', 'New') . ' ' . $newCount,
                     $newGrid
                 ),
-                new Tab('CommentsCommentsTab', _t('CommentAdmin.Comments', 'Approved') . ' ' . $approvedCount,
+                new Tab(
+                    'CommentsCommentsTab',
+                    _t('SilverStripe\\Comments\\Admin\\CommentAdmin.Comments', 'Approved') . ' ' . $approvedCount,
                     $approvedGrid
                 ),
-                new Tab('CommentsSpamCommentsTab', _t('CommentAdmin.SpamComments', 'Spam') . ' ' . $spamCount,
+                new Tab(
+                    'CommentsSpamCommentsTab',
+                    _t('SilverStripe\\Comments\\Admin\\CommentAdmin.SpamComments', 'Spam') . ' ' . $spamCount,
                     $spamGrid
                 )
             );

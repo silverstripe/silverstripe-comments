@@ -1,1 +1,3 @@
 .sass-cache
+/.php_cs.cache
+/node_modules/

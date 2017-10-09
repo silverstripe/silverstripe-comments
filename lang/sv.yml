@@ -1,21 +1,4 @@
 sv:
-  Comment:
-    ALLOWCOMMENTS: 'Tillåt kommentarer'
-    COMMENT: Kommentarer
-    COMMENTBY: 'Kommentar av %s'
-    CREATED: 'Datum'
-    EMAIL: E-post
-    ISSPAM: 'Spam?'
-    MODERATED: 'Modererad?'
-    NAME: 'Författare'
-    PARENTTITLE: Överordnad sida
-    PLURALNAME: Kommentarer
-    SINGULARNAME: Kommentar
-    URL: URL
-  CommentAdmin:
-    MENUTITLE: Kommentarer
-    Moderated: Modererad
-    NeedsModeration: 'Kräver moderering'
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Var vänlig och skriv in din kommentar'
     COMMENT_MESSAGE_URL: 'Var vänlig och ange en korrekt URL'
@@ -26,12 +9,6 @@ sv:
     PREVIEWLABEL: Förhandsgranska
     YOURNAME: 'Ditt namn'
     YOURNAME_MESSAGE_REQUIRED: 'Var vänlig och skriv in ditt namn'
-  CommentingController:
-    COMMENTS: Kommentarer
-    EMAILADDRESS: 'Din e-postadress (kommer inte att publiceras)'
-    PERMISSIONFAILURE: 'Du kan inte skriva kommentarer på denna sida. Vänligen kontrollera att du är inloggad och har de användarrättigheter som krävs.'
-    RSSTITLE: 'RSS-flöde med kommentarer'
-    WEBSITEURL: 'Din hemsidas URL'
   CommentsAdmin:
     NeedsModeration: 'Kräver moderering'
   CommentsInterface_pendingcomment_ss:
@@ -54,3 +31,26 @@ sv:
     RSSFEEDCOMMENTS: 'RSS-flöde för kommentarer på denna sida'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Radera alla kommenterar på den här sidan'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Kommentarer
+    Moderated: Modererad
+    NeedsModeration: 'Kräver moderering'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Kommentarer
+    EMAILADDRESS: 'Din e-postadress (kommer inte att publiceras)'
+    PERMISSIONFAILURE: 'Du kan inte skriva kommentarer på denna sida. Vänligen kontrollera att du är inloggad och har de användarrättigheter som krävs.'
+    RSSTITLE: 'RSS-flöde med kommentarer'
+    WEBSITEURL: 'Din hemsidas URL'
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Tillåt kommentarer'
+    COMMENT: Kommentarer
+    COMMENTBY: 'Kommentar av %s'
+    CREATED: Datum
+    EMAIL: E-post
+    ISSPAM: 'Spam?'
+    MODERATED: 'Modererad?'
+    NAME: Författare
+    PARENTTITLE: 'Överordnad sida'
+    PLURALNAME: Kommentarer
+    SINGULARNAME: Kommentar
+    URL: URL

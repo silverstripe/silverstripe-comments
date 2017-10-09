@@ -11,6 +11,7 @@ use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Email\Email;
 use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Core\TempFolder;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\EmailField;
 use SilverStripe\Forms\FieldGroup;
@@ -248,14 +249,14 @@ class Comment extends DataObject
     {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['Name'] = _t('Comment.NAME', 'Author Name');
-        $labels['Comment'] = _t('Comment.COMMENT', 'Comment');
-        $labels['Email'] = _t('Comment.EMAIL', 'Email');
-        $labels['URL'] = _t('Comment.URL', 'URL');
-        $labels['IsSpam'] = _t('Comment.ISSPAM', 'Spam?');
-        $labels['Moderated'] = _t('Comment.MODERATED', 'Moderated?');
-        $labels['ParentTitle'] = _t('Comment.PARENTTITLE', 'Parent');
-        $labels['Created'] = _t('Comment.CREATED', 'Date posted');
+        $labels['Name'] = _t('SilverStripe\\Comments\\Model\\Comment.NAME', 'Author Name');
+        $labels['Comment'] = _t('SilverStripe\\Comments\\Model\\Comment.COMMENT', 'Comment');
+        $labels['Email'] = _t('SilverStripe\\Comments\\Model\\Comment.EMAIL', 'Email');
+        $labels['URL'] = _t('SilverStripe\\Comments\\Model\\Comment.URL', 'URL');
+        $labels['IsSpam'] = _t('SilverStripe\\Comments\\Model\\Comment.ISSPAM', 'Spam?');
+        $labels['Moderated'] = _t('SilverStripe\\Comments\\Model\\Comment.MODERATED', 'Moderated?');
+        $labels['ParentTitle'] = _t('SilverStripe\\Comments\\Model\\Comment.PARENTTITLE', 'Parent');
+        $labels['Created'] = _t('SilverStripe\\Comments\\Model\\Comment.CREATED', 'Date posted');
 
         return $labels;
     }
@@ -623,11 +624,11 @@ class Comment extends DataObject
      */
     public function getTitle()
     {
-        $title = sprintf(_t('Comment.COMMENTBY', 'Comment by %s', 'Name'), $this->getAuthorName());
+        $title = sprintf(_t('SilverStripe\\Comments\\Model\\Comment.COMMENTBY', 'Comment by %s', 'Name'), $this->getAuthorName());
 
         if ($parent = $this->Parent()) {
             if ($parent->Title) {
-                $title .= sprintf(' %s %s', _t('Comment.ON', 'on'), $parent->Title);
+                $title .= sprintf(' %s %s', _t('SilverStripe\\Comments\\Model\\Comment.ON', 'on'), $parent->Title);
             }
         }
 
@@ -653,9 +654,9 @@ class Comment extends DataObject
                 CheckboxField::create('Moderated', $this->fieldLabel('Moderated')),
                 CheckboxField::create('IsSpam', $this->fieldLabel('IsSpam')),
             ))
-                ->setTitle(_t('Comment.OPTIONS', 'Options'))
+                ->setTitle(_t('SilverStripe\\Comments\\Model\\Comment.OPTIONS', 'Options'))
                 ->setDescription(_t(
-                    'Comment.OPTION_DESCRIPTION',
+                    'SilverStripe\\Comments\\Model\\Comment.OPTION_DESCRIPTION',
                     'Unmoderated and spam comments will not be displayed until approved'
                 ))
         );
@@ -673,7 +674,7 @@ class Comment extends DataObject
         if (($parent = $this->ParentComment()) && $parent->exists()) {
             $fields->push(new HeaderField(
                 'ParentComment_Title',
-                _t('Comment.ParentComment_Title', 'This comment is a reply to the below')
+                _t('SilverStripe\\Comments\\Model\\Comment.ParentComment_Title', 'This comment is a reply to the below')
             ));
             // Created date
             // FIXME - the method setName in DatetimeField is not chainable, hence
@@ -718,8 +719,11 @@ class Comment extends DataObject
      */
     public function purifyHtml($dirtyHtml)
     {
-        $purifier = $this->getHtmlPurifierService();
-        return $purifier->purify($dirtyHtml);
+        if ($service = $this->getHtmlPurifierService()) {
+            return $service->purify($dirtyHtml);
+        }
+
+        return $dirtyHtml;
     }
 
     /**
@@ -727,6 +731,10 @@ class Comment extends DataObject
      */
     public function getHtmlPurifierService()
     {
+        if (!class_exists(HTMLPurifier_Config::class)) {
+            return null;
+        }
+
         $config = HTMLPurifier_Config::createDefault();
         $allowedElements = (array) $this->getOption('html_allowed_elements');
         if (!empty($allowedElements)) {
@@ -740,7 +748,7 @@ class Comment extends DataObject
 
         $config->set('AutoFormat.Linkify', true);
         $config->set('URI.DisableExternalResources', true);
-        $config->set('Cache.SerializerPath', getTempFolder());
+        $config->set('Cache.SerializerPath', TempFolder::getTempFolder(BASE_PATH));
         return new HTMLPurifier($config);
     }
 
@@ -753,6 +761,7 @@ class Comment extends DataObject
     {
         $gravatar = '';
         $use_gravatar = $this->getOption('use_gravatar');
+
         if ($use_gravatar) {
             $gravatar = 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Email)));
             $gravatarsize = $this->getOption('gravatar_size');

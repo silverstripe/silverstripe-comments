@@ -15,10 +15,6 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\SecurityToken;
 
-/**
- * @package comments
- * @subpackage tests
- */
 class CommentingControllerTest extends FunctionalTest
 {
     /**
@@ -29,13 +25,13 @@ class CommentingControllerTest extends FunctionalTest
     /**
      * {@inheritDoc}
      */
-    protected $extraDataObjects = array(
+    protected static $extra_dataobjects = [
         CommentableItem::class
-    );
+    ];
 
     protected $securityEnabled;
 
-    public function tearDown()
+    protected function tearDown()
     {
         if ($this->securityEnabled) {
             SecurityToken::inst()->enable();
@@ -45,13 +41,46 @@ class CommentingControllerTest extends FunctionalTest
         parent::tearDown();
     }
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->securityEnabled = SecurityToken::inst()->is_enabled();
 
         // We will assert against explicit responses, unless handed otherwise in a test for redirects
         $this->autoFollowRedirection = false;
+    }
+
+    public function testCommentsFormUsePreview()
+    {
+        $parent = $this->objFromFixture(CommentableItem::class, 'first');
+        $commController = new CommentingController();
+        $commController->setOwnerRecord($parent);
+        $form = $commController->CommentsForm();
+
+        $commentsFields = $form->Fields()->first()->FieldList();
+        $expected = array('Name', 'Email', 'URL', 'Comment');
+        CommentTestHelper::assertFieldNames($this, $expected, $commentsFields);
+
+        // test with preview on
+        Config::modify()->merge(CommentableItem::class, 'comments', array(
+            'use_preview' => true
+        ));
+
+        $parent = $this->objFromFixture(CommentableItem::class, 'first');
+        $commController = new CommentingController();
+        $commController->setOwnerRecord($parent);
+
+        $this->objFromFixture(Comment::class, 'firstComAChild1')->delete();
+        $this->objFromFixture(Comment::class, 'firstComAChild2')->delete();
+        $this->objFromFixture(Comment::class, 'firstComAChild3')->delete();
+
+        SecurityToken::inst()->disable();
+        $this->autoFollowRedirection = false;
+
+        $form = $commController->CommentsForm();
+        $commentsFields = $form->Fields()->first()->FieldList();
+        $expected = array('Name', 'Email', 'URL', 'Comment', 'PreviewComment');
+        CommentTestHelper::assertFieldNames($this, $expected, $commentsFields);
     }
 
     public function testApproveUnmoderatedComment()
@@ -143,7 +172,8 @@ class CommentingControllerTest extends FunctionalTest
 
         // comments sitewide
         $response = $this->get('comments/rss');
-        $this->assertEquals(10, substr_count($response->getBody(), "<item>"), "10 approved, non spam comments on page 1");
+        $comment = "10 approved, non spam comments on page 1";
+        $this->assertEquals(10, substr_count($response->getBody(), "<item>"), $comment);
 
         $response = $this->get('comments/rss?start=10');
         $this->assertEquals(4, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
@@ -184,7 +214,7 @@ class CommentingControllerTest extends FunctionalTest
 */
 /*
     public function testCommentsFormLoadMemberData() {
-        Config::inst()->update('CommentableItem', 'comments', array(
+        Config::modify()->set('CommentableItem', 'comments', array(
             'use_preview' => false
         ));
         $this->logInAs('visitor');
@@ -202,38 +232,6 @@ class CommentingControllerTest extends FunctionalTest
         CommentTestHelper::assertFieldNames($this, $expected, $commentsFields);
     }
 */
-
-    public function testCommentsFormUsePreview()
-    {
-        // test with preview on
-        Config::inst()->update(CommentableItem::class, 'comments', array(
-            'use_preview' => true
-        ));
-
-        $this->objFromFixture(Comment::class, 'firstComAChild1')->delete();
-        $this->objFromFixture(Comment::class, 'firstComAChild2')->delete();
-        $this->objFromFixture(Comment::class, 'firstComAChild3')->delete();
-
-        SecurityToken::inst()->disable();
-        $this->autoFollowRedirection = false;
-        $parent = $this->objFromFixture(CommentableItem::class, 'first');
-        $commController = new CommentingController();
-        $commController->setOwnerRecord($parent);
-
-        $form = $commController->CommentsForm();
-        $commentsFields = $form->Fields()->first()->FieldList();
-        $expected = array('Name', 'Email', 'URL', 'Comment', 'PreviewComment');
-        CommentTestHelper::assertFieldNames($this, $expected, $commentsFields);
-
-        // Turn off preview.  Assert lack of preview field
-        Config::inst()->update(CommentableItem::class, 'comments', array(
-            'use_preview' => false
-        ));
-        $form = $commController->CommentsForm();
-        $commentsFields = $form->Fields()->first()->FieldList();
-        $expected = array('Name', 'Email', 'URL', 'Comment');
-        CommentTestHelper::assertFieldNames($this, $expected, $commentsFields);
-    }
 
     public function testCommentsForm()
     {

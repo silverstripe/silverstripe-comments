@@ -1,21 +1,4 @@
 fr:
-  Comment:
-    ALLOWCOMMENTS: 'Autoriser Commentaires'
-    COMMENT: Commentaire
-    COMMENTBY: 'Commentaire par %s'
-    CREATED: 'Date de publication'
-    EMAIL: Email
-    ISSPAM: 'Spam?'
-    MODERATED: 'Modéré?'
-    NAME: 'Nom de l''Auteur'
-    PARENTTITLE: Parent
-    PLURALNAME: Commentaires
-    SINGULARNAME: Commentaire
-    URL: URL
-  CommentAdmin:
-    MENUTITLE: Commentaires
-    Moderated: Modéré
-    NeedsModeration: 'Besoin de modération'
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Saisissez votre commentaire'
     COMMENT_MESSAGE_URL: 'Saisissez une URl valide'
@@ -26,16 +9,8 @@ fr:
     PREVIEWLABEL: Aperçu
     YOURNAME: 'Votre Nom'
     YOURNAME_MESSAGE_REQUIRED: 'Saisissez votre nom'
-  CommentingController:
-    COMMENTS: Commentaires
-    EMAILADDRESS: 'Votre adresse e-mail (ne sera pas publiée)'
-    PERMISSIONFAILURE: 'Vous n''avez pas l''autorisation de commenter cette page. Assurez vous d''être connecté et d''avoir le bon niveau de d''autorisation.'
-    RSSTITLE: 'Flux RSS de Commentaires'
-    WEBSITEURL: 'URl de votre site web'
   CommentsAdmin:
     NeedsModeration: 'Besoin de Modération'
-  CommentsExtension:
-    COMMENTOPTIONS: Commentaires
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Votre commentaire a été soumis à modération.'
   CommentsInterface_singlecomment_ss:
@@ -57,3 +32,29 @@ fr:
     RSSFEEDCOMMENTS: 'Flux RSS de commentaires de cette page'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Supprimer tout les commentaires de cette page'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    ADMIN_PERMISSION: 'Accès à la section Commentaires'
+    MENUTITLE: Commentaires
+    Moderated: Modéré
+    NeedsModeration: 'Besoin de modération'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Commentaires
+    EMAILADDRESS: 'Votre adresse e-mail (ne sera pas publiée)'
+    PERMISSIONFAILURE: 'Vous n''avez pas l''autorisation de commenter cette page. Assurez vous d''être connecté et d''avoir le bon niveau de d''autorisation.'
+    RSSTITLE: 'Flux RSS de Commentaires'
+    WEBSITEURL: 'URl de votre site web'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Commentaires
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Autoriser Commentaires'
+    COMMENT: Commentaire
+    COMMENTBY: 'Commentaire par %s'
+    CREATED: 'Date de publication'
+    EMAIL: Email
+    ISSPAM: 'Spam?'
+    MODERATED: 'Modéré?'
+    NAME: 'Nom de l''Auteur'
+    PARENTTITLE: Parent
+    PLURALNAME: Commentaires
+    SINGULARNAME: Commentaire
+    URL: URL

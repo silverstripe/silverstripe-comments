@@ -1,21 +1,4 @@
 ru:
-  Comment:
-    ALLOWCOMMENTS: 'Разрешить комментарии'
-    COMMENT: Комментарий
-    COMMENTBY: 'Комментарий автора %s'
-    CREATED: 'Дата добавления'
-    EMAIL: Email
-    ISSPAM: 'Спам?'
-    MODERATED: 'Проверено?'
-    NAME: 'Автор'
-    PARENTTITLE: Родительская
-    PLURALNAME: Комментарии
-    SINGULARNAME: Комментарий
-    URL: URL
-  CommentAdmin:
-    MENUTITLE: Комментарии
-    NewComments: Новый
-    SpamComments: Спам
   CommentInterface:
     COMMENT_MESSAGE_URL: 'Пожалуйста, задайте действительный URL-адрес'
     EMAILADDRESS_MESSAGE_EMAIL: 'Пожалуйста, укажите действительный электронный адрес'
@@ -23,13 +6,8 @@ ru:
     POST: Отправить
     PREVIEW: Просмотр
     PREVIEWLABEL: Просмотр
-    YOURNAME: 'Имя'
+    YOURNAME: Имя
     YOURNAME_MESSAGE_REQUIRED: 'Пожалуйста, укажите своё имя'
-  CommentingController:
-    COMMENTS: Комментарии
-    EMAILADDRESS: 'Ваш электронный адрес (не будет опубликован)'
-    RSSTITLE: 'RSS-лента комментариев'
-    WEBSITEURL: 'Адрес вашего сайта'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
   CommentsInterface_singlecomment_ss:
@@ -44,3 +22,25 @@ ru:
     NOCOMMENTSYET: 'Комментариев на этой странице пока нет.'
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Удалить все комментарии на этой странице'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Комментарии
+    NewComments: Новый
+    SpamComments: Спам
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Комментарии
+    EMAILADDRESS: 'Ваш электронный адрес (не будет опубликован)'
+    RSSTITLE: 'RSS-лента комментариев'
+    WEBSITEURL: 'Адрес вашего сайта'
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Разрешить комментарии'
+    COMMENT: Комментарий
+    COMMENTBY: 'Комментарий автора %s'
+    CREATED: 'Дата добавления'
+    EMAIL: Email
+    ISSPAM: 'Спам?'
+    MODERATED: 'Проверено?'
+    NAME: Автор
+    PARENTTITLE: 'Родительская'
+    PLURALNAME: Комментарии
+    SINGULARNAME: Комментарий
+    URL: URL

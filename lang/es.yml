@@ -1,37 +1,14 @@
 es:
-  Comment:
-    ALLOWCOMMENTS: 'Permitir comentarios'
-    COMMENT: Comentario
-    COMMENTBY: 'Comentario por %s'
-    CREATED: 'Fecha de publicación'
-    EMAIL: Email
-    ISSPAM: '¿Spam?'
-    MODERATED: '¿Moderado?'
-    NAME: 'Nombre del autor'
-    PARENTTITLE: Padre
-    PLURALNAME: Comentarios
-    SINGULARNAME: Comentario
-    URL: URL
-  CommentAdmin:
-    ADMIN_PERMISSION: 'Acceder a la sección ''Comentarios'''
-    MENUTITLE: Comentarios
-    Moderated: Moderado
-    NeedsModeration: 'Necesita moderación'
   CommentInterface:
     COMMENT_MESSAGE_REQUIRED: 'Por favor, ingres su comentario'
     COMMENT_MESSAGE_URL: 'Por favor, ingrese una URL válida'
     EMAILADDRESS_MESSAGE_EMAIL: 'Por favor, ingrse una dirección de correo válida'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Por favor, ingrese su dirección de correo'
     POST: Publicar
-    PREVIEW: Vista previa
-    PREVIEWLABEL: Vista previa
+    PREVIEW: 'Vista previa'
+    PREVIEWLABEL: 'Vista previa'
     YOURNAME: 'Su nombre'
     YOURNAME_MESSAGE_REQUIRED: 'Por favor, ingrese su nombre'
-  CommentingController:
-    COMMENTS: Comentarios
-    EMAILADDRESS: 'Su dirección de correo (no se publicará)'
-    PERMISSIONFAILURE: 'Ud no puede publicar comentarios en esta página. Por favor asegúrese que haya iniciado sesión y que tenga el adecuado nivel de permisos.'
-    WEBSITEURL: 'URL de su sitio Web'
   CommentsAdmin:
     NeedsModeration: 'Necesita moderación'
   CommentsInterface_pendingcomment_ss:
@@ -53,3 +30,26 @@ es:
     PREV: anterior
   PageCommentInterface:
     DELETEALLCOMMENTS: 'Eliminar todos los comentarios de esta página'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    ADMIN_PERMISSION: 'Acceder a la sección ''Comentarios'''
+    MENUTITLE: Comentarios
+    Moderated: Moderado
+    NeedsModeration: 'Necesita moderación'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Comentarios
+    EMAILADDRESS: 'Su dirección de correo (no se publicará)'
+    PERMISSIONFAILURE: 'Ud no puede publicar comentarios en esta página. Por favor asegúrese que haya iniciado sesión y que tenga el adecuado nivel de permisos.'
+    WEBSITEURL: 'URL de su sitio Web'
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Permitir comentarios'
+    COMMENT: Comentario
+    COMMENTBY: 'Comentario por %s'
+    CREATED: 'Fecha de publicación'
+    EMAIL: Email
+    ISSPAM: '¿Spam?'
+    MODERATED: '¿Moderado?'
+    NAME: 'Nombre del autor'
+    PARENTTITLE: Padre
+    PLURALNAME: Comentarios
+    SINGULARNAME: Comentario
+    URL: URL
