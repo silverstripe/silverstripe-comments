@@ -26,6 +26,7 @@ use SilverStripe\ORM\DB;
 use SilverStripe\ORM\PaginatedList;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
+use SilverStripe\CMS\Model\SiteTree;
 
 /**
  * Represents a single comment object.
