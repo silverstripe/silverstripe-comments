@@ -2,8 +2,6 @@
 
 namespace SilverStripe\Comments\Tests\Stubs;
 
-use SilverStripe\Comments\Tests\Stubs\CommentableItem;
-
 class CommentableItemDisabled extends CommentableItem
 {
     private static $defaults = array(
@@ -11,4 +9,6 @@ class CommentableItemDisabled extends CommentableItem
         'ModerationRequired' => 'None',
         'CommentsRequireLogin' => false
     );
+
+    private static $table_name = 'CommentableItemDisabled';
 }
