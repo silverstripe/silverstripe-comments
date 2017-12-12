@@ -5,13 +5,9 @@ namespace SilverStripe\Comments\Tests;
 use SilverStripe\Comments\Admin\CommentAdmin;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\i18n\i18n;
-use SilverStripe\Security\Security;
 
 class CommentAdminTest extends SapphireTest
 {
-    /**
-     * {@inheritDoc}
-     */
     protected $usesDatabase = true;
 
     public function testProvidePermissions()
@@ -23,7 +19,7 @@ class CommentAdminTest extends SapphireTest
         $expected = array(
             'CMS_ACCESS_CommentAdmin' => array(
                 'name' => 'Accès à la section Commentaires',
-                'category' => 'CMS Access' // missing in core
+                'category' => 'Accès au CMS',
             )
         );
 
