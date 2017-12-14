@@ -62,20 +62,24 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
             $field .= GridField_FormAction::create(
                 $gridField,
                 'CustomAction' . $record->ID . 'Spam',
-                _t('SilverStripe\\Comments\\Admin\\CommentsGridFieldAction.SPAM', 'Spam'),
+                _t(__CLASS__ . '.SPAM', 'Spam'),
                 'spam',
                 array('RecordID' => $record->ID)
-            )->Field();
+            )
+                ->addExtraClass('btn btn-secondary grid-field__icon-action')
+                ->Field();
         }
 
         if ($record->IsSpam || !$record->Moderated) {
             $field .= GridField_FormAction::create(
                 $gridField,
                 'CustomAction' . $record->ID . 'Approve',
-                _t('SilverStripe\\Comments\\Admin\\CommentsGridFieldAction.APPROVE', 'Approve'),
+                _t(__CLASS__ . '.APPROVE', 'Approve'),
                 'approve',
                 array('RecordID' => $record->ID)
-            )->Field();
+            )
+                ->addExtraClass('btn btn-secondary grid-field__icon-action')
+                ->Field();
         }
 
         return $field;
@@ -101,7 +105,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
             // output a success message to the user
             Controller::curr()->getResponse()->setStatusCode(
                 200,
-                _t('SilverStripe\\Comments\\Admin\\CommentsGridFieldAction.COMMENTMARKEDSPAM', 'Comment marked as spam.')
+                _t(__CLASS__ . '.COMMENTMARKEDSPAM', 'Comment marked as spam.')
             );
         }
 
@@ -112,7 +116,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
             // output a success message to the user
             Controller::curr()->getResponse()->setStatusCode(
                 200,
-                _t('SilverStripe\\Comments\\Admin\\CommentsGridFieldAction.COMMENTAPPROVED', 'Comment approved.')
+                _t(__CLASS__ . '.COMMENTAPPROVED', 'Comment approved.')
             );
         }
     }
