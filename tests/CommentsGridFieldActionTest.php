@@ -12,14 +12,20 @@ use SilverStripe\Control\Controller;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
+use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldDeleteAction;
 use SilverStripe\Forms\Tests\GridField\GridFieldTest\Team;
+use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
 
 class CommentsGridFieldActionTest extends SapphireTest
 {
     protected $usesDatabase = true;
+
+    protected static $extra_dataobjects = [
+        CommentableItem::class,
+    ];
 
     /** @var ArrayList */
     protected $list;
@@ -30,7 +36,7 @@ class CommentsGridFieldActionTest extends SapphireTest
     /** @var Form */
     protected $form;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->list = new DataList(Team::class);
@@ -90,25 +96,26 @@ class CommentsGridFieldActionTest extends SapphireTest
         $recordID = $record->ID;
         $html = $action->getColumnContent($this->gridField, $record, Comment::class);
         $this->assertContains('data-url="admin/comments/mockform/field/testfield', $html);
-        $spamAction = 'value="Spam" class="action" id="action_CustomAction' . $recordID . 'Spam"';
-        $this->assertContains($spamAction, $html);
 
-        $approveAction = 'value="Approve" class="action" id="action_CustomAction' . $recordID . 'Approve"';
-        $this->assertContains($approveAction, $html);
+        $this->assertContains('value="Spam"', $html);
+        $this->assertContains('id="action_CustomAction' . $recordID . 'Spam"', $html);
+
+        $this->assertContains('value="Approve"', $html);
+        $this->assertContains('id="action_CustomAction' . $recordID . 'Approve"', $html);
 
         // If marked as spam, only the approve button should be available
         $record->markSpam();
         $record->write();
         $html = $action->getColumnContent($this->gridField, $record, Comment::class);
-        $this->assertContains($approveAction, $html);
-        $this->assertNotContains($spamAction, $html);
+        $this->assertContains('value="Approve"', $html);
+        $this->assertNotContains('value="Spam"', $html);
 
         // If marked as spam, only the approve button should be available
         $record->markApproved();
         $record->write();
         $html = $action->getColumnContent($this->gridField, $record, Comment::class);
-        $this->assertNotContains($approveAction, $html);
-        $this->assertContains($spamAction, $html);
+        $this->assertNotContains('value="Approve"', $html);
+        $this->assertContains('value="Spam"', $html);
     }
 
     public function testGetActions()
