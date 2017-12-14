@@ -45,7 +45,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
     {
         return array(
             "CMS_ACCESS_CommentAdmin" => array(
-                'name' => _t('SilverStripe\\Comments\\Admin\\CommentAdmin.ADMIN_PERMISSION', "Access to 'Comments' section"),
+                'name' => _t(__CLASS__ . '.ADMIN_PERMISSION', "Access to 'Comments' section"),
                 'category' => _t('SilverStripe\\Security\\Permission.CMS_ACCESS_CATEGORY', 'CMS Access')
             )
         );
@@ -94,34 +94,42 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
             CommentsGridFieldConfig::create()
         );
 
-        $newCount = '(' . count($newComments) . ')';
-        $approvedCount = '(' . count($approvedComments) . ')';
-        $spamCount = '(' . count($spamComments) . ')';
-
-        $fields = new FieldList(
-            $root = new TabSet(
-                'Comments',
-                new Tab(
+        $fields = FieldList::create(
+            $root = TabSet::create(
+                'Root',
+                Tab::create(
                     'NewComments',
-                    _t(__CLASS__.'.NewComments', 'New') . ' ' . $newCount,
+                    _t(
+                        __CLASS__.'.NewComments',
+                        'New ({count})',
+                        ['count' => count($newComments)]
+                    ),
                     $newGrid
                 ),
-                new Tab(
+                Tab::create(
                     'ApprovedComments',
-                    _t(__CLASS__.'.ApprovedComments', 'Approved') . ' ' . $approvedCount,
+                    _t(
+                        __CLASS__.'.ApprovedComments',
+                        'Approved ({count})',
+                        ['count' => count($approvedComments)]
+                    ),
                     $approvedGrid
                 ),
-                new Tab(
+                Tab::create(
                     'SpamComments',
-                    _t(__CLASS__.'.SpamComments', 'Spam') . ' ' . $spamCount,
+                    _t(
+                        __CLASS__.'.SpamComments',
+                        'Spam ({count})',
+                        ['count' => count($spamComments)]
+                    ),
                     $spamGrid
                 )
             )
         );
 
-        $actions = new FieldList();
+        $actions = FieldList::create();
 
-        $form = new Form(
+        $form = Form::create(
             $this,
             'EditForm',
             $fields,
@@ -132,7 +140,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
         $form->setTemplate($this->getTemplatesWithSuffix('_EditForm'));
 
         if ($form->Fields()->hasTabset()) {
-            // $form->Fields()->findOrMakeTab('Root')->setTemplate('CMSTabSet');
+             $form->Fields()->findOrMakeTab('Root')->setTemplate('SilverStripe\\Forms\\CMSTabSet');
             $form->addExtraClass('center ss-tabset cms-tabset ' . $this->BaseCSSClasses());
         }
 
