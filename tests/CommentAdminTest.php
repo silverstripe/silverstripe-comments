@@ -3,6 +3,7 @@
 namespace SilverStripe\Comments\Tests;
 
 use SilverStripe\Comments\Admin\CommentAdmin;
+use SilverStripe\Control\Session;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\i18n\i18n;
 
@@ -13,51 +14,45 @@ class CommentAdminTest extends SapphireTest
     public function testProvidePermissions()
     {
         $commentAdmin = new CommentAdmin();
-        $locale = i18n::get_locale();
+        $commentAdmin->getRequest()->setSession(new Session([]));
 
         i18n::set_locale('fr');
-        $expected = array(
-            'CMS_ACCESS_CommentAdmin' => array(
-                'name' => 'Accès à la section Commentaires',
-                'category' => 'Accès au CMS',
-            )
+        $this->assertEquals(
+            'Accès au CMS',
+            $commentAdmin->providePermissions()['CMS_ACCESS_CommentAdmin']['category']
         );
 
-        $this->assertEquals($expected, $commentAdmin->providePermissions());
-
-        i18n::set_locale($locale);
-        $expected = array(
-            'CMS_ACCESS_CommentAdmin' => array(
+        i18n::set_locale('en');
+        $expected = [
+            'CMS_ACCESS_CommentAdmin' => [
                 'name' => 'Access to \'Comments\' section',
-                'category' => 'CMS Access'
-            )
-        );
+                'category' => 'CMS Access',
+            ]
+        ];
         $this->assertEquals($expected, $commentAdmin->providePermissions());
     }
 
     public function testGetEditForm()
     {
         $commentAdmin = new CommentAdmin();
+        $commentAdmin->getRequest()->setSession(new Session([]));
+
         $this->logInWithPermission('CMS_ACCESS_CommentAdmin');
         $form = $commentAdmin->getEditForm();
         $names = $this->getFormFieldNames($form);
-        $expected = array(
+        $expected = [
             'NewComments',
             'ApprovedComments',
-            'SpamComments'
-        );
+            'SpamComments',
+        ];
         $this->assertEquals($expected, $names);
 
-        if ($member = Member::currentUser()) {
-            $member->logOut();
-        }
-
-        $form = $commentAdmin->getEditForm();
+        $this->logOut();
     }
 
     private function getFormFieldNames($form)
     {
-        $result = array();
+        $result = [];
         $fields = $form->Fields();
         $tab = $fields->findOrMakeTab('Root');
         $fields = $tab->FieldList();
