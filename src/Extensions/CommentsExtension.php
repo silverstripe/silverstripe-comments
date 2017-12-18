@@ -2,6 +2,7 @@
 
 namespace SilverStripe\Comments\Extensions;
 
+use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Comments\Admin\CommentsGridField;
 use SilverStripe\Comments\Admin\CommentsGridFieldConfig;
 use SilverStripe\Comments\Controllers\CommentingController;
@@ -152,7 +153,7 @@ class CommentsExtension extends DataExtension
      */
     public function updateSettingsFields(FieldList $fields)
     {
-        $options = FieldGroup::create()->setTitle(_t('SilverStripe\\Comments\\Extensions\\CommentsExtension.COMMENTOPTIONS', 'Comments'));
+        $options = FieldGroup::create()->setTitle(_t(__CLASS__ . '.COMMENTOPTIONS', 'Comments'));
 
         // Check if enabled setting should be cms configurable
         if ($this->owner->getCommentsOption('enabled_cms')) {
@@ -179,9 +180,9 @@ class CommentsExtension extends DataExtension
 
         // Check if moderation should be enabled via cms configurable
         if ($this->owner->getCommentsOption('require_moderation_cms')) {
-            $moderationField = new DropdownField('ModerationRequired', _t('SilverStripe\\Comments\\Extensions\\CommentsExtension.COMMENTMODERATION', 'Comment Moderation'), array(
-                'None' => _t('SilverStripe\\Comments\\Extensions\\CommentsExtension.MODERATIONREQUIRED_NONE', 'No moderation required'),
-                'Required' => _t('SilverStripe\\Comments\\Extensions\\CommentsExtension.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
+            $moderationField = new DropdownField('ModerationRequired', _t(__CLASS__ . '.COMMENTMODERATION', 'Comment Moderation'), array(
+                'None' => _t(__CLASS__ . '.MODERATIONREQUIRED_NONE', 'No moderation required'),
+                'Required' => _t(__CLASS__ . '.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
                 'NonMembersOnly' => _t(
                     'SilverStripe\\Comments\\Extensions\\CommentsExtension.MODERATIONREQUIRED_NONMEMBERSONLY',
                     'Only moderate non-members'
@@ -594,6 +595,8 @@ class CommentsExtension extends DataExtension
                     $spamGrid
                 )
             );
+            $tabs->setTitle(_t(__CLASS__ . '.COMMENTSTABSET', 'Comments'));
+
             $fields->addFieldToTab('Root', $tabs);
         } else {
             $fields->push($newGrid);

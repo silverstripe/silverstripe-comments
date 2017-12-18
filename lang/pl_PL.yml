@@ -5,8 +5,8 @@ pl_PL:
     EMAILADDRESS_MESSAGE_EMAIL: 'Wprowadź poprawny adres email'
     EMAILADDRESS_MESSAGE_REQUIRED: 'Wprowadź swój adres email'
     POST: Wyślij
-    PREVIEW: 'Podgląd'
-    PREVIEWLABEL: 'Podgląd'
+    PREVIEW: Podgląd
+    PREVIEWLABEL: Podgląd
     YOURNAME: 'Twoja nazwa'
     YOURNAME_MESSAGE_REQUIRED: 'Wprowadź swoje imie'
   Comments:

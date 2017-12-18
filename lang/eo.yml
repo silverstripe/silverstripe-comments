@@ -25,6 +25,7 @@ eo:
     ISSPAM: 'spamigi ĝin'
     PBY: 'Afiŝita de'
     REMCOM: 'malakcepti ĝin'
+    REPLYTO: 'Respondi al'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Via komento afiŝiĝis kaj nun atendas kontrolon.'
     COMMENTLOGINERROR: 'Vi ne povas afiŝi komenton ĝis vi ensalutis'
@@ -51,6 +52,14 @@ eo:
     NeedsModeration: 'Bezonas kontrolon'
     NewComments: Nova
     SpamComments: Spamo
+  SilverStripe\Comments\Admin\CommentsGridFieldAction:
+    APPROVE: Aprobi
+    COMMENTAPPROVED: 'Komento aprobita.'
+    COMMENTMARKEDSPAM: 'Markis komenton kiel spamon'
+    SPAM: Spamo
+  SilverStripe\Comments\Admin\CommentsGridFieldConfig:
+    APPROVE: Aprobi
+    SPAM: Spamo
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Komentoj
     EMAILADDRESS: 'Via retadreso (ne publikiĝos)'
@@ -59,6 +68,7 @@ eo:
     WEBSITEURL: 'Via reteja URL'
   SilverStripe\Comments\Extensions\CommentsExtension:
     COMMENTOPTIONS: Komentoj
+    COMMENTSTABSET: Komentoj
     MODERATIONREQUIRED_NONE: 'Kontrolado ne bezonatas'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Kontroli nur nemembrojn'
     MODERATIONREQUIRED_REQUIRED: 'Kontroli ĉiujn komentojn'
@@ -72,6 +82,7 @@ eo:
     MODERATED: 'Ĉu kontrolata?'
     NAME: 'Nomo de aŭtoro'
     'ON': en
+    OPTIONS: Agordoj
     OPTION_DESCRIPTION: 'Ne vidigos nekontrolitajn aŭ spamajn komentojn antaŭ aprobo'
     PARENTTITLE: Patra
     PLURALNAME: Komentoj

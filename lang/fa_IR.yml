@@ -5,8 +5,8 @@ fa_IR:
     EMAILADDRESS_MESSAGE_EMAIL: 'لطفاً نشانی ایمیل معتبر وارد نمایید'
     EMAILADDRESS_MESSAGE_REQUIRED: 'لطفاً نشانی ایمیل خود را وارد نمایید'
     POST: ارسال
-    PREVIEW: 'پیش‌نمایش'
-    PREVIEWLABEL: 'پیش‌نمایش'
+    PREVIEW: پیش‌نمایش
+    PREVIEWLABEL: پیش‌نمایش
     YOURNAME: 'نام شما'
     YOURNAME_MESSAGE_REQUIRED: 'لطفاً نام خود را وارد نمایید'
   Comments:
@@ -25,6 +25,7 @@ fa_IR:
     ISSPAM: هرزنوشته
     PBY: 'ارسال شده توسط'
     REMCOM: 'رد کردن'
+    REPLYTO: 'ارسال پاسخ به'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'دیدگاه شما ارسال شده و هم‌اکنون در انتظار بررسی است.'
     COMMENTLOGINERROR: 'تا زمانی‌که وارد سایت نشده‌اید نمی‌توانید دیدگاهی درج نمایید'
@@ -51,6 +52,14 @@ fa_IR:
     NeedsModeration: 'نیازمند مدیریت'
     NewComments: تازه
     SpamComments: هرزنوشت
+  SilverStripe\Comments\Admin\CommentsGridFieldAction:
+    APPROVE: تایید
+    COMMENTAPPROVED: 'دیدگاه تایید شد.'
+    COMMENTMARKEDSPAM: 'دیدگاه به عنوان هرزنوشت علامت‌گذاری شد.'
+    SPAM: هرزنوشت
+  SilverStripe\Comments\Admin\CommentsGridFieldConfig:
+    APPROVE: تایید
+    SPAM: هرزنوشت
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: دیدگاه‌ها
     EMAILADDRESS: 'ایمیل شما (منتشر نخواهد شد)'
@@ -67,11 +76,12 @@ fa_IR:
     COMMENT: دیدگاه
     COMMENTBY: 'دیدگاه توسط %s'
     CREATED: 'تاریخ ارسال'
-    EMAIL: 'ایمیل'
+    EMAIL: ایمیل
     ISSPAM: هرزنوشت؟
     MODERATED: 'مدیریت شده؟'
     NAME: 'نام نگارنده'
     'ON': در
+    OPTIONS: گزینه‌ها
     OPTION_DESCRIPTION: 'دیدگاه‌های مدیریت نشده و هرزنوشت‌ها تا زمان تایید به نمایش در نخواهند آمد'
     PARENTTITLE: والد
     PLURALNAME: دیدگاه‌ها

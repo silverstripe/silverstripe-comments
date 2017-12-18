@@ -16,7 +16,7 @@ lt:
     Comments: Patvirtinti
     NeedsModeration: 'Laukia patvirtinimo'
     NewComments: Nauji
-    SpamComments: 'Šlamštas'
+    SpamComments: Šlamštas
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
   CommentsInterface_singlecomment_ss:
@@ -50,7 +50,7 @@ lt:
     Moderated: Patvirtinti
     NeedsModeration: 'Laukia patvirtinimo'
     NewComments: Nauji
-    SpamComments: 'Šlamštas'
+    SpamComments: Šlamštas
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Komentarai
     EMAILADDRESS: 'Jūsų el.pašto adresas (nebus skelbiamas)'

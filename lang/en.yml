@@ -12,9 +12,7 @@ en:
   Comments:
     COMMENTSREQUIRELOGIN: 'Require login to comment'
   CommentsAdmin:
-    ApprovedComments: Approved
     Comments: Approved
-    NeedsModeration: 'Needs Moderation'
     NewComments: New
     SpamComments: Spam
   CommentsInterface_pendingcomment_ss:
@@ -23,12 +21,12 @@ en:
     APPROVE: 'approve it'
     ISNTSPAM: 'not spam'
     ISSPAM: 'spam it'
-    PBY: 'Posted by'
     REMCOM: 'reject it'
+    REPLYTO: 'Reply to'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
     COMMENTLOGINERROR: 'You cannot post comments until you have logged in'
-    COMMENTPERMISSIONERROR: 'and that you have an appropriate permission level'
+    COMMENTPERMISSIONERROR: 'and have an appropriate permission level'
     COMMENTPOSTLOGIN: 'Login Here'
     COMMENTS: Comments
     COMMENTSDISABLED: 'Posting comments has been disabled'
@@ -40,17 +38,13 @@ en:
     PREV: previous
     RSSFEEDALLCOMMENTS: 'RSS feed for all comments'
     RSSFEEDCOMMENTS: 'RSS feed for comments on this page'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Delete all comments on this page'
   SilverStripe\Comments\Admin\CommentAdmin:
     ADMIN_PERMISSION: 'Access to ''Comments'' section'
-    ApprovedComments: Approved ({count})
+    ApprovedComments: 'Approved ({count})'
     Comments: Approved
     MENUTITLE: Comments
-    Moderated: Moderated
-    NeedsModeration: 'Needs Moderation'
-    NewComments: New ({count})
-    SpamComments: Spam ({count})
+    NewComments: New
+    SpamComments: Spam
   SilverStripe\Comments\Admin\CommentsGridFieldAction:
     APPROVE: Approve
     COMMENTAPPROVED: 'Comment approved.'
@@ -66,7 +60,9 @@ en:
     RSSTITLE: 'Comments RSS Feed'
     WEBSITEURL: 'Your website URL'
   SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTMODERATION: 'Comment Moderation'
     COMMENTOPTIONS: Comments
+    COMMENTSTABSET: Comments
     MODERATIONREQUIRED_NONE: 'No moderation required'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Only moderate non-members'
     MODERATIONREQUIRED_REQUIRED: 'Moderate all comments'
@@ -84,6 +80,9 @@ en:
     OPTION_DESCRIPTION: 'Unmoderated and spam comments will not be displayed until approved'
     PARENTTITLE: Parent
     PLURALNAME: Comments
+    PLURALS:
+      one: 'A Comment'
+      other: '{count} Comments'
     ParentComment_Title: 'This comment is a reply to the below'
     SINGULARNAME: Comment
     URL: URL

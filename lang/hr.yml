@@ -1,0 +1,90 @@
+hr:
+  CommentInterface:
+    COMMENT_MESSAGE_REQUIRED: 'Molimo unesite vaš komentar'
+    COMMENT_MESSAGE_URL: 'Molimo unesite ispravan link'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Molimo unesite ispravnu email adresu'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Molimo unesite email adresu'
+    POST: Objava
+    PREVIEW: Pregled
+    PREVIEWLABEL: Pregled
+    YOURNAME: 'Vaše ime'
+    YOURNAME_MESSAGE_REQUIRED: 'Molimo unesite vaše ime'
+  Comments:
+    COMMENTSREQUIRELOGIN: 'Zahtjeva prijavu za komentiranje'
+  CommentsAdmin:
+    ApprovedComments: Odobren
+    Comments: Odobren
+    NeedsModeration: 'Zahtjeva moderaciju'
+    NewComments: Novo
+    SpamComments: Spam
+  CommentsInterface_pendingcomment_ss:
+    AWAITINGMODERATION: 'Vaš komentar je zaprimljen i čeka odobrenje.'
+  CommentsInterface_singlecomment_ss:
+    APPROVE: 'odobri ga'
+    ISNTSPAM: 'nije spam'
+    ISSPAM: 'Spamaj ga'
+    PBY: Objavio
+    REMCOM: 'odbaci ga'
+    REPLYTO: 'Odgovori na'
+  CommentsInterface_ss:
+    AWAITINGMODERATION: 'Vaš komentar je zaprimljen i čeka odobrenje.'
+    COMMENTLOGINERROR: 'Ne možete objavljivati komentare dok se ne prijavite'
+    COMMENTPERMISSIONERROR: 'i da imate potrebna prava'
+    COMMENTPOSTLOGIN: 'Prijavi se ovdje'
+    COMMENTS: Komentari
+    COMMENTSDISABLED: 'Objavljivanje komentara je onemogućeno'
+    DELETEALLCOMMENTS: 'Obriši sve komentare na ovoj stranici'
+    LOGINTOPOSTCOMMENT: 'Prijavi se da objaviš komentar'
+    NEXT: sljedeći
+    NOCOMMENTSYET: 'Nitko nije komentirao na ovu stranicu.'
+    POSTCOM: 'Objavi svoj komentar'
+    PREV: prethodni
+    RSSFEEDALLCOMMENTS: 'RSS kanal za sve komentare'
+    RSSFEEDCOMMENTS: 'RSS kanal za sve komentare na ovoj stranici'
+  PageCommentInterface:
+    DELETEALLCOMMENTS: 'Obriši sve komentare na ovoj stranici'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    ADMIN_PERMISSION: 'Pristup ''Comments'' sekciji'
+    ApprovedComments: Odobren
+    Comments: Odobren
+    MENUTITLE: Komentari
+    Moderated: Moderiran
+    NeedsModeration: 'Zahtjeva moderaciju'
+    NewComments: Novo
+    SpamComments: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldAction:
+    APPROVE: Odobri
+    COMMENTAPPROVED: 'Komentar odobren.'
+    COMMENTMARKEDSPAM: 'Komentar označen kao spam.'
+    SPAM: SPam
+  SilverStripe\Comments\Admin\CommentsGridFieldConfig:
+    APPROVE: Odobri
+    SPAM: Spam
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentari
+    EMAILADDRESS: 'Vaša email adresa (neće biti objavljena)'
+    PERMISSIONFAILURE: 'Ne možete objavljivati komentare na ovoj stranici. Molimo provjerite da li ste prijavljeni i imate potrebna prava.'
+    RSSTITLE: 'RSS kanal komentara'
+    WEBSITEURL: 'Vaša web adresa'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentari
+    MODERATIONREQUIRED_NONE: 'Nije potrebna moderacija'
+    MODERATIONREQUIRED_NONMEMBERSONLY: 'Samo moderiraj goste'
+    MODERATIONREQUIRED_REQUIRED: 'Moderiraj sve komentare'
+  SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Dozvoli komentare'
+    COMMENT: Komentar
+    COMMENTBY: 'Komentar od %s'
+    CREATED: 'Datum objave'
+    EMAIL: Email
+    ISSPAM: 'Spam?'
+    MODERATED: 'Moderirano?'
+    NAME: 'Ime autora'
+    'ON': na
+    OPTIONS: Opcije
+    OPTION_DESCRIPTION: 'Nemoderirani i spam komentari neće biti objavljeni dok se ne odobre'
+    PARENTTITLE: Roditelj
+    PLURALNAME: Komentari
+    ParentComment_Title: 'Ovaj komentar je odgovor na dolje'
+    SINGULARNAME: Komentar
+    URL: Link
