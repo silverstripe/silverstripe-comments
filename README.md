@@ -1,25 +1,8 @@
 # Comments
-[![Build Status](https://travis-ci.org/silverstripe/silverstripe-comments.svg?branch=master)](https://travis-ci.org/silverstripe/silverstripe-comments)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/badges/build.png?b=master)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/build-status/master)
-[![codecov.io](https://codecov.io/github/silverstripe/silverstripe-comments/coverage.svg?branch=master)](https://codecov.io/github/silverstripe/silverstripe-comments?branch=master)
 
-[![Latest Stable Version](https://poser.pugx.org/silverstripe/comments/version)](https://packagist.org/packages/silverstripe/comments)
-[![Latest Unstable Version](https://poser.pugx.org/silverstripe/comments/v/unstable)](//packagist.org/packages/silverstripe/comments)
-[![Total Downloads](https://poser.pugx.org/silverstripe/comments/downloads)](https://packagist.org/packages/silverstripe/comments)
-[![License](https://poser.pugx.org/silverstripe/comments/license)](https://packagist.org/packages/silverstripe/comments)
-[![Monthly Downloads](https://poser.pugx.org/silverstripe/comments/d/monthly)](https://packagist.org/packages/silverstripe/comments)
-[![Daily Downloads](https://poser.pugx.org/silverstripe/comments/d/daily)](https://packagist.org/packages/silverstripe/comments)
-
-[![Dependency Status](https://www.versioneye.com/php/silverstripe:comments/badge.svg)](https://www.versioneye.com/php/silverstripe:comments)
-[![Reference Status](https://www.versioneye.com/php/silverstripe:comments/reference_badge.svg?style=flat)](https://www.versioneye.com/php/silverstripe:comments/references)
-
-![codecov.io](https://codecov.io/github/silverstripe/silverstripe-comments/branch.svg?branch=master)
-
-![helpfulrobot](https://helpfulrobot.io/silverstripe/comments/badge)
-
-[Changelog](CHANGELOG.md)
+[![Build Status](https://img.shields.io/travis/silverstripe/silverstripe-comments.svg)](http://travis-ci.org/silverstripe/silverstripe-comments)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/silverstripe/silverstripe-comments.svg)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/?branch=master)
+[![Code Coverage](https://img.shields.io/codecov/c/github/silverstripe/silverstripe-comments.svg)](https://codecov.io/gh/silverstripe/silverstripe-comments)
 
 ## Introduction
 
@@ -30,6 +13,8 @@ For more documentation about the module see the provided documentation located i
 ## Requirements
 
  * SilverStripe ^4.0
+
+**Note:** This branch is compatible with SilverStripe 4. For a SilverStripe 3 release, please see the 2.x release line.
 
 ## Installation
 
