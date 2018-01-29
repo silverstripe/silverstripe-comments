@@ -35,7 +35,7 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
 
         $manager->addBulkAction(
             'spam',
-            _t('SilverStripe\\Comments\\Admin\\CommentsGridFieldConfig.SPAM', 'Spam'),
+            _t(__CLASS__ . '.SPAM', 'Spam'),
             Handler::class,
             array(
                 'isAjax' => true,
@@ -46,7 +46,7 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
 
         $manager->addBulkAction(
             'approve',
-            _t('SilverStripe\\Comments\\Admin\\CommentsGridFieldConfig.APPROVE', 'Approve'),
+            _t(__CLASS__ . '.APPROVE', 'Approve'),
             Handler::class,
             array(
                 'isAjax' => true,

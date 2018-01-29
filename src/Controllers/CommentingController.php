@@ -274,7 +274,7 @@ class CommentingController extends Controller
             }
         }
 
-        $title = _t('SilverStripe\\Comments\\Controllers\\CommentingController.RSSTITLE', "Comments RSS Feed");
+        $title = _t(__CLASS__ . '.RSSTITLE', "Comments RSS Feed");
         $comments = new PaginatedList($comments, $request);
         $comments->setPageLength($this->getOption('comments_per_page'));
 

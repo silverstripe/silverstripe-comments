@@ -188,6 +188,7 @@ class Comment extends DataObject
     {
         parent::requireDefaultRecords();
 
+        // Upgrade from SilverStripe 2 version if necessary
         if (DB::get_schema()->hasTable('PageComment')) {
             $comments = DB::query('SELECT * FROM "PageComment"');
 

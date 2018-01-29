@@ -70,8 +70,10 @@ SilverStripe\CMS\Model\SiteTree:
 
 
 ```php
-// Get the setting
-$loginRequired = singleton('SilverStripe\\CMS\\Model\\SiteTree')->getCommentsOption('require_login');
+use SilverStripe\CMS\Model\SiteTree;
+// [...]
+  // Get the setting
+  $loginRequired = singleton(SiteTree::class)->getCommentsOption('require_login');
 ```
 
 
@@ -87,9 +89,9 @@ In order to use this feature, you need to install the
 through [Composer](http://getcomposer.org).
 
 ```json
-    {
-        "require": {"ezyang/htmlpurifier": "^4.8"}
-    }
+{
+    "require": {"ezyang/htmlpurifier": "^4.8"}
+}
 ```
 
 **Important**: Rendering user-provided HTML on your website always risks
@@ -148,7 +150,7 @@ SilverStripe\CMS\Model\SiteTree:
     gravatar_rating: 'r'
 ```
 
-Vald values for rating are as follows:
+Valid values for rating are as follows:
 
 * g: suitable for display on all websites with any audience type.
 * pg: may contain rude gestures, provocatively dressed individuals, the lesser
