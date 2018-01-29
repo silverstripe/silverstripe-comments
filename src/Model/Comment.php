@@ -182,39 +182,6 @@ class Comment extends DataObject
     }
 
     /**
-     * Migrates the old {@link PageComment} objects to {@link Comment}
-     */
-    public function requireDefaultRecords()
-    {
-        parent::requireDefaultRecords();
-
-        // Upgrade from SilverStripe 2 version if necessary
-        if (DB::get_schema()->hasTable('PageComment')) {
-            $comments = DB::query('SELECT * FROM "PageComment"');
-
-            if ($comments) {
-                while ($pageComment = $comments->next()) {
-                    // create a new comment from the older page comment
-                    $comment = new Comment();
-                    $comment->update($pageComment);
-
-                    // set the variables which have changed
-                    $comment->BaseClass = SiteTree::class;
-                    $comment->URL = (isset($pageComment['CommenterURL'])) ? $pageComment['CommenterURL'] : '';
-                    if ((int) $pageComment['NeedsModeration'] == 0) {
-                        $comment->Moderated = true;
-                    }
-
-                    $comment->write();
-                }
-            }
-
-            DB::alteration_message('Migrated PageComment to Comment', 'changed');
-            DB::get_schema()->dontRequireTable('PageComment');
-        }
-    }
-
-    /**
      * Return a link to this comment
      *
      * @param string $action
