@@ -184,7 +184,7 @@ class CommentsExtension extends DataExtension
                 'None' => _t(__CLASS__ . '.MODERATIONREQUIRED_NONE', 'No moderation required'),
                 'Required' => _t(__CLASS__ . '.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
                 'NonMembersOnly' => _t(
-                    'SilverStripe\\Comments\\Extensions\\CommentsExtension.MODERATIONREQUIRED_NONMEMBERSONLY',
+                    __CLASS__ . '.MODERATIONREQUIRED_NONMEMBERSONLY',
                     'Only moderate non-members'
                 ),
             ));
@@ -450,11 +450,11 @@ class CommentsExtension extends DataExtension
         // Check if enabled
         $enabled = $this->getCommentsEnabled();
         if ($enabled && $this->owner->getCommentsOption('include_js')) {
-            $adminThirdPartyDir = ModuleLoader::getModule('silverstripe/admin')->getRelativePath() . '/thirdparty';
-            Requirements::javascript($adminThirdPartyDir . '/jquery/jquery.js');
-            Requirements::javascript($adminThirdPartyDir . '/jquery-entwine/dist/jquery.entwine-dist.js');
-            Requirements::javascript($adminThirdPartyDir . '/jquery-form/jquery.form.js');
+            Requirements::javascript('silverstripe/admin:thirdparty/jquery/jquery.js');
+            Requirements::javascript('silverstripe/admin:thirdparty/jquery-entwine/dist/jquery.entwine-dist.js');
+            Requirements::javascript('silverstripe/admin:thirdparty/jquery-form/jquery.form.js');
             Requirements::javascript('silverstripe/comments:thirdparty/jquery-validate/jquery.validate.min.js');
+            Requirements::javascript('silverstripe/admin:client/dist/js/i18n.js');
             Requirements::add_i18n_javascript('silverstripe/comments:javascript/lang');
             Requirements::javascript('silverstripe/comments:javascript/CommentsInterface.js');
         }

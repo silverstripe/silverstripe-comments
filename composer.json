@@ -30,7 +30,8 @@
         },
         "expose": [
             "css",
-            "javascript"
+            "javascript",
+            "thirdparty"
         ]
     },
     "scripts": {
