@@ -79,20 +79,25 @@
 		 * Toggle on/off reply form
 		 */
 		$( ".comment-reply-link" ).entwine({
-			onclick: function( e ) {
-				var allForms = $( ".comment-reply-form-holder" ),
-					formID = $( this ).prop('href').replace(/^[^#]*#/, '#'),
+		        onclick: function( e ) {
+					var allForms = $( ".comment-reply-form-holder" ),
+					formID = '#' + $( this ).attr('aria-controls');
 					form = $(formID).closest('.comment-reply-form-holder');
 
-				// Prevent focus
-				e.preventDefault();
-				if(form.is(':visible')) {
-					allForms.slideUp();
-				} else {
-					allForms.not(form).slideUp();
+					$(this).attr('aria-expanded', function (i, attr) {
+					    return attr == 'true' ? 'false' : 'true'
+					});
+
+					// Prevent focus
+					e.preventDefault();
+					
+					if(form.is(':visible')) {
+						allForms.slideUp();
+					} else {
+						allForms.not(form).slideUp();
 					form.slideDown();
-				}
-			}
+		      	}
+		    }
 		});
 
 
