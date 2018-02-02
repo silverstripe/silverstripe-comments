@@ -33,7 +33,9 @@
 				<% end_if %>
 			</div>
 			<% if $RepliesEnabled && $canPostComment %>
-				<a class="comment-reply-link" href="#{$ReplyForm.FormName}"><% _t('CommentsInterface_singlecomment_ss.REPLYTO','Reply to') %> $AuthorName.XML</a>
+				<button class="comment-reply-link" type="button" aria-controls="$ReplyForm.FormName" aria-expanded="false">
+					<% _t('CommentsInterface_singlecomment_ss.REPLYTO','Reply to') %> $AuthorName.XML
+				</button>
 			<% end_if %>
 		</div>
 	<% end_if %>
