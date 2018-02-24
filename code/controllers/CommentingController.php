@@ -263,7 +263,17 @@ class CommentingController extends Controller
             return $this->httpError(400);
         }
 
-        $comment->markSpam();
+        if (!$comment->Moderated) {
+            $comment->markSpam();
+        }
+
+        // prevent endless loop of redirects if this request has been made without being logged on
+        $referer = $this->request->getHeader('Referer');
+        if (strpos($referer,"/Security/login") !== false) {
+            echo "Comment marked as spam";
+            return ;
+        }
+
         return $this->renderChangedCommentState($comment);
     }
 
@@ -283,7 +293,17 @@ class CommentingController extends Controller
             return $this->httpError(400);
         }
 
-        $comment->markApproved();
+        if (!$comment->Moderated) {
+            $comment->markApproved();
+        }
+
+        // prevent endless loop of redirects if this request has been made without being logged on
+        $referer = $this->request->getHeader('Referer');
+        if (strpos($referer,"/Security/login") !== false) {
+            echo "Comment approved";
+            return ;
+        }
+
         return $this->renderChangedCommentState($comment);
     }
 
@@ -303,7 +323,17 @@ class CommentingController extends Controller
             return $this->httpError(400);
         }
 
-        $comment->markApproved();
+        if (!$comment->Moderated) {
+            $comment->markApproved();
+        }
+
+        // prevent endless loop of redirects if this request has been made without being logged on
+        $referer = $this->request->getHeader('Referer');
+        if (strpos($referer,"/Security/login") !== false) {
+            echo "Comment approved";
+            return ;
+        }
+
         return $this->renderChangedCommentState($comment);
     }
 
