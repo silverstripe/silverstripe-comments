@@ -3,7 +3,8 @@
 namespace SilverStripe\Comments\Admin;
 
 use Colymba\BulkManager\BulkManager;
-use SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\Handler;
+use SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\ApproveHandler;
+use SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\SpamHandler;
 use SilverStripe\Core\Convert;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldDataColumns;
@@ -31,32 +32,14 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         ));
 
         // Add bulk option
-        $manager = new BulkManager();
+        $manager = new BulkManager(null, false);
 
-        $manager->addBulkAction(
-            'spam',
-            _t(__CLASS__ . '.SPAM', 'Spam'),
-            Handler::class,
-            array(
-                'isAjax' => true,
-                'icon' => 'cross',
-                'isDestructive' => false
-            )
-        );
+        $spamAction = SpamHandler::create()->setLabel(_t(__CLASS__ . '.SPAM', 'Spam'));
+        $approveAction = ApproveHandler::create()->setLabel(_t(__CLASS__ . '.APPROVE', 'Approve'));
 
-        $manager->addBulkAction(
-            'approve',
-            _t(__CLASS__ . '.APPROVE', 'Approve'),
-            Handler::class,
-            array(
-                'isAjax' => true,
-                'icon' => 'cross',
-                'isDestructive' => false
-            )
-        );
-
-        $manager->removeBulkAction('bulkEdit');
-        $manager->removeBulkAction('unLink');
+        $manager
+            ->addBulkAction($spamAction)
+            ->addBulkAction($approveAction);
 
         $this->addComponent($manager);
     }
