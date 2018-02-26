@@ -2,48 +2,27 @@
 
 namespace SilverStripe\Comments\Admin\CommentsGridFieldBulkAction;
 
-use Colymba\BulkManager\BulkAction\Handler;
-use SilverStripe\Core\Convert;
-use SilverStripe\Control\HTTPRequest;
-use SilverStripe\Control\HTTPResponse;
+use SilverStripe\Comments\Model\Comment;
 
 /**
  * A {@link Handler} for bulk approving comments
  */
-class ApproveHandler extends Handler
+class ApproveHandler extends CommentHandler
 {
-    private static $allowed_actions = ['index'];
-
     private static $url_segment = 'approve';
 
-    protected $xhr = true;
-
     protected $buttonClasses = 'font-icon-tick';
-
-    protected $destructive = false;
 
     protected $label = 'Approve';
 
     /**
-     * @param  HTTPRequest $request
-     * @return HTTPResponse
+     * @param Comment $comment
+     *
+     * @return Comment
      */
-    public function index(HTTPRequest $request)
+    public function updateComment($comment)
     {
-        $ids = [];
-
-        foreach ($this->getRecords() as $record) {
-            array_push($ids, $record->ID);
-            $record->markApproved();
-        }
-
-        $response = new HTTPResponse(Convert::raw2json([
-            'done' => true,
-            'records' => $ids,
-        ]));
-
-        $response->addHeader('Content-Type', 'text/json');
-
-        return $response;
+        $comment->markApproved();
+        return $comment;
     }
 }
