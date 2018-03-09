@@ -9,13 +9,16 @@ use SilverStripe\Comments\Tests\Stubs\CommentableItem;
 use SilverStripe\Comments\Tests\Stubs\CommentableItemDisabled;
 use SilverStripe\Comments\Tests\Stubs\CommentableItemEnabled;
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Dev\FunctionalTest;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Security\Member;
 use SilverStripe\View\Requirements;
 
-class CommentsExtensionTest extends SapphireTest
+class CommentsExtensionTest extends FunctionalTest
 {
     protected static $fixture_file = 'CommentsTest.yml';
+
+    protected static $disable_themes = true;
 
     protected static $extra_dataobjects = [
         CommentableItem::class,
@@ -249,6 +252,8 @@ class CommentsExtensionTest extends SapphireTest
 
     public function testCommentsForm()
     {
+        $this->logInWithPermission('ADMIN');
+
         Config::modify()->merge(CommentableItem::class, 'comments', array(
             'include_js' => false,
             'comments_holder_id' => 'comments-holder',
