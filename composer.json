@@ -14,8 +14,8 @@
     ],
     "require": {
         "assertchris/hash-compat": "~1.0",
-        "silverstripe/framework": "~3.1",
-        "colymba/gridfield-bulk-editing-tools": "~2.1"
+        "silverstripe/framework": "3.6.5@stable",
+        "colymba/gridfield-bulk-editing-tools": "2.1.10@stable"
     },
     "suggest": {
         "ezyang/htmlpurifier": "Standards compliant HTML filter written in PHP",
