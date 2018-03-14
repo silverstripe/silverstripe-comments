@@ -183,7 +183,7 @@ class CommentForm extends Form
             $this->controller->setOwnerRecord($class::get()->byID($data['ParentID']));
         }
         if (!$this->controller->getOwnerRecord()) {
-            return $this->httpError(404);
+            return $this->getRequestHandler()->httpError(404);
         }
 
         // cache users data
@@ -246,7 +246,7 @@ class CommentForm extends Form
 
         // we want to show a notification if comments are moderated
         if ($requireModeration && !$comment->IsSpam) {
-            Session::set('CommentsModerated', 1);
+            $this->getRequest()->getSession()->set('CommentsModerated', 1);
         }
 
         // clear the users comment since it passed validation
