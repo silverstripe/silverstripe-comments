@@ -12,9 +12,7 @@ ru:
   Comments:
     COMMENTSREQUIRELOGIN: 'Необходимо войти в систему для комментирования'
   CommentsAdmin:
-    ApprovedComments: Одобренные
     Comments: Одобрен
-    NeedsModeration: 'Необходима Проверка'
     NewComments: Новые
     SpamComments: Спам
   CommentsInterface_pendingcomment_ss:
@@ -23,7 +21,6 @@ ru:
     APPROVE: Одобрить
     ISNTSPAM: 'не спам'
     ISSPAM: 'это спам'
-    PBY: 'Автор:'
     REMCOM: удалить
     REPLYTO: Ответить
   CommentsInterface_ss:
@@ -41,15 +38,11 @@ ru:
     PREV: предыдущие
     RSSFEEDALLCOMMENTS: 'RSS лента для всех комментариев'
     RSSFEEDCOMMENTS: 'RSS лента для комментариев на этой странице'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Удалить все комментарии на этой странице'
   SilverStripe\Comments\Admin\CommentAdmin:
     ADMIN_PERMISSION: 'Доступ к разделу ''Комментарии'''
     ApprovedComments: Одобренные
     Comments: Одобрен
     MENUTITLE: Комментарии
-    Moderated: Проверен
-    NeedsModeration: 'Необходима Проверка'
     NewComments: Новый
     SpamComments: Спам
   SilverStripe\Comments\Admin\CommentsGridFieldAction:

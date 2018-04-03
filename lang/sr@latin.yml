@@ -9,12 +9,8 @@ sr@latin:
     PREVIEWLABEL: Prikaz
     YOURNAME: 'Vaše ime'
     YOURNAME_MESSAGE_REQUIRED: 'Molimo Vas da unesete Vaše ime'
-  CommentsAdmin:
-    NeedsModeration: 'Potrebno uređivanje'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Vaš komentar je prosleđen i sada čeka uređivanje.'
-  CommentsInterface_singlecomment_ss:
-    PBY: Objavio
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Vaš komentar je prosleđen i sada čeka uređivanje.'
     COMMENTLOGINERROR: 'Ne možete objavljivati komentare dok se ne prijavite'
@@ -29,12 +25,8 @@ sr@latin:
     PREV: prethodni
     RSSFEEDALLCOMMENTS: 'RSS feed za sve komentare'
     RSSFEEDCOMMENTS: 'RSS feed za komentare na ovoj strani'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Obriši sve komentare na ovoj strani'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Komentari
-    Moderated: Uređen
-    NeedsModeration: 'Potrebno uređivanje'
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Komentari
     EMAILADDRESS: 'Vaša adresa elektronske pošte (neće biti objavljeno)'

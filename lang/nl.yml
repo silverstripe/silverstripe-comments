@@ -2,12 +2,8 @@ nl:
   CommentInterface:
     POST: 'Plaats reactie'
     YOURNAME: Naam
-  CommentsAdmin:
-    NeedsModeration: 'Wacht op moderatie'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
-  CommentsInterface_singlecomment_ss:
-    PBY: 'Geplaatst door'
   CommentsInterface_ss:
     COMMENTLOGINERROR: 'Je moet ingelogd zijn om reacties te kunnen plaatsen'
     COMMENTPERMISSIONERROR: 'en controleer je gebruikersrechten'
@@ -21,12 +17,8 @@ nl:
     PREV: vorige
     RSSFEEDALLCOMMENTS: 'RSS feed voor alle reacties'
     RSSFEEDCOMMENTS: 'RSS feed voor reacties op deze pagina'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Verwijder alle reacties op deze pagina'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Reacties
-    Moderated: Gemodereerd
-    NeedsModeration: 'Wacht op moderatie'
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Reacties
     EMAILADDRESS: 'E-mail adres (wordt niet gepubliceerd)'

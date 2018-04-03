@@ -9,12 +9,8 @@ id:
     PREVIEWLABEL: Pratinjau
     YOURNAME: 'Nama Anda'
     YOURNAME_MESSAGE_REQUIRED: 'Isikan nama Anda'
-  CommentsAdmin:
-    NeedsModeration: 'Perlu Moderasi'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Komentar Anda sudah terkirim dan menunggu moderasi.'
-  CommentsInterface_singlecomment_ss:
-    PBY: 'Komentar oleh'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Komentar Anda sudah terkirim dan menunggu moderasi.'
     COMMENTLOGINERROR: 'Anda tidak dapat mengomentari jika belum login'
@@ -29,12 +25,8 @@ id:
     PREV: sebelumnya
     RSSFEEDALLCOMMENTS: 'Sindikasi RSS untuk semua komentar'
     RSSFEEDCOMMENTS: 'Sindikasi RSS untuk komentar di laman ini'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Hapus semua komentar di laman ini'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Komentar
-    Moderated: Dimoderasi
-    NeedsModeration: 'Perlu Moderasi'
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Komentar
     EMAILADDRESS: 'Alamat email Anda (tidak akan diterbitkan)'

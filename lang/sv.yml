@@ -9,12 +9,8 @@ sv:
     PREVIEWLABEL: Förhandsgranska
     YOURNAME: 'Ditt namn'
     YOURNAME_MESSAGE_REQUIRED: 'Var vänlig och skriv in ditt namn'
-  CommentsAdmin:
-    NeedsModeration: 'Kräver moderering'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Din kommentar har skickats och väntar nu på moderering'
-  CommentsInterface_singlecomment_ss:
-    PBY: 'Skriven av'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Din kommentar har skickats och väntar nu på moderering'
     COMMENTLOGINERROR: 'Du måste logga in för att kunna skriva kommentarer'
@@ -29,12 +25,8 @@ sv:
     PREV: föregående
     RSSFEEDALLCOMMENTS: 'RSS-flöde för samtliga kommentarer'
     RSSFEEDCOMMENTS: 'RSS-flöde för kommentarer på denna sida'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Radera alla kommenterar på den här sidan'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Kommentarer
-    Moderated: Modererad
-    NeedsModeration: 'Kräver moderering'
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Kommentarer
     EMAILADDRESS: 'Din e-postadress (kommer inte att publiceras)'

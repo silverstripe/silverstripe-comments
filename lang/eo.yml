@@ -12,9 +12,7 @@ eo:
   Comments:
     COMMENTSREQUIRELOGIN: 'Necesas ensaluti por komenti'
   CommentsAdmin:
-    ApprovedComments: Aprobita
     Comments: Aprobita
-    NeedsModeration: 'Bezonas kontrolon'
     NewComments: Nova
     SpamComments: Spamo
   CommentsInterface_pendingcomment_ss:
@@ -23,7 +21,6 @@ eo:
     APPROVE: 'aprobi ĝin'
     ISNTSPAM: 'ne spamo'
     ISSPAM: 'spamigi ĝin'
-    PBY: 'Afiŝita de'
     REMCOM: 'malakcepti ĝin'
     REPLYTO: 'Respondi al'
   CommentsInterface_ss:
@@ -41,15 +38,11 @@ eo:
     PREV: antaŭa
     RSSFEEDALLCOMMENTS: 'RSS-fluo por ĉiuj komentoj'
     RSSFEEDCOMMENTS: 'RSS-fluo por komentoj pri ĉi tiu paĝo'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Forigi ĉiujn komentojn pri ĉi tiu paĝo'
   SilverStripe\Comments\Admin\CommentAdmin:
     ADMIN_PERMISSION: 'Aliro al sekcio ''Komentoj'''
     ApprovedComments: Aprobita
     Comments: Aprobita
     MENUTITLE: Komentoj
-    Moderated: Kontrolata
-    NeedsModeration: 'Bezonas kontrolon'
     NewComments: Nova
     SpamComments: Spamo
   SilverStripe\Comments\Admin\CommentsGridFieldAction:
@@ -67,6 +60,7 @@ eo:
     RSSTITLE: 'RSS-fluo de komentoj'
     WEBSITEURL: 'Via reteja URL'
   SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTMODERATION: 'Kontroli komentojn'
     COMMENTOPTIONS: Komentoj
     COMMENTSTABSET: Komentoj
     MODERATIONREQUIRED_NONE: 'Kontrolado ne bezonatas'
@@ -86,6 +80,9 @@ eo:
     OPTION_DESCRIPTION: 'Ne vidigos nekontrolitajn aŭ spamajn komentojn antaŭ aprobo'
     PARENTTITLE: Patra
     PLURALNAME: Komentoj
+    PLURALS:
+      one: 'Unu komento'
+      other: '{count} komentoj'
     ParentComment_Title: 'Tiu komento estas respondo al la suba'
     SINGULARNAME: Komento
     URL: URL

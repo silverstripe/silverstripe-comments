@@ -12,9 +12,7 @@ fi:
   Comments:
     COMMENTSREQUIRELOGIN: 'Vaadi kirjautuminen kommentointiin'
   CommentsAdmin:
-    ApprovedComments: Hyväksytty
     Comments: Hyväksytty
-    NeedsModeration: 'Tarvitsee moderointia'
     NewComments: Uusi
     SpamComments: Spämmiä
   CommentsInterface_pendingcomment_ss:
@@ -23,7 +21,6 @@ fi:
     APPROVE: 'hyväksy se'
     ISNTSPAM: 'ei spämmiä'
     ISSPAM: 'merkitse spämmiksi'
-    PBY: Lähettänyt
     REMCOM: 'hylkää se'
     REPLYTO: Vastausosoite
   CommentsInterface_ss:
@@ -41,15 +38,11 @@ fi:
     PREV: edellinen
     RSSFEEDALLCOMMENTS: 'RSS-syöte kaikista kommenteista'
     RSSFEEDCOMMENTS: 'RSS-syöte tämän sivun kommenteista'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Poista kaikki tämän sivun kommentit'
   SilverStripe\Comments\Admin\CommentAdmin:
     ADMIN_PERMISSION: 'Pääsy Comments-osioon'
     ApprovedComments: Hyväksytty
     Comments: Hyväksytty
     MENUTITLE: Kommentit
-    Moderated: Moderoitu
-    NeedsModeration: 'Tarvitsee moderointia'
     NewComments: Uusi
     SpamComments: Spämmiä
   SilverStripe\Comments\Admin\CommentsGridFieldAction:

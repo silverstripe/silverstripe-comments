@@ -2,12 +2,8 @@ nb:
   CommentInterface:
     POST: 'Legg ut'
     YOURNAME: Navn
-  CommentsAdmin:
-    NeedsModeration: 'Trenger moderering'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Kommentaren din har blitt lagret og er lagt i kø for moderering.'
-  CommentsInterface_singlecomment_ss:
-    PBY: 'Skrevet av'
   CommentsInterface_ss:
     COMMENTLOGINERROR: 'Du kan ikke skrive kommentarer før du har logget inn'
     COMMENTPERMISSIONERROR: 'og at du har et passende tilgangsnivå'
@@ -21,12 +17,8 @@ nb:
     PREV: forrige
     RSSFEEDALLCOMMENTS: 'RSS-feed for alle kommentarer'
     RSSFEEDCOMMENTS: 'RSS-feed for kommentarer på denne siden'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Fjern alle kommentarer på denne siden'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Kommentarer
-    Moderated: Moderert
-    NeedsModeration: 'Trenger moderering'
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Kommentar
     EMAILADDRESS: 'Epostadresse (blir ikke publisert)'

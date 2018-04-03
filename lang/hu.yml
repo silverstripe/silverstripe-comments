@@ -9,12 +9,8 @@ hu:
     PREVIEWLABEL: Előnézet
     YOURNAME: 'Az Ön neve'
     YOURNAME_MESSAGE_REQUIRED: 'Kérjük adja meg nevét'
-  CommentsAdmin:
-    NeedsModeration: 'Moderálás szükséges'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
-  CommentsInterface_singlecomment_ss:
-    PBY: Feladó
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Hozzászólását moderálásra továbbítottuk'
     COMMENTLOGINERROR: 'A hozzászóláshoz be kell jelentkeznie'
@@ -29,13 +25,9 @@ hu:
     PREV: előző
     RSSFEEDALLCOMMENTS: 'Összes hozzászólás RSS-ben'
     RSSFEEDCOMMENTS: 'Oldal hozzászólásai RSS-ben'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Oldal összes hozzászólásának törlése'
   SilverStripe\Comments\Admin\CommentAdmin:
     ADMIN_PERMISSION: '''Hozzászólások'' mező elérése'
     MENUTITLE: Hozzászólások
-    Moderated: Moderált
-    NeedsModeration: 'Moderálás szükséges'
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: 'A hosszászólás szövege'
     EMAILADDRESS: 'Az Ön e-mail címe (nem látható)'

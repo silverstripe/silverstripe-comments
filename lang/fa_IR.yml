@@ -12,9 +12,7 @@ fa_IR:
   Comments:
     COMMENTSREQUIRELOGIN: 'درج دیدگاه نیازمند ورود شما به سایت است'
   CommentsAdmin:
-    ApprovedComments: 'تایید شده'
     Comments: 'تایید شده'
-    NeedsModeration: 'نیازمند مدیریت'
     NewComments: تازه
     SpamComments: هرزنوشت
   CommentsInterface_pendingcomment_ss:
@@ -23,7 +21,6 @@ fa_IR:
     APPROVE: 'تایید کن'
     ISNTSPAM: 'هرزنوشت نیست'
     ISSPAM: هرزنوشته
-    PBY: 'ارسال شده توسط'
     REMCOM: 'رد کردن'
     REPLYTO: 'ارسال پاسخ به'
   CommentsInterface_ss:
@@ -41,15 +38,11 @@ fa_IR:
     PREV: پیشین
     RSSFEEDALLCOMMENTS: 'خوراک آر‌اس‌اس تمامی دیدگاه‌ها'
     RSSFEEDCOMMENTS: 'خوراک آر‌اس‌اس دیدگاه‌های این صفحه'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'حذف تمامی دیدگاه‌ها در این صفحه'
   SilverStripe\Comments\Admin\CommentAdmin:
     ADMIN_PERMISSION: 'دسترسی به بخش ''دیدگاه‌ها'''
     ApprovedComments: 'تایید شده'
     Comments: 'تایید شده'
     MENUTITLE: دیدگاه‌ها
-    Moderated: 'مدیریت شده'
-    NeedsModeration: 'نیازمند مدیریت'
     NewComments: تازه
     SpamComments: هرزنوشت
   SilverStripe\Comments\Admin\CommentsGridFieldAction:

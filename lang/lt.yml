@@ -12,9 +12,7 @@ lt:
   Comments:
     COMMENTSREQUIRELOGIN: 'Būtina prisijungti komentavimui'
   CommentsAdmin:
-    ApprovedComments: Patvirtinti
     Comments: Patvirtinti
-    NeedsModeration: 'Laukia patvirtinimo'
     NewComments: Nauji
     SpamComments: Šlamštas
   CommentsInterface_pendingcomment_ss:
@@ -23,7 +21,6 @@ lt:
     APPROVE: patvirtinti
     ISNTSPAM: 'ne šlamštas'
     ISSPAM: šlamštas
-    PBY: Paskelbė
     REMCOM: ištrinti
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
@@ -40,15 +37,11 @@ lt:
     PREV: ankstesni
     RSSFEEDALLCOMMENTS: 'Visų komentarų RSS'
     RSSFEEDCOMMENTS: 'Šio puslapio komentarų RSS'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Ištrinti visus komentarus šiame puslapyje'
   SilverStripe\Comments\Admin\CommentAdmin:
     ADMIN_PERMISSION: 'Patekti į ''Komentarų'' dalį'
     ApprovedComments: Patvirtinti
     Comments: Patvirtinti
     MENUTITLE: Komentarai
-    Moderated: Patvirtinti
-    NeedsModeration: 'Laukia patvirtinimo'
     NewComments: Nauji
     SpamComments: Šlamštas
   SilverStripe\Comments\Controllers\CommentingController:

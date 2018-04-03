@@ -9,12 +9,8 @@ fr:
     PREVIEWLABEL: Aperçu
     YOURNAME: 'Votre Nom'
     YOURNAME_MESSAGE_REQUIRED: 'Saisissez votre nom'
-  CommentsAdmin:
-    NeedsModeration: 'Besoin de Modération'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Votre commentaire a été soumis à modération.'
-  CommentsInterface_singlecomment_ss:
-    PBY: 'Posté par'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Votre commentaire a été soumis à modération.'
     COMMENTLOGINERROR: 'Vous ne pouvez pas poster de commentaires sans être connecté'
@@ -29,12 +25,8 @@ fr:
     PREV: précédent
     RSSFEEDALLCOMMENTS: 'Flux RSS de tous les commentaires'
     RSSFEEDCOMMENTS: 'Flux RSS de commentaires de cette page'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Supprimer tout les commentaires de cette page'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Commentaires
-    Moderated: Modéré
-    NeedsModeration: 'Besoin de modération'
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Commentaires
     EMAILADDRESS: 'Votre adresse e-mail (ne sera pas publiée)'

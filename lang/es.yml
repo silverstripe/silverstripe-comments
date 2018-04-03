@@ -9,12 +9,8 @@ es:
     PREVIEWLABEL: 'Vista previa'
     YOURNAME: 'Su nombre'
     YOURNAME_MESSAGE_REQUIRED: 'Por favor, ingrese su nombre'
-  CommentsAdmin:
-    NeedsModeration: 'Necesita moderación'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Se envió su comentario y ahora está esperando la moderación.'
-  CommentsInterface_singlecomment_ss:
-    PBY: 'Publicado por'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Se envió su comentario y ahora está esperando la moderación.'
     COMMENTLOGINERROR: 'Ud no puede comentar hasta que haya iniciado sesión'
@@ -28,13 +24,9 @@ es:
     NOCOMMENTSYET: 'Nadie comentó en esta página todavía.'
     POSTCOM: 'Publicar su mensaje'
     PREV: anterior
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Eliminar todos los comentarios de esta página'
   SilverStripe\Comments\Admin\CommentAdmin:
     ADMIN_PERMISSION: 'Acceder a la sección ''Comentarios'''
     MENUTITLE: Comentarios
-    Moderated: Moderado
-    NeedsModeration: 'Necesita moderación'
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Comentarios
     EMAILADDRESS: 'Su dirección de correo (no se publicará)'

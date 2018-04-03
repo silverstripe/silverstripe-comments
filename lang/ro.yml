@@ -9,12 +9,8 @@ ro:
     PREVIEWLABEL: 'Vizualizare înaintea publicării'
     YOURNAME: 'Numele dvs.'
     YOURNAME_MESSAGE_REQUIRED: 'Vă rugăm să vă introduceți numele'
-  CommentsAdmin:
-    NeedsModeration: 'Necesită moderare'
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Comentariul dvs. a fost trimis și așteaptă să fie moderat.'
-  CommentsInterface_singlecomment_ss:
-    PBY: 'Publicat de'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Comentariul dvs. a fost trimis și așteaptă să fie moderat.'
     COMMENTLOGINERROR: 'Publicarea de comentarii necesită autentificare pe site'
@@ -29,12 +25,8 @@ ro:
     PREV: anteriorul
     RSSFEEDALLCOMMENTS: 'RSS pentru toate comentariile'
     RSSFEEDCOMMENTS: 'RSS pentru comentariile de pe această pagină'
-  PageCommentInterface:
-    DELETEALLCOMMENTS: 'Ştergeţi toate comentariile de pe această pagină'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Commentarii
-    Moderated: Moderat
-    NeedsModeration: 'Necesită moderare'
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Commentarii
     EMAILADDRESS: 'Adresa dvs. de e-mail (nu va fi publicată)'
