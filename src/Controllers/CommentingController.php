@@ -475,7 +475,12 @@ class CommentingController extends Controller
      */
     public function CommentsForm()
     {
-        return Injector::inst()->create(CommentForm::class, __FUNCTION__, $this);
+        $form = Injector::inst()->create(CommentForm::class, __FUNCTION__, $this);
+
+        // hook to allow further extensions to alter the comments form
+        $this->extend('alterCommentForm', $form);
+
+        return $form;
     }
 
 
