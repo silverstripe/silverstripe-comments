@@ -126,10 +126,6 @@ class CommentForm extends Form
                 'ReturnURL'       => $controller->getRequest()->getURL(),
                 'ParentClassName' => $controller->getParentClass()
             ));
-
-            if ($holder = $record->getCommentHolderID()) {
-                $this->setHTMLID($holder);
-            }
         }
 
         // Set it so the user gets redirected back down to the form upon form fail

@@ -2,157 +2,85 @@
  * @package comments
  */
 (function($) {
-	$.entwine( "ss.comments", function($) {
-
+	$(function() {
 		/**
 		 * Enable form validation
 		 */
-		$('.comments-holder-container form').entwine({
-			onmatch: function() {
+		$('.comments-holder-container form').validate({
 
-				// @todo Reinstate preview-comment functionality
+			// Ignore hidden elements in this form
+			ignore: ':hidden',
 
-				/**
-				 * Validate
-				 */
-				$(this).validate({
+			// Use default 'required' for error labels
+			errorClass: "required",
 
-					/**
-					 * Ignore hidden elements in this form
-					 */
-					ignore: ':hidden',
+			// Use span instead of labels
+			errorElement: "span",
 
-					/**
-					 * Use default 'required' for error labels
-					 */
-					errorClass: "required",
-
-					/**
-					 * Use span instead of labels
-					 */
-					errorElement: "span",
-
-					/**
-					 * On error, scroll to the invalid element
-					 */
-					invalidHandler : function(form, validator){
-						$('html, body').animate({
-							scrollTop: $(validator.errorList[0].element).offset().top - 30
-						}, 200);
-					},
-
-					/**
-					 * Ensure any new error message has the correct class and placement
-					 */
-					errorPlacement: function(error, element) {
-						error
-							.addClass('message')
-							.insertAfter(element);
-					}
-				});
-				this._super();
+			// On error, scroll to the invalid element
+			invalidHandler : function(form, validator){
+				$('html, body').animate({
+					scrollTop: $(validator.errorList[0].element).offset().top - 30
+				}, 200);
 			},
-			onunmatch: function() {
-				this._super();
+
+			// Ensure any new error message has the correct class and placement
+			errorPlacement: function(error, element) {
+				error
+					.addClass('message')
+					.insertAfter(element);
 			}
 		});
 
 		/**
-		 * Comment reply form
+		 * Hide comment reply forms by default (unless visiting via permalink)
 		 */
-		$( ".comment-replies-container .comment-reply-form-holder" ).entwine({
-			onmatch: function() {
-				// If and only if this is not the currently selected form, hide it on page load
-				var selectedHash = window.document.location.hash.substr(1),
-					form = $(this).children('.reply-form');
-				if( !selectedHash || selectedHash !== form.prop( 'id' ) ) {
-					this.hide();
-				}
-				this._super();
-			},
-			onunmatch: function() {
-				this._super();
-			}
-		});
+		$(".comment")
+			.children('.info')
+			.not(window.document.location.hash)
+			.nextAll(".comment-replies-container")
+			.children(".comment-reply-form-holder")
+			.hide();
 
 		/**
 		 * Toggle on/off reply form
 		 */
-		$( ".comment-reply-link" ).entwine({
-		        onclick: function( e ) {
-					var allForms = $( ".comment-reply-form-holder" ),
-					formID = '#' + $( this ).attr('aria-controls');
-					form = $(formID).closest('.comment-reply-form-holder');
+		$('.comments-holder').on('click', '.comment-reply-link', function(e) {
+			var allForms = $('.comment-reply-form-holder');
+			var formID = '#' + $(this).attr('aria-controls');
+			var form = $(formID).closest('.comment-reply-form-holder');
 
-					$(this).attr('aria-expanded', function (i, attr) {
-					    return attr == 'true' ? 'false' : 'true'
-					});
+			$(this).attr('aria-expanded', function (i, attr) {
+				return attr == 'true' ? 'false' : 'true'
+			});
 
-					// Prevent focus
-					e.preventDefault();
-					
-					if(form.is(':visible')) {
-						allForms.slideUp();
-					} else {
-						allForms.not(form).slideUp();
-					form.slideDown();
-		      	}
-		    }
+			// Prevent focus
+			e.preventDefault();
+			
+			if(form.is(':visible')) {
+				allForms.slideUp();
+			} else {
+				allForms.not(form).slideUp();
+				form.slideDown();
+			}
 		});
-
-
-		/**
-		 * Preview comment by fetching it from the server via ajax.
-		 */
-		/* @todo Migrate to work with nested comments
-		$(':submit[name=action_doPreviewComment]', form).click(function(e) {
-		   e.preventDefault();
-
-		   if(!form.validate().valid()) {
-			   return false;
-		   }
-
-		   previewEl.show().addClass('loading').find('.middleColumn').html(' ');
-
-		   form.ajaxSubmit({
-			   success: function(response) {
-				   var responseEl = $(response);
-				   if(responseEl.is('form')) {
-					   // Validation failed, renders form instead of single comment
-					   form.find(".data-fields").replaceWith(responseEl.find(".data-fields"));
-				   } else {
-					   // Default behaviour
-					   previewEl.removeClass('loading').find('.middleColumn').html(responseEl);
-				   }
-			   },
-			   data: {'action_doPreviewComment': 1}
-		   });
-		});
-		*/
-
-		/**
-		 * Hide outdated preview on form changes
-		 */
-		/*
-		$(':input', form).on('change keydown', function() {
-		   previewEl.removeClass('loading').hide();
-		});*/
 
 		/**
 		 * Clicking one of the metalinks performs the operation via ajax
 		 * this inclues the spam and approve links
 		 */
-
 		$('.comments-holder .comments-list').on('click', 'div.comment-moderation-options a', function(e) {
+		    e.stopPropagation();
+
 			var link = $(this);
-            if (link.hasClass('delete')) {
-                var confirmationMsg = ss.i18n._t('CommentsInterface_singlecomment_ss.DELETE_CONFIRMATION');
-                var confirmation = window.confirm(confirmationMsg);
-                if (!confirmation) {
-                    e.preventDefault();
-                    return false;
-                }
-            }
+			if (link.hasClass('delete')) {
+				var confirmationMsg = ss.i18n._t('CommentsInterface_singlecomment_ss.DELETE_CONFIRMATION');
+				var confirmation = window.confirm(confirmationMsg);
+				if (!confirmation) {
+					e.preventDefault();
+					return false;
+				}
+			}
 			var comment = link.parents('.comment:first');
 
 			$.ajax({
@@ -171,10 +99,10 @@
 					}
 					else if(link.hasClass('delete')) {
 						comment.fadeOut(1000, function() {
-                            comment.remove();
+							comment.remove();
 
-							if(commentsList.children().length === 0) {
-								noCommentsYet.show();
+							if($('.comments-holder .comments-list').children().length === 0) {
+								$('.no-comments-yet').show();
 							}
 						});
 					}
@@ -184,38 +112,11 @@
 				},
 				failure: function(html) {
 					var errorMsg = ss.i18n._t('CommentsInterface_singlecomment_ss.AJAX_ERROR');
-                    alert(errorMsg);
+					alert(errorMsg);
 				}
 			});
 
 			e.preventDefault();
 		});
-
-		/**
-		 * Ajax pagination
-		 */
-		/* @todo Migrate to work with nested comments
-		pagination.find('a').on('click', function(){
-			commentsList.addClass('loading');
-			$.ajax({
-				url: $(this).attr('href'),
-				cache: false,
-				success: function(html){
-					html = $(html);
-					commentsList.hide().html(html.find('.comments-list:first').html()).fadeIn();
-					pagination.hide().html(html.find('.comments-pagination:first').html()).fadeIn();
-					commentsList.removeClass('loading');
-					$('html, body').animate({
-						scrollTop: commentsList.offset().top - 30
-					}, 200);
-				},
-				failure: function(html) {
-					alert('Error loading comments');
-				}
-			});
-			return false;
-		});*/
 	});
 })(jQuery);
-
-

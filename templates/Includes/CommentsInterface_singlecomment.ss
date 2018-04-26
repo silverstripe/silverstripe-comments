@@ -11,7 +11,7 @@
 <% if $Gravatar %>
     <img class="gravatar" src="$Gravatar.ATT" alt="Gravatar for $Name.ATT" title="Gravatar for $Name.ATT" />
 <% end_if %>
-<div class="comment-text<% if $Gravatar %> hasGravatar<% end_if %>" id="<% if $isPreview %>comment-preview<% else %>$Permalink<% end_if %>">
+<div class="comment-text<% if $Gravatar %> hasGravatar<% end_if %>" id="<% if $isPreview %>comment-preview<% else %>{$Permalink}-text<% end_if %>">
 	<p>$EscapedComment</p>
 </div>
 
