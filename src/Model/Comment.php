@@ -732,11 +732,15 @@ class Comment extends DataObject
         $use_gravatar = $this->getOption('use_gravatar');
 
         if ($use_gravatar) {
-            $gravatar = 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Email)));
+            $gravatar = 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Email)));
             $gravatarsize = $this->getOption('gravatar_size');
             $gravatardefault = $this->getOption('gravatar_default');
             $gravatarrating = $this->getOption('gravatar_rating');
-            $gravatar .= '?s=' . $gravatarsize . '&d=' . $gravatardefault . '&r=' . $gravatarrating;
+            $gravatar .= '?' . http_build_query(array(
+                's' => $gravatarsize,
+                'd' => $gravatardefault,
+                'r' => $gravatarrating,
+            ));
         }
 
         return $gravatar;

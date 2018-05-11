@@ -992,7 +992,7 @@ class CommentsTest extends FunctionalTest
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
 
         $this->assertEquals(
-            'http://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s'
+            'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s'
             . '=80&d=identicon&r=g',
             $comment->Gravatar()
         );
