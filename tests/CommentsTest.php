@@ -1206,16 +1206,11 @@ class CommentsTest extends FunctionalTest
             array_push($names, $field->getName());
         }
 
-        $this->assertEquals(
-            array(
-                'NameEmailURLComment', // The CompositeField name?
-                'ParentID',
-                'ParentClassName',
-                'ReturnURL',
-                'ParentCommentID'
-            ),
-            $names
-        );
+        $this->assertContains('NameEmailURLComment', $names, 'The CompositeField name');
+        $this->assertContains('ParentID', $names);
+        $this->assertContains('ParentClassName', $names);
+        $this->assertContains('ReturnURL', $names);
+        $this->assertContains('ParentCommentID', $names);
 
         // no parent, no reply form
 
