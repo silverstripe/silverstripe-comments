@@ -283,7 +283,7 @@ class CommentsExtensionTest extends FunctionalTest
         $expected = '<textarea name="Comment"';
         $this->assertContains($expected, $cf);
 
-        $expected = '<input type="submit" name="action_doPostComment" value="Post" class="action" id="comments-holder_action_doPostComment"';
+        $expected = '<input type="submit" name="action_doPostComment" value="Post" class="action"';
         $this->assertContains($expected, $cf);
 
         $expected = '/comments/spam/';
