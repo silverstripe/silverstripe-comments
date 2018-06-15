@@ -9,7 +9,6 @@ use SilverStripe\Comments\Model\Comment\SecurityToken as CommentSecurityToken;
 use SilverStripe\Comments\Tests\Stubs\CommentableItem;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\Core\Email\Email;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\FunctionalTest;
 use SilverStripe\ORM\DataObject;
