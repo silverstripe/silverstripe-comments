@@ -2,14 +2,14 @@
 
 namespace SilverStripe\Comments\Tests;
 
+use SilverStripe\Akismet\AkismetSpamProtector;
 use SilverStripe\Comments\Controllers\CommentingController;
 use SilverStripe\Comments\Model\Comment;
 use SilverStripe\Comments\Model\Comment\SecurityToken as CommentSecurityToken;
 use SilverStripe\Comments\Tests\Stubs\CommentableItem;
-use SilverStripe\Comments\Tests\CommentTestHelper;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\Core\Email\Email;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\FunctionalTest;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
@@ -48,6 +48,12 @@ class CommentingControllerTest extends FunctionalTest
 
         // We will assert against explicit responses, unless handed otherwise in a test for redirects
         $this->autoFollowRedirection = false;
+
+        // Mock Akismet if it's installed
+        if (class_exists(AkismetSpamProtector::class)) {
+            $akismetMock = $this->createMock(AkismetSpamProtector::class);
+            Injector::inst()->registerService($akismetMock, AkismetSpamProtector::class);
+        }
     }
 
     public function testCommentsFormUsePreview()

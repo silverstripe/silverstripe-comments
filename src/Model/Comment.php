@@ -2,31 +2,31 @@
 
 namespace SilverStripe\Comments\Model;
 
-use HTMLPurifier_Config;
 use HTMLPurifier;
+use HTMLPurifier_Config;
 use SilverStripe\Comments\Controllers\CommentingController;
 use SilverStripe\Comments\Extensions\CommentsExtension;
 use SilverStripe\Comments\Model\Comment\SecurityToken;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
-use SilverStripe\Core\Email\Email;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Core\TempFolder;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\EmailField;
 use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\Form;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\DB;
+use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\ORM\PaginatedList;
+use SilverStripe\ORM\SS_List;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
-use SilverStripe\CMS\Model\SiteTree;
 
 /**
  * Represents a single comment object.
@@ -104,6 +104,7 @@ class Comment extends DataObject
         'AuthorName' => 'Varchar',
         'RSSName' => 'Varchar',
         'DeleteLink' => 'Varchar',
+        'Date' => 'Datetime',
         'SpamLink' => 'Varchar',
         'HamLink' => 'Varchar',
         'ApproveLink' => 'Varchar',
@@ -218,14 +219,14 @@ class Comment extends DataObject
     {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['Name'] = _t('SilverStripe\\Comments\\Model\\Comment.NAME', 'Author Name');
-        $labels['Comment'] = _t('SilverStripe\\Comments\\Model\\Comment.COMMENT', 'Comment');
-        $labels['Email'] = _t('SilverStripe\\Comments\\Model\\Comment.EMAIL', 'Email');
-        $labels['URL'] = _t('SilverStripe\\Comments\\Model\\Comment.URL', 'URL');
-        $labels['IsSpam'] = _t('SilverStripe\\Comments\\Model\\Comment.ISSPAM', 'Spam?');
-        $labels['Moderated'] = _t('SilverStripe\\Comments\\Model\\Comment.MODERATED', 'Moderated?');
-        $labels['ParentTitle'] = _t('SilverStripe\\Comments\\Model\\Comment.PARENTTITLE', 'Parent');
-        $labels['Created'] = _t('SilverStripe\\Comments\\Model\\Comment.CREATED', 'Date posted');
+        $labels['Name'] = _t(__CLASS__ . '.NAME', 'Author Name');
+        $labels['Comment'] = _t(__CLASS__ . '.COMMENT', 'Comment');
+        $labels['Email'] = _t(__CLASS__ . '.EMAIL', 'Email');
+        $labels['URL'] = _t(__CLASS__ . '.URL', 'URL');
+        $labels['IsSpam'] = _t(__CLASS__ . '.ISSPAM', 'Spam?');
+        $labels['Moderated'] = _t(__CLASS__ . '.MODERATED', 'Moderated?');
+        $labels['ParentTitle'] = _t(__CLASS__ . '.PARENTTITLE', 'Parent');
+        $labels['Created'] = _t(__CLASS__ . '.CREATED', 'Date posted');
 
         return $labels;
     }
@@ -593,11 +594,11 @@ class Comment extends DataObject
      */
     public function getTitle()
     {
-        $title = sprintf(_t('SilverStripe\\Comments\\Model\\Comment.COMMENTBY', 'Comment by %s', 'Name'), $this->getAuthorName());
+        $title = sprintf(_t(__CLASS__ . '.COMMENTBY', 'Comment by %s', 'Name'), $this->getAuthorName());
 
         if ($parent = $this->Parent()) {
             if ($parent->Title) {
-                $title .= sprintf(' %s %s', _t('SilverStripe\\Comments\\Model\\Comment.ON', 'on'), $parent->Title);
+                $title .= sprintf(' %s %s', _t(__CLASS__ . '.ON', 'on'), $parent->Title);
             }
         }
 
@@ -623,9 +624,9 @@ class Comment extends DataObject
                 CheckboxField::create('Moderated', $this->fieldLabel('Moderated')),
                 CheckboxField::create('IsSpam', $this->fieldLabel('IsSpam')),
             ))
-                ->setTitle(_t('SilverStripe\\Comments\\Model\\Comment.OPTIONS', 'Options'))
+                ->setTitle(_t(__CLASS__ . '.OPTIONS', 'Options'))
                 ->setDescription(_t(
-                    'SilverStripe\\Comments\\Model\\Comment.OPTION_DESCRIPTION',
+                    __CLASS__ . '.OPTION_DESCRIPTION',
                     'Unmoderated and spam comments will not be displayed until approved'
                 ))
         );
@@ -643,7 +644,7 @@ class Comment extends DataObject
         if (($parent = $this->ParentComment()) && $parent->exists()) {
             $fields->push(new HeaderField(
                 'ParentComment_Title',
-                _t('SilverStripe\\Comments\\Model\\Comment.ParentComment_Title', 'This comment is a reply to the below')
+                _t(__CLASS__ . '.ParentComment_Title', 'This comment is a reply to the below')
             ));
             // Created date
             // FIXME - the method setName in DatetimeField is not chainable, hence
@@ -863,6 +864,14 @@ class Comment extends DataObject
         $controller->setOwnerController(Controller::curr());
 
         return $controller->ReplyForm($this);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDate()
+    {
+        return $this->Created;
     }
 
     /**
