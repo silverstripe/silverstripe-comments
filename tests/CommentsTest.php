@@ -607,7 +607,10 @@ class CommentsTest extends FunctionalTest
     {
         $locale = i18n::get_locale();
         i18n::set_locale('fr');
+
+        /** @var Comment $comment */
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
+
         $labels = $comment->FieldLabels();
         $expected = array(
             'Name' => 'Nom de l\'Auteur',
@@ -627,7 +630,10 @@ class CommentsTest extends FunctionalTest
             'Parent' => 'Parent'
         );
         i18n::set_locale($locale);
-        $this->assertEquals($expected, $labels);
+        foreach ($expected as $key => $value) {
+            $this->assertEquals($value, $labels[$key]);
+        }
+
         $labels = $comment->FieldLabels();
         $expected = array(
             'Name' => 'Author Name',
@@ -646,7 +652,9 @@ class CommentsTest extends FunctionalTest
             'Created' => 'Date posted',
             'Parent' => 'Parent'
         );
-        $this->assertEquals($expected, $labels);
+        foreach ($expected as $key => $value) {
+            $this->assertEquals($value, $labels[$key]);
+        }
     }
 
     public function testGetParent()
