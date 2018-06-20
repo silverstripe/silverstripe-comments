@@ -25,6 +25,7 @@ class CommentsGridFieldActionTest extends SapphireTest
 
     protected static $extra_dataobjects = [
         CommentableItem::class,
+        Team::class,
     ];
 
     /** @var ArrayList */
