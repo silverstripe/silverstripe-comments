@@ -2,6 +2,7 @@
 
 namespace SilverStripe\Comments\Forms;
 
+use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\EmailField;
 use SilverStripe\Forms\FieldList;
@@ -192,7 +193,7 @@ class CommentForm extends Form
         // If commenting can only be done by logged in users, make sure the user is logged in
         if (!$this->controller->getOwnerRecord()->canPostComment()) {
             return Security::permissionFailure(
-                $this,
+                $this->controller,
                 _t(
                     'SilverStripe\\Comments\\Controllers\\CommentingController.PERMISSIONFAILURE',
                     "You're not able to post comments to this page. Please ensure you are logged in and have an "
