@@ -766,6 +766,20 @@ class Comment extends DataObject
     }
 
     /**
+     * Proxy for checking whether the has permission to comment on the comment parent.
+     *
+     * @param Member $member Member to check
+     *
+     * @return boolean
+     */
+    public function canPostComment($member = null)
+    {
+        return $this->Parent()
+            && $this->Parent()->exists()
+            && $this->Parent()->canPostComment($member);
+    }
+
+    /**
      * Returns the list of all replies
      *
      * @return SS_List
