@@ -6,31 +6,33 @@
 		/**
 		 * Enable form validation
 		 */
-		$('.comments-holder-container form').validate({
+        $('.comments-holder-container form').each(function() {
+            $(this).validate({
 
-			// Ignore hidden elements in this form
-			ignore: ':hidden',
+                // Ignore hidden elements in this form
+                ignore: ':hidden',
 
-			// Use default 'required' for error labels
-			errorClass: "required",
+                // Use default 'required' for error labels
+                errorClass: "required",
 
-			// Use span instead of labels
-			errorElement: "span",
+                // Use span instead of labels
+                errorElement: "span",
 
-			// On error, scroll to the invalid element
-			invalidHandler : function(form, validator){
-				$('html, body').animate({
-					scrollTop: $(validator.errorList[0].element).offset().top - 30
-				}, 200);
-			},
+                // On error, scroll to the invalid element
+                invalidHandler : function(form, validator){
+                    $('html, body').animate({
+                        scrollTop: $(validator.errorList[0].element).offset().top - 30
+                    }, 200);
+                },
 
-			// Ensure any new error message has the correct class and placement
-			errorPlacement: function(error, element) {
-				error
-					.addClass('message')
-					.insertAfter(element);
-			}
-		});
+                // Ensure any new error message has the correct class and placement
+                errorPlacement: function(error, element) {
+                    error
+                        .addClass('message')
+                        .insertAfter(element);
+                }
+            });
+        });
 
 		/**
 		 * Hide comment reply forms by default (unless visiting via permalink)
@@ -56,7 +58,7 @@
 
 			// Prevent focus
 			e.preventDefault();
-			
+
 			if(form.is(':visible')) {
 				allForms.slideUp();
 			} else {
