@@ -136,7 +136,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
             $actions
         );
 
-        $form->addExtraClass('cms-edit-form');
+        $form->addExtraClass('cms-edit-form fill-height');
         $form->setTemplate($this->getTemplatesWithSuffix('_EditForm'));
 
         if ($form->Fields()->hasTabset()) {
