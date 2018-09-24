@@ -44,18 +44,27 @@ class CommentForm extends Form
                 // Email
                 EmailField::create(
                     'Email',
-                    _t('SilverStripe\\Comments\\Controllers\\CommentingController.EMAILADDRESS', 'Your email address (will not be published)')
+                    _t(
+                        'SilverStripe\\Comments\\Controllers\\CommentingController.EMAILADDRESS',
+                        'Your email address (will not be published)'
+                    )
                 )
                     ->setCustomValidationMessage($emailRequired)
                     ->setAttribute('data-msg-required', $emailRequired)
                     ->setAttribute('data-msg-email', $emailInvalid)
                     ->setAttribute('data-rule-email', true),
                 // Url
-                TextField::create('URL', _t('SilverStripe\\Comments\\Controllers\\CommentingController.WEBSITEURL', 'Your website URL'))
+                TextField::create('URL', _t(
+                    'SilverStripe\\Comments\\Controllers\\CommentingController.WEBSITEURL',
+                    'Your website URL'
+                ))
                     ->setAttribute('data-msg-url', $urlInvalid)
                     ->setAttribute('data-rule-url', true),
                 // Comment
-                TextareaField::create('Comment', _t('SilverStripe\\Comments\\Controllers\\CommentingController.COMMENTS', 'Comments'))
+                TextareaField::create('Comment', _t(
+                    'SilverStripe\\Comments\\Controllers\\CommentingController.COMMENTS',
+                    'Comments'
+                ))
                     ->setCustomValidationMessage($commentRequired)
                     ->setAttribute('data-msg-required', $commentRequired)
             ),

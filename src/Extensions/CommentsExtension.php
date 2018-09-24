@@ -157,13 +157,16 @@ class CommentsExtension extends DataExtension
 
         // Check if enabled setting should be cms configurable
         if ($this->owner->getCommentsOption('enabled_cms')) {
-            $options->push(new CheckboxField('ProvideComments', _t('SilverStripe\\Comments\\Model\\Comment.ALLOWCOMMENTS', 'Allow Comments')));
+            $options->push(CheckboxField::create('ProvideComments', _t(
+                'SilverStripe\\Comments\\Model\\Comment.ALLOWCOMMENTS',
+                'Allow Comments'
+            )));
         }
 
         // Check if we should require users to login to comment
         if ($this->owner->getCommentsOption('require_login_cms')) {
             $options->push(
-                new CheckboxField(
+                CheckboxField::create(
                     'CommentsRequireLogin',
                     _t('Comments.COMMENTSREQUIRELOGIN', 'Require login to comment')
                 )
@@ -180,16 +183,23 @@ class CommentsExtension extends DataExtension
 
         // Check if moderation should be enabled via cms configurable
         if ($this->owner->getCommentsOption('require_moderation_cms')) {
-            $moderationField = new DropdownField('ModerationRequired', _t(__CLASS__ . '.COMMENTMODERATION', 'Comment Moderation'), array(
-                'None' => _t(__CLASS__ . '.MODERATIONREQUIRED_NONE', 'No moderation required'),
-                'Required' => _t(__CLASS__ . '.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
-                'NonMembersOnly' => _t(
-                    __CLASS__ . '.MODERATIONREQUIRED_NONMEMBERSONLY',
-                    'Only moderate non-members'
+            $moderationField = DropdownField::create(
+                'ModerationRequired',
+                _t(
+                    __CLASS__ . '.COMMENTMODERATION',
+                    'Comment Moderation'
                 ),
-            ));
+                [
+                    'None' => _t(__CLASS__ . '.MODERATIONREQUIRED_NONE', 'No moderation required'),
+                    'Required' => _t(__CLASS__ . '.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
+                    'NonMembersOnly' => _t(
+                        __CLASS__ . '.MODERATIONREQUIRED_NONMEMBERSONLY',
+                        'Only moderate non-members'
+                    ),
+                ]
+            );
             if ($fields->hasTabSet()) {
-                $fields->addFieldsToTab('Root.Settings', $moderationField);
+                $fields->addFieldToTab('Root.Settings', $moderationField);
             } else {
                 $fields->push($moderationField);
             }
