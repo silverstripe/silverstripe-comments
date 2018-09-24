@@ -9,10 +9,7 @@ use SilverStripe\Comments\Controllers\CommentingController;
 use SilverStripe\Comments\Model\Comment;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
-use SilverStripe\Control\Session;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\Core\Manifest\ModuleLoader;
-use SilverStripe\Dev\Deprecation;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldGroup;
@@ -20,9 +17,11 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Tab;
 use SilverStripe\Forms\TabSet;
 use SilverStripe\ORM\DataExtension;
+use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\PaginatedList;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
 use SilverStripe\View\Requirements;
 
 /**
@@ -157,13 +156,16 @@ class CommentsExtension extends DataExtension
 
         // Check if enabled setting should be cms configurable
         if ($this->owner->getCommentsOption('enabled_cms')) {
-            $options->push(new CheckboxField('ProvideComments', _t('SilverStripe\\Comments\\Model\\Comment.ALLOWCOMMENTS', 'Allow Comments')));
+            $options->push(CheckboxField::create('ProvideComments', _t(
+                'SilverStripe\\Comments\\Model\\Comment.ALLOWCOMMENTS',
+                'Allow Comments'
+            )));
         }
 
         // Check if we should require users to login to comment
         if ($this->owner->getCommentsOption('require_login_cms')) {
             $options->push(
-                new CheckboxField(
+                CheckboxField::create(
                     'CommentsRequireLogin',
                     _t('Comments.COMMENTSREQUIRELOGIN', 'Require login to comment')
                 )
@@ -180,16 +182,23 @@ class CommentsExtension extends DataExtension
 
         // Check if moderation should be enabled via cms configurable
         if ($this->owner->getCommentsOption('require_moderation_cms')) {
-            $moderationField = new DropdownField('ModerationRequired', _t(__CLASS__ . '.COMMENTMODERATION', 'Comment Moderation'), array(
-                'None' => _t(__CLASS__ . '.MODERATIONREQUIRED_NONE', 'No moderation required'),
-                'Required' => _t(__CLASS__ . '.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
-                'NonMembersOnly' => _t(
-                    __CLASS__ . '.MODERATIONREQUIRED_NONMEMBERSONLY',
-                    'Only moderate non-members'
+            $moderationField = DropdownField::create(
+                'ModerationRequired',
+                _t(
+                    __CLASS__ . '.COMMENTMODERATION',
+                    'Comment Moderation'
                 ),
-            ));
+                [
+                    'None' => _t(__CLASS__ . '.MODERATIONREQUIRED_NONE', 'No moderation required'),
+                    'Required' => _t(__CLASS__ . '.MODERATIONREQUIRED_REQUIRED', 'Moderate all comments'),
+                    'NonMembersOnly' => _t(
+                        __CLASS__ . '.MODERATIONREQUIRED_NONMEMBERSONLY',
+                        'Only moderate non-members'
+                    ),
+                ]
+            );
             if ($fields->hasTabSet()) {
-                $fields->addFieldsToTab('Root.Settings', $moderationField);
+                $fields->addFieldToTab('Root.Settings', $moderationField);
             } else {
                 $fields->push($moderationField);
             }
@@ -209,13 +218,17 @@ class CommentsExtension extends DataExtension
     {
         if ($this->owner->getCommentsOption('require_moderation_cms')) {
             return $this->owner->getField('ModerationRequired');
-        } elseif ($this->owner->getCommentsOption('require_moderation')) {
-            return 'Required';
-        } elseif ($this->owner->getCommentsOption('require_moderation_nonmembers')) {
-            return 'NonMembersOnly';
-        } else {
-            return 'None';
         }
+
+        if ($this->owner->getCommentsOption('require_moderation')) {
+            return 'Required';
+        }
+
+        if ($this->owner->getCommentsOption('require_moderation_nonmembers')) {
+            return 'NonMembersOnly';
+        }
+
+        return 'None';
     }
 
     /**
@@ -227,9 +240,8 @@ class CommentsExtension extends DataExtension
     {
         if ($this->owner->getCommentsOption('require_login_cms')) {
             return (bool) $this->owner->getField('CommentsRequireLogin');
-        } else {
-            return (bool) $this->owner->getCommentsOption('require_login');
         }
+        return (bool) $this->owner->getCommentsOption('require_login');
     }
 
     /**
@@ -304,7 +316,7 @@ class CommentsExtension extends DataExtension
         $list = $this->Comments();
 
         // Add pagination
-        $list = new PaginatedList($list, Controller::curr()->getRequest());
+        $list = PaginatedList::create($list, Controller::curr()->getRequest());
         $list->setPaginationGetVar('commentsstart' . $this->owner->ID);
         $list->setPageLength($this->owner->getCommentsOption('comments_per_page'));
 
@@ -378,7 +390,7 @@ class CommentsExtension extends DataExtension
         }
 
         // Check member is logged in
-        $member = $member ?: Member::currentUser();
+        $member = $member ?: Security::getCurrentUser();
         if (!$member) {
             return false;
         }
@@ -472,10 +484,10 @@ class CommentsExtension extends DataExtension
         // return back the same variables as previously done in comments
         return $this
             ->owner
-            ->customise(array(
+            ->customise([
                 'AddCommentForm' => $form,
                 'ModeratedSubmitted' => $moderatedSubmitted,
-            ))
+            ])
             ->renderWith('CommentsInterface');
     }
 
@@ -523,8 +535,6 @@ class CommentsExtension extends DataExtension
      */
     public function getCommentsOptions()
     {
-        $settings = [];
-
         if ($this->owner) {
             $settings = $this->owner->config()->get('comments');
         } else {
@@ -545,7 +555,7 @@ class CommentsExtension extends DataExtension
 
         $newComments = $this->owner->AllComments()->filter('Moderated', 0);
 
-        $newGrid = new CommentsGridField(
+        $newGrid = CommentsGridField::create(
             'NewComments',
             _t('CommentsAdmin.NewComments', 'New'),
             $newComments,
@@ -563,7 +573,7 @@ class CommentsExtension extends DataExtension
 
         $spamComments = $this->owner->AllComments()->filter('Moderated', 1)->filter('IsSpam', 1);
 
-        $spamGrid = new CommentsGridField(
+        $spamGrid = CommentsGridField::create(
             'SpamComments',
             _t('CommentsAdmin.SpamComments', 'Spam'),
             $spamComments,
@@ -575,19 +585,19 @@ class CommentsExtension extends DataExtension
         $spamCount = '(' . count($spamComments) . ')';
 
         if ($fields->hasTabSet()) {
-            $tabs = new TabSet(
+            $tabs = TabSet::create(
                 'Comments',
-                new Tab(
+                Tab::create(
                     'CommentsNewCommentsTab',
                     _t('SilverStripe\\Comments\\Admin\\CommentAdmin.NewComments', 'New') . ' ' . $newCount,
                     $newGrid
                 ),
-                new Tab(
+                Tab::create(
                     'CommentsCommentsTab',
                     _t('SilverStripe\\Comments\\Admin\\CommentAdmin.Comments', 'Approved') . ' ' . $approvedCount,
                     $approvedGrid
                 ),
-                new Tab(
+                Tab::create(
                     'CommentsSpamCommentsTab',
                     _t('SilverStripe\\Comments\\Admin\\CommentAdmin.SpamComments', 'Spam') . ' ' . $spamCount,
                     $spamGrid

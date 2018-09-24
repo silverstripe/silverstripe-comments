@@ -3,22 +3,19 @@
 namespace SilverStripe\Comments\Admin;
 
 use SilverStripe\Admin\LeftAndMain;
-use SilverStripe\Comments\Admin\CommentsGridField;
 use SilverStripe\Comments\Model\Comment;
-use SilverStripe\Forms\Tab;
-use SilverStripe\Forms\TabSet;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
-use SilverStripe\Security\PermissionProvider;
+use SilverStripe\Forms\Tab;
+use SilverStripe\Forms\TabSet;
 use SilverStripe\Security\Security;
-use SilverStripe\View\SSViewer;
 
 /**
  * Comment administration system within the CMS
  *
  * @package comments
  */
-class CommentAdmin extends LeftAndMain implements PermissionProvider
+class CommentAdmin extends LeftAndMain
 {
     private static $url_segment = 'comments';
 
@@ -28,7 +25,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
 
     private static $menu_icon_class = 'font-icon-comment';
 
-    private static $allowed_actions = array(
+    private static $allowed_actions = [
         'approvedmarked',
         'deleteall',
         'deletemarked',
@@ -37,18 +34,18 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
         'spammarked',
         'EditForm',
         'unmoderated'
-    );
+    ];
 
     private static $required_permission_codes = 'CMS_ACCESS_CommentAdmin';
 
     public function providePermissions()
     {
-        return array(
-            "CMS_ACCESS_CommentAdmin" => array(
+        return [
+            'CMS_ACCESS_CommentAdmin' => [
                 'name' => _t(__CLASS__ . '.ADMIN_PERMISSION', "Access to 'Comments' section"),
                 'category' => _t('SilverStripe\\Security\\Permission.CMS_ACCESS_CATEGORY', 'CMS Access')
-            )
-        );
+            ],
+        ];
     }
 
     /**
@@ -69,7 +66,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
 
         $newComments = Comment::get()->filter('Moderated', 0);
 
-        $newGrid = new CommentsGridField(
+        $newGrid = CommentsGridField::create(
             'NewComments',
             '',
             $newComments,
@@ -78,7 +75,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
 
         $approvedComments = Comment::get()->filter('Moderated', 1)->filter('IsSpam', 0);
 
-        $approvedGrid = new CommentsGridField(
+        $approvedGrid = CommentsGridField::create(
             'ApprovedComments',
             '',
             $approvedComments,
@@ -87,7 +84,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
 
         $spamComments = Comment::get()->filter('Moderated', 1)->filter('IsSpam', 1);
 
-        $spamGrid = new CommentsGridField(
+        $spamGrid = CommentsGridField::create(
             'SpamComments',
             '',
             $spamComments,
@@ -140,7 +137,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
         $form->setTemplate($this->getTemplatesWithSuffix('_EditForm'));
 
         if ($form->Fields()->hasTabset()) {
-             $form->Fields()->findOrMakeTab('Root')->setTemplate('SilverStripe\\Forms\\CMSTabSet');
+            $form->Fields()->findOrMakeTab('Root')->setTemplate('SilverStripe\\Forms\\CMSTabSet');
             $form->addExtraClass('center ss-tabset cms-tabset ' . $this->BaseCSSClasses());
         }
 

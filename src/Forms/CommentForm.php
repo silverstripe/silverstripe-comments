@@ -17,7 +17,6 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
-use SilverStripe\Security\Member;
 use SilverStripe\Security\Security;
 
 class CommentForm extends Form
@@ -44,18 +43,27 @@ class CommentForm extends Form
                 // Email
                 EmailField::create(
                     'Email',
-                    _t('SilverStripe\\Comments\\Controllers\\CommentingController.EMAILADDRESS', 'Your email address (will not be published)')
+                    _t(
+                        'SilverStripe\\Comments\\Controllers\\CommentingController.EMAILADDRESS',
+                        'Your email address (will not be published)'
+                    )
                 )
                     ->setCustomValidationMessage($emailRequired)
                     ->setAttribute('data-msg-required', $emailRequired)
                     ->setAttribute('data-msg-email', $emailInvalid)
                     ->setAttribute('data-rule-email', true),
                 // Url
-                TextField::create('URL', _t('SilverStripe\\Comments\\Controllers\\CommentingController.WEBSITEURL', 'Your website URL'))
+                TextField::create('URL', _t(
+                    'SilverStripe\\Comments\\Controllers\\CommentingController.WEBSITEURL',
+                    'Your website URL'
+                ))
                     ->setAttribute('data-msg-url', $urlInvalid)
                     ->setAttribute('data-rule-url', true),
                 // Comment
-                TextareaField::create('Comment', _t('SilverStripe\\Comments\\Controllers\\CommentingController.COMMENTS', 'Comments'))
+                TextareaField::create('Comment', _t(
+                    'SilverStripe\\Comments\\Controllers\\CommentingController.COMMENTS',
+                    'Comments'
+                ))
                     ->setCustomValidationMessage($commentRequired)
                     ->setAttribute('data-msg-required', $commentRequired)
             ),
@@ -90,7 +98,7 @@ class CommentForm extends Form
             );
         }
 
-        $required = new RequiredFields(
+        $required = RequiredFields::create(
             $controller->config()->required_fields
         );
 
@@ -100,22 +108,22 @@ class CommentForm extends Form
         // if the record exists load the extra required data
         if ($record = $controller->getOwnerRecord()) {
             // Load member data
-            $member = Member::currentUser();
+            $member = Security::getCurrentUser();
             if (($record->CommentsRequireLogin || $record->PostingRequiredPermission) && $member) {
                 $fields = $this->Fields();
 
                 $fields->removeByName('Name');
                 $fields->removeByName('Email');
                 $fields->insertBefore(
-                    new ReadonlyField(
+                    ReadonlyField::create(
                         'NameView',
                         _t('CommentInterface.YOURNAME', 'Your name'),
                         $member->getName()
                     ),
                     'URL'
                 );
-                $fields->push(new HiddenField('Name', '', $member->getName()));
-                $fields->push(new HiddenField('Email', '', $member->Email));
+                $fields->push(HiddenField::create('Name', '', $member->getName()));
+                $fields->push(HiddenField::create('Email', '', $member->Email));
             }
 
             // we do not want to read a new URL when the form has already been submitted
@@ -211,7 +219,7 @@ class CommentForm extends Form
         }
 
         if ($member = Security::getCurrentUser()) {
-            $form->Fields()->push(new HiddenField('AuthorID', 'Author ID', $member->ID));
+            $form->Fields()->push(HiddenField::create('AuthorID', 'Author ID', $member->ID));
         }
 
         // What kind of moderation is required?
