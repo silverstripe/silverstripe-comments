@@ -4,20 +4,21 @@ namespace SilverStripe\Comments\Controllers;
 
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Comments\Extensions\CommentsExtension;
+use SilverStripe\Comments\Forms\CommentForm;
 use SilverStripe\Comments\Model\Comment;
-use SilverStripe\Control\Director;
 use SilverStripe\Control\Controller;
-use SilverStripe\Control\Email\Email;
+use SilverStripe\Control\Director;
 use SilverStripe\Control\HTTP;
 use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Control\HTTPResponse;
+use SilverStripe\Control\HTTPResponse_Exception;
 use SilverStripe\Control\RSS\RSSFeed;
-use SilverStripe\Control\Session;
-use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\PaginatedList;
-use SilverStripe\Security\Member;
-use SilverStripe\Security\Security;
 use SilverStripe\Core\Injector\Injector;
-use SilverStripe\Comments\Forms\CommentForm;
+use SilverStripe\Forms\Form;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\FieldType\DBHTMLText;
+use SilverStripe\ORM\PaginatedList;
+use SilverStripe\Security\Security;
 
 /**
  * @package comments
@@ -27,7 +28,7 @@ class CommentingController extends Controller
     /**
      * {@inheritDoc}
      */
-    private static $allowed_actions = array(
+    private static $allowed_actions = [
         'delete',
         'spam',
         'ham',
@@ -36,15 +37,15 @@ class CommentingController extends Controller
         'CommentsForm',
         'reply',
         'doPostComment',
-        'doPreviewComment'
-    );
+        'doPreviewComment',
+    ];
 
     /**
      * {@inheritDoc}
      */
-    private static $url_handlers = array(
+    private static $url_handlers = [
         'reply/$ParentCommentID//$ID/$OtherID' => 'reply',
-    );
+    ];
 
     /**
      * Fields required for this form
@@ -52,11 +53,11 @@ class CommentingController extends Controller
      * @var array
      * @config
      */
-    private static $required_fields = array(
+    private static $required_fields = [
         'Name',
         'Email',
-        'Comment'
-    );
+        'Comment',
+    ];
 
     /**
      * Parent class this commenting form is for
@@ -70,21 +71,21 @@ class CommentingController extends Controller
      *
      * @var DataObject
      */
-    private $ownerRecord = null;
+    private $ownerRecord;
 
     /**
      * Parent controller record
      *
      * @var Controller
      */
-    private $ownerController = null;
+    private $ownerController;
 
     /**
      * Backup url to return to
      *
      * @var string
      */
-    protected $fallbackReturnURL = null;
+    protected $fallbackReturnURL;
 
     /**
      * Set the parent class name to use
@@ -178,6 +179,7 @@ class CommentingController extends Controller
     {
         // If possible use the current record
         if ($record = $this->getOwnerRecord()) {
+            /** @var DataObject|CommentsExtension $record */
             return $record->getCommentsOption($key);
         }
 
@@ -198,6 +200,7 @@ class CommentingController extends Controller
     public function getOptions()
     {
         if ($record = $this->getOwnerRecord()) {
+            /** @var DataObject|CommentsExtension $record */
             return $record->getCommentsOptions();
         }
 
@@ -226,7 +229,7 @@ class CommentingController extends Controller
     /**
      * Outputs the RSS feed of comments
      *
-     * @return HTMLText
+     * @return DBHTMLText
      */
     public function rss()
     {
@@ -252,10 +255,10 @@ class CommentingController extends Controller
             $class = SiteTree::class;
         }
 
-        $comments = Comment::get()->filter(array(
+        $comments = Comment::get()->filter([
             'Moderated' => 1,
             'IsSpam' => 0,
-        ));
+        ]);
 
         // Check if class filter
         if ($class) {
@@ -275,10 +278,10 @@ class CommentingController extends Controller
         }
 
         $title = _t(__CLASS__ . '.RSSTITLE', "Comments RSS Feed");
-        $comments = new PaginatedList($comments, $request);
+        $comments = PaginatedList::create($comments, $request);
         $comments->setPageLength($this->getOption('comments_per_page'));
 
-        return new RSSFeed(
+        return RSSFeed::create(
             $comments,
             $link,
             $title,
@@ -375,6 +378,9 @@ class CommentingController extends Controller
      * Redirect back to referer if available, ensuring that only site URLs
      * are allowed to avoid phishing.  If it's an AJAX request render the
      * comment in it's new state
+     *
+     * @param Comment $comment
+     * @return DBHTMLText|HTTPResponse|false
      */
     private function renderChangedCommentState($comment)
     {
@@ -383,21 +389,21 @@ class CommentingController extends Controller
         // Render comment using AJAX
         if ($this->request->isAjax()) {
             return $comment->renderWith('Includes/CommentsInterface_singlecomment');
-        } else {
-            // Redirect to either the comment or start of the page
-            if (empty($referer)) {
-                return $this->redirectBack();
-            } else {
-                // Redirect to the comment, but check for phishing
-                $url = $referer . '#comment-' . $comment->ID;
-                // absolute redirection URLs not located on this site may cause phishing
-                if (Director::is_site_url($url)) {
-                    return $this->redirect($url);
-                } else {
-                    return false;
-                }
-            }
         }
+
+        // Redirect to either the comment or start of the page
+        if (empty($referer)) {
+            return $this->redirectBack();
+        }
+
+        // Redirect to the comment, but check for phishing
+        $url = $referer . '#comment-' . $comment->ID;
+        // absolute redirection URLs not located on this site may cause phishing
+        if (Director::is_site_url($url)) {
+            return $this->redirect($url);
+        }
+
+        return false;
     }
 
     /**
@@ -411,6 +417,7 @@ class CommentingController extends Controller
         $id = isset($this->urlParams['ID']) ? $this->urlParams['ID'] : false;
 
         if ($id) {
+            /** @var Comment $comment */
             $comment = Comment::get()->byId($id);
             if ($comment) {
                 $this->fallbackReturnURL = $comment->Link();
@@ -436,9 +443,9 @@ class CommentingController extends Controller
         $form->addExtraClass('reply-form');
 
         // Load parent into reply form
-        $form->loadDataFrom(array(
+        $form->loadDataFrom([
             'ParentCommentID' => $comment->ID
-        ));
+        ]);
 
         // Customise action
         $form->setFormAction($this->Link('reply', $comment->ID));
@@ -461,6 +468,7 @@ class CommentingController extends Controller
     {
         // Extract parent comment from reply and build this way
         if ($parentID = $request->param('ParentCommentID')) {
+            /** @var Comment $comment */
             $comment = DataObject::get_by_id(Comment::class, $parentID, true);
             if ($comment) {
                 return $this->ReplyForm($comment);
@@ -518,8 +526,8 @@ class CommentingController extends Controller
         // absolute redirection URLs not located on this site may cause phishing
         if (Director::is_site_url($url)) {
             return $this->redirect($url);
-        } else {
-            return false;
         }
+
+        return false;
     }
 }
