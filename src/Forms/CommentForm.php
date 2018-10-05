@@ -2,7 +2,11 @@
 
 namespace SilverStripe\Comments\Forms;
 
+use SilverStripe\Comments\Controllers\CommentingController;
+use SilverStripe\Comments\Model\Comment;
+use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPResponse;
+use SilverStripe\Core\Convert;
 use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\EmailField;
 use SilverStripe\Forms\FieldList;
@@ -13,14 +17,7 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
-use SilverStripe\Security\Member;
-use SilverStripe\Control\Cookie;
-use SilverStripe\Core\Convert;
 use SilverStripe\Security\Security;
-use SilverStripe\Comments\Model\Comment;
-use SilverStripe\Control\Controller;
-use SilverStripe\Comments\Controllers\CommentingController;
-use SilverStripe\Core\Config\Config;
 
 class CommentForm extends Form
 {
@@ -46,18 +43,27 @@ class CommentForm extends Form
                 // Email
                 EmailField::create(
                     'Email',
-                    _t('SilverStripe\\Comments\\Controllers\\CommentingController.EMAILADDRESS', 'Your email address (will not be published)')
+                    _t(
+                        'SilverStripe\\Comments\\Controllers\\CommentingController.EMAILADDRESS',
+                        'Your email address (will not be published)'
+                    )
                 )
                     ->setCustomValidationMessage($emailRequired)
                     ->setAttribute('data-msg-required', $emailRequired)
                     ->setAttribute('data-msg-email', $emailInvalid)
                     ->setAttribute('data-rule-email', true),
                 // Url
-                TextField::create('URL', _t('SilverStripe\\Comments\\Controllers\\CommentingController.WEBSITEURL', 'Your website URL'))
+                TextField::create('URL', _t(
+                    'SilverStripe\\Comments\\Controllers\\CommentingController.WEBSITEURL',
+                    'Your website URL'
+                ))
                     ->setAttribute('data-msg-url', $urlInvalid)
                     ->setAttribute('data-rule-url', true),
                 // Comment
-                TextareaField::create('Comment', _t('SilverStripe\\Comments\\Controllers\\CommentingController.COMMENTS', 'Comments'))
+                TextareaField::create('Comment', _t(
+                    'SilverStripe\\Comments\\Controllers\\CommentingController.COMMENTS',
+                    'Comments'
+                ))
                     ->setCustomValidationMessage($commentRequired)
                     ->setAttribute('data-msg-required', $commentRequired)
             ),
@@ -92,7 +98,7 @@ class CommentForm extends Form
             );
         }
 
-        $required = new RequiredFields(
+        $required = RequiredFields::create(
             $controller->config()->required_fields
         );
 
@@ -102,51 +108,59 @@ class CommentForm extends Form
         // if the record exists load the extra required data
         if ($record = $controller->getOwnerRecord()) {
             // Load member data
-            $member = Member::currentUser();
+            $member = Security::getCurrentUser();
             if (($record->CommentsRequireLogin || $record->PostingRequiredPermission) && $member) {
                 $fields = $this->Fields();
 
                 $fields->removeByName('Name');
                 $fields->removeByName('Email');
                 $fields->insertBefore(
-                    new ReadonlyField(
+                    ReadonlyField::create(
                         'NameView',
                         _t('CommentInterface.YOURNAME', 'Your name'),
                         $member->getName()
                     ),
                     'URL'
                 );
-                $fields->push(new HiddenField('Name', '', $member->getName()));
-                $fields->push(new HiddenField('Email', '', $member->Email));
+                $fields->push(HiddenField::create('Name', '', $member->getName()));
+                $fields->push(HiddenField::create('Email', '', $member->Email));
             }
 
             // we do not want to read a new URL when the form has already been submitted
             // which in here, it hasn't been.
-            $this->loadDataFrom(array(
+            $this->loadDataFrom([
                 'ParentID'        => $record->ID,
                 'ReturnURL'       => $controller->getRequest()->getURL(),
                 'ParentClassName' => $controller->getParentClass()
-            ));
+            ]);
         }
 
         // Set it so the user gets redirected back down to the form upon form fail
         $this->setRedirectToFormOnValidationError(true);
 
-        // load any data from the cookies
-        if ($data = Cookie::get('CommentsForm_UserData')) {
-            $data = Convert::json2array($data);
+        // load any data from the session
+        $data = $this->getSessionData();
+        if (!is_array($data)) {
+            return;
+        }
 
-            $this->loadDataFrom(array(
-                'Name'  => isset($data['Name']) ? $data['Name'] : '',
-                'URL'   => isset($data['URL']) ? $data['URL'] : '',
-                'Email' => isset($data['Email']) ? $data['Email'] : ''
-            ));
+        // load user data from previous form request back into form.
+        if (array_key_exists('UserData', $data)) {
+            $formData = Convert::json2array($data['UserData']);
 
-            // allow previous value to fill if comment not stored in cookie (i.e. validation error)
-            $prevComment = Cookie::get('CommentsForm_Comment');
+            $this->loadDataFrom([
+                'Name' => isset($formData['Name']) ? $formData['Name'] : '',
+                'URL' => isset($formData['URL']) ? $formData['URL'] : '',
+                'Email' => isset($formData['Email']) ? $formData['Email'] : ''
+            ]);
+        }
+
+        // allow previous value to fill if comment
+        if (array_key_exists('Comment', $data)) {
+            $prevComment = $data['Comment'];
 
             if ($prevComment && $prevComment != '') {
-                $this->loadDataFrom(array('Comment' => $prevComment));
+                $this->loadDataFrom(['Comment' => $prevComment]);
             }
         }
     }
@@ -184,8 +198,10 @@ class CommentForm extends Form
         }
 
         // cache users data
-        Cookie::set('CommentsForm_UserData', Convert::raw2json($data));
-        Cookie::set('CommentsForm_Comment', $data['Comment']);
+        $form->setSessionData([
+            'UserData' => Convert::raw2json($data),
+            'Comment' =>  $data['Comment']
+        ]);
 
         // extend hook to allow extensions. Also see onAfterPostComment
         $this->controller->extend('onBeforePostComment', $form);
@@ -203,7 +219,7 @@ class CommentForm extends Form
         }
 
         if ($member = Security::getCurrentUser()) {
-            $form->Fields()->push(new HiddenField('AuthorID', 'Author ID', $member->ID));
+            $form->Fields()->push(HiddenField::create('AuthorID', 'Author ID', $member->ID));
         }
 
         // What kind of moderation is required?
@@ -246,8 +262,16 @@ class CommentForm extends Form
             $this->getRequest()->getSession()->set('CommentsModerated', 1);
         }
 
-        // clear the users comment since it passed validation
-        Cookie::set('CommentsForm_Comment', false);
+        // clear the users comment since the comment was successful.
+        if ($comment->exists()) {
+            // Remove the comment data as it's been saved already.
+            unset($data['Comment']);
+        }
+
+        // cache users data (name, email, etc to prepopulate on other forms).
+        $form->setSessionData([
+            'UserData' => Convert::raw2json($data),
+        ]);
 
         // Find parent link
         if (!empty($data['ReturnURL'])) {

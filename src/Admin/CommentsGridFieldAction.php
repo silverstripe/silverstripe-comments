@@ -26,7 +26,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
      */
     public function getColumnAttributes($gridField, $record, $columnName)
     {
-        return array('class' => 'col-buttons');
+        return ['class' => 'col-buttons'];
     }
 
     /**
@@ -34,8 +34,8 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
      */
     public function getColumnMetadata($gridField, $columnName)
     {
-        if ($columnName == 'Actions') {
-            return array('title' => '');
+        if ($columnName === 'Actions') {
+            return ['title' => ''];
         }
     }
 
@@ -44,7 +44,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
      */
     public function getColumnsHandled($gridField)
     {
-        return array('Actions');
+        return ['Actions'];
     }
 
     /**
@@ -64,7 +64,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
                 'CustomAction' . $record->ID . 'Spam',
                 _t(__CLASS__ . '.SPAM', 'Spam'),
                 'spam',
-                array('RecordID' => $record->ID)
+                ['RecordID' => $record->ID]
             )
                 ->addExtraClass('btn btn-secondary grid-field__icon-action')
                 ->Field();
@@ -76,7 +76,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
                 'CustomAction' . $record->ID . 'Approve',
                 _t(__CLASS__ . '.APPROVE', 'Approve'),
                 'approve',
-                array('RecordID' => $record->ID)
+                ['RecordID' => $record->ID]
             )
                 ->addExtraClass('btn btn-secondary grid-field__icon-action')
                 ->Field();
@@ -90,7 +90,7 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
      */
     public function getActions($gridField)
     {
-        return array('spam', 'approve');
+        return ['spam', 'approve'];
     }
 
     /**
@@ -98,7 +98,8 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
      */
     public function handleAction(GridField $gridField, $actionName, $arguments, $data)
     {
-        if ($actionName == 'spam') {
+        if ($actionName === 'spam') {
+            /** @var Comment $comment */
             $comment = Comment::get()->byID($arguments['RecordID']);
             $comment->markSpam();
 
@@ -109,7 +110,8 @@ class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_Act
             );
         }
 
-        if ($actionName == 'approve') {
+        if ($actionName === 'approve') {
+            /** @var Comment $comment */
             $comment = Comment::get()->byID($arguments['RecordID']);
             $comment->markApproved();
 

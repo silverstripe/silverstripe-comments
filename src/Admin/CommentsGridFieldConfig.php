@@ -20,8 +20,9 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         $this->addComponent(new CommentsGridFieldAction());
 
         // Format column
+        /** @var GridFieldDataColumns $columns */
         $columns = $this->getComponentByType(GridFieldDataColumns::class);
-        $columns->setFieldFormatting(array(
+        $columns->setFieldFormatting([
             'ParentTitle' => function ($value, &$item) {
                 return sprintf(
                     '<a href="%s" class="cms-panel-link external-link action" target="_blank">%s</a>',
@@ -29,10 +30,10 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
                     $item->obj('ParentTitle')->forTemplate()
                 );
             }
-        ));
+        ]);
 
         // Add bulk option
-        $manager = new BulkManager(null, false);
+        $manager = BulkManager::create(null, false);
 
         $spamAction = SpamHandler::create()->setLabel(_t(__CLASS__ . '.SPAM', 'Spam'));
         $approveAction = ApproveHandler::create()->setLabel(_t(__CLASS__ . '.APPROVE', 'Approve'));
