@@ -98,6 +98,23 @@ class CommentForm extends Form
 
         parent::__construct($controller, $name, $fields, $actions, $required);
 
+        // load any data from the cookies
+        if ($data = Cookie::get('CommentsForm_UserData')) {
+            $data = Convert::json2array($data);
+
+            $this->loadDataFrom(array(
+                'Name'  => isset($data['Name']) ? $data['Name'] : '',
+                'URL'   => isset($data['URL']) ? $data['URL'] : '',
+                'Email' => isset($data['Email']) ? $data['Email'] : ''
+            ));
+
+            // allow previous value to fill if comment not stored in cookie (i.e. validation error)
+            $prevComment = Cookie::get('CommentsForm_Comment');
+
+            if ($prevComment && $prevComment != '') {
+                $this->loadDataFrom(array('Comment' => $prevComment));
+            }
+        }
 
         // if the record exists load the extra required data
         if ($record = $controller->getOwnerRecord()) {
@@ -131,24 +148,6 @@ class CommentForm extends Form
 
         // Set it so the user gets redirected back down to the form upon form fail
         $this->setRedirectToFormOnValidationError(true);
-
-        // load any data from the cookies
-        if ($data = Cookie::get('CommentsForm_UserData')) {
-            $data = Convert::json2array($data);
-
-            $this->loadDataFrom(array(
-                'Name'  => isset($data['Name']) ? $data['Name'] : '',
-                'URL'   => isset($data['URL']) ? $data['URL'] : '',
-                'Email' => isset($data['Email']) ? $data['Email'] : ''
-            ));
-
-            // allow previous value to fill if comment not stored in cookie (i.e. validation error)
-            $prevComment = Cookie::get('CommentsForm_Comment');
-
-            if ($prevComment && $prevComment != '') {
-                $this->loadDataFrom(array('Comment' => $prevComment));
-            }
-        }
     }
 
     /**
