@@ -37,7 +37,7 @@ class Handler extends GridFieldBulkActionHandler
             $record->markSpam();
         }
 
-        $response = new HTTPResponse(Convert::raw2json(array(
+        $response = new HTTPResponse(json_encode(array(
             'done' => true,
             'records' => $ids
         )));
@@ -60,7 +60,7 @@ class Handler extends GridFieldBulkActionHandler
             $record->markApproved();
         }
 
-        $response = new HTTPResponse(Convert::raw2json(array(
+        $response = new HTTPResponse(json_encode(array(
             'done' => true,
             'records' => $ids
         )));

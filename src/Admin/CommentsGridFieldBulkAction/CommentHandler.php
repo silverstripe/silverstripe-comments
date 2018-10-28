@@ -27,7 +27,7 @@ abstract class CommentHandler extends Handler
             $this->updateComment($comment);
         }
 
-        $response = new HTTPResponse(Convert::raw2json([
+        $response = new HTTPResponse(json_encode([
             'done' => true,
             'records' => $ids,
         ]));
