@@ -441,7 +441,7 @@ class CommentsExtension extends DataExtension
     {
         return Controller::join_links(
             $this->getCommentRSSLink(),
-            str_replace('\\', '-', $this->owner->baseClass()),
+            str_replace('\\', '-', get_class($this->owner)),
             $this->owner->ID
         );
     }
