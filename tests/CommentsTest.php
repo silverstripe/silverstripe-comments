@@ -610,7 +610,7 @@ class CommentsTest extends FunctionalTest
 
         $labels = $comment->FieldLabels();
         $expected = array(
-            'Name' => 'Author Name',
+            'Name' => 'Author name',
             'Comment' => 'Comment',
             'Email' => 'Email',
             'URL' => 'URL',
