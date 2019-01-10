@@ -605,34 +605,8 @@ class CommentsTest extends FunctionalTest
      */
     public function testFieldLabels()
     {
-        $locale = i18n::get_locale();
-        i18n::set_locale('fr');
-
         /** @var Comment $comment */
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
-
-        $labels = $comment->FieldLabels();
-        $expected = array(
-            'Name' => 'Nom de l\'Auteur',
-            'Comment' => 'Commentaire',
-            'Email' => 'Email',
-            'URL' => 'URL',
-            'Moderated' => 'Modéré?',
-            'IsSpam' => 'Spam?',
-            'AllowHtml' => 'Allow Html',
-            'SecretToken' => 'Secret Token',
-            'Depth' => 'Depth',
-            'Author' => 'Author Member',
-            'ParentComment' => 'Parent Comment',
-            'ChildComments' => 'Child Comments',
-            'ParentTitle' => 'Parent',
-            'Created' => 'Date de publication',
-            'Parent' => 'Parent'
-        );
-        i18n::set_locale($locale);
-        foreach ($expected as $key => $value) {
-            $this->assertEquals($value, $labels[$key]);
-        }
 
         $labels = $comment->FieldLabels();
         $expected = array(
@@ -640,17 +614,10 @@ class CommentsTest extends FunctionalTest
             'Comment' => 'Comment',
             'Email' => 'Email',
             'URL' => 'URL',
-            'Moderated' => 'Moderated?',
             'IsSpam' => 'Spam?',
-            'AllowHtml' => 'Allow Html',
-            'SecretToken' => 'Secret Token',
-            'Depth' => 'Depth',
-            'Author' => 'Author Member',
-            'ParentComment' => 'Parent Comment',
-            'ChildComments' => 'Child Comments',
+            'Moderated' => 'Moderated?',
             'ParentTitle' => 'Parent',
             'Created' => 'Date posted',
-            'Parent' => 'Parent'
         );
         foreach ($expected as $key => $value) {
             $this->assertEquals($value, $labels[$key]);
