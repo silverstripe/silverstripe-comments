@@ -20,21 +20,21 @@
 		<div class="comment-action-links">
 			<div class="comment-moderation-options">
 				<% if $ApproveLink %>
-					<a href="$ApproveLink.ATT" class="approve"><% _t('CommentsInterface_singlecomment_ss.APPROVE', 'approve it') %></a>
+					<a href="$ApproveLink.ATT" class="approve"><%t CommentsInterface_singlecomment_ss.APPROVE "Approve it" %></a>
 				<% end_if %>
 				<% if $SpamLink %>
-					<a href="$SpamLink.ATT" class="spam"><% _t('CommentsInterface_singlecomment_ss.ISSPAM','spam it') %></a>
+					<a href="$SpamLink.ATT" class="spam"><%t CommentsInterface_singlecomment_ss.ISSPAM "Spam it" %></a>
 				<% end_if %>
 				<% if $HamLink %>
-					<a href="$HamLink.ATT" class="ham"><% _t('CommentsInterface_singlecomment_ss.ISNTSPAM','not spam') %></a>
+					<a href="$HamLink.ATT" class="ham"><%t CommentsInterface_singlecomment_ss.ISNTSPAM "Not spam" %></a>
 				<% end_if %>
 				<% if $DeleteLink %>
-					<a href="$DeleteLink.ATT" class="delete"><% _t('CommentsInterface_singlecomment_ss.REMCOM','reject it') %></a>
+					<a href="$DeleteLink.ATT" class="delete"><%t CommentsInterface_singlecomment_ss.REMCOM "Reject it" %></a>
 				<% end_if %>
 			</div>
 			<% if $RepliesEnabled && $canPostComment %>
 				<button class="comment-reply-link" type="button" aria-controls="$ReplyForm.FormName" aria-expanded="false">
-					<% _t('CommentsInterface_singlecomment_ss.REPLYTO','Reply to') %> $AuthorName.XML
+					<%t CommentsInterface_singlecomment_ss.REPLYTO "Reply to" %> $AuthorName.XML
 				</button>
 			<% end_if %>
 		</div>

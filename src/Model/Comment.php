@@ -125,8 +125,8 @@ class Comment extends DataObject
      * {@inheritDoc}
      */
     private static $summary_fields = array(
-        'Name' => 'Submitted By',
-        'Email' => 'Email',
+        'getAuthorName' => 'Submitted By',
+        'getAuthorEmail' => 'Email',
         'Comment.LimitWordCount' => 'Comment',
         'Created' => 'Date Posted',
         'Parent.Title' => 'Post',
@@ -219,7 +219,7 @@ class Comment extends DataObject
     {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['Name'] = _t(__CLASS__ . '.NAME', 'Author Name');
+        $labels['Name'] = _t(__CLASS__ . '.NAME', 'Author name');
         $labels['Comment'] = _t(__CLASS__ . '.COMMENT', 'Comment');
         $labels['Email'] = _t(__CLASS__ . '.EMAIL', 'Email');
         $labels['URL'] = _t(__CLASS__ . '.URL', 'URL');
@@ -447,6 +447,20 @@ class Comment extends DataObject
             return $this->Name;
         } elseif ($author = $this->Author()) {
             return $author->getName();
+        }
+    }
+
+    /**
+     * Return the comment authors email address
+     *
+     * @return string
+     */
+    public function getAuthorEmail()
+    {
+        if ($this->Email) {
+            return $this->Email;
+        } elseif ($author = $this->Author()) {
+            return $author->Email;
         }
     }
 

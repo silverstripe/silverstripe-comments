@@ -146,7 +146,7 @@ class CommentForm extends Form
 
         // load user data from previous form request back into form.
         if (array_key_exists('UserData', $data)) {
-            $formData = Convert::json2array($data['UserData']);
+            $formData = json_decode($data['UserData'], true);
 
             $this->loadDataFrom([
                 'Name' => isset($formData['Name']) ? $formData['Name'] : '',
@@ -199,7 +199,7 @@ class CommentForm extends Form
 
         // cache users data
         $form->setSessionData([
-            'UserData' => Convert::raw2json($data),
+            'UserData' => json_encode($data),
             'Comment' =>  $data['Comment']
         ]);
 
@@ -270,7 +270,7 @@ class CommentForm extends Form
 
         // cache users data (name, email, etc to prepopulate on other forms).
         $form->setSessionData([
-            'UserData' => Convert::raw2json($data),
+            'UserData' => json_encode($data),
         ]);
 
         // Find parent link
