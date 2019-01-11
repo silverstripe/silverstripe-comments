@@ -74,7 +74,7 @@ en:
     EMAIL: Email
     ISSPAM: 'Spam?'
     MODERATED: 'Moderated?'
-    NAME: 'Author Name'
+    NAME: 'Author name'
     'ON': 'on'
     OPTIONS: Options
     OPTION_DESCRIPTION: 'Unmoderated and spam comments will not be displayed until approved'
