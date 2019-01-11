@@ -125,8 +125,8 @@ class Comment extends DataObject
      * {@inheritDoc}
      */
     private static $summary_fields = array(
-        'Name' => 'Submitted By',
-        'Email' => 'Email',
+        'getAuthorName' => 'Submitted By',
+        'getAuthorEmail' => 'Email',
         'Comment.LimitWordCount' => 'Comment',
         'Created' => 'Date Posted',
         'Parent.Title' => 'Post',
@@ -447,6 +447,20 @@ class Comment extends DataObject
             return $this->Name;
         } elseif ($author = $this->Author()) {
             return $author->getName();
+        }
+    }
+
+    /**
+     * Return the comment authors email address
+     *
+     * @return string
+     */
+    public function getAuthorEmail()
+    {
+        if ($this->Email) {
+            return $this->Email;
+        } elseif ($author = $this->Author()) {
+            return $author->Email;
         }
     }
 
