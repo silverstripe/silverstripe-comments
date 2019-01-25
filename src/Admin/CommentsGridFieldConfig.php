@@ -6,6 +6,7 @@ use Colymba\BulkManager\BulkManager;
 use SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\ApproveHandler;
 use SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\SpamHandler;
 use SilverStripe\Core\Convert;
+use SilverStripe\Forms\GridField\GridField_ActionMenu;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldDataColumns;
 
@@ -17,7 +18,10 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
 
         // $this->addComponent(new GridFieldExportButton());
 
-        $this->addComponent(new CommentsGridFieldAction());
+        $this->addComponents([
+            new CommentsGridFieldSpamAction(),
+            new CommentsGridFieldApproveAction(),
+        ]);
 
         // Format column
         /** @var GridFieldDataColumns $columns */
