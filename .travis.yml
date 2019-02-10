@@ -19,7 +19,7 @@ before_script:
   - phpenv config-rm xdebug.ini
   - composer validate
   - composer require silverstripe/installer:"$INSTALLER_VERSION" ezyang/htmlpurifier:* --no-update
-  - if [[ $DB == PGSQL ]]; then composer require --no-update silverstripe/postgresql:2.x-dev; fi
+  - if [[ $DB == PGSQL ]]; then composer require --no-update silverstripe/postgresql:2.2.x-dev; fi
   - composer install --prefer-dist --no-interaction --no-progress --no-suggest --optimize-autoloader --verbose --profile
 
 script:
