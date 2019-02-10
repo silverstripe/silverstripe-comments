@@ -93,7 +93,7 @@ class CommentsGridFieldSpamAction implements
     /**
      * Returns the FormAction object, used by other methods to get properties
      *
-     * @return GridField_FormAction
+     * @return GridField_FormAction|null
      */
     public function getSpamAction($gridField, $record, $columnName)
     {
