@@ -91,7 +91,7 @@ class CommentsGridFieldApproveAction implements
     /**
      * Returns the FormAction object, used by other methods to get properties
      *
-     * @return GridField_FormAction
+     * @return GridField_FormAction|null
      */
     public function getApproveAction($gridField, $record, $columnName)
     {
