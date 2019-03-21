@@ -9,6 +9,9 @@ use SilverStripe\Forms\GridField\GridField_ActionProvider;
 use SilverStripe\Forms\GridField\GridField_ColumnProvider;
 use SilverStripe\Forms\GridField\GridField_FormAction;
 
+/**
+ * @deprecated 3.2.0 {@see CommentsGridFieldApproveAction} and {@see CommentsGridFieldSpamAction} instead
+ */
 class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_ActionProvider
 {
     /**

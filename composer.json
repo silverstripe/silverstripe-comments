@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "^4.0",
+        "silverstripe/framework": "^4.2",
         "colymba/gridfield-bulk-editing-tools": "^3.0"
     },
     "suggest": {
