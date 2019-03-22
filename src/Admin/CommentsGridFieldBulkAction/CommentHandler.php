@@ -3,6 +3,7 @@
 namespace SilverStripe\Comments\Admin\CommentsGridFieldBulkAction;
 
 use Colymba\BulkManager\BulkAction\Handler;
+use Colymba\BulkTools\HTTPBulkToolsResponse;
 use SilverStripe\Comments\Model\Comment;
 use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPRequest;
@@ -22,17 +23,19 @@ abstract class CommentHandler extends Handler
     {
         $ids = [];
 
+        $response = new HTTPBulkToolsResponse(
+            true,
+            $this->gridField,
+            200
+        );
+
         foreach ($this->getRecords() as $comment) {
             array_push($ids, $comment->ID);
             $this->updateComment($comment);
+            $response->addSuccessRecord($comment);
         }
 
-        $response = new HTTPResponse(json_encode([
-            'done' => true,
-            'records' => $ids,
-        ]));
-
-        $response->addHeader('Content-Type', 'application/json');
+        $response->setMessage('Changes applied');
 
         return $response;
     }
