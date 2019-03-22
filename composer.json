@@ -14,7 +14,7 @@
     ],
     "require": {
         "silverstripe/framework": "^4.2",
-        "colymba/gridfield-bulk-editing-tools": "^3.0"
+        "colymba/gridfield-bulk-editing-tools": "^3.0.0-beta4"
     },
     "suggest": {
         "ezyang/htmlpurifier": "Standards compliant HTML filter written in PHP",
