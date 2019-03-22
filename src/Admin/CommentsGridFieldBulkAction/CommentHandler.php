@@ -35,7 +35,7 @@ abstract class CommentHandler extends Handler
             $response->addSuccessRecord($comment);
         }
 
-        $response->setMessage('Changes applied');
+        $response->setMessage(_t(__CLASS__ . '.CHANGES_APPLIED', 'Changes applied'));
 
         return $response;
     }
