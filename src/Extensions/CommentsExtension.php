@@ -158,7 +158,7 @@ class CommentsExtension extends DataExtension
         if ($this->owner->getCommentsOption('enabled_cms')) {
             $options->push(CheckboxField::create('ProvideComments', _t(
                 'SilverStripe\\Comments\\Model\\Comment.ALLOWCOMMENTS',
-                'Allow Comments'
+                'Allow comments'
             )));
         }
 

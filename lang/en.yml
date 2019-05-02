@@ -67,7 +67,7 @@ en:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Only moderate non-members'
     MODERATIONREQUIRED_REQUIRED: 'Moderate all comments'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Allow Comments'
+    ALLOWCOMMENTS: 'Allow comments'
     COMMENT: Comment
     COMMENTBY: 'Comment by %s'
     CREATED: 'Date posted'
