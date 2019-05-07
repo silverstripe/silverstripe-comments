@@ -30,9 +30,7 @@
     "url": "https://github.com/silverstripe/silverstripe-comments/issues"
   },
   "homepage": "https://github.com/silverstripe/silverstripe-comments",
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "@silverstripe/webpack-config": "^0.2.7",
     "babel-core": "^6.7.4",
