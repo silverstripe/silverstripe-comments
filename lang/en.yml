@@ -50,8 +50,16 @@ en:
     COMMENTAPPROVED: 'Comment approved.'
     COMMENTMARKEDSPAM: 'Comment marked as spam.'
     SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
+    APPROVE: Approve
+    COMMENTAPPROVED: 'Comment approved.'
+  SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\CommentHandler:
+    CHANGES_APPLIED: 'Changes applied'
   SilverStripe\Comments\Admin\CommentsGridFieldConfig:
     APPROVE: Approve
+    SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    COMMENTMARKEDSPAM: 'Comment marked as spam.'
     SPAM: Spam
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Comments
