@@ -1,15 +1,31 @@
 nl:
   CommentInterface:
+    COMMENT_MESSAGE_REQUIRED: 'Plaats een reactie'
+    COMMENT_MESSAGE_URL: 'Vul een geldige URL in'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Gelieve een geldig email adres in te voeren'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Gelieve een email adres in te voeren.'
     POST: 'Plaats reactie'
+    PREVIEW: Voorbeeld
+    PREVIEWLABEL: Voorbeeld
     YOURNAME: Naam
+    YOURNAME_MESSAGE_REQUIRED: 'Gelieve een naam in te voeren.'
+  Comments:
+    COMMENTSREQUIRELOGIN: 'Log in om een reactie te plaatsen'
+  CommentsAdmin:
+    Comments: Goedgekeurd
+    NewComments: Nieuw
+    SpamComments: Spam
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
+  CommentsInterface_singlecomment_ss:
+    ISNTSPAM: 'Geen spam'
   CommentsInterface_ss:
     COMMENTLOGINERROR: 'Je moet ingelogd zijn om reacties te kunnen plaatsen'
     COMMENTPERMISSIONERROR: 'en controleer je gebruikersrechten'
     COMMENTPOSTLOGIN: Inloggen
     COMMENTS: Reacties
     COMMENTSDISABLED: 'Reacties plaatsen is uitgeschakeld'
+    DELETEALLCOMMENTS: 'Verwijder alle reacties op deze pagina'
     LOGINTOPOSTCOMMENT: 'Log in om een reactie te plaatsen'
     NEXT: volgende
     NOCOMMENTSYET: 'Er zijn nog geen reacties.'

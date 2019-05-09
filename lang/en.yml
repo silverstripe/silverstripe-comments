@@ -18,10 +18,10 @@ en:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
   CommentsInterface_singlecomment_ss:
-    APPROVE: 'Approve it'
-    ISNTSPAM: 'Not spam'
-    ISSPAM: 'Spam it'
-    REMCOM: 'Reject it'
+    APPROVE: 'approve it'
+    ISNTSPAM: 'not spam'
+    ISSPAM: 'spam it'
+    REMCOM: 'reject it'
     REPLYTO: 'Reply to'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Your comment has been submitted and is now awaiting moderation.'
@@ -67,14 +67,14 @@ en:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Only moderate non-members'
     MODERATIONREQUIRED_REQUIRED: 'Moderate all comments'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Allow comments'
+    ALLOWCOMMENTS: 'Allow Comments'
     COMMENT: Comment
     COMMENTBY: 'Comment by %s'
     CREATED: 'Date posted'
     EMAIL: Email
     ISSPAM: 'Spam?'
     MODERATED: 'Moderated?'
-    NAME: 'Author name'
+    NAME: 'Author Name'
     'ON': 'on'
     OPTIONS: Options
     OPTION_DESCRIPTION: 'Unmoderated and spam comments will not be displayed until approved'
