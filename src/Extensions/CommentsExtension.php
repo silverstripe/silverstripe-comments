@@ -254,7 +254,10 @@ class CommentsExtension extends DataExtension
     {
         $order = $this->owner->getCommentsOption('order_comments_by');
         $comments = Comment::get()
-            ->filter('ParentID', $this->owner->ID)
+            ->filter([
+                'ParentID' => $this->owner->ID,
+                'ParentClass' => $this->owner->ClassName,
+            ])
             ->sort($order);
         $this->owner->extend('updateAllComments', $comments);
         return $comments;
