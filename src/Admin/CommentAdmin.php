@@ -8,6 +8,7 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\Tab;
 use SilverStripe\Forms\TabSet;
+use SilverStripe\Security\PermissionProvider;
 use SilverStripe\Security\Security;
 
 /**
@@ -15,7 +16,7 @@ use SilverStripe\Security\Security;
  *
  * @package comments
  */
-class CommentAdmin extends LeftAndMain
+class CommentAdmin extends LeftAndMain implements PermissionProvider
 {
     private static $url_segment = 'comments';
 
