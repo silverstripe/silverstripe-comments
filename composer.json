@@ -22,7 +22,7 @@
         "silverstripe/cms": "The SilverStripe Content Management System"
     },
     "require-dev": {
-        "phpunit/PHPUnit": "~3.7@stable"
+        "phpunit/phpunit": "^5.7"
     },
     "extra": {
         "branch-alias": {

@@ -168,8 +168,8 @@
 						comment.fadeOut(1000, function() {
                             comment.remove();
 
-							if(commentsList.children().length === 0) {
-								noCommentsYet.show();
+							if($('.comments-holder .comments-list').children().length === 0) {
+								$('.no-comments-yet').show();
 							}
 						});
 					}

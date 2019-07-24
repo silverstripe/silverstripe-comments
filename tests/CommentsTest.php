@@ -974,6 +974,11 @@ class CommentsTest extends FunctionalTest
 
     public function testPurifyHtml()
     {
+        if (!class_exists('HTMLPurifier_Config')) {
+            $this->markTestSkipped('HTMLPurifier class not found');
+            return;
+        }
+
         $comment = $this->objFromFixture('Comment', 'firstComA');
 
         $dirtyHTML = '<p><script>alert("w00t")</script>my comment</p>';
