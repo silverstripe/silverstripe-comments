@@ -17,11 +17,6 @@ pl_PL:
     SpamComments: Spam
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Twój komentarz został wysłany i czeka na akceptację przez moderatora.'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: zatwierdź
-    ISNTSPAM: 'nie spam'
-    ISSPAM: 'oznacz spam'
-    REMCOM: odrzuć
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Twój komentarz został wysłany i czeka na akceptację przez moderatora.'
     COMMENTLOGINERROR: 'Nie można dodać komentarza dopóki nie będziesz zalogowany'
@@ -56,14 +51,12 @@ pl_PL:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Moderuj tylko niezarejestrowanych użytkowników'
     MODERATIONREQUIRED_REQUIRED: 'Moderuj wszystkie komentarze'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Zezwól na komentarze'
     COMMENT: Komentarz
     COMMENTBY: 'Komentarz %s'
     CREATED: 'Data opublikowania'
     EMAIL: Email
     ISSPAM: 'Spam?'
     MODERATED: 'Moderowane?'
-    NAME: Autor
     'ON': na
     OPTION_DESCRIPTION: 'Niemoderowane i oznaczone jako spam komentarze nie będą wyświetlane do momentu zatwierdzenia'
     PARENTTITLE: Rodzic

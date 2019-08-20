@@ -34,14 +34,12 @@ sv:
     RSSTITLE: 'RSS-flöde med kommentarer'
     WEBSITEURL: 'Din hemsidas URL'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Tillåt kommentarer'
     COMMENT: Kommentarer
     COMMENTBY: 'Kommentar av %s'
     CREATED: Datum
     EMAIL: E-post
     ISSPAM: 'Spam?'
     MODERATED: 'Modererad?'
-    NAME: Författare
     PARENTTITLE: 'Överordnad sida'
     PLURALNAME: Kommentarer
     SINGULARNAME: Kommentar

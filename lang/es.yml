@@ -33,14 +33,12 @@ es:
     PERMISSIONFAILURE: 'Ud no puede publicar comentarios en esta página. Por favor asegúrese que haya iniciado sesión y que tenga el adecuado nivel de permisos.'
     WEBSITEURL: 'URL de su sitio Web'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Permitir comentarios'
     COMMENT: Comentario
     COMMENTBY: 'Comentario por %s'
     CREATED: 'Fecha de publicación'
     EMAIL: Email
     ISSPAM: '¿Spam?'
     MODERATED: '¿Moderado?'
-    NAME: 'Nombre del autor'
     PARENTTITLE: Padre
     PLURALNAME: Comentarios
     SINGULARNAME: Comentario

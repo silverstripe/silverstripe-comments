@@ -18,10 +18,6 @@ ru:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
   CommentsInterface_singlecomment_ss:
-    APPROVE: Одобрить
-    ISNTSPAM: 'не спам'
-    ISSPAM: 'это спам'
-    REMCOM: удалить
     REPLYTO: Ответить
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Ваш комментарий отправлен и ожидает проверки.'
@@ -65,14 +61,12 @@ ru:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Проверка требуется только для незарегистрированных пользователей'
     MODERATIONREQUIRED_REQUIRED: 'Проверка требуется для всех комментариев'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Разрешить комментарии'
     COMMENT: Комментарий
     COMMENTBY: 'Комментарий автора %s'
     CREATED: 'Дата добавления'
     EMAIL: Email
     ISSPAM: 'Спам?'
     MODERATED: 'Проверено?'
-    NAME: Автор
     'ON': на
     OPTIONS: Опции
     OPTION_DESCRIPTION: 'Комментарии не будут отображаться пока не будут одобрены модератором'

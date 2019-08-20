@@ -18,10 +18,6 @@ de:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
   CommentsInterface_singlecomment_ss:
-    APPROVE: 'genehmige ihn'
-    ISNTSPAM: 'kein Spam'
-    ISSPAM: 'als Spam markieren'
-    REMCOM: abweisen
     REPLYTO: 'Antworten an'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Ihr Kommentar wurde gespeichert und wird durch einen Moderator freigeschaltet.'
@@ -67,14 +63,12 @@ de:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Nur Nicht-Mitglieder moderieren'
     MODERATIONREQUIRED_REQUIRED: 'Alle Kommentare moderieren'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Kommentare Erlauben'
     COMMENT: Kommentar
     COMMENTBY: 'Kommentar von ''%s'''
     CREATED: 'Datum geschrieben'
     EMAIL: E-Mail
     ISSPAM: 'Spam?'
     MODERATED: 'Moderiert?'
-    NAME: 'Autor Name'
     'ON': am
     OPTIONS: Optionen
     OPTION_DESCRIPTION: 'Unmoderierte und Spam-Kommentare werden nicht angezeigt, bis sie freigeschaltet sind'

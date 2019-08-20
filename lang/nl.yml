@@ -17,8 +17,6 @@ nl:
     SpamComments: Spam
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
-  CommentsInterface_singlecomment_ss:
-    ISNTSPAM: 'Geen spam'
   CommentsInterface_ss:
     COMMENTLOGINERROR: 'Je moet ingelogd zijn om reacties te kunnen plaatsen'
     COMMENTPERMISSIONERROR: 'en controleer je gebruikersrechten'
@@ -44,11 +42,9 @@ nl:
   SilverStripe\Comments\Extensions\CommentsExtension:
     COMMENTOPTIONS: Reacties
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Reacties toestaan'
     COMMENT: Reactie
     ISSPAM: 'Spam?'
     MODERATED: 'Gemodereerd?'
-    NAME: Auteur
     'ON': op
     PLURALNAME: Reacties
     SINGULARNAME: Reactie
