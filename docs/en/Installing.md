@@ -13,3 +13,13 @@ Then run a database rebuild by visiting `dev/build`. This will add the required 
 Out of the box the module adds commenting support to all pages on your site. This functionality can be turned on and off on a per page basis in the CMS under the `Behaviour` tab for a given page. Once the `Allow comments` checkbox is ticked, republish and view the webpage.
 
 For more configuration options see [Configuration](Configuration.md).
+
+## Displaying Comments
+
+To display form and comments simply add 
+
+```sh
+{$CommentsForm}
+```
+
+to your `.ss` file.
