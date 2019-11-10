@@ -1,4 +1,4 @@
-<% require themedCSS('comments', 'comments') %>
+<% require themedCSS('client/dist/styles/comments', 'comments') %>
 
 <% if $CommentsEnabled %>
 	<div id="$CommentHolderID" class="comments-holder-container">

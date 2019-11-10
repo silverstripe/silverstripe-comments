@@ -468,8 +468,8 @@ class CommentsExtension extends DataExtension
             Requirements::javascript('//code.jquery.com/jquery-3.3.1.min.js');
             Requirements::javascript('silverstripe/comments:thirdparty/jquery-validate/jquery.validate.min.js');
             Requirements::javascript('silverstripe/admin:client/dist/js/i18n.js');
-            Requirements::add_i18n_javascript('silverstripe/comments:javascript/lang');
-            Requirements::javascript('silverstripe/comments:javascript/CommentsInterface.js');
+            Requirements::add_i18n_javascript('silverstripe/comments:client/lang');
+            Requirements::javascript('silverstripe/comments:client/dist/js/CommentsInterface.js');
         }
 
         $controller = CommentingController::create();
@@ -554,7 +554,7 @@ class CommentsExtension extends DataExtension
      */
     protected function updateModerationFields(FieldList $fields)
     {
-        Requirements::css('silverstripe/comments:css/cms.css');
+        Requirements::css('silverstripe/comments:client/dist/styles/cms.css');
 
         $newComments = $this->owner->AllComments()->filter('Moderated', 0);
 
