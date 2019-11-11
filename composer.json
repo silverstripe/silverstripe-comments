@@ -31,6 +31,7 @@
         "expose": [
             "client/dist",
             "client/lang",
+            "css",
             "thirdparty"
         ]
     },
