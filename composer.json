@@ -29,8 +29,8 @@
             "dev-master": "3.x-dev"
         },
         "expose": [
-            "css",
-            "javascript",
+            "client/dist",
+            "client/lang",
             "thirdparty"
         ]
     },

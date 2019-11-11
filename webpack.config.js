@@ -11,29 +11,48 @@ const {
 
 const ENV = process.env.NODE_ENV;
 const PATHS = {
-  MODULES: 'node_modules',
-  ROOT: Path.resolve(),
-  FILES_PATH: '../',
-  SRC: Path.resolve(),
+    MODULES: 'node_modules',
+    FILES_PATH: '../',
+    ROOT: Path.resolve(),
+    SRC: Path.resolve('client/src'),
+    DIST: Path.resolve('client/dist'),
+    LEGACY_SRC: Path.resolve('client/src/legacy'),
 };
 
 const config = [
-  {
-    name: 'css',
-    entry: {
-      bundle: Path.resolve('scss') + '/comments.scss',
+    {
+        name: 'js',
+        entry: {
+            CommentsInterface: `${PATHS.LEGACY_SRC}/CommentsInterface.js`,
+        },
+        output: {
+            path: PATHS.DIST,
+            filename: 'js/[name].js',
+        },
+        devtool: (ENV !== 'production') ? 'source-map' : '',
+        resolve: resolveJS(ENV, PATHS),
+        externals: externalJS(ENV, PATHS),
+        module: moduleJS(ENV, PATHS),
+        plugins: pluginJS(ENV, PATHS),
     },
-    output: {
-      path: Path.resolve('css'),
-      filename: 'styles/[name].css',
+    {
+        name: 'css',
+        entry: {
+            comments: `${PATHS.SRC}/styles/comments.scss`,
+            cms: `${PATHS.SRC}/styles/cms.scss`,
+        },
+        output: {
+            path: PATHS.DIST,
+            filename: 'styles/[name].css',
+        },
+        devtool: (ENV !== 'production') ? 'source-map' : '',
+        module: moduleCSS(ENV, PATHS),
+        plugins: pluginCSS(ENV, PATHS),
     },
-    devtool: (ENV !== 'production') ? 'source-map' : '',
-    module: moduleCSS(ENV, PATHS),
-    plugins: pluginCSS(ENV, PATHS),
-  }
 ];
 
 // Use WEBPACK_CHILD=js or WEBPACK_CHILD=css env var to run a single config
 module.exports = (process.env.WEBPACK_CHILD)
-  ? config.find((entry) => entry.name === process.env.WEBPACK_CHILD)
-  : module.exports = config;
+    ? config.find((entry) => entry.name === process.env.WEBPACK_CHILD)
+    : module.exports = config;
+
