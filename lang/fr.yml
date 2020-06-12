@@ -36,14 +36,12 @@ fr:
   SilverStripe\Comments\Extensions\CommentsExtension:
     COMMENTOPTIONS: Commentaires
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Autoriser Commentaires'
     COMMENT: Commentaire
     COMMENTBY: 'Commentaire par %s'
     CREATED: 'Date de publication'
     EMAIL: Email
     ISSPAM: 'Spam?'
     MODERATED: 'Modéré?'
-    NAME: 'Nom de l''Auteur'
     PARENTTITLE: Parent
     PLURALNAME: Commentaires
     SINGULARNAME: Commentaire

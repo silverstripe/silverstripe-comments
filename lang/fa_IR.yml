@@ -18,10 +18,6 @@ fa_IR:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'دیدگاه شما ارسال شده و هم‌اکنون در انتظار بررسی است.'
   CommentsInterface_singlecomment_ss:
-    APPROVE: 'تایید کن'
-    ISNTSPAM: 'هرزنوشت نیست'
-    ISSPAM: هرزنوشته
-    REMCOM: 'رد کردن'
     REPLYTO: 'ارسال پاسخ به'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'دیدگاه شما ارسال شده و هم‌اکنون در انتظار بررسی است.'
@@ -65,14 +61,12 @@ fa_IR:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'تنها مدیریت کاربران غیر عضو'
     MODERATIONREQUIRED_REQUIRED: 'مدیریت تمامی دیدگاه‌ها'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'اجازه نشر دیدگاه'
     COMMENT: دیدگاه
     COMMENTBY: 'دیدگاه توسط %s'
     CREATED: 'تاریخ ارسال'
     EMAIL: ایمیل
     ISSPAM: هرزنوشت؟
     MODERATED: 'مدیریت شده؟'
-    NAME: 'نام نگارنده'
     'ON': در
     OPTIONS: گزینه‌ها
     OPTION_DESCRIPTION: 'دیدگاه‌های مدیریت نشده و هرزنوشت‌ها تا زمان تایید به نمایش در نخواهند آمد'

@@ -34,14 +34,12 @@ id:
     RSSTITLE: 'Sindikasi RSS Komentar'
     WEBSITEURL: 'URL situs Anda'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Bolehkan Komentar'
     COMMENT: Komentar
     COMMENTBY: 'Komentar oleh %s'
     CREATED: 'Tanggal kirim'
     EMAIL: Email
     ISSPAM: 'Spam?'
     MODERATED: 'Moderasi?'
-    NAME: 'Nama Penulis'
     PARENTTITLE: Induk
     PLURALNAME: Komentar
     SINGULARNAME: Komentar

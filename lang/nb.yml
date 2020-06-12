@@ -26,10 +26,8 @@ nb:
     RSSTITLE: 'RSS-feed for kommentarer'
     WEBSITEURL: Hjemmeside
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Tillat kommentarer'
     COMMENT: Kommentar
     ISSPAM: 'Spam?'
     MODERATED: 'Moderert?'
-    NAME: Navn
     PLURALNAME: Kommentarer
     SINGULARNAME: Kommentar

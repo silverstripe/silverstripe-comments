@@ -18,10 +18,6 @@ sk_SK:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Váš komentár bol odoslaný a čaká na kontrolu.'
   CommentsInterface_singlecomment_ss:
-    APPROVE: Schváliť
-    ISNTSPAM: 'nie je spam'
-    ISSPAM: 'je spam'
-    REMCOM: Odmietnuť
     REPLYTO: Odpovedať
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Váš komentár bol odoslaný a čaká na kontrolu.'
@@ -65,14 +61,12 @@ sk_SK:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Vyžadovať odsúhlasenie len od neprihlásených užívateľov'
     MODERATIONREQUIRED_REQUIRED: 'Odsúhlasiť všetky komentáre'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Povoliť komentáre'
     COMMENT: Komentár
     COMMENTBY: 'Komentáre od %s'
     CREATED: 'Dátum zverejnenia'
     EMAIL: E-mail
     ISSPAM: 'Spam?'
     MODERATED: 'Odsúhlasený?'
-    NAME: 'Meno autora'
     'ON': na
     OPTIONS: Možnosti
     OPTION_DESCRIPTION: 'Neodsúhlasené a spamové komentáre nebudú zobrazené'
