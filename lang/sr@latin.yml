@@ -34,14 +34,12 @@ sr@latin:
     RSSTITLE: 'RSS Feed komentara'
     WEBSITEURL: 'URL Vašeg sajta'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Dozvoli komentare'
     COMMENT: Komentar
     COMMENTBY: 'Autor komentara %s'
     CREATED: 'Datum objavljivanja'
     EMAIL: 'Elektronska pošta'
     ISSPAM: 'Zlonameran?'
     MODERATED: 'Uređen?'
-    NAME: 'Ime autora'
     PARENTTITLE: Roditelj
     PLURALNAME: Komentari
     SINGULARNAME: Komentar

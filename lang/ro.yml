@@ -34,14 +34,12 @@ ro:
     RSSTITLE: 'RSS feed pentru comentarii'
     WEBSITEURL: 'URL Site web'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Acceptare comentarii'
     COMMENT: Comentariu
     COMMENTBY: 'Comentat de %s'
     CREATED: 'Data publicării'
     EMAIL: E-mail
     ISSPAM: 'Spam?'
     MODERATED: 'Moderare?'
-    NAME: 'Nume autor'
     PARENTTITLE: Părinte
     PLURALNAME: Comentarii
     SINGULARNAME: Comentariu

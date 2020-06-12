@@ -35,14 +35,12 @@ hu:
     RSSTITLE: 'Hozzászólások RSS-ben'
     WEBSITEURL: 'Az Ön webcíme'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Hozzászólások engedélyezve'
     COMMENT: Hozzászólás
     COMMENTBY: 'Létrehozta %s'
     CREATED: 'Létrehozás dátuma'
     EMAIL: E-mail
     ISSPAM: 'SPAM?'
     MODERATED: 'Moderált?'
-    NAME: 'Hozzászóló neve'
     PARENTTITLE: Szülő
     PLURALNAME: Hozzászólások
     SINGULARNAME: Hozzászólás

@@ -17,11 +17,6 @@ lt:
     SpamComments: Šlamštas
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
-  CommentsInterface_singlecomment_ss:
-    APPROVE: patvirtinti
-    ISNTSPAM: 'ne šlamštas'
-    ISSPAM: šlamštas
-    REMCOM: ištrinti
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Jūsų komentaras išsiųstas ir laukia patvirtinimo.'
     COMMENTLOGINERROR: 'Negalite rašyti komentarų, jeigu nesate prisijungę'
@@ -56,14 +51,12 @@ lt:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Tvirtinti tik neregistruotų vartotojų'
     MODERATIONREQUIRED_REQUIRED: 'Tvirtinti visus komentarus'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Leisti komentarus'
     COMMENT: Komentaras
     COMMENTBY: 'Komentarą parašė ''%s'''
     CREATED: 'Paskelbimo data'
     EMAIL: 'E. paštas'
     ISSPAM: 'Šlamštas?'
     MODERATED: 'Patvirtintas?'
-    NAME: 'Autoriaus Vardas'
     'ON': į
     OPTION_DESCRIPTION: 'Nepatvirtinti komentarai nebus rodomi, kol jie atskirai nebus patvirtinti'
     PARENTTITLE: Priklauso

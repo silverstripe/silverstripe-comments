@@ -18,10 +18,6 @@ eo:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Via komento afiŝiĝis kaj nun atendas kontrolon.'
   CommentsInterface_singlecomment_ss:
-    APPROVE: 'aprobi ĝin'
-    ISNTSPAM: 'ne spamo'
-    ISSPAM: 'spamigi ĝin'
-    REMCOM: 'malakcepti ĝin'
     REPLYTO: 'Respondi al'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Via komento afiŝiĝis kaj nun atendas kontrolon.'
@@ -67,14 +63,12 @@ eo:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Kontroli nur nemembrojn'
     MODERATIONREQUIRED_REQUIRED: 'Kontroli ĉiujn komentojn'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Ebligi komentojn'
     COMMENT: Komento
     COMMENTBY: 'Komento de %s'
     CREATED: 'Dato de afiŝo'
     EMAIL: Retpoŝto
     ISSPAM: 'Ĉu spamo?'
     MODERATED: 'Ĉu kontrolata?'
-    NAME: 'Nomo de aŭtoro'
     'ON': en
     OPTIONS: Agordoj
     OPTION_DESCRIPTION: 'Ne vidigos nekontrolitajn aŭ spamajn komentojn antaŭ aprobo'

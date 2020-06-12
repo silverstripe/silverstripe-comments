@@ -18,10 +18,6 @@ hr:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Vaš komentar je zaprimljen i čeka odobrenje.'
   CommentsInterface_singlecomment_ss:
-    APPROVE: 'odobri ga'
-    ISNTSPAM: 'nije spam'
-    ISSPAM: 'Spamaj ga'
-    REMCOM: 'odbaci ga'
     REPLYTO: 'Odgovori na'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Vaš komentar je zaprimljen i čeka odobrenje.'
@@ -65,14 +61,12 @@ hr:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Samo moderiraj goste'
     MODERATIONREQUIRED_REQUIRED: 'Moderiraj sve komentare'
   SilverStripe\Comments\Model\Comment:
-    ALLOWCOMMENTS: 'Dozvoli komentare'
     COMMENT: Komentar
     COMMENTBY: 'Komentar od %s'
     CREATED: 'Datum objave'
     EMAIL: Email
     ISSPAM: 'Spam?'
     MODERATED: 'Moderirano?'
-    NAME: 'Ime autora'
     'ON': na
     OPTIONS: Opcije
     OPTION_DESCRIPTION: 'Nemoderirani i spam komentari neće biti objavljeni dok se ne odobre'
