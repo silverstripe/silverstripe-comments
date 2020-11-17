@@ -1,0 +1,17 @@
+cs_CZ:
+  CommentInterface:
+    COMMENT_MESSAGE_REQUIRED: 'Prosím vložte Váš komentář'
+    COMMENT_MESSAGE_URL: 'Prosím zadejte platnou URL adresu'
+    EMAILADDRESS_MESSAGE_EMAIL: 'Prosím zadejte platnou emailovou adresu'
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Prosím zadejte Vaší emailovou adresu'
+    PREVIEW: Náhled
+    PREVIEWLABEL: Náhled
+    YOURNAME: 'Vaše jméno'
+    YOURNAME_MESSAGE_REQUIRED: 'Prosím zadejte Vaše jméno'
+  Comments:
+    COMMENTSREQUIRELOGIN: 'Vyžadováno přihlášení pro komentování'
+  CommentsAdmin:
+    NewComments: Nový
+    SpamComments: Spam
+  CommentsInterface_singlecomment_ss:
+    ISNTSPAM: 'Není spam'

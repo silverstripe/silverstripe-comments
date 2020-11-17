@@ -18,6 +18,10 @@ eo:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Via komento afiŝiĝis kaj nun atendas kontrolon.'
   CommentsInterface_singlecomment_ss:
+    APPROVE: 'Aprobi ĝin'
+    ISNTSPAM: 'Ne spamo'
+    ISSPAM: 'Trakti kiel spamon'
+    REMCOM: 'Malakcepti ĝin'
     REPLYTO: 'Respondi al'
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Via komento afiŝiĝis kaj nun atendas kontrolon.'
@@ -46,8 +50,16 @@ eo:
     COMMENTAPPROVED: 'Komento aprobita.'
     COMMENTMARKEDSPAM: 'Markis komenton kiel spamon'
     SPAM: Spamo
+  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
+    APPROVE: Aprobi
+    COMMENTAPPROVED: 'Komento aprobita.'
+  SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\CommentHandler:
+    CHANGES_APPLIED: 'Aplikis la ŝanĝojn'
   SilverStripe\Comments\Admin\CommentsGridFieldConfig:
     APPROVE: Aprobi
+    SPAM: Spamo
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    COMMENTMARKEDSPAM: 'Markis komenton kiel spamon'
     SPAM: Spamo
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Komentoj
@@ -63,12 +75,14 @@ eo:
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Kontroli nur nemembrojn'
     MODERATIONREQUIRED_REQUIRED: 'Kontroli ĉiujn komentojn'
   SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Ebligi komentojn'
     COMMENT: Komento
     COMMENTBY: 'Komento de %s'
     CREATED: 'Dato de afiŝo'
     EMAIL: Retpoŝto
     ISSPAM: 'Ĉu spamo?'
     MODERATED: 'Ĉu kontrolata?'
+    NAME: 'Nomo de aŭtoro'
     'ON': en
     OPTIONS: Agordoj
     OPTION_DESCRIPTION: 'Ne vidigos nekontrolitajn aŭ spamajn komentojn antaŭ aprobo'
