@@ -465,8 +465,8 @@ class CommentsExtension extends DataExtension
         // Check if enabled
         $enabled = $this->getCommentsEnabled();
         if ($enabled && $this->owner->getCommentsOption('include_js')) {
-            Requirements::javascript('//code.jquery.com/jquery-3.3.1.min.js');
-            Requirements::javascript('silverstripe/comments:thirdparty/jquery-validate/jquery.validate.min.js');
+            Requirements::javascript('silverstripe/comments:client/dist/js/jquery.min.js');
+            Requirements::javascript('silverstripe/comments:client/dist/js/jquery-validation/jquery.validate.min.js');
             Requirements::javascript('silverstripe/admin:client/dist/js/i18n.js');
             Requirements::add_i18n_javascript('silverstripe/comments:client/lang');
             Requirements::javascript('silverstripe/comments:client/dist/js/CommentsInterface.js');

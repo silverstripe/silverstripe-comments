@@ -28,8 +28,7 @@
         "expose": [
             "client/dist",
             "client/lang",
-            "css",
-            "thirdparty"
+            "css"
         ]
     },
     "scripts": {
