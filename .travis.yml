@@ -1,8 +1,18 @@
 version: ~> 1.0
 
 import:
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+  - silverstripe/silverstripe-travis-shared:config/provision/standard-jobs-range.yml
+=======
+>>>>>>> 3.4
   - silverstripe/silverstripe-travis-shared:config/provision/standard-jobs-range-npm.yml
 
 env:
   global:
     - REQUIRE_EXTRA:"ezyang/htmlpurifier:*"
+<<<<<<< HEAD
+=======
+>>>>>>> 3.3
+>>>>>>> 3.4
