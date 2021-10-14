@@ -27,7 +27,7 @@ See docs/en/Installing.md
 
 ## Related
 
- * [silverstripe/silverstripe-comments-notifications](https://github.com/silverstripe/silverstripe-comments-notifications): Comment admin email notifications module
+ * [silverstripe/comment-notifications](https://github.com/silverstripe/comment-notifications): Comment admin email notifications module
 
 ## Contributing
 
