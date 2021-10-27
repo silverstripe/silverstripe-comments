@@ -26,7 +26,7 @@ class CommentsTest extends FunctionalTest
         CommentableItemDisabled::class,
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -235,7 +235,7 @@ class CommentsTest extends FunctionalTest
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
         $commentID = $comment->ID;
         $adminComment1Link = $comment->DeleteLink();
-        $this->assertContains('comments/delete/' . $commentID . '?t=', $adminComment1Link);
+        $this->assertStringContainsString('comments/delete/' . $commentID . '?t=', $adminComment1Link);
 
         // Test that this link can't be shared / XSS exploited
         $this->logInAs('commentadmin2');
@@ -275,7 +275,7 @@ class CommentsTest extends FunctionalTest
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
         $commentID = $comment->ID;
         $adminComment1Link = $comment->SpamLink();
-        $this->assertContains('comments/spam/' . $commentID . '?t=', $adminComment1Link);
+        $this->assertStringContainsString('comments/spam/' . $commentID . '?t=', $adminComment1Link);
 
         // Test that this link can't be shared / XSS exploited
         $this->logInAs('commentadmin2');
@@ -318,7 +318,7 @@ class CommentsTest extends FunctionalTest
         $comment = $this->objFromFixture(Comment::class, 'secondComC');
         $commentID = $comment->ID;
         $adminComment1Link = $comment->HamLink();
-        $this->assertContains('comments/ham/' . $commentID . '?t=', $adminComment1Link);
+        $this->assertStringContainsString('comments/ham/' . $commentID . '?t=', $adminComment1Link);
 
         // Test that this link can't be shared / XSS exploited
         $this->logInAs('commentadmin2');
@@ -361,7 +361,7 @@ class CommentsTest extends FunctionalTest
         $comment = $this->objFromFixture(Comment::class, 'secondComB');
         $commentID = $comment->ID;
         $adminComment1Link = $comment->ApproveLink();
-        $this->assertContains('comments/approve/' . $commentID . '?t=', $adminComment1Link);
+        $this->assertStringContainsString('comments/approve/' . $commentID . '?t=', $adminComment1Link);
 
         // Test that this link can't be shared / XSS exploited
         $this->logInAs('commentadmin2');
@@ -775,30 +775,30 @@ class CommentsTest extends FunctionalTest
         $method = $this->getMethod('ActionLink');
 
         // test with starts of strings and tokens and salts change each time
-        $this->assertContains(
+        $this->assertStringContainsString(
             '/comments/theaction/' . $comment->ID,
             $method->invokeArgs($comment, array('theaction'))
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '/comments/delete/' . $comment->ID,
             $comment->DeleteLink()
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '/comments/spam/' . $comment->ID,
             $comment->SpamLink()
         );
 
         $comment->markSpam();
-        $this->assertContains(
+        $this->assertStringContainsString(
             '/comments/ham/' . $comment->ID,
             $comment->HamLink()
         );
 
         //markApproved
         $comment->markUnapproved();
-        $this->assertContains(
+        $this->assertStringContainsString(
             '/comments/approve/' . $comment->ID,
             $comment->ApproveLink()
         );

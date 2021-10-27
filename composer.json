@@ -13,7 +13,8 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "^4.2",
+        "php": "^7.3 || ^8.0",
+        "silverstripe/framework": "^4.10",
         "colymba/gridfield-bulk-editing-tools": "^3.0.0-beta4"
     },
     "suggest": {
@@ -21,7 +22,7 @@
         "silverstripe/cms": "The SilverStripe Content Management System"
     },
     "require-dev": {
-        "sminnee/phpunit": "^5.7",
+        "phpunit/phpunit": "^9.5",
         "squizlabs/php_codesniffer": "^3.0"
     },
     "extra": {

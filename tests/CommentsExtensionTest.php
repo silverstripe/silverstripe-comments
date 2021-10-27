@@ -32,7 +32,7 @@ class CommentsExtensionTest extends FunctionalTest
         ],
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -262,44 +262,44 @@ class CommentsExtensionTest extends FunctionalTest
         $item = $this->objFromFixture(CommentableItem::class, 'first');
 
         // The comments form is HTML to do assertions by contains
-        $cf = $item->CommentsForm();
+        $cf = (string) $item->CommentsForm();
         $expected = '/comments/CommentsForm/" method="post" enctype="application/x-www-form-urlencoded">';
 
-        $this->assertContains($expected, $cf);
-        $this->assertContains('<h4>Post your comment</h4>', $cf);
+        $this->assertStringContainsString($expected, $cf);
+        $this->assertStringContainsString('<h4>Post your comment</h4>', $cf);
         // check the comments form exists
         $expected = '<input type="text" name="Name"';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
 
         $expected = '<input type="email" name="Email"';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
 
         $expected = '<input type="text" name="URL"';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
 
         $expected = '<input type="hidden" name="ParentID"';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
 
         $expected = '<textarea name="Comment"';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
 
         $expected = '<input type="submit" name="action_doPostComment" value="Post" class="action"';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
 
         $expected = '/comments/spam/';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
 
         $expected = '<p>Reply to firstComA 1</p>';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
 
         $expected = '/comments/delete';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
 
         $expected = '<p>Reply to firstComA 2</p>';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
 
         $expected = '<p>Reply to firstComA 3</p>';
-        $this->assertContains($expected, $cf);
+        $this->assertStringContainsString($expected, $cf);
     }
 
     public function testAttachedToSiteTree()

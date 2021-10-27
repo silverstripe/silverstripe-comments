@@ -31,7 +31,7 @@ class CommentingControllerTest extends FunctionalTest
 
     protected $securityEnabled;
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->securityEnabled) {
             SecurityToken::inst()->enable();
@@ -41,7 +41,7 @@ class CommentingControllerTest extends FunctionalTest
         parent::tearDown();
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->securityEnabled = SecurityToken::inst()->is_enabled();
@@ -194,7 +194,7 @@ class CommentingControllerTest extends FunctionalTest
         // specific page
         $response = $this->get('comments/rss/SilverStripe-Comments-Tests-Stubs-CommentableItem/'.$item->ID);
         $this->assertEquals(1, substr_count($response->getBody(), "<item>"));
-        $this->assertContains('<dc:creator>FA</dc:creator>', $response->getBody());
+        $this->assertStringContainsString('<dc:creator>FA</dc:creator>', $response->getBody());
 
         // test accessing comments on a type that doesn't exist
         $response = $this->get('comments/rss/Fake');
