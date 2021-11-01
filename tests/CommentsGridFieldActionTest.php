@@ -37,7 +37,7 @@ class CommentsGridFieldActionTest extends SapphireTest
     /** @var Form */
     protected $form;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->list = new DataList(Team::class);
@@ -96,27 +96,27 @@ class CommentsGridFieldActionTest extends SapphireTest
         $record->write();
         $recordID = $record->ID;
         $html = $action->getColumnContent($this->gridField, $record, Comment::class);
-        $this->assertContains('data-url="admin/comments/mockform/field/testfield', $html);
+        $this->assertStringContainsString('data-url="admin/comments/mockform/field/testfield', $html);
 
-        $this->assertContains('value="Spam"', $html);
-        $this->assertContains('id="action_CustomAction' . $recordID . 'Spam"', $html);
+        $this->assertStringContainsString('value="Spam"', $html);
+        $this->assertStringContainsString('id="action_CustomAction' . $recordID . 'Spam"', $html);
 
-        $this->assertContains('value="Approve"', $html);
-        $this->assertContains('id="action_CustomAction' . $recordID . 'Approve"', $html);
+        $this->assertStringContainsString('value="Approve"', $html);
+        $this->assertStringContainsString('id="action_CustomAction' . $recordID . 'Approve"', $html);
 
         // If marked as spam, only the approve button should be available
         $record->markSpam();
         $record->write();
         $html = $action->getColumnContent($this->gridField, $record, Comment::class);
-        $this->assertContains('value="Approve"', $html);
-        $this->assertNotContains('value="Spam"', $html);
+        $this->assertStringContainsString('value="Approve"', $html);
+        $this->assertStringNotContainsString('value="Spam"', $html);
 
         // If marked as spam, only the approve button should be available
         $record->markApproved();
         $record->write();
         $html = $action->getColumnContent($this->gridField, $record, Comment::class);
-        $this->assertNotContains('value="Approve"', $html);
-        $this->assertContains('value="Spam"', $html);
+        $this->assertStringNotContainsString('value="Approve"', $html);
+        $this->assertStringContainsString('value="Spam"', $html);
     }
 
     public function testGetActions()
