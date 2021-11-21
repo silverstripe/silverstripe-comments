@@ -263,7 +263,7 @@ class CommentsExtensionTest extends FunctionalTest
 
         // The comments form is HTML to do assertions by contains
         $cf = (string) $item->CommentsForm();
-        $expected = '/comments/CommentsForm/" method="post" enctype="application/x-www-form-urlencoded">';
+        $expected = '/comments/CommentsForm/" method="POST" enctype="application/x-www-form-urlencoded">';
 
         $this->assertStringContainsString($expected, $cf);
         $this->assertStringContainsString('<h4>Post your comment</h4>', $cf);
