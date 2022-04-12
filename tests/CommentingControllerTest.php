@@ -179,21 +179,29 @@ class CommentingControllerTest extends FunctionalTest
         // comments sitewide
         $response = $this->get('comments/rss');
         $comment = "10 approved, non spam comments on page 1";
-        $this->assertEquals(10, substr_count($response->getBody(), "<item>"), $comment);
+        $this->assertEquals(10, substr_count($response->getBody() ?? '', "<item>"), $comment);
 
         $response = $this->get('comments/rss?start=10');
-        $this->assertEquals(4, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
+        $this->assertEquals(
+            4,
+            substr_count($response->getBody() ?? '', "<item>"),
+            "3 approved, non spam comments on page 2"
+        );
 
         // all comments on a type
         $response = $this->get('comments/rss/SilverStripe-Comments-Tests-Stubs-CommentableItem');
-        $this->assertEquals(10, substr_count($response->getBody(), "<item>"));
+        $this->assertEquals(10, substr_count($response->getBody() ?? '', "<item>"));
 
         $response = $this->get('comments/rss/SilverStripe-Comments-Tests-Stubs-CommentableItem?start=10');
-        $this->assertEquals(4, substr_count($response->getBody(), "<item>"), "3 approved, non spam comments on page 2");
+        $this->assertEquals(
+            4,
+            substr_count($response->getBody() ?? '', "<item>"),
+            "3 approved, non spam comments on page 2"
+        );
 
         // specific page
         $response = $this->get('comments/rss/SilverStripe-Comments-Tests-Stubs-CommentableItem/'.$item->ID);
-        $this->assertEquals(1, substr_count($response->getBody(), "<item>"));
+        $this->assertEquals(1, substr_count($response->getBody() ?? '', "<item>"));
         $this->assertStringContainsString('<dc:creator>FA</dc:creator>', $response->getBody());
 
         // test accessing comments on a type that doesn't exist

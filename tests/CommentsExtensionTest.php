@@ -343,7 +343,7 @@ class CommentsExtensionTest extends FunctionalTest
             $results[0]->Comment
         );
 
-        $this->assertEquals(4, sizeof($results));
+        $this->assertEquals(4, sizeof($results ?? []));
     }
 
     public function testUpdateModerationFields()

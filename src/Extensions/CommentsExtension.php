@@ -583,9 +583,9 @@ class CommentsExtension extends DataExtension
             CommentsGridFieldConfig::create()
         );
 
-        $newCount = '(' . count($newComments) . ')';
-        $approvedCount = '(' . count($approvedComments) . ')';
-        $spamCount = '(' . count($spamComments) . ')';
+        $newCount = '(' . count($newComments ?? []) . ')';
+        $approvedCount = '(' . count($approvedComments ?? []) . ')';
+        $spamCount = '(' . count($spamComments ?? []) . ')';
 
         if ($fields->hasTabSet()) {
             $tabs = TabSet::create(

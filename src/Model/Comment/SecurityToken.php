@@ -37,7 +37,7 @@ class SecurityToken
      */
     protected function getToken($salt)
     {
-        return hash_pbkdf2('sha256', $this->secret, $salt, 1000, 30);
+        return hash_pbkdf2('sha256', $this->secret ?? '', $salt ?? '', 1000, 30);
     }
 
     /**
@@ -74,8 +74,8 @@ class SecurityToken
             $url,
             sprintf(
                 '?t=%s&s=%s',
-                urlencode($token),
-                urlencode($salt)
+                urlencode($token ?? ''),
+                urlencode($salt ?? '')
             )
         );
     }
@@ -113,7 +113,7 @@ class SecurityToken
         $generator = new RandomGenerator();
         $result = $generator->randomToken('sha256');
         if ($length !== null) {
-            return substr($result, 0, $length);
+            return substr($result ?? '', 0, $length);
         }
         return $result;
     }

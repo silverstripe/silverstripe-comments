@@ -100,7 +100,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
                     _t(
                         __CLASS__.'.NewComments',
                         'New ({count})',
-                        ['count' => count($newComments)]
+                        ['count' => count($newComments ?? [])]
                     ),
                     $newGrid
                 ),
@@ -109,7 +109,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
                     _t(
                         __CLASS__.'.ApprovedComments',
                         'Approved ({count})',
-                        ['count' => count($approvedComments)]
+                        ['count' => count($approvedComments ?? [])]
                     ),
                     $approvedGrid
                 ),
@@ -118,7 +118,7 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
                     _t(
                         __CLASS__.'.SpamComments',
                         'Spam ({count})',
-                        ['count' => count($spamComments)]
+                        ['count' => count($spamComments ?? [])]
                     ),
                     $spamGrid
                 )

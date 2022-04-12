@@ -608,7 +608,7 @@ class Comment extends DataObject
      */
     public function getTitle()
     {
-        $title = sprintf(_t(__CLASS__ . '.COMMENTBY', 'Comment by %s', 'Name'), $this->getAuthorName());
+        $title = sprintf(_t(__CLASS__ . '.COMMENTBY', 'Comment by %s', 'Name') ?? '', $this->getAuthorName());
 
         if ($parent = $this->Parent()) {
             if ($parent->Title) {
@@ -726,7 +726,7 @@ class Comment extends DataObject
         }
 
         // This injector cannot be set unless the 'p' element is allowed
-        if (in_array('p', $allowedElements)) {
+        if (in_array('p', $allowedElements ?? [])) {
             $config->set('AutoFormat.AutoParagraph', true);
         }
 
@@ -747,7 +747,7 @@ class Comment extends DataObject
         $use_gravatar = $this->getOption('use_gravatar');
 
         if ($use_gravatar) {
-            $gravatar = 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Email)));
+            $gravatar = 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Email ?? '')));
             $gravatarsize = $this->getOption('gravatar_size');
             $gravatardefault = $this->getOption('gravatar_default');
             $gravatarrating = $this->getOption('gravatar_rating');

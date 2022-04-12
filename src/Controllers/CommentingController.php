@@ -115,7 +115,7 @@ class CommentingController extends Controller
      */
     public function encodeClassName($input)
     {
-        return str_replace('\\', '-', $input);
+        return str_replace('\\', '-', $input ?? '');
     }
 
     /**
@@ -126,7 +126,7 @@ class CommentingController extends Controller
      */
     public function decodeClassName($input)
     {
-        return str_replace('-', '\\', $input);
+        return str_replace('-', '\\', $input ?? '');
     }
 
     /**
