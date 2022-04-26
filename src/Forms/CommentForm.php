@@ -145,8 +145,8 @@ class CommentForm extends Form
         }
 
         // load user data from previous form request back into form.
-        if (array_key_exists('UserData', $data)) {
-            $formData = json_decode($data['UserData'], true);
+        if (array_key_exists('UserData', $data ?? [])) {
+            $formData = json_decode($data['UserData'] ?? '', true);
 
             $this->loadDataFrom([
                 'Name' => isset($formData['Name']) ? $formData['Name'] : '',
@@ -156,7 +156,7 @@ class CommentForm extends Form
         }
 
         // allow previous value to fill if comment
-        if (array_key_exists('Comment', $data)) {
+        if (array_key_exists('Comment', $data ?? [])) {
             $prevComment = $data['Comment'];
 
             if ($prevComment && $prevComment != '') {
