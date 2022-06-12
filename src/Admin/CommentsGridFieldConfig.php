@@ -27,12 +27,16 @@ class CommentsGridFieldConfig extends GridFieldConfig_RecordEditor
         /** @var GridFieldDataColumns $columns */
         $columns = $this->getComponentByType(GridFieldDataColumns::class);
         $columns->setFieldFormatting([
-            'ParentTitle' => function ($value, &$item) {
-                return sprintf(
-                    '<a href="%s" class="cms-panel-link external-link action" target="_blank">%s</a>',
-                    Convert::raw2att($item->Link()),
-                    $item->obj('ParentTitle')->forTemplate()
-                );
+            'Parent.Title' => function ($value, &$item) {
+                if ($link = $item->Link()) {
+                    return sprintf(
+                        '<a href="%s" class="cms-panel-link external-link action" target="_blank">%s</a>',
+                        Convert::raw2att($link),
+                        $item->obj('ParentTitle')->forTemplate()
+                    );
+                } else {
+                    return $item->obj('ParentTitle')->forTemplate();
+                }
             }
         ]);
 
