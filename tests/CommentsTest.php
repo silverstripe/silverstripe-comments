@@ -462,7 +462,7 @@ class CommentsTest extends FunctionalTest
         $comment->write();
 
         $html = $item->customise(['CommentsEnabled' => true])->renderWith('CommentsInterface');
-        $this->assertContains(
+        $this->assertStringContainsString(
             '&lt;p&gt;my comment&lt;/p&gt;',
             $html
         );
@@ -470,7 +470,7 @@ class CommentsTest extends FunctionalTest
         $comment->AllowHtml = true;
         $comment->write();
         $html = $item->customise(['CommentsEnabled' => true])->renderWith('CommentsInterface');
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<p>my comment</p>',
             $html
         );
