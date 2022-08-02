@@ -1,21 +1,19 @@
 # Comments
 
 [![CI](https://github.com/silverstripe/silverstripe-comments/actions/workflows/ci.yml/badge.svg)](https://github.com/silverstripe/silverstripe-comments/actions/workflows/ci.yml)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/silverstripe/silverstripe-comments.svg)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-comments/?branch=master)
-[![SilverStripe supported module](https://img.shields.io/badge/silverstripe-supported-0071C4.svg)](https://www.silverstripe.org/software/addons/silverstripe-commercially-supported-module-list/)
-[![Code Coverage](https://img.shields.io/codecov/c/github/silverstripe/silverstripe-comments.svg)](https://codecov.io/gh/silverstripe/silverstripe-comments)
+[![Silverstripe supported module](https://img.shields.io/badge/silverstripe-supported-0071C4.svg)](https://www.silverstripe.org/software/addons/silverstripe-commercially-supported-module-list/)
 
 ## Introduction
 
-This module provides commenting functionality for Pages and other DataObjects on your SilverStripe site.
+This module provides commenting functionality for Pages and other DataObjects on your Silverstripe site.
 
 For more documentation about the module see the provided documentation located inside the docs folder.
 
 ## Requirements
 
- * SilverStripe ^4.0
+ * Silverstripe ^4.0
 
-**Note:** This branch is compatible with SilverStripe 4. For a SilverStripe 3 release, please see the 2.x release line.
+**Note:** This branch is compatible with Silverstripe 4. For a Silverstripe 3 release, please see the 2.x release line.
 
 ## Installation
 
