@@ -2,6 +2,7 @@
 
 namespace SilverStripe\Comments\Model;
 
+use SilverStripe\Dev\Deprecation;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use SilverStripe\Comments\Controllers\CommentingController;
@@ -264,6 +265,7 @@ class Comment extends DataObject
      */
     public function getParent()
     {
+        Deprecation::notice('4.0.0', 'Use $this->Parent() instead');
         return $this->BaseClass && $this->ParentID
             ? DataObject::get_by_id($this->BaseClass, $this->ParentID, true)
             : null;

@@ -2,6 +2,7 @@
 
 namespace SilverStripe\Comments\Admin;
 
+use SilverStripe\Dev\Deprecation;
 use SilverStripe\Comments\Model\Comment;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\GridField\GridField;
@@ -10,13 +11,22 @@ use SilverStripe\Forms\GridField\GridField_ColumnProvider;
 use SilverStripe\Forms\GridField\GridField_FormAction;
 
 /**
- * @deprecated 3.2.0 {@see CommentsGridFieldApproveAction} and {@see CommentsGridFieldSpamAction} instead
+ * @deprecated 3.2.0 Use CommentsGridFieldApproveAction CommentsGridFieldSpamAction instead
  */
 class CommentsGridFieldAction implements GridField_ColumnProvider, GridField_ActionProvider
 {
     /**
      * {@inheritdoc}
      */
+    public function __construct()
+    {
+        Deprecation::notice(
+            '3.2.0',
+            'Use CommentsGridFieldApproveAction CommentsGridFieldSpamAction instead',
+            Deprecation::SCOPE_CLASS
+        );
+    }
+
     public function augmentColumns($gridField, &$columns)
     {
         if (!in_array('Actions', $columns ?? [])) {
