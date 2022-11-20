@@ -2,6 +2,7 @@
 
 namespace SilverStripe\Comments\Admin\CommentsGridFieldBulkAction;
 
+use SilverStripe\Dev\Deprecation;
 use Colymba\BulkManager\BulkAction\Handler as GridFieldBulkActionHandler;
 use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPRequest;
@@ -10,7 +11,7 @@ use SilverStripe\Control\HTTPResponse;
 /**
  * A {@link GridFieldBulkActionHandler} for bulk marking comments as spam
  *
- * @deprecated 3.1..4.0 Abstract handlers are removed, please use concrete Spam or Approve handlers
+ * @deprecated 3.1.0 Use concrete Spam or Approve handlers instead
  */
 class Handler extends GridFieldBulkActionHandler
 {
@@ -28,6 +29,11 @@ class Handler extends GridFieldBulkActionHandler
      * @param  HTTPRequest $request
      * @return HTTPResponse
      */
+    public function __construct()
+    {
+        Deprecation::notice('3.1.0', 'Use concrete Spam or Approve handlers instead', Deprecation::SCOPE_CLASS);
+    }
+
     public function spam(HTTPRequest $request)
     {
         $ids = array();
