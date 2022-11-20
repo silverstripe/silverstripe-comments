@@ -6,6 +6,6 @@ only:
 ---
 SilverStripe\CMS\Model\SiteTree:
   extensions:
-    - SilverStripe\Comments\Extensions\CommentsExtension
+    comments: SilverStripe\Comments\Extensions\CommentsExtension
   comments:
     enabled_cms: true
