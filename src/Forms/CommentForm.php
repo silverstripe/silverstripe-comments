@@ -77,9 +77,9 @@ class CommentForm extends Form
         // limited HTML is allowed. Populated by JS/Ajax.
         if ($usePreview) {
             $fields->insertAfter(
+                'Comment',
                 ReadonlyField::create('PreviewComment', _t('CommentInterface.PREVIEWLABEL', 'Preview'))
-                    ->setAttribute('style', 'display: none'), // enable through JS
-                'Comment'
+                    ->setAttribute('style', 'display: none') // enable through JS
             );
         }
 

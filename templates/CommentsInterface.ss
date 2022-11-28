@@ -25,7 +25,7 @@
 			<% if $PagedComments %>
 				<ul class="comments-list root-level">
 					<% loop $PagedComments %>
-						<li class="comment $EvenOdd<% if FirstLast %> $FirstLast <% end_if %> $SpamClass">
+						<li class="comment $EvenOdd<% if $FirstLast %> $FirstLast <% end_if %> $SpamClass">
 							<% include CommentsInterface_singlecomment %>
 						</li>
 					<% end_loop %>

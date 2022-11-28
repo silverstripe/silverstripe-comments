@@ -13,6 +13,7 @@ use SilverStripe\Dev\FunctionalTest;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Security\Member;
 use SilverStripe\View\Requirements;
+use SilverStripe\Security\Security;
 
 class CommentsExtensionTest extends FunctionalTest
 {
@@ -218,8 +219,8 @@ class CommentsExtensionTest extends FunctionalTest
     public function testCanModerateComments()
     {
         // ensure nobody logged in
-        if (Member::currentUser()) {
-            Member::currentUser()->logOut();
+        if (Security::getCurrentUser()) {
+            Security::getCurrentUser()->logOut();
         }
 
         $item = $this->objFromFixture(CommentableItem::class, 'first');

@@ -14,6 +14,7 @@ use SilverStripe\Dev\FunctionalTest;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\SecurityToken;
+use SilverStripe\Security\Security;
 
 class CommentingControllerTest extends FunctionalTest
 {
@@ -98,7 +99,7 @@ class CommentingControllerTest extends FunctionalTest
         $comment = $this->objFromFixture(Comment::class, 'testModeratedComment1');
         $st = new CommentSecurityToken($comment);
         $url = 'comments/approve/' . $comment->ID;
-        $url = $st->addToUrl($url, Member::currentUser());
+        $url = $st->addToUrl($url, Security::getCurrentUser());
         $response = $this->get($url, null, ['Referer' => '/']);
         $this->assertEquals(302, $response->getStatusCode());
         $comment = DataObject::get_by_id(Comment::class, $comment->ID);
@@ -131,7 +132,7 @@ class CommentingControllerTest extends FunctionalTest
         $comment->markSpam();
         $st = new CommentSecurityToken($comment);
         $url = 'comments/ham/' . $comment->ID;
-        $url = $st->addToUrl($url, Member::currentUser());
+        $url = $st->addToUrl($url, Security::getCurrentUser());
         $response = $this->get($url);
         $this->assertEquals(302, $response->getStatusCode());
         $comment = DataObject::get_by_id(Comment::class, $comment->ID);
@@ -153,7 +154,7 @@ class CommentingControllerTest extends FunctionalTest
         $comment->markApproved();
         $st = new CommentSecurityToken($comment);
         $url = 'comments/spam/' . $comment->ID;
-        $url = $st->addToUrl($url, Member::currentUser());
+        $url = $st->addToUrl($url, Security::getCurrentUser());
         $response = $this->get($url);
         $this->assertEquals(302, $response->getStatusCode());
         $comment = DataObject::get_by_id(Comment::class, $comment->ID);
@@ -274,7 +275,7 @@ class CommentingControllerTest extends FunctionalTest
         );
         $this->assertEquals(302, $response->getStatusCode());
         // $this->assertStringStartsWith('CommentableItemController#comment-', $response->getHeader('Location'));
-        $this->assertDOSEquals(
+        $this->assertListEquals(
             array(
                 array(
                     'Name' => 'Poster',
@@ -305,7 +306,7 @@ class CommentingControllerTest extends FunctionalTest
         );
         $this->assertEquals(302, $response->getStatusCode());
         // $this->assertStringStartsWith('CommentableItemController#comment-', $response->getHeader('Location'));
-        $this->assertDOSEquals(
+        $this->assertListEquals(
             array(
                 array(
                     'Name' => 'Test Author',

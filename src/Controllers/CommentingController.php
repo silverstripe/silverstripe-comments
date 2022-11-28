@@ -19,6 +19,7 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\ORM\PaginatedList;
 use SilverStripe\Security\Security;
+use SilverStripe\Control\Middleware\HTTPCacheControlMiddleware;
 
 /**
  * @package comments
@@ -499,7 +500,7 @@ class CommentingController extends Controller
     public function redirectBack()
     {
         // Don't cache the redirect back ever
-        HTTP::set_cache_age(0);
+        HTTPCacheControlMiddleware::singleton()->setMaxAge(0);
 
         $url = null;
 

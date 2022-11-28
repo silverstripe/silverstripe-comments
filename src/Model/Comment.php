@@ -28,6 +28,7 @@ use SilverStripe\ORM\PaginatedList;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
 
 /**
  * Represents a single comment object.
@@ -265,7 +266,12 @@ class Comment extends DataObject
      */
     public function getParent()
     {
-        Deprecation::notice('4.0.0', 'Use $this->Parent() instead');
+        // this is wrapped in withNoReplacement() because it's called by ViewableData::__get()
+        // which looks for a `"get$property"` method, which itself is called by
+        // AssetControllExtension::findAssets()
+        Deprecation::withNoReplacement(function () {
+            Deprecation::notice('4.0.0', 'Use $this->Parent() instead');
+        });
         return $this->BaseClass && $this->ParentID
             ? DataObject::get_by_id($this->BaseClass, $this->ParentID, true)
             : null;
@@ -428,7 +434,7 @@ class Comment extends DataObject
     protected function getMember($member = null)
     {
         if (!$member) {
-            $member = Member::currentUser();
+            $member = Security::getCurrentUser();
         }
 
         if (is_numeric($member)) {
@@ -477,7 +483,7 @@ class Comment extends DataObject
     protected function actionLink($action, $member = null)
     {
         if (!$member) {
-            $member = Member::currentUser();
+            $member = Security::getCurrentUser();
         }
         if (!$member) {
             return false;
@@ -650,9 +656,9 @@ class Comment extends DataObject
         // Show member name if given
         if (($author = $this->Author()) && $author->exists()) {
             $fields->insertAfter(
+                'Name',
                 TextField::create('AuthorMember', $this->fieldLabel('Author'), $author->Title)
-                    ->performReadonlyTransformation(),
-                'Name'
+                    ->performReadonlyTransformation()
             );
         }
 

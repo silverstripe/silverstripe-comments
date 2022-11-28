@@ -5,6 +5,7 @@ namespace SilverStripe\Comments\Model\Comment;
 use SilverStripe\Control\Controller;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\RandomGenerator;
+use SilverStripe\Security\Security;
 
 /**
  * Provides the ability to generate cryptographically secure tokens for comment moderation
@@ -87,7 +88,7 @@ class SecurityToken
      */
     public function checkRequest($request)
     {
-        $member = Member::currentUser();
+        $member = Security::getCurrentUser();
         if (!$member) {
             return false;
         }
