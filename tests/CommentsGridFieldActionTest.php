@@ -18,6 +18,7 @@ use SilverStripe\Forms\GridField\GridFieldDeleteAction;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Dev\Deprecation;
 
 class CommentsGridFieldActionTest extends SapphireTest
 {
@@ -40,6 +41,9 @@ class CommentsGridFieldActionTest extends SapphireTest
     protected function setUp(): void
     {
         parent::setUp();
+        if (Deprecation::isEnabled()) {
+            $this->markTestSkipped('Test calls deprecated code');
+        }
         $this->list = new DataList(Team::class);
         $config = CommentsGridFieldConfig::create()->addComponent(new GridFieldDeleteAction());
         $this->gridField = new CommentsGridField('testfield', 'testfield', $this->list, $config);

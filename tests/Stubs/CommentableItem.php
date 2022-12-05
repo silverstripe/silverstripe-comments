@@ -8,6 +8,7 @@ use SilverStripe\Dev\TestOnly;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
 
 class CommentableItem extends DataObject implements TestOnly
 {
@@ -39,7 +40,8 @@ class CommentableItem extends DataObject implements TestOnly
         } elseif (is_numeric($member)) {
             $memberID = $member;
         } else {
-            $memberID = Member::currentUserID();
+            $currentUser = Security::getCurrentUser();
+            $memberID = $currentUser ? $currentUser->ID : 0;
         }
 
         if ($memberID && Permission::checkMember($memberID, array('ADMIN', 'CMS_ACCESS_CommentAdmin'))) {
