@@ -493,11 +493,7 @@ class CommentingController extends Controller
         return $form;
     }
 
-
-    /**
-     * @return HTTPResponse|false
-     */
-    public function redirectBack()
+    public function redirectBack(): HTTPResponse
     {
         // Don't cache the redirect back ever
         HTTPCacheControlMiddleware::singleton()->setMaxAge(0);
@@ -528,7 +524,5 @@ class CommentingController extends Controller
         if (Director::is_site_url($url)) {
             return $this->redirect($url);
         }
-
-        return false;
     }
 }

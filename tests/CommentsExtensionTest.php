@@ -232,7 +232,7 @@ class CommentsExtensionTest extends FunctionalTest
 
     public function testGetCommentRSSLink()
     {
-        Config::modify()->merge('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
+        Config::modify()->set('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
 
         $item = $this->objFromFixture(CommentableItem::class, 'first');
         $link = $item->getCommentRSSLink();
@@ -241,7 +241,7 @@ class CommentsExtensionTest extends FunctionalTest
 
     public function testGetCommentRSSLinkPage()
     {
-        Config::modify()->merge('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
+        Config::modify()->set('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
 
         $item = $this->objFromFixture(CommentableItem::class, 'first');
         $page = $item->getCommentRSSLinkPage();
