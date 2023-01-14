@@ -381,6 +381,15 @@ class Comment extends DataObject
         return false;
     }
 
+    public function canUpdate($member = null)
+    {
+        $member = $this->getMember($member);
+        $memberID = $member->ID ?? null;
+        $authorID = $this->Author()->ID;
+
+        return $memberID === $authorID;
+    }
+
     /**
      * Checks if the comment can be deleted.
      *
@@ -878,6 +887,27 @@ class Comment extends DataObject
         $controller->setOwnerController(Controller::curr());
 
         return $controller->ReplyForm($this);
+    }
+
+    public function UpdateForm()
+    {
+        if (!$this->canUpdate()) {
+            return null;
+        }
+        // Check parent is available
+        $parent = $this->Parent();
+
+        if (!$parent || !$parent->exists()) {
+            return null;
+        }
+
+        // Build update controller
+        $controller = CommentingController::create();
+        $controller->setOwnerRecord($parent);
+        $controller->setParentClass($parent->ClassName);
+        $controller->setOwnerController(Controller::curr());
+
+        return $controller->UpdateForm($this);
     }
 
     /**

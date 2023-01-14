@@ -236,7 +236,29 @@ class CommentForm extends Form
                 break;
         }
 
-        $comment = Comment::create();
+        // Updating comment
+        $existingCommentId = $data["CommentId"] ?? null;
+
+        if ($existingCommentId) {
+            $comment = Comment::get()->byID($existingCommentId);
+
+            if (!$comment) {
+                return $this->getRequestHandler()->httpError(404);
+            }
+
+            if (!$comment->canUpdate()) {
+                return Security::permissionFailure(
+                    $this->controller,
+                    _t(
+                        'SilverStripe\\Comments\\Controllers\\CommentingController.PERMISSIONFAILURE',
+                        "You're not able to update this comment. Please ensure you are logged in and have an "
+                        . 'appropriate permission level.'
+                    )
+                );
+            }
+        } else {
+            $comment = Comment::create();
+        }
         $form->saveInto($comment);
 
         $comment->ParentID = $data['ParentID'];

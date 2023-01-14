@@ -20,6 +20,7 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\ORM\PaginatedList;
 use SilverStripe\Security\Security;
 use SilverStripe\Control\Middleware\HTTPCacheControlMiddleware;
+use SilverStripe\Forms\HiddenField;
 
 /**
  * @package comments
@@ -37,6 +38,7 @@ class CommentingController extends Controller
         'rss',
         'CommentsForm',
         'reply',
+        'updateComment',
         'doPostComment',
         'doPreviewComment',
     ];
@@ -46,6 +48,7 @@ class CommentingController extends Controller
      */
     private static $url_handlers = [
         'reply/$ParentCommentID//$ID/$OtherID' => 'reply',
+        'updateComment/$ParentCommentID//$ID/$OtherID' => 'updateComment',
     ];
 
     /**
@@ -456,6 +459,24 @@ class CommentingController extends Controller
         return $form;
     }
 
+    public function UpdateForm($comment)
+    {
+        $form = $this->CommentsForm();
+        $form->setName('UpdateForm_' . $comment->ID);
+        $form->setHTMLID(null);
+        $form->addExtraClass('update-form');
+
+        $form->Fields()->push(HiddenField::create('CommentId', '', $comment->ID));
+        $form->loadDataFrom($comment);
+
+        // Customise action
+        $form->setFormAction($this->Link('updateComment', $comment->ID));
+
+        $this->extend('updateUpdateForm', $form);
+
+        return $form;
+    }
+
 
     /**
      * Request handler for reply form.
@@ -475,6 +496,19 @@ class CommentingController extends Controller
                 return $this->ReplyForm($comment);
             }
         }
+        return $this->httpError(404);
+    }
+
+    public function updateComment(HTTPRequest $request)
+    {
+        if ($commentID = $request->param('ParentCommentID')) {
+            /** @var Comment $comment */
+            $comment = DataObject::get_by_id(Comment::class, $commentID, true);
+            if ($comment) {
+                return $this->UpdateForm($comment);
+            }
+        }
+
         return $this->httpError(404);
     }
 
