@@ -115,12 +115,12 @@ class CommentForm extends Form
                 $fields->removeByName('Name');
                 $fields->removeByName('Email');
                 $fields->insertBefore(
+                    'URL',
                     ReadonlyField::create(
                         'NameView',
                         _t('CommentInterface.YOURNAME', 'Your name'),
                         $member->getName()
-                    ),
-                    'URL'
+                    )
                 );
                 $fields->push(HiddenField::create('Name', '', $member->getName()));
                 $fields->push(HiddenField::create('Email', '', $member->Email));
