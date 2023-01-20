@@ -1,3 +1,0 @@
-SilverStripe\ORM\DatabaseAdmin:
-  classname_value_remapping:
-    Comment: SilverStripe\Comments\Model\Comment
