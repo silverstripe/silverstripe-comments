@@ -5,7 +5,6 @@ namespace SilverStripe\Comments\Admin\CommentsGridFieldBulkAction;
 use Colymba\BulkManager\BulkAction\Handler;
 use Colymba\BulkTools\HTTPBulkToolsResponse;
 use SilverStripe\Comments\Model\Comment;
-use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 
