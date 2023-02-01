@@ -29,8 +29,7 @@
     "extra": {
         "expose": [
             "client/dist",
-            "client/lang",
-            "css"
+            "client/lang"
         ]
     },
     "scripts": {
