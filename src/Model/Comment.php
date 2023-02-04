@@ -902,7 +902,10 @@ class Comment extends DataObject
         }
 
         // Build update controller
-        $controller = CommentingController::create();
+        $extended_controller = $this->extend('updateController');
+        $extended_controller = $extended_controller ? $extended_controller[0] : null;
+
+        $controller = $extended_controller ?? CommentingController::create();
         $controller->setOwnerRecord($parent);
         $controller->setParentClass($parent->ClassName);
         $controller->setOwnerController(Controller::curr());
