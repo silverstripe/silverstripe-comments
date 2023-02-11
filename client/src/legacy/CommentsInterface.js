@@ -76,27 +76,6 @@
     });
 
     /**
-     * Toggle on/off update form
-     */
-    $('.comments-holder').on('click', '.comment-update-link', function (e) {
-      const allForms = $('.comment-update-form-holder');
-      const formID = `#${$(this).attr('aria-controls')}`;
-      const form = $(formID).closest('.comment-update-form-holder');
-
-      $(this).attr('aria-expanded', (i, attr) => (attr === 'true' ? 'false' : 'true'));
-
-      // Prevent focus
-      e.preventDefault();
-
-      if (form.is(':visible')) {
-        allForms.slideUp();
-      } else {
-        allForms.not(form).slideUp();
-        form.slideDown();
-      }
-    });
-
-    /**
      * Clicking one of the metalinks performs the operation via ajax
      * this inclues the spam and approve links
      */
