@@ -459,6 +459,15 @@ class CommentingController extends Controller
         return $form;
     }
 
+    /**
+     * Create a form for updating an existing comment.
+     *
+     * Extend the existing form to post a comment to update a comment.
+     * Add an extra frield and preload existing data.
+     *
+     * @param Comment $comment
+     * @return Form
+     */
     public function UpdateForm($comment)
     {
         $form = $this->CommentsForm();
@@ -499,6 +508,15 @@ class CommentingController extends Controller
         return $this->httpError(404);
     }
 
+    /**
+     * Request handler for update form.
+     *
+     * Get Comment to be updated and build an update form.
+     *
+     * @param HTTPRequest $request
+     * @throws HTTPResponse_Exception
+     * @return Form
+     */
     public function updateComment(HTTPRequest $request)
     {
         if ($commentID = $request->param('ParentCommentID')) {

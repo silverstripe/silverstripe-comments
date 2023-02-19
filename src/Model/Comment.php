@@ -381,6 +381,12 @@ class Comment extends DataObject
         return false;
     }
 
+    /**
+     * Checks if the comment can be updated by its author.
+     *
+     * @param null|int|Member $member
+     * @return Boolean
+     */
     public function canUpdate($member = null)
     {
         $member = $this->getMember($member);
