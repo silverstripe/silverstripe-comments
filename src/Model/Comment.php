@@ -907,7 +907,9 @@ class Comment extends DataObject
             return null;
         }
 
-        // Build update controller
+        // Allow extending the controller here to receive controllers
+        // created by other extensions building on top of Comments
+        // eg. silverstripe-reviews
         $extended_controller = $this->extend('updateController');
         $extended_controller = $extended_controller ? $extended_controller[0] : null;
 
