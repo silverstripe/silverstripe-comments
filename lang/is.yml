@@ -1,0 +1,15 @@
+is:
+  CommentsInterface_ss:
+    COMMENTS: Athugasemdir
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Athugasemdir
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Athugasemdir
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Athugasemdir
+    COMMENTSTABSET: Athugasemdir
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: Tölvupóstur
+    'ON': á
+    PLURALNAME: Athugasemdir
+    URL: 'Veffang (URL)'

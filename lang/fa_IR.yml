@@ -60,6 +60,7 @@ fa_IR:
     MODERATIONREQUIRED_NONE: 'نیاز به مدیریت ندارد'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'تنها مدیریت کاربران غیر عضو'
     MODERATIONREQUIRED_REQUIRED: 'مدیریت تمامی دیدگاه‌ها'
+    COMMENTSTABSET: دیدگاه‌ها
   SilverStripe\Comments\Model\Comment:
     COMMENT: دیدگاه
     COMMENTBY: 'دیدگاه توسط %s'
@@ -75,3 +76,9 @@ fa_IR:
     ParentComment_Title: 'این دیدگاه پاسخی است به زیر'
     SINGULARNAME: دیدگاه
     URL: 'نشانی اینترنتی'
+  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
+    APPROVE: تایید
+    COMMENTAPPROVED: 'دیدگاه تایید شد.'
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    COMMENTMARKEDSPAM: 'دیدگاه به عنوان هرزنوشت علامت‌گذاری شد.'
+    SPAM: هرزنوشت

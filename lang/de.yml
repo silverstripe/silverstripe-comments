@@ -80,3 +80,9 @@ de:
     ParentComment_Title: 'Dieser Kommentar ist eine Antwort auf'
     SINGULARNAME: Kommentar
     URL: URL
+  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
+    APPROVE: Genehmigen
+    COMMENTAPPROVED: 'Kommentar genehmigt.'
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    COMMENTMARKEDSPAM: 'Commentar als Spam markiert.'
+    SPAM: Spam

@@ -1,0 +1,19 @@
+et_EE:
+  CommentInterface:
+    PREVIEW: Eelvaade
+    PREVIEWLABEL: Eelvaade
+  CommentsInterface_ss:
+    COMMENTS: Komentaarid
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Komentaarid
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentaarid
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentaarid
+    COMMENTSTABSET: Komentaarid
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: Email
+    'ON': '-'
+    OPTIONS: Options
+    PLURALNAME: Komentaarid
+    URL: URL

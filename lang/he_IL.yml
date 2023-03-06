@@ -1,0 +1,17 @@
+he_IL:
+  CommentInterface:
+    PREVIEW: 'תצוגה מקדימה'
+    PREVIEWLABEL: 'תצוגה מקדימה'
+  CommentsInterface_ss:
+    COMMENTS: תגובות
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: תגובות
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: תגובות
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: תגובות
+    COMMENTSTABSET: תגובות
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: 'דואר אלקטרוני'
+    PLURALNAME: תגובות
+    URL: 'כתובת הדף'

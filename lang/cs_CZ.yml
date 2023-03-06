@@ -15,3 +15,12 @@ cs_CZ:
     SpamComments: Spam
   CommentsInterface_singlecomment_ss:
     ISNTSPAM: 'Není spam'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    NewComments: Nový
+    SpamComments: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldAction:
+    SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldConfig:
+    SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    SPAM: Spam

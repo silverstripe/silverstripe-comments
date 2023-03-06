@@ -25,6 +25,7 @@ hu:
     PREV: előző
     RSSFEEDALLCOMMENTS: 'Összes hozzászólás RSS-ben'
     RSSFEEDCOMMENTS: 'Oldal hozzászólásai RSS-ben'
+    DELETEALLCOMMENTS: 'Oldal összes hozzászólásának törlése'
   SilverStripe\Comments\Admin\CommentAdmin:
     ADMIN_PERMISSION: '''Hozzászólások'' mező elérése'
     MENUTITLE: Hozzászólások
@@ -45,3 +46,6 @@ hu:
     PLURALNAME: Hozzászólások
     SINGULARNAME: Hozzászólás
     URL: Link
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Hozzászólások
+    COMMENTSTABSET: Hozzászólások

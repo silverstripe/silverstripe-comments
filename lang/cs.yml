@@ -1,0 +1,19 @@
+cs:
+  CommentInterface:
+    POST: Post
+    PREVIEW: Náhled
+    PREVIEWLABEL: Náhled
+  CommentsInterface_ss:
+    COMMENTS: Komentáře
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Komentáře
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentáře
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentáře
+    COMMENTSTABSET: Komentáře
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: E-mail
+    'ON': v
+    PLURALNAME: Komentáře
+    URL: URL

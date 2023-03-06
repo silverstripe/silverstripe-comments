@@ -1,0 +1,22 @@
+ar:
+  CommentInterface:
+    PREVIEW: معاينة
+    PREVIEWLABEL: معاينة
+  CommentsInterface_ss:
+    COMMENTS: التعليقات
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: التعليقات
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: التعليقات
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: التعليقات
+    COMMENTSTABSET: التعليقات
+  SilverStripe\Comments\Model\Comment:
+    COMMENT: تعليق
+    EMAIL: 'البريد الإلكتروني'
+    'ON': في
+    OPTIONS: الخيارات
+    PARENTTITLE: والد
+    PLURALNAME: التعليقات
+    SINGULARNAME: تعليق
+    URL: الرابط

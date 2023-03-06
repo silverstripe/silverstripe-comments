@@ -25,6 +25,7 @@ ro:
     PREV: anteriorul
     RSSFEEDALLCOMMENTS: 'RSS pentru toate comentariile'
     RSSFEEDCOMMENTS: 'RSS pentru comentariile de pe această pagină'
+    DELETEALLCOMMENTS: 'Ştergeţi toate comentariile de pe această pagină'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Commentarii
   SilverStripe\Comments\Controllers\CommentingController:
@@ -44,3 +45,7 @@ ro:
     PLURALNAME: Comentarii
     SINGULARNAME: Comentariu
     URL: URL
+    'ON': pe
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Comentarii
+    COMMENTSTABSET: Comentarii

@@ -25,6 +25,7 @@ id:
     PREV: sebelumnya
     RSSFEEDALLCOMMENTS: 'Sindikasi RSS untuk semua komentar'
     RSSFEEDCOMMENTS: 'Sindikasi RSS untuk komentar di laman ini'
+    DELETEALLCOMMENTS: 'Hapus semua komentar di laman ini'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Komentar
   SilverStripe\Comments\Controllers\CommentingController:
@@ -44,3 +45,6 @@ id:
     PLURALNAME: Komentar
     SINGULARNAME: Komentar
     URL: URL
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentar
+    COMMENTSTABSET: Komentar

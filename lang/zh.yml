@@ -1,0 +1,21 @@
+zh:
+  CommentInterface:
+    PREVIEW: 预览
+    PREVIEWLABEL: 预览
+  CommentsInterface_ss:
+    COMMENTS: 评论
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: 评论
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: 评论
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: 评论
+    COMMENTSTABSET: 评论
+  SilverStripe\Comments\Model\Comment:
+    COMMENT: 评论
+    EMAIL: 电子邮件
+    OPTIONS: 选项
+    PARENTTITLE: 父
+    PLURALNAME: 评论
+    SINGULARNAME: 评论
+    URL: 网址

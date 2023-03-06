@@ -60,6 +60,7 @@ sk:
     MODERATIONREQUIRED_NONE: 'Nevyžadovať odsúhlasenie'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Vyžadovať odsúhlasenie len od neprihlásených užívateľov'
     MODERATIONREQUIRED_REQUIRED: 'Odsúhlasiť všetky komentáre'
+    COMMENTSTABSET: Komentáre
   SilverStripe\Comments\Model\Comment:
     COMMENT: Komentár
     COMMENTBY: 'Komentáre od %s'
@@ -75,3 +76,9 @@ sk:
     ParentComment_Title: 'Tento komentár je odpoveď na komentár zobrazený nižšie'
     SINGULARNAME: Komentár
     URL: 'Web adresa'
+  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
+    APPROVE: Schváliť
+    COMMENTAPPROVED: 'Komentár schválený.'
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    COMMENTMARKEDSPAM: 'Komentár označený ako spam.'
+    SPAM: Spam
