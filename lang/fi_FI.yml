@@ -1,0 +1,15 @@
+fi_FI:
+  CommentsInterface_ss:
+    COMMENTS: Kommentit
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Kommentit
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Kommentit
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Kommentit
+    COMMENTSTABSET: Kommentit
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: Sähköposti
+    OPTIONS: Valinnat
+    PLURALNAME: Kommentit
+    URL: URL-osoite

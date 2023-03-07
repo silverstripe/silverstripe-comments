@@ -1,0 +1,18 @@
+bg:
+  CommentInterface:
+    PREVIEW: Преглед
+    PREVIEWLABEL: Преглед
+  CommentsInterface_ss:
+    COMMENTS: Коментари
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Коментари
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Коментари
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Коментари
+    COMMENTSTABSET: Коментари
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: Еmail
+    'ON': на
+    PLURALNAME: Коментари
+    URL: URL

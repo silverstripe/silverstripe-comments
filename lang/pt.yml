@@ -1,0 +1,16 @@
+pt:
+  CommentInterface:
+    PREVIEW: Pré-visualização
+    PREVIEWLABEL: Pré-visualização
+  CommentsInterface_ss:
+    COMMENTS: Comentários
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Comentários
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Comentários
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Comentários
+    COMMENTSTABSET: Comentários
+  SilverStripe\Comments\Model\Comment:
+    'ON': em
+    PLURALNAME: Comentários

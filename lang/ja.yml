@@ -1,0 +1,18 @@
+ja:
+  CommentInterface:
+    PREVIEW: プレビュー
+    PREVIEWLABEL: プレビュー
+  CommentsInterface_ss:
+    COMMENTS: コメント
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: コメント
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: コメント
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: コメント
+    COMMENTSTABSET: コメント
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: メール
+    OPTIONS: オプション
+    PLURALNAME: コメント
+    URL: URL

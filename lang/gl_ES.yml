@@ -1,0 +1,16 @@
+gl_ES:
+  CommentInterface:
+    PREVIEW: Previsualizar
+    PREVIEWLABEL: Previsualizar
+  CommentsInterface_ss:
+    COMMENTS: Comentarios
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Comentarios
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Comentarios
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Comentarios
+    COMMENTSTABSET: Comentarios
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: Correo-e
+    PLURALNAME: Comentarios

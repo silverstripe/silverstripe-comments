@@ -1,0 +1,17 @@
+sl:
+  CommentInterface:
+    PREVIEW: Predogled
+    PREVIEWLABEL: Predogled
+  CommentsInterface_ss:
+    COMMENTS: Komentarji
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Komentarji
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentarji
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentarji
+    COMMENTSTABSET: Komentarji
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: E-pošta
+    PLURALNAME: Komentarji
+    URL: URL

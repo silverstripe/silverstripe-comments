@@ -43,3 +43,7 @@ es:
     PLURALNAME: Comentarios
     SINGULARNAME: Comentario
     URL: URL
+    'ON': en
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Comentarios
+    COMMENTSTABSET: Comentarios

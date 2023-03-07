@@ -50,6 +50,7 @@ pl_PL:
     MODERATIONREQUIRED_NONE: 'Komentarze nie wymagają moderacji'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Moderuj tylko niezarejestrowanych użytkowników'
     MODERATIONREQUIRED_REQUIRED: 'Moderuj wszystkie komentarze'
+    COMMENTSTABSET: Komentarze
   SilverStripe\Comments\Model\Comment:
     COMMENT: Komentarz
     COMMENTBY: 'Komentarz %s'
@@ -64,3 +65,10 @@ pl_PL:
     ParentComment_Title: 'Ten komentarz jest odpowiedzią na komentarz poniżej'
     SINGULARNAME: Komentarz
     URL: URL
+    OPTIONS: Opcje
+  SilverStripe\Comments\Admin\CommentsGridFieldAction:
+    SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldConfig:
+    SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    SPAM: Spam

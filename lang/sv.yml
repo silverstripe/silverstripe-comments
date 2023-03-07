@@ -25,6 +25,7 @@ sv:
     PREV: föregående
     RSSFEEDALLCOMMENTS: 'RSS-flöde för samtliga kommentarer'
     RSSFEEDCOMMENTS: 'RSS-flöde för kommentarer på denna sida'
+    DELETEALLCOMMENTS: 'Radera alla kommenterar på den här sidan'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Kommentarer
   SilverStripe\Comments\Controllers\CommentingController:
@@ -44,3 +45,8 @@ sv:
     PLURALNAME: Kommentarer
     SINGULARNAME: Kommentar
     URL: URL
+    'ON': den
+    OPTIONS: Alternativ
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Kommentarer
+    COMMENTSTABSET: Kommentarer

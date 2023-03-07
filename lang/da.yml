@@ -1,0 +1,18 @@
+da:
+  CommentInterface:
+    PREVIEW: Forhåndsvisning
+    PREVIEWLABEL: Forhåndsvisning
+  CommentsInterface_ss:
+    COMMENTS: Kommentarer
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Kommentarer
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Kommentarer
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Kommentarer
+    COMMENTSTABSET: Kommentarer
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: Email
+    'ON': 'd. '
+    PLURALNAME: Kommentarer
+    URL: URL

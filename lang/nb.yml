@@ -2,6 +2,9 @@ nb:
   CommentInterface:
     POST: 'Legg ut'
     YOURNAME: Navn
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Vennligst fyll inn din e-postadresse'
+    PREVIEW: Forhåndsvisning
+    PREVIEWLABEL: Forhåndsvisning
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Kommentaren din har blitt lagret og er lagt i kø for moderering.'
   CommentsInterface_ss:
@@ -17,6 +20,8 @@ nb:
     PREV: forrige
     RSSFEEDALLCOMMENTS: 'RSS-feed for alle kommentarer'
     RSSFEEDCOMMENTS: 'RSS-feed for kommentarer på denne siden'
+    AWAITINGMODERATION: 'Kommentaren din har blitt lagret og er lagt i kø for moderering.'
+    DELETEALLCOMMENTS: 'Fjern alle kommentarer på denne siden'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Kommentarer
   SilverStripe\Comments\Controllers\CommentingController:
@@ -31,3 +36,8 @@ nb:
     MODERATED: 'Moderert?'
     PLURALNAME: Kommentarer
     SINGULARNAME: Kommentar
+    EMAIL: Epost
+    URL: Nettadresse
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Kommentarer
+    COMMENTSTABSET: Kommentarer

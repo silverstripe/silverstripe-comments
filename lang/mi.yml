@@ -1,0 +1,21 @@
+mi:
+  CommentInterface:
+    PREVIEW: Arokite
+    PREVIEWLABEL: Arokite
+  CommentsInterface_ss:
+    COMMENTS: 'Ngā Tākupu'
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: 'Ngā Tākupu'
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: 'Ngā Tākupu'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: 'Ngā Tākupu'
+    COMMENTSTABSET: 'Ngā Tākupu'
+  SilverStripe\Comments\Model\Comment:
+    COMMENT: Tākupu
+    EMAIL: Īmēra
+    OPTIONS: 'Ngā Kōwhiringa'
+    PARENTTITLE: Matua
+    PLURALNAME: 'Ngā Tākupu'
+    SINGULARNAME: Tākupu
+    URL: PRO

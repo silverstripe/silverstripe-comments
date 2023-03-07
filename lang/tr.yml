@@ -1,0 +1,17 @@
+tr:
+  CommentInterface:
+    PREVIEW: Önizleme
+    PREVIEWLABEL: Önizleme
+  CommentsInterface_ss:
+    COMMENTS: Yorumlar
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Yorumlar
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Yorumlar
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Yorumlar
+    COMMENTSTABSET: Yorumlar
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: Eposta
+    'ON': üzerinde
+    PLURALNAME: Yorumlar
