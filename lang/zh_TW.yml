@@ -1,0 +1,14 @@
+zh_TW:
+  CommentsInterface_ss:
+    COMMENTS: 意見
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: 意見
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: 意見
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: 意見
+    COMMENTSTABSET: 意見
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: 電子郵件
+    PLURALNAME: 意見
+    URL: 網址

@@ -1,0 +1,22 @@
+it:
+  CommentInterface:
+    PREVIEW: Anteprima
+    PREVIEWLABEL: Anteprima
+  CommentsInterface_ss:
+    COMMENTS: Commenti
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Commenti
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Commenti
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Commenti
+    COMMENTSTABSET: Commenti
+  SilverStripe\Comments\Model\Comment:
+    COMMENT: Commento
+    EMAIL: E-mail
+    'ON': il
+    OPTIONS: Opzioni
+    PARENTTITLE: Parente
+    PLURALNAME: Commenti
+    SINGULARNAME: Commento
+    URL: URL

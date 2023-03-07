@@ -1,0 +1,20 @@
+pl:
+  CommentInterface:
+    EMAILADDRESS_MESSAGE_REQUIRED: 'Proszę podać adres email'
+    POST: Post
+    PREVIEW: Podgląd
+    PREVIEWLABEL: Podgląd
+  CommentsInterface_ss:
+    COMMENTS: Komentarze
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Komentarze
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentarze
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentarze
+    COMMENTSTABSET: Komentarze
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: Email
+    'ON': Opublikowano
+    PLURALNAME: Komentarze
+    URL: 'Adres URL'

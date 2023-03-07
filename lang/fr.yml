@@ -25,6 +25,7 @@ fr:
     PREV: précédent
     RSSFEEDALLCOMMENTS: 'Flux RSS de tous les commentaires'
     RSSFEEDCOMMENTS: 'Flux RSS de commentaires de cette page'
+    DELETEALLCOMMENTS: 'Supprimer tout les commentaires de cette page'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Commentaires
   SilverStripe\Comments\Controllers\CommentingController:
@@ -35,6 +36,7 @@ fr:
     WEBSITEURL: 'URl de votre site web'
   SilverStripe\Comments\Extensions\CommentsExtension:
     COMMENTOPTIONS: Commentaires
+    COMMENTSTABSET: Commentaires
   SilverStripe\Comments\Model\Comment:
     COMMENT: Commentaire
     COMMENTBY: 'Commentaire par %s'
@@ -46,3 +48,4 @@ fr:
     PLURALNAME: Commentaires
     SINGULARNAME: Commentaire
     URL: URL
+    'ON': sur

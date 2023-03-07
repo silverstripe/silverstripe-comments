@@ -25,6 +25,7 @@ sr@latin:
     PREV: prethodni
     RSSFEEDALLCOMMENTS: 'RSS feed za sve komentare'
     RSSFEEDCOMMENTS: 'RSS feed za komentare na ovoj strani'
+    DELETEALLCOMMENTS: 'Obriši sve komentare na ovoj strani'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Komentari
   SilverStripe\Comments\Controllers\CommentingController:
@@ -44,3 +45,6 @@ sr@latin:
     PLURALNAME: Komentari
     SINGULARNAME: Komentar
     URL: URL
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentari
+    COMMENTSTABSET: Komentari
