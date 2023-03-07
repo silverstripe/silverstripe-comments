@@ -1,0 +1,15 @@
+pt_PT:
+  CommentsInterface_ss:
+    COMMENTS: Comentários
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Comentários
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Comentários
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Comentários
+    COMMENTSTABSET: Comentários
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: Email
+    'ON': em
+    OPTIONS: Options
+    PLURALNAME: Comentários

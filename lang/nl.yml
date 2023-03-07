@@ -31,8 +31,12 @@ nl:
     PREV: vorige
     RSSFEEDALLCOMMENTS: 'RSS feed voor alle reacties'
     RSSFEEDCOMMENTS: 'RSS feed voor reacties op deze pagina'
+    AWAITINGMODERATION: 'Je reactie is verstuurd en is in afwachting van moderatie.'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Reacties
+    Comments: Goedgekeurd
+    NewComments: Nieuw
+    SpamComments: Spam
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Reacties
     EMAILADDRESS: 'E-mail adres (wordt niet gepubliceerd)'
@@ -41,6 +45,7 @@ nl:
     WEBSITEURL: 'Website URL'
   SilverStripe\Comments\Extensions\CommentsExtension:
     COMMENTOPTIONS: Reacties
+    COMMENTSTABSET: Reacties
   SilverStripe\Comments\Model\Comment:
     COMMENT: Reactie
     ISSPAM: 'Spam?'
@@ -48,3 +53,12 @@ nl:
     'ON': op
     PLURALNAME: Reacties
     SINGULARNAME: Reactie
+    EMAIL: E-mail
+    OPTIONS: Instellingen
+    URL: URL
+  SilverStripe\Comments\Admin\CommentsGridFieldAction:
+    SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldConfig:
+    SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    SPAM: Spam

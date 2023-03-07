@@ -1,0 +1,17 @@
+sr_RS@latin:
+  CommentInterface:
+    PREVIEW: 'Prethodni pregled'
+    PREVIEWLABEL: 'Prethodni pregled'
+  CommentsInterface_ss:
+    COMMENTS: Komentari
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Komentari
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Komentari
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentari
+    COMMENTSTABSET: Komentari
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: E-pošta
+    PLURALNAME: Komentari
+    URL: URL

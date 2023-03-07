@@ -1,0 +1,17 @@
+el:
+  CommentInterface:
+    PREVIEW: Προεπισκόπιση
+    PREVIEWLABEL: Προεπισκόπιση
+  CommentsInterface_ss:
+    COMMENTS: Σχόλια
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: Σχόλια
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: Σχόλια
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Σχόλια
+    COMMENTSTABSET: Σχόλια
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: Email
+    PLURALNAME: Σχόλια
+    URL: URL

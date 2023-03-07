@@ -1,0 +1,17 @@
+ko:
+  CommentInterface:
+    PREVIEW: 미리보기
+    PREVIEWLABEL: 미리보기
+  CommentsInterface_ss:
+    COMMENTS: 코멘트
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: 코멘트
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: 코멘트
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: 코멘트
+    COMMENTSTABSET: 코멘트
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: 이메일
+    PLURALNAME: 코멘트
+    URL: URL

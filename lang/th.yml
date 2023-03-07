@@ -1,0 +1,16 @@
+th:
+  CommentInterface:
+    PREVIEW: ดูตัวอย่าง
+    PREVIEWLABEL: ดูตัวอย่าง
+  CommentsInterface_ss:
+    COMMENTS: ความคิดเห็น
+  SilverStripe\Comments\Admin\CommentAdmin:
+    MENUTITLE: ความคิดเห็น
+  SilverStripe\Comments\Controllers\CommentingController:
+    COMMENTS: ความคิดเห็น
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: ความคิดเห็น
+    COMMENTSTABSET: ความคิดเห็น
+  SilverStripe\Comments\Model\Comment:
+    EMAIL: อีเมล
+    PLURALNAME: ความคิดเห็น

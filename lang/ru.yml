@@ -60,6 +60,7 @@ ru:
     MODERATIONREQUIRED_NONE: 'Проверка не требуется'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Проверка требуется только для незарегистрированных пользователей'
     MODERATIONREQUIRED_REQUIRED: 'Проверка требуется для всех комментариев'
+    COMMENTSTABSET: Комментарии
   SilverStripe\Comments\Model\Comment:
     COMMENT: Комментарий
     COMMENTBY: 'Комментарий автора %s'
@@ -75,3 +76,9 @@ ru:
     ParentComment_Title: 'Этот комментарий ответ на сообщение ниже'
     SINGULARNAME: Комментарий
     URL: URL
+  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
+    APPROVE: Одобрить
+    COMMENTAPPROVED: 'Комментарий одобрен.'
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    COMMENTMARKEDSPAM: 'Комментарий помечен как спам.'
+    SPAM: Спам

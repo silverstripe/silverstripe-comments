@@ -60,6 +60,7 @@ hr:
     MODERATIONREQUIRED_NONE: 'Nije potrebna moderacija'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Samo moderiraj goste'
     MODERATIONREQUIRED_REQUIRED: 'Moderiraj sve komentare'
+    COMMENTSTABSET: Komentari
   SilverStripe\Comments\Model\Comment:
     COMMENT: Komentar
     COMMENTBY: 'Komentar od %s'
@@ -75,3 +76,9 @@ hr:
     ParentComment_Title: 'Ovaj komentar je odgovor na dolje'
     SINGULARNAME: Komentar
     URL: Link
+  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
+    APPROVE: Odobri
+    COMMENTAPPROVED: 'Komentar odobren.'
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    COMMENTMARKEDSPAM: 'Komentar označen kao spam.'
+    SPAM: Spam
