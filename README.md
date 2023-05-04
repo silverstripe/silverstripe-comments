@@ -9,19 +9,11 @@ This module provides commenting functionality for Pages and other DataObjects on
 
 For more documentation about the module see the provided documentation located inside the docs folder.
 
-## Requirements
-
- * Silverstripe ^4.0
-
-**Note:** This branch is compatible with Silverstripe 4. For a Silverstripe 3 release, please see the 2.x release line.
-
 ## Installation
 
-```
+```sh
 composer require silverstripe/comments
 ```
-
-See docs/en/Installing.md
 
 ## Related
 
@@ -39,4 +31,4 @@ and any new translations will be merged back to the project source code.
 Please use https://www.transifex.com/projects/p/silverstripe-comments/ to contribute translations,
 rather than sending pull requests with YAML files.
 
-See the ["i18n" topic](https://docs.silverstripe.org/en/4/developer_guides/i18n/) on doc.silverstripe.org for more details.
+See the ["i18n" topic](https://docs.silverstripe.org/en/developer_guides/i18n/) on docs.silverstripe.org for more details.
