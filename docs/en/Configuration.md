@@ -75,6 +75,20 @@ use SilverStripe\CMS\Model\SiteTree;
   // Get the setting
   $loginRequired = singleton(SiteTree::class)->getCommentsOption('require_login');
 ```
+### spam control
+
+you can create a comment.yml file with the following content:
+
+```yml
+---
+Name: 'app_comments_spam'
+---
+
+SilverStripe\Comments\Forms\CommentForm:
+  extensions:
+    - SilverStripe\SpamProtection\Extension\CommentSpamProtection
+```
+
 
 
 ## HTML Comments
