@@ -84,7 +84,7 @@ you can create a comment.yml file with the following content:
 Name: 'app_comments_spam'
 ---
 
-SilverStripe\Comments\Forms\CommentForm:
+Page:
   extensions:
     - SilverStripe\SpamProtection\Extension\CommentSpamProtection
 ```
