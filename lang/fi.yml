@@ -46,8 +46,14 @@ fi:
     COMMENTAPPROVED: 'Kommentti hyväksytty'
     COMMENTMARKEDSPAM: 'Kommentti merkitty spämmiksi.'
     SPAM: Spämmiä
+  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
+    APPROVE: Hyväksy
+    COMMENTAPPROVED: 'Kommentti hyväksytty'
   SilverStripe\Comments\Admin\CommentsGridFieldConfig:
     APPROVE: Hyväksy
+    SPAM: Spämmiä
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    COMMENTMARKEDSPAM: 'Kommentti merkitty spämmiksi.'
     SPAM: Spämmiä
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Kommentit
@@ -76,9 +82,3 @@ fi:
     ParentComment_Title: 'Tämä kommentti on vastaus alla olevaan'
     SINGULARNAME: Kommentti
     URL: URL-osoite
-  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
-    APPROVE: Hyväksy
-    COMMENTAPPROVED: 'Kommentti hyväksytty'
-  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
-    COMMENTMARKEDSPAM: 'Kommentti merkitty spämmiksi.'
-    SPAM: Spämmiä

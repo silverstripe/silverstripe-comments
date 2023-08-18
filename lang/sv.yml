@@ -18,6 +18,7 @@ sv:
     COMMENTPOSTLOGIN: 'Logga in'
     COMMENTS: Kommentarer
     COMMENTSDISABLED: 'Möjligheten att skriva kommentarer har spärrats'
+    DELETEALLCOMMENTS: 'Radera alla kommenterar på den här sidan'
     LOGINTOPOSTCOMMENT: 'Logga in för att skriva en kommentar'
     NEXT: nästa
     NOCOMMENTSYET: 'Inga har kommenterat på denna sida ännu'
@@ -25,7 +26,6 @@ sv:
     PREV: föregående
     RSSFEEDALLCOMMENTS: 'RSS-flöde för samtliga kommentarer'
     RSSFEEDCOMMENTS: 'RSS-flöde för kommentarer på denna sida'
-    DELETEALLCOMMENTS: 'Radera alla kommenterar på den här sidan'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Kommentarer
   SilverStripe\Comments\Controllers\CommentingController:
@@ -34,6 +34,9 @@ sv:
     PERMISSIONFAILURE: 'Du kan inte skriva kommentarer på denna sida. Vänligen kontrollera att du är inloggad och har de användarrättigheter som krävs.'
     RSSTITLE: 'RSS-flöde med kommentarer'
     WEBSITEURL: 'Din hemsidas URL'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Kommentarer
+    COMMENTSTABSET: Kommentarer
   SilverStripe\Comments\Model\Comment:
     COMMENT: Kommentarer
     COMMENTBY: 'Kommentar av %s'
@@ -41,12 +44,9 @@ sv:
     EMAIL: E-post
     ISSPAM: 'Spam?'
     MODERATED: 'Modererad?'
+    'ON': den
+    OPTIONS: Alternativ
     PARENTTITLE: 'Överordnad sida'
     PLURALNAME: Kommentarer
     SINGULARNAME: Kommentar
     URL: URL
-    'ON': den
-    OPTIONS: Alternativ
-  SilverStripe\Comments\Extensions\CommentsExtension:
-    COMMENTOPTIONS: Kommentarer
-    COMMENTSTABSET: Kommentarer
