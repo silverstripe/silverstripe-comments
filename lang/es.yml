@@ -32,6 +32,9 @@ es:
     EMAILADDRESS: 'Su dirección de correo (no se publicará)'
     PERMISSIONFAILURE: 'Ud no puede publicar comentarios en esta página. Por favor asegúrese que haya iniciado sesión y que tenga el adecuado nivel de permisos.'
     WEBSITEURL: 'URL de su sitio Web'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Comentarios
+    COMMENTSTABSET: Comentarios
   SilverStripe\Comments\Model\Comment:
     COMMENT: Comentario
     COMMENTBY: 'Comentario por %s'
@@ -39,11 +42,8 @@ es:
     EMAIL: Email
     ISSPAM: '¿Spam?'
     MODERATED: '¿Moderado?'
+    'ON': en
     PARENTTITLE: Padre
     PLURALNAME: Comentarios
     SINGULARNAME: Comentario
     URL: URL
-    'ON': en
-  SilverStripe\Comments\Extensions\CommentsExtension:
-    COMMENTOPTIONS: Comentarios
-    COMMENTSTABSET: Comentarios

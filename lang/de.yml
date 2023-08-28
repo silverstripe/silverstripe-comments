@@ -46,8 +46,14 @@ de:
     COMMENTAPPROVED: 'Kommentar genehmigt.'
     COMMENTMARKEDSPAM: 'Commentar als Spam markiert.'
     SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
+    APPROVE: Genehmigen
+    COMMENTAPPROVED: 'Kommentar genehmigt.'
   SilverStripe\Comments\Admin\CommentsGridFieldConfig:
     APPROVE: Genehmigen
+    SPAM: Spam
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    COMMENTMARKEDSPAM: 'Commentar als Spam markiert.'
     SPAM: Spam
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Kommentare
@@ -80,9 +86,3 @@ de:
     ParentComment_Title: 'Dieser Kommentar ist eine Antwort auf'
     SINGULARNAME: Kommentar
     URL: URL
-  SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
-    APPROVE: Genehmigen
-    COMMENTAPPROVED: 'Kommentar genehmigt.'
-  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
-    COMMENTMARKEDSPAM: 'Commentar als Spam markiert.'
-    SPAM: Spam

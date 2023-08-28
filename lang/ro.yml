@@ -18,6 +18,7 @@ ro:
     COMMENTPOSTLOGIN: Autentificare
     COMMENTS: Comentarii
     COMMENTSDISABLED: 'Postarea de comentarii a fost dezactivată'
+    DELETEALLCOMMENTS: 'Ştergeţi toate comentariile de pe această pagină'
     LOGINTOPOSTCOMMENT: 'Autentificaţi-vă pentru a publica un comentariu'
     NEXT: următorul
     NOCOMMENTSYET: 'Nimeni nu a comentat încă pe aceasta pagină.'
@@ -25,7 +26,6 @@ ro:
     PREV: anteriorul
     RSSFEEDALLCOMMENTS: 'RSS pentru toate comentariile'
     RSSFEEDCOMMENTS: 'RSS pentru comentariile de pe această pagină'
-    DELETEALLCOMMENTS: 'Ştergeţi toate comentariile de pe această pagină'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Commentarii
   SilverStripe\Comments\Controllers\CommentingController:
@@ -34,6 +34,9 @@ ro:
     PERMISSIONFAILURE: 'Nu puteţi publica comentarii pe această pagină. Vă rugăm să vă asiguaţi că sunteți autentificat și că aveşi nivelul de permisiune corespunzător.'
     RSSTITLE: 'RSS feed pentru comentarii'
     WEBSITEURL: 'URL Site web'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Comentarii
+    COMMENTSTABSET: Comentarii
   SilverStripe\Comments\Model\Comment:
     COMMENT: Comentariu
     COMMENTBY: 'Comentat de %s'
@@ -41,11 +44,8 @@ ro:
     EMAIL: E-mail
     ISSPAM: 'Spam?'
     MODERATED: 'Moderare?'
+    'ON': pe
     PARENTTITLE: Părinte
     PLURALNAME: Comentarii
     SINGULARNAME: Comentariu
     URL: URL
-    'ON': pe
-  SilverStripe\Comments\Extensions\CommentsExtension:
-    COMMENTOPTIONS: Comentarii
-    COMMENTSTABSET: Comentarii
