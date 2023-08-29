@@ -18,6 +18,7 @@ id:
     COMMENTPOSTLOGIN: 'Login di Sini'
     COMMENTS: Komentar
     COMMENTSDISABLED: 'Komentar sedang dinonaktifkan'
+    DELETEALLCOMMENTS: 'Hapus semua komentar di laman ini'
     LOGINTOPOSTCOMMENT: 'Login untuk berkomentar'
     NEXT: selanjutnya
     NOCOMMENTSYET: 'Belum ada yang berkomentar.'
@@ -25,7 +26,6 @@ id:
     PREV: sebelumnya
     RSSFEEDALLCOMMENTS: 'Sindikasi RSS untuk semua komentar'
     RSSFEEDCOMMENTS: 'Sindikasi RSS untuk komentar di laman ini'
-    DELETEALLCOMMENTS: 'Hapus semua komentar di laman ini'
   SilverStripe\Comments\Admin\CommentAdmin:
     MENUTITLE: Komentar
   SilverStripe\Comments\Controllers\CommentingController:
@@ -34,6 +34,9 @@ id:
     PERMISSIONFAILURE: 'Anda tidak dapat mengomentari laman ini. Mohon pastikan Anda sudah login dan mendapatkan hak akses yang sesuai.'
     RSSTITLE: 'Sindikasi RSS Komentar'
     WEBSITEURL: 'URL situs Anda'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Komentar
+    COMMENTSTABSET: Komentar
   SilverStripe\Comments\Model\Comment:
     COMMENT: Komentar
     COMMENTBY: 'Komentar oleh %s'
@@ -45,6 +48,3 @@ id:
     PLURALNAME: Komentar
     SINGULARNAME: Komentar
     URL: URL
-  SilverStripe\Comments\Extensions\CommentsExtension:
-    COMMENTOPTIONS: Komentar
-    COMMENTSTABSET: Komentar

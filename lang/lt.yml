@@ -39,6 +39,12 @@ lt:
     MENUTITLE: Komentarai
     NewComments: Nauji
     SpamComments: Šlamštas
+  SilverStripe\Comments\Admin\CommentsGridFieldAction:
+    SPAM: Šlamštas
+  SilverStripe\Comments\Admin\CommentsGridFieldConfig:
+    SPAM: Šlamštas
+  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
+    SPAM: Šlamštas
   SilverStripe\Comments\Controllers\CommentingController:
     COMMENTS: Komentarai
     EMAILADDRESS: 'Jūsų el.pašto adresas (nebus skelbiamas)'
@@ -47,10 +53,10 @@ lt:
     WEBSITEURL: 'Jūsų svetainės nuoroda'
   SilverStripe\Comments\Extensions\CommentsExtension:
     COMMENTOPTIONS: Komentarai
+    COMMENTSTABSET: Komentarai
     MODERATIONREQUIRED_NONE: 'Nereikalauja patvirtinimo'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Tvirtinti tik neregistruotų vartotojų'
     MODERATIONREQUIRED_REQUIRED: 'Tvirtinti visus komentarus'
-    COMMENTSTABSET: Komentarai
   SilverStripe\Comments\Model\Comment:
     COMMENT: Komentaras
     COMMENTBY: 'Komentarą parašė ''%s'''
@@ -65,9 +71,3 @@ lt:
     ParentComment_Title: 'Šis komentaras yra atsakymas į žemiau esantį'
     SINGULARNAME: Komentaras
     URL: 'URL adresas'
-  SilverStripe\Comments\Admin\CommentsGridFieldAction:
-    SPAM: Šlamštas
-  SilverStripe\Comments\Admin\CommentsGridFieldConfig:
-    SPAM: Šlamštas
-  SilverStripe\Comments\Admin\CommentsGridFieldSpamAction:
-    SPAM: Šlamštas
