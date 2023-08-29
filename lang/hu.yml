@@ -18,6 +18,7 @@ hu:
     COMMENTPOSTLOGIN: Bejelentkezés
     COMMENTS: Hozzászólások
     COMMENTSDISABLED: 'A hozzászólások le vannak tiltva '
+    DELETEALLCOMMENTS: 'Oldal összes hozzászólásának törlése'
     LOGINTOPOSTCOMMENT: 'A hozzászóláshoz jelentkezzen be '
     NEXT: következő
     NOCOMMENTSYET: 'Nem érkeztek hozzászólások'
@@ -25,7 +26,6 @@ hu:
     PREV: előző
     RSSFEEDALLCOMMENTS: 'Összes hozzászólás RSS-ben'
     RSSFEEDCOMMENTS: 'Oldal hozzászólásai RSS-ben'
-    DELETEALLCOMMENTS: 'Oldal összes hozzászólásának törlése'
   SilverStripe\Comments\Admin\CommentAdmin:
     ADMIN_PERMISSION: '''Hozzászólások'' mező elérése'
     MENUTITLE: Hozzászólások
@@ -35,6 +35,9 @@ hu:
     PERMISSIONFAILURE: 'Ön csak a bejelentkezést követően, és a megfelelő jogosultság birtokában hozhat létre hozzászólást.'
     RSSTITLE: 'Hozzászólások RSS-ben'
     WEBSITEURL: 'Az Ön webcíme'
+  SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTOPTIONS: Hozzászólások
+    COMMENTSTABSET: Hozzászólások
   SilverStripe\Comments\Model\Comment:
     COMMENT: Hozzászólás
     COMMENTBY: 'Létrehozta %s'
@@ -46,6 +49,3 @@ hu:
     PLURALNAME: Hozzászólások
     SINGULARNAME: Hozzászólás
     URL: Link
-  SilverStripe\Comments\Extensions\CommentsExtension:
-    COMMENTOPTIONS: Hozzászólások
-    COMMENTSTABSET: Hozzászólások
