@@ -3,8 +3,8 @@
  * @package comments
  */
 (function ($) {
-    // The above closure encapsulates the $ variable away from the global scope
-    // and the one below is the `$(document).ready(...)` shorthand.
+  // The above closure encapsulates the $ variable away from the global scope
+  // and the one below is the `$(document).ready(...)` shorthand.
   $(() => {
     // Override the default URL validator in order to extend it to allow protocol-less URLs
     $.validator.methods.url = function (value, element) {
@@ -117,7 +117,7 @@
             comment.html(html).addClass('spam');
           }
         },
-        failure(html) {
+        failure() {
           const errorMsg = ss.i18n._t('CommentsInterface_singlecomment_ss.AJAX_ERROR');
           alert(errorMsg);
         }
