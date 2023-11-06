@@ -45,6 +45,7 @@ fr:
     ISSPAM: 'Spam?'
     MODERATED: 'Modéré?'
     'ON': sur
+    OPTIONS: Options
     PARENTTITLE: Parent
     PLURALNAME: Commentaires
     SINGULARNAME: Commentaire
