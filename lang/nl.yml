@@ -59,6 +59,7 @@ nl:
     MODERATED: 'Gemodereerd?'
     'ON': op
     OPTIONS: Instellingen
+    PARENTTITLE: Bovenliggende
     PLURALNAME: Reacties
     SINGULARNAME: Reactie
     URL: URL
