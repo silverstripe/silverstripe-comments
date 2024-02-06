@@ -18,6 +18,10 @@ sk:
   CommentsInterface_pendingcomment_ss:
     AWAITINGMODERATION: 'Váš komentár bol odoslaný a čaká na kontrolu.'
   CommentsInterface_singlecomment_ss:
+    APPROVE: 'Schváľte to'
+    ISNTSPAM: 'Nie je to spam'
+    ISSPAM: 'Je to spam'
+    REMCOM: 'Odmietnite to'
     REPLYTO: Odpovedať
   CommentsInterface_ss:
     AWAITINGMODERATION: 'Váš komentár bol odoslaný a čaká na kontrolu.'
@@ -49,6 +53,8 @@ sk:
   SilverStripe\Comments\Admin\CommentsGridFieldApproveAction:
     APPROVE: Schváliť
     COMMENTAPPROVED: 'Komentár schválený.'
+  SilverStripe\Comments\Admin\CommentsGridFieldBulkAction\CommentHandler:
+    CHANGES_APPLIED: 'Zmeny boli aplikované'
   SilverStripe\Comments\Admin\CommentsGridFieldConfig:
     APPROVE: Schváliť
     SPAM: Spam
@@ -62,23 +68,31 @@ sk:
     RSSTITLE: 'RSS feed komentárov'
     WEBSITEURL: 'Vaša web stránka'
   SilverStripe\Comments\Extensions\CommentsExtension:
+    COMMENTMODERATION: 'Moderovanie komentárov'
     COMMENTOPTIONS: Komentáre
     COMMENTSTABSET: Komentáre
     MODERATIONREQUIRED_NONE: 'Nevyžadovať odsúhlasenie'
     MODERATIONREQUIRED_NONMEMBERSONLY: 'Vyžadovať odsúhlasenie len od neprihlásených užívateľov'
     MODERATIONREQUIRED_REQUIRED: 'Odsúhlasiť všetky komentáre'
   SilverStripe\Comments\Model\Comment:
+    ALLOWCOMMENTS: 'Povoliť komentáre'
     COMMENT: Komentár
     COMMENTBY: 'Komentáre od %s'
     CREATED: 'Dátum odoslania'
     EMAIL: E-mail
     ISSPAM: 'Spam?'
     MODERATED: 'Odsúhlasený?'
+    NAME: 'Meno autora'
     'ON': na
     OPTIONS: Možnosti
     OPTION_DESCRIPTION: 'Neodsúhlasené a spamové komentáre nebudú zobrazené'
     PARENTTITLE: 'Komentovaný príspevok'
     PLURALNAME: Komentáre
+    PLURALS:
+      few: '{count} komentáre'
+      many: '{count} komentárov'
+      one: Komentár
+      other: '{count} komentárov'
     ParentComment_Title: 'Tento komentár je odpoveď na komentár zobrazený nižšie'
     SINGULARNAME: Komentár
     URL: 'Web adresa'

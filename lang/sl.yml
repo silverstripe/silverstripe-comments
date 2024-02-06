@@ -13,5 +13,7 @@ sl:
     COMMENTSTABSET: Komentarji
   SilverStripe\Comments\Model\Comment:
     EMAIL: E-pošta
+    OPTIONS: Možnosti
+    PARENTTITLE: 'Nadrejeno pravilo'
     PLURALNAME: Komentarji
     URL: URL
