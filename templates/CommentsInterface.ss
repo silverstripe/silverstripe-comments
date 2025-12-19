@@ -1,4 +1,4 @@
-<% require css('silverstripe/comments:client/dist/styles/comments', 'comments') %>
+<% require css('silverstripe/comments:client/dist/styles/comments.css', 'comments') %>
 
 <% if $CommentsEnabled %>
     <div id="$CommentHolderID" class="comments-holder-container">

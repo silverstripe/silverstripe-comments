@@ -622,6 +622,12 @@ class CommentsExtension extends Extension
 
     public function updateCMSFields(FieldList $fields)
     {
+        $fields->removeByName([
+            'CommentsRequireLogin',
+            'ModerationRequired',
+            'ProvideComments',
+        ]);
+
         // Disable moderation if not permitted
         if ($this->owner->canModerateComments()) {
             $this->updateModerationFields($fields);
