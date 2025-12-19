@@ -1,0 +1,7 @@
+includes:
+    - vendor/cambis/silverstan/extension.neon
+parameters:
+    level: 4
+    paths:
+        - src
+        - tests

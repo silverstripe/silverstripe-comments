@@ -5,14 +5,11 @@ namespace SilverStripe\Comments\Tests;
 use SilverStripe\Comments\Extensions\CommentsExtension;
 use SilverStripe\Comments\Model\Comment;
 use SilverStripe\Comments\Tests\CommentTestHelper;
-use SilverStripe\Comments\Tests\Stubs\CommentableItem;
+use SilverStripe\Comments\Tests\Stubs\ExampleDataObject;
 use SilverStripe\Comments\Tests\Stubs\CommentableItemDisabled;
 use SilverStripe\Comments\Tests\Stubs\CommentableItemEnabled;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\FunctionalTest;
-use SilverStripe\Dev\SapphireTest;
-use SilverStripe\Security\Member;
-use SilverStripe\View\Requirements;
 use SilverStripe\Security\Security;
 
 class CommentsExtensionTest extends FunctionalTest
@@ -22,13 +19,13 @@ class CommentsExtensionTest extends FunctionalTest
     protected static $disable_themes = true;
 
     protected static $extra_dataobjects = [
-        CommentableItem::class,
+        ExampleDataObject::class,
         CommentableItemEnabled::class,
         CommentableItemDisabled::class,
     ];
 
     protected static $required_extensions = [
-        CommentableItem::class => [
+        ExampleDataObject::class => [
             CommentsExtension::class,
         ],
     ];
@@ -52,7 +49,7 @@ class CommentsExtensionTest extends FunctionalTest
         ]);
 
         // Configure this dataobject
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'enabled_cms' => true
         ]);
     }
@@ -60,11 +57,11 @@ class CommentsExtensionTest extends FunctionalTest
 
     public function testGetCommentsOption()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'comments_holder_id' => 'some-option'
         ]);
 
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $this->assertEquals('some-option', $item->getCommentsOption('comments_holder_id'));
     }
 
@@ -82,15 +79,17 @@ class CommentsExtensionTest extends FunctionalTest
     {
 
         // the 3 options take precedence in this order, executed if true
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'require_moderation_cms' => true,
             'require_moderation' => true,
             'require_moderation_nonmembers' => true
-        ));
+        ]);
 
         // With require moderation CMS set to true, the value of the field
         // 'ModerationRequired' is returned
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+
+        /** @var ExampleDataObject & CommentsExtension $item */
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $item->ModerationRequired = 'None';
         $item->write();
 
@@ -105,21 +104,21 @@ class CommentsExtensionTest extends FunctionalTest
 
         $this->assertEquals('NonMembersOnly', $item->getModerationRequired());
 
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'require_moderation_cms' => false,
             'require_moderation' => true,
             'require_moderation_nonmembers' => true
         ));
         $this->assertEquals('Required', $item->getModerationRequired());
 
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'require_moderation_cms' => false,
             'require_moderation' => false,
             'require_moderation_nonmembers' => true
         ));
         $this->assertEquals('NonMembersOnly', $item->getModerationRequired());
 
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'require_moderation_cms' => false,
             'require_moderation' => false,
             'require_moderation_nonmembers' => false
@@ -129,24 +128,26 @@ class CommentsExtensionTest extends FunctionalTest
 
     public function testGetCommentsRequireLogin()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'require_login_cms' => true
         ));
 
         // With require moderation CMS set to true, the value of the field
         // 'ModerationRequired' is returned
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+
+        /** @var ExampleDataObject & CommentsExtension $item */
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $item->CommentsRequireLogin = true;
         $this->assertTrue($item->getCommentsRequireLogin());
         $item->CommentsRequireLogin = false;
         $this->assertFalse($item->getCommentsRequireLogin());
 
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'require_login_cms' => false,
             'require_login' => false
         ));
         $this->assertFalse($item->getCommentsRequireLogin());
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'require_login_cms' => false,
             'require_login' => true
         ));
@@ -155,7 +156,8 @@ class CommentsExtensionTest extends FunctionalTest
 
     public function testAllComments()
     {
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        /** @var ExampleDataObject & CommentsExtension $item */
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $this->assertEquals(4, $item->AllComments()->count());
     }
 
@@ -163,20 +165,22 @@ class CommentsExtensionTest extends FunctionalTest
     {
         $this->logOut();
 
-        $item = $this->objFromFixture(CommentableItem::class, 'second');
+        /** @var ExampleDataObject & CommentsExtension $item */
+        $item = $this->objFromFixture(ExampleDataObject::class, 'second');
         $this->assertEquals(2, $item->AllVisibleComments()->count());
     }
 
     public function testComments()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'nested_comments' => false
         ));
 
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        /** @var ExampleDataObject & CommentsExtension $item */
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $this->assertEquals(4, $item->Comments()->count());
 
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'nested_comments' => true
         ));
 
@@ -185,11 +189,11 @@ class CommentsExtensionTest extends FunctionalTest
 
     public function testGetCommentsEnabled()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'enabled_cms' => true
         ));
 
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $this->assertTrue($item->getCommentsEnabled());
 
         $item->ProvideComments = 0;
@@ -198,13 +202,13 @@ class CommentsExtensionTest extends FunctionalTest
 
     public function testGetCommentHolderID()
     {
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'comments_holder_id' => 'commentid_test1',
         ));
         $this->assertEquals('commentid_test1', $item->getCommentHolderID());
 
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'comments_holder_id' => 'commtentid_test_another',
         ));
         $this->assertEquals('commtentid_test_another', $item->getCommentHolderID());
@@ -223,7 +227,7 @@ class CommentsExtensionTest extends FunctionalTest
             Security::getCurrentUser()->logOut();
         }
 
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $this->assertFalse($item->canModerateComments());
 
         $this->logInWithPermission('CMS_ACCESS_CommentAdmin');
@@ -234,7 +238,7 @@ class CommentsExtensionTest extends FunctionalTest
     {
         Config::modify()->set('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
 
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $link = $item->getCommentRSSLink();
         $this->assertEquals('http://unittesting.local/comments/rss', $link);
     }
@@ -243,10 +247,10 @@ class CommentsExtensionTest extends FunctionalTest
     {
         Config::modify()->set('SilverStripe\\Control\\Director', 'alternate_base_url', 'http://unittesting.local');
 
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $page = $item->getCommentRSSLinkPage();
         $this->assertEquals(
-            'http://unittesting.local/comments/rss/SilverStripe-Comments-Tests-Stubs-CommentableItem/' . $item->ID,
+            'http://unittesting.local/comments/rss/SilverStripe-Comments-Tests-Stubs-ExampleDataObject/' . $item->ID,
             $page
         );
     }
@@ -255,12 +259,12 @@ class CommentsExtensionTest extends FunctionalTest
     {
         $this->logInWithPermission('ADMIN');
 
-        Config::modify()->merge(CommentableItem::class, 'comments', array(
+        Config::modify()->merge(ExampleDataObject::class, 'comments', array(
             'include_js' => false,
             'comments_holder_id' => 'comments-holder',
         ));
 
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
 
         // The comments form is HTML to do assertions by contains
         $cf = (string) $item->CommentsForm();
@@ -310,7 +314,9 @@ class CommentsExtensionTest extends FunctionalTest
 
     public function testPagedComments()
     {
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        /** @var ExampleDataObject & CommentsExtension $item */
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
+
         // Ensure Created times are set, as order not guaranteed if all set to 0
         $comments = $item->PagedComments()->sort('ID');
         $ctr = 0;
@@ -355,14 +361,14 @@ class CommentsExtensionTest extends FunctionalTest
     public function testUpdateCMSFields()
     {
         Config::modify()->merge(
-            CommentableItem::class,
+            ExampleDataObject::class,
             'comments',
             array(
                 'require_login_cms' => false
             )
         );
         $this->logInWithPermission('ADMIN');
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $item->ProvideComments = true;
         $item->write();
         $fields = $item->getCMSFields();
@@ -390,7 +396,7 @@ class CommentsExtensionTest extends FunctionalTest
         );
 
         Config::modify()->merge(
-            CommentableItem::class,
+            ExampleDataObject::class,
             'comments',
             array(
                 'require_login_cms' => true
@@ -410,7 +416,7 @@ class CommentsExtensionTest extends FunctionalTest
         );
 
         Config::modify()->merge(
-            CommentableItem::class,
+            ExampleDataObject::class,
             'comments',
             array(
                 'require_login_cms' => true,

@@ -17,6 +17,7 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\Validation\RequiredFieldsValidator;
 use SilverStripe\Security\Security;
 
 class CommentForm extends Form
@@ -87,7 +88,7 @@ class CommentForm extends Form
 
         // save actions
         $actions = FieldList::create(
-            $postAction = new FormAction('doPostComment', _t('CommentInterface.POST', 'Post'))
+            FormAction::create('doPostComment', _t('CommentInterface.POST', 'Post'))
         );
 
         if ($usePreview) {
@@ -98,8 +99,8 @@ class CommentForm extends Form
             );
         }
 
-        $required = RequiredFields::create(
-            $controller->config()->required_fields
+        $required = RequiredFieldsValidator::create(
+            $controller->config()->get('required_fields')
         );
 
         parent::__construct($controller, $name, $fields, $actions, $required);

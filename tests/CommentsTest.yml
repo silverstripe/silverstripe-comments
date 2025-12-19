@@ -16,7 +16,7 @@ SilverStripe\Security\Permission:
     Code: CMS_ACCESS_CommentAdmin
     Group: =>SilverStripe\Security\Group.commentadmins
 
-SilverStripe\Comments\Tests\Stubs\CommentableItem:
+SilverStripe\Comments\Tests\Stubs\ExampleDataObject:
   first:
     Title: First
     ProvideComments: 1
@@ -43,14 +43,14 @@ SilverStripe\Comments\Tests\Stubs\CommentableItem:
 
 SilverStripe\Comments\Model\Comment:
   firstComA:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.first
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.first
     Name: FA
     Comment: textFA
     Moderated: 1
     IsSpam:
     Depth: 1
   firstComAChild1:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.first
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.first
     ParentComment: =>SilverStripe\Comments\Model\Comment.firstComA
     Name: John Smith
     Comment: Reply to firstComA 1
@@ -58,7 +58,7 @@ SilverStripe\Comments\Model\Comment:
     IsSpam: 0
     Depth: 2
   firstComAChild2:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.first
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.first
     ParentComment: =>SilverStripe\Comments\Model\Comment.firstComA
     Name: John Smith
     Comment: Reply to firstComA 2
@@ -66,7 +66,7 @@ SilverStripe\Comments\Model\Comment:
     IsSpam: 0
     Depth: 2
   firstComAChild3:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.first
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.first
     ParentComment: =>SilverStripe\Comments\Model\Comment.firstComA
     Name: John Smith
     Comment: Reply to firstComA 3
@@ -74,119 +74,119 @@ SilverStripe\Comments\Model\Comment:
     IsSpam: 0
     Depth: 2
   secondComA:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.second
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.second
     Name: SA
     Comment: textSA
     Moderated: 1
     IsSpam: 0
   secondComB:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.second
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.second
     Name: SB
     Comment: textSB
     Moderated: 0
     IsSpam: 0
   secondComC:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.second
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.second
     Name: SB
     Comment: textSB
     Moderated: 1
     IsSpam: 1
   thirdComA:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TA
     Comment: textTA
     Moderated: 1
     IsSpam: 0
   thirdComB:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TB
     Comment: textTB
     Moderated: 1
     IsSpam: 0
   thirdComC:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
   thirdComD:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TC
     Comment: textTC
     Moderated: 1
   thirdComE:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TC
     Comment: textTC
     Moderated: 1
   thirdComF:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
   thirdComG:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
   thirdComH:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
   thirdComI:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
   thirdComJ:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
   thirdComK:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.third
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.third
     Name: TC
     Comment: textTC
     Moderated: 1
     IsSpam: 0
   disabledCom:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.nocomments
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.nocomments
     Name: Disabled
     Moderated: 0
     IsSpam: 1
   testCommentList1:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.spammed
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.spammed
     Name: Comment 1
     Moderated: 0
     IsSpam: 0
   testCommentList2:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.spammed
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.spammed
     Name: Comment 2
     Moderated: 1
     IsSpam: 1
   testCommentList3:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.spammed
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.spammed
     Name: Comment 3
     Moderated: 1
     IsSpam: 0
   testCommentList4:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.spammed
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.spammed
     Name: Comment 4
     Moderated: 0
     IsSpam: 1
   testModeratedComment1:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.moderated
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.moderated
     Name: Moderated comment 1
     Moderated: 0
     IsSpam: 0
   testModeratedComment2:
-    Parent: =>SilverStripe\Comments\Tests\Stubs\CommentableItem.moderated
+    Parent: =>SilverStripe\Comments\Tests\Stubs\ExampleDataObject.moderated
     Name: Moderated comment 2
     Moderated: 0
     IsSpam: 1

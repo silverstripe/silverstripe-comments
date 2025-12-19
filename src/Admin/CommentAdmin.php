@@ -49,20 +49,13 @@ class CommentAdmin extends LeftAndMain implements PermissionProvider
         ];
     }
 
-    /**
-     * @return Form
-     */
     public function getEditForm($id = null, $fields = null)
     {
-        if (!$id) {
-            $id = $this->currentPageID();
-        }
-
         $form = parent::getEditForm($id);
         $record = $this->getRecord($id);
 
         if ($record && !$record->canView()) {
-            return Security::permissionFailure($this);
+            return;
         }
 
         $newComments = Comment::get()->filter('Moderated', 0);

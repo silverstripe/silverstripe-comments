@@ -2,13 +2,13 @@
 
 namespace SilverStripe\Comments\Tests\Stubs;
 
-class CommentableItemEnabled extends CommentableItem
+class CommentableItemEnabled extends ExampleDataObject
 {
-    private static $defaults = array(
+    private static array $defaults = [
         'ProvideComments' => true,
         'ModerationRequired' => 'Required',
         'CommentsRequireLogin' => true
-    );
+    ];
 
-    private static $table_name = 'CommentableItemEnabled';
+    private static string $table_name = 'CommentableItemEnabled';
 }

@@ -2,7 +2,7 @@
 
 namespace SilverStripe\Comments\Tests\Stubs;
 
-class CommentableItemDisabled extends CommentableItem
+class CommentableItemDisabled extends ExampleDataObject
 {
     private static $defaults = array(
         'ProvideComments' => false,

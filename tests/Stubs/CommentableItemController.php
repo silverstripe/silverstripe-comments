@@ -13,6 +13,6 @@ class CommentableItemController extends Controller implements TestOnly
 {
     public function index()
     {
-        return CommentableItem::get()->first()->CommentsForm();
+        return ExampleDataObject::get()->first()->CommentsForm();
     }
 }

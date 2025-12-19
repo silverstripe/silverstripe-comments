@@ -2,7 +2,6 @@
 
 namespace SilverStripe\Comments\Extensions;
 
-use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Comments\Admin\CommentsGridField;
 use SilverStripe\Comments\Admin\CommentsGridFieldConfig;
 use SilverStripe\Comments\Controllers\CommentingController;
@@ -16,9 +15,10 @@ use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Tab;
 use SilverStripe\Forms\TabSet;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
+use SilverStripe\ORM\HasManyList;
 use SilverStripe\ORM\DataList;
-use SilverStripe\ORM\PaginatedList;
+use SilverStripe\Model\List\PaginatedList;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\Security;
@@ -27,9 +27,10 @@ use SilverStripe\View\Requirements;
 /**
  * Extension to {@link DataObject} to enable tracking comments.
  *
+ * @method HasManyList<Comment> Comments()
  * @package comments
  */
-class CommentsExtension extends DataExtension
+class CommentsExtension extends Extension
 {
     /**
      * Default configuration values
@@ -99,11 +100,12 @@ class CommentsExtension extends DataExtension
         'CommentsRequireLogin' => 'Boolean',
     ];
 
-    /**
-     * {@inheritDoc}
-     */
     private static $has_many = [
-        'Commments' => Comment::class . '.Parent'
+        'Comments' => Comment::class . '.Parent'
+    ];
+
+    private static $cascade_deletes = [
+        'Comments',
     ];
 
     /**
@@ -174,7 +176,7 @@ class CommentsExtension extends DataExtension
 
         if ($options->FieldList()->count()) {
             if ($fields->hasTabSet()) {
-                $fields->addFieldsToTab('Root.Settings', $options);
+                $fields->addFieldToTab('Root.Settings', $options);
             } else {
                 $fields->push($options);
             }
@@ -311,19 +313,17 @@ class CommentsExtension extends DataExtension
     /**
      * Returns a paged list of the root level comments, with spam and unmoderated items excluded,
      * for use in the frontend
-     *
-     * @return PaginatedList
      */
-    public function PagedComments()
+    public function PagedComments(): PaginatedList
     {
         $list = $this->Comments();
 
-        // Add pagination
         $list = PaginatedList::create($list, Controller::curr()->getRequest());
         $list->setPaginationGetVar('commentsstart' . $this->owner->ID);
         $list->setPageLength($this->owner->getCommentsOption('comments_per_page'));
 
         $this->owner->extend('updatePagedComments', $list);
+
         return $list;
     }
 
@@ -499,11 +499,15 @@ class CommentsExtension extends DataExtension
      *
      * @return bool
      */
-    public function attachedToSiteTree()
+    public function attachedToSiteTree(): bool
     {
         $class = $this->owner->baseClass();
 
-        return (is_subclass_of($class, SiteTree::class)) || ($class == SiteTree::class);
+        if (!class_exists('SilverStripe\CMS\Model\SiteTree')) {
+            return false;
+        }
+
+        return (is_subclass_of($class, 'SilverStripe\\CMS\\Model\\SiteTree')) || ($class === 'SilverStripe\\CMS\\Model\\SiteTree');
     }
 
     /**

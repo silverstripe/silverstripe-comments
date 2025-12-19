@@ -8,7 +8,6 @@ use SilverStripe\Comments\Forms\CommentForm;
 use SilverStripe\Comments\Model\Comment;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
-use SilverStripe\Control\HTTP;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Control\HTTPResponse_Exception;
@@ -17,7 +16,7 @@ use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\Form;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\FieldType\DBHTMLText;
-use SilverStripe\ORM\PaginatedList;
+use SilverStripe\Model\List\PaginatedList;
 use SilverStripe\Security\Security;
 use SilverStripe\Control\Middleware\HTTPCacheControlMiddleware;
 
@@ -249,12 +248,7 @@ class CommentingController extends Controller
     {
         $link = $this->Link('rss');
         $class = $this->decodeClassName($request->param('ID'));
-        $id = $request->param('OtherID');
-
-        // Support old pageid param
-        if (!$id && !$class && ($id = $request->getVar('pageid'))) {
-            $class = SiteTree::class;
-        }
+        $id = (int) $request->param('OtherID');
 
         $comments = Comment::get()->filter([
             'Moderated' => 1,
@@ -274,7 +268,7 @@ class CommentingController extends Controller
             if ($id) {
                 $comments = $comments->filter('ParentID', $id);
                 $link = Controller::join_links($link, $id);
-                $this->setOwnerRecord(DataObject::get_by_id($class, $id));
+                $this->setOwnerRecord($class::get()->byID($id));
             }
         }
 
@@ -470,7 +464,8 @@ class CommentingController extends Controller
         // Extract parent comment from reply and build this way
         if ($parentID = $request->param('ParentCommentID')) {
             /** @var Comment $comment */
-            $comment = DataObject::get_by_id(Comment::class, $parentID, true);
+            $comment = Comment::get()->byID($parentID);
+
             if ($comment) {
                 return $this->ReplyForm($comment);
             }
@@ -503,14 +498,12 @@ class CommentingController extends Controller
         // In edge-cases, this will be called outside of a handleRequest() context; in that case,
         // redirect to the homepage - don't break into the global state at this stage because we'll
         // be calling from a test context or something else where the global state is inappropraite
-        if ($this->request) {
-            if ($this->request->requestVar('BackURL')) {
-                $url = $this->request->requestVar('BackURL');
-            } elseif ($this->request->isAjax() && $this->request->getHeader('X-Backurl')) {
-                $url = $this->request->getHeader('X-Backurl');
-            } elseif ($this->request->getHeader('Referer')) {
-                $url = $this->request->getHeader('Referer');
-            }
+        if ($this->request->requestVar('BackURL')) {
+            $url = $this->request->requestVar('BackURL');
+        } elseif ($this->request->isAjax() && $this->request->getHeader('X-Backurl')) {
+            $url = $this->request->getHeader('X-Backurl');
+        } elseif ($this->request->getHeader('Referer')) {
+            $url = $this->request->getHeader('Referer');
         }
 
         if (!$url) {
@@ -524,5 +517,7 @@ class CommentingController extends Controller
         if (Director::is_site_url($url)) {
             return $this->redirect($url);
         }
+
+        return $this->redirect('/');
     }
 }

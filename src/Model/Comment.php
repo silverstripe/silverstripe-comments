@@ -18,12 +18,14 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use SilverStripe\Forms\DatetimeField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
-use SilverStripe\ORM\ArrayList;
+use SilverStripe\Model\List\PaginatedList;
+use SilverStripe\Model\List\ArrayList;
+use SilverStripe\Model\List\SS_List;
+use SilverStripe\Model\List\HasManyList;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\PaginatedList;
-use SilverStripe\ORM\SS_List;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\Security;
@@ -43,17 +45,17 @@ use SilverStripe\Security\Security;
  * @property string  $SecretToken Secret admin token required to provide moderation links between sessions
  * @property integer $Depth       Depth of this comment in the nested chain
  *
- * @method HasManyList ChildComments() List of child comments
+ * @method HasManyList<self> ChildComments() List of child comments
  * @method Member Author() Member object who created this comment
  * @method Comment ParentComment() Parent comment this is a reply to
+ * @method DataObject|null Parent() Parent DataObject this is a reply to
  * @package comments
  */
 class Comment extends DataObject
 {
-    /**
-     * {@inheritDoc}
-     */
-    private static $db = array(
+    private static string $table_name = 'Comment';
+
+    private static array $db = [
         'Name' => 'Varchar(200)',
         'Comment' => 'Text',
         'Email' => 'Varchar(200)',
@@ -63,41 +65,30 @@ class Comment extends DataObject
         'AllowHtml' => 'Boolean',
         'SecretToken' => 'Varchar(255)',
         'Depth' => 'Int'
-    );
+    ];
 
-    /**
-     * {@inheritDoc}
-     */
-    private static $has_one = array(
+    private static array $has_one = [
         'Author' => Member::class,
         'ParentComment' => self::class,
         'Parent' => DataObject::class
-    );
+    ];
 
-    /**
-     * {@inheritDoc}
-     */
-    private static $has_many = array(
+    private static array $has_many = [
         'ChildComments' => self::class
-    );
+    ];
 
-    /**
-     * {@inheritDoc}
-     */
-    private static $default_sort = '"Created" DESC';
+    private static array $cascade_deletes = [
+        'ChildComments',
+    ];
 
-    /**
-     * {@inheritDoc}
-     */
-    private static $defaults = array(
+    private static string $default_sort = '"Created" DESC';
+
+    private static array $defaults = [
         'Moderated' => 0,
         'IsSpam' => 0,
-    );
+    ];
 
-    /**
-     * {@inheritDoc}
-     */
-    private static $casting = array(
+    private static array $casting = [
         'Title' => 'Varchar',
         'ParentTitle' => 'Varchar',
         'ParentClassName' => 'Varchar',
@@ -109,41 +100,30 @@ class Comment extends DataObject
         'HamLink' => 'Varchar',
         'ApproveLink' => 'Varchar',
         'Permalink' => 'Varchar'
-    );
+    ];
 
-    /**
-     * {@inheritDoc}
-     */
-    private static $searchable_fields = array(
+    private static array $searchable_fields = [
         'Name',
         'Email',
         'Comment',
         'Created'
-    );
+    ];
 
-    /**
-     * {@inheritDoc}
-     */
-    private static $summary_fields = array(
+    private static $summary_fields = [
         'getAuthorName' => 'Submitted By',
         'getAuthorEmail' => 'Email',
         'Comment.LimitWordCount' => 'Comment',
         'Created' => 'Date Posted',
         'Parent.Title' => 'Post',
         'IsSpam' => 'Is Spam'
-    );
+    ];
 
     /**
      * {@inheritDoc}
      */
-    private static $field_labels = array(
+    private static $field_labels = [
         'Author' => 'Author Member'
-    );
-
-    /**
-     * {@inheritDoc}
-     */
-    private static $table_name = 'Comment';
+    ];
 
     /**
      * {@inheritDoc}
@@ -161,50 +141,35 @@ class Comment extends DataObject
         $this->updateDepth();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function onBeforeDelete()
-    {
-        parent::onBeforeDelete();
-
-        // Delete all children
-        foreach ($this->ChildComments() as $comment) {
-            $comment->delete();
-        }
-    }
 
     /**
-     * @return Comment_SecurityToken
+     * @return SecurityToken
      */
     public function getSecurityToken()
     {
-        return Injector::inst()->createWithArgs(SecurityToken::class, array($this));
+        return Injector::inst()->createWithArgs(SecurityToken::class, [$this]);
     }
 
     /**
      * Return a link to this comment
-     *
-     * @param string $action
-     *
-     * @return string link to this comment.
      */
-    public function Link($action = '')
+    public function Link(?string $action = ''): string
     {
         if ($parent = $this->Parent()) {
             return $parent->Link($action) . '#' . $this->Permalink();
         }
+
+        return '';
     }
 
     /**
      * Returns the permalink for this {@link Comment}. Inserted into
      * the ID tag of the comment
-     *
-     * @return string
      */
-    public function Permalink()
+    public function Permalink(): string
     {
-        $prefix = $this->getOption('comment_permalink_prefix');
+        $prefix = $this->getOption('comment_permalink_prefix') ?? '';
+
         return $prefix . $this->ID;
     }
 
@@ -238,34 +203,34 @@ class Comment extends DataObject
      *
      * @return mixed Result if the setting is available, or null otherwise
      */
-    public function getOption($key)
+    public function getOption(string $key): mixed
     {
-        // If possible use the current record
+        /** @var DataObject&CommentsExtension $record */
         $record = $this->Parent();
 
-        if (!$record && $this->Parent()) {
-            // Otherwise a singleton of that record
-            $record = singleton($this->Parent()->dataClass());
-        } elseif (!$record) {
-            // Otherwise just use the default options
-            $record = singleton(CommentsExtension::class);
+        if (!$record?->exists()) {
+            return null;
         }
 
-        return ($record instanceof CommentsExtension || $record->hasExtension(CommentsExtension::class))
-            ? $record->getCommentsOption($key)
-            : null;
+        if (!$record->hasMethod('getCommentsOption')) {
+            return null;
+        }
+
+        return $record->getCommentsOption($key);
     }
 
     /**
      * Returns a string to help identify the parent of the comment
-     *
-     * @return string
      */
-    public function getParentTitle()
+    public function getParentTitle(): string
     {
-        if ($parent = $this->Parent()) {
+        $parent = $this->Parent();
+
+        if ($parent && $parent->exists()) {
             return $parent->Title ?: ($parent->ClassName . ' #' . $parent->ID);
         }
+
+        return '';
     }
 
     /**
@@ -273,20 +238,27 @@ class Comment extends DataObject
      *
      * @return string
      */
-    public function getParentClassName()
+    public function getParentClassName(): string
     {
-        return $this->Parent()->getClassName();
+        $parent = $this->Parent();
+
+        if (!$parent->exists()) {
+            return '';
+        }
+
+        return $parent->getClassName();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function castingHelper($field)
+    public function castingHelper(string $field): ?string
     {
         // Safely escape the comment
         if (in_array($field, ['EscapedComment', 'Comment'], true)) {
             return $this->AllowHtml ? 'HTMLText' : 'Text';
         }
+
         return parent::castingHelper($field);
     }
 
@@ -342,13 +314,21 @@ class Comment extends DataObject
             return true;
         }
 
-        if ($parent = $this->Parent()) {
+        $parent = $this->Parent();
+
+        if ($parent->exists()) {
             return $parent->canView($member)
                 && $parent->hasExtension(CommentsExtension::class)
                 && $parent->CommentsEnabled;
         }
 
         return false;
+    }
+
+
+    public function canModerate($member = null): bool
+    {
+        return Permission::checkMember($member, 'CMS_ACCESS_CommentAdmin');
     }
 
     /**
@@ -374,7 +354,9 @@ class Comment extends DataObject
             return true;
         }
 
-        if ($parent = $this->Parent()) {
+        $parent = $this->Parent();
+
+        if ($parent->exists()) {
             return $parent->canEdit($member);
         }
 
@@ -411,44 +393,49 @@ class Comment extends DataObject
      */
     protected function getMember($member = null)
     {
-        if (!$member) {
-            $member = Security::getCurrentUser();
-        }
-
         if (is_numeric($member)) {
-            $member = DataObject::get_by_id(Member::class, $member, true);
+            $member = Member::get()->byID($member);
+
+            if (!$member) {
+                return null;
+            }
+        } elseif (!$member) {
+            $member = Security::getCurrentUser();
         }
 
         return $member;
     }
 
-    /**
-     * Return the authors name for the comment
-     *
-     * @return string
-     */
-    public function getAuthorName()
-    {
-        if ($this->Name) {
-            return $this->Name;
-        } elseif ($author = $this->Author()) {
-            return $author->getName();
-        }
-    }
 
     /**
-     * Return the comment authors email address
-     *
-     * @return string
+     * Return the authors name for the comment.
      */
-    public function getAuthorEmail()
+    public function getAuthorName(): string
+    {
+        if ($this->Name) {
+            return (string) $this->Name;
+        } elseif ($author = $this->Author()) {
+            return (string) $author->getName();
+        }
+
+        return '';
+    }
+
+
+    /**
+     * Return the comment authors email address.
+     */
+    public function getAuthorEmail(): string
     {
         if ($this->Email) {
-            return $this->Email;
+            return (string) $this->Email;
         } elseif ($author = $this->Author()) {
-            return $author->Email;
+            return (string) $author->Email;
         }
+
+        return '';
     }
+
 
     /**
      * Generate a secure admin-action link authorised for the specified member
@@ -458,22 +445,15 @@ class Comment extends DataObject
      *
      * @return string
      */
-    protected function actionLink($action, $member = null)
+    protected function actionLink($action, $member = null): string
     {
         if (!$member) {
             $member = Security::getCurrentUser();
         }
-        if (!$member) {
-            return false;
-        }
 
-        /**
-         * @todo: How do we handle "DataObject" instances that don't have a Link to reject/spam/delete?? This may
-         * we have to make CMS a hard dependency instead.
-         */
-        // if (!$this->Parent()->hasMethod('Link')) {
-        //     return false;
-        // }
+        if (!$member) {
+            return '';
+        }
 
         $url = Controller::join_links(
             Director::baseURL(),
@@ -488,46 +468,42 @@ class Comment extends DataObject
     }
 
     /**
-     * Link to delete this comment
-     *
-     * @param Member $member
-     *
-     * @return string
+     * Link to delete this comment.
      */
-    public function DeleteLink($member = null)
+    public function DeleteLink(?Member $member = null): string
     {
         if ($this->canDelete($member)) {
             return $this->actionLink('delete', $member);
         }
+
+        return '';
     }
 
     /**
-     * Link to mark as spam
-     *
-     * @param Member $member
-     *
-     * @return string
+     * Link to mark as spam.
      */
-    public function SpamLink($member = null)
+    public function SpamLink(?Member $member = null): string
     {
-        if ($this->canEdit($member) && !$this->IsSpam) {
+        if ($this->canModerate($member) && !$this->IsSpam) {
             return $this->actionLink('spam', $member);
         }
+
+        return '';
     }
+
 
     /**
      * Link to mark as not-spam (ham)
-     *
-     * @param Member $member
-     *
-     * @return string
      */
-    public function HamLink($member = null)
+    public function HamLink(?Member $member = null): string
     {
-        if ($this->canEdit($member) && $this->IsSpam) {
+        if ($this->canModerate($member) && $this->IsSpam) {
             return $this->actionLink('ham', $member);
         }
+
+        return '';
     }
+
 
     /**
      * Link to approve this comment
@@ -536,49 +512,60 @@ class Comment extends DataObject
      *
      * @return string
      */
-    public function ApproveLink($member = null)
+    public function ApproveLink(?Member $member = null): string
     {
-        if ($this->canEdit($member) && !$this->Moderated) {
+        if ($this->canModerate($member) && !$this->Moderated) {
             return $this->actionLink('approve', $member);
         }
+
+        return '';
     }
+
 
     /**
      * Mark this comment as spam
      */
-    public function markSpam()
+    public function markSpam(): self
     {
         $this->IsSpam = true;
         $this->Moderated = true;
+
         $this->write();
         $this->extend('afterMarkSpam');
+
+        return $this;
     }
 
     /**
      * Mark this comment as approved
      */
-    public function markApproved()
+    public function markApproved(): self
     {
         $this->IsSpam = false;
         $this->Moderated = true;
+
         $this->write();
         $this->extend('afterMarkApproved');
+
+        return $this;
     }
 
     /**
      * Mark this comment as unapproved
      */
-    public function markUnapproved()
+    public function markUnapproved(): self
     {
         $this->Moderated = false;
         $this->write();
         $this->extend('afterMarkUnapproved');
+
+        return $this;
     }
 
     /**
-     * @return string
+     * Return the spam class for this comment.
      */
-    public function SpamClass()
+    public function SpamClass(): string
     {
         if ($this->IsSpam) {
             return 'spam';
@@ -587,6 +574,8 @@ class Comment extends DataObject
         } else {
             return 'notspam';
         }
+
+        return '';
     }
 
     /**
@@ -594,9 +583,14 @@ class Comment extends DataObject
      */
     public function getTitle()
     {
-        $title = sprintf(_t(__CLASS__ . '.COMMENTBY', 'Comment by %s', 'Name') ?? '', $this->getAuthorName());
+        $title = sprintf(
+            _t(__CLASS__ . '.COMMENTBY', 'Comment by %s', 'Name'),
+            $this->getAuthorName()
+        );
 
-        if ($parent = $this->Parent()) {
+        $parent = $this->Parent();
+
+        if ($parent->exists()) {
             if ($parent->Title) {
                 $title .= sprintf(' %s %s', _t(__CLASS__ . '.ON', 'on'), $parent->Title);
             }
@@ -611,7 +605,7 @@ class Comment extends DataObject
     public function getCMSFields()
     {
         $commentField = $this->AllowHtml ? HTMLEditorField::class : TextareaField::class;
-        $fields = new FieldList(
+        $fields = FieldList::create(
             $this
                 ->obj('Created')
                 ->scaffoldFormField($this->fieldLabel('Created'))
@@ -642,20 +636,14 @@ class Comment extends DataObject
 
         // Show parent comment if given
         if (($parent = $this->ParentComment()) && $parent->exists()) {
-            $fields->push(new HeaderField(
+            $fields->push(HeaderField::create(
                 'ParentComment_Title',
                 _t(__CLASS__ . '.ParentComment_Title', 'This comment is a reply to the below')
-            ));
+            )->performReadonlyTransformation());
             // Created date
-            // FIXME - the method setName in DatetimeField is not chainable, hence
-            // the lack of chaining here
-            $createdField = $parent
-                ->obj('Created')
-                ->scaffoldFormField($parent->fieldLabel('Created'));
-            $createdField->setName('ParentComment_Created');
-            $createdField->setValue($parent->Created);
-            $createdField->performReadonlyTransformation();
-            $fields->push($createdField);
+            $fields->push(DatetimeField::create('ParentComment_Created', $parent->fieldLabel('Created'))
+                ->setValue($parent->Created)
+                ->performReadonlyTransformation());
 
             // Name (could be member or string value)
             $fields->push(
@@ -683,11 +671,9 @@ class Comment extends DataObject
     }
 
     /**
-     * @param  string $dirtyHtml
-     *
-     * @return string
+     * Purify the HTML.
      */
-    public function purifyHtml($dirtyHtml)
+    public function purifyHtml(string $dirtyHtml): string
     {
         if ($service = $this->getHtmlPurifierService()) {
             return $service->purify($dirtyHtml);
@@ -699,7 +685,7 @@ class Comment extends DataObject
     /**
      * @return HTMLPurifier (or anything with a "purify()" method)
      */
-    public function getHtmlPurifierService()
+    public function getHtmlPurifierService(): ?HTMLPurifier
     {
         if (!class_exists(HTMLPurifier_Config::class)) {
             return null;
@@ -707,6 +693,7 @@ class Comment extends DataObject
 
         $config = HTMLPurifier_Config::createDefault();
         $allowedElements = (array) $this->getOption('html_allowed_elements');
+
         if (!empty($allowedElements)) {
             $config->set('HTML.AllowedElements', $allowedElements);
         }
@@ -719,6 +706,7 @@ class Comment extends DataObject
         $config->set('AutoFormat.Linkify', true);
         $config->set('URI.DisableExternalResources', true);
         $config->set('Cache.SerializerPath', TempFolder::getTempFolder(BASE_PATH));
+
         return new HTMLPurifier($config);
     }
 
@@ -730,18 +718,18 @@ class Comment extends DataObject
     public function Gravatar()
     {
         $gravatar = '';
-        $use_gravatar = $this->getOption('use_gravatar');
+        $useUserAvatar = $this->getOption('use_gravatar');
 
-        if ($use_gravatar) {
+        if ($useUserAvatar) {
             $gravatar = 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Email ?? '')));
-            $gravatarsize = $this->getOption('gravatar_size');
-            $gravatardefault = $this->getOption('gravatar_default');
-            $gravatarrating = $this->getOption('gravatar_rating');
-            $gravatar .= '?' . http_build_query(array(
-                's' => $gravatarsize,
-                'd' => $gravatardefault,
-                'r' => $gravatarrating,
-            ));
+            $userAvatarSize = $this->getOption('gravatar_size');
+            $userAvatarDefault = $this->getOption('gravatar_default');
+            $userAvatarRating = $this->getOption('gravatar_rating');
+            $gravatar .= '?' . http_build_query([
+                's' => $userAvatarSize,
+                'd' => $userAvatarDefault,
+                'r' => $userAvatarRating,
+            ]);
         }
 
         return $gravatar;
@@ -767,38 +755,39 @@ class Comment extends DataObject
 
     /**
      * Proxy for checking whether the has permission to comment on the comment parent.
-     *
-     * @param Member $member Member to check
-     *
-     * @return boolean
      */
-    public function canPostComment($member = null)
+    public function canPostComment(?Member $member = null): bool
     {
-        return $this->Parent()
-            && $this->Parent()->exists()
-            && $this->Parent()->canPostComment($member);
+        $parent = $this->Parent();
+
+        if (!$parent || !$parent->exists()) {
+            return false;
+        }
+
+        return $parent->canPostComment($member);
     }
 
     /**
      * Returns the list of all replies
      *
-     * @return SS_List
+     * @return HasManyList<self>
      */
-    public function AllReplies()
+    public function AllReplies(): ?HasManyList
     {
         // No replies if disabled
         if (!$this->getRepliesEnabled()) {
-            return new ArrayList();
+            return null;
         }
 
         // Get all non-spam comments
         $order = $this->getOption('order_replies_by')
             ?: $this->getOption('order_comments_by');
-        $list = $this
-            ->ChildComments()
-            ->sort($order);
+
+        /** @var HasManyList<self> $list */
+        $list = $this->ChildComments()->sort($order);
 
         $this->extend('updateAllReplies', $list);
+
         return $list;
     }
 
@@ -811,13 +800,19 @@ class Comment extends DataObject
     {
         // No replies if disabled
         if (!$this->getRepliesEnabled()) {
-            return new ArrayList();
+            return ArrayList::create();
         }
         $list = $this->AllReplies();
 
         // Filter spam comments for non-administrators if configured
         $parent = $this->Parent();
-        $showSpam = $this->getOption('frontend_spam') && $parent && $parent->canModerateComments();
+
+        if (!$parent) {
+            return ArrayList::create();
+        }
+
+        $showSpam = $this->getOption('frontend_spam') && $parent->canModerateComments();
+
         if (!$showSpam) {
             $list = $list->filter('IsSpam', 0);
         }
@@ -836,16 +831,14 @@ class Comment extends DataObject
     }
 
     /**
-     * Returns the list of replies paged, with spam and unmoderated items excluded, for use in the frontend
-     *
-     * @return PaginatedList
+     * Returns the list of replies paged, with spam and unmoderated items excluded, for use in the frontend.
      */
-    public function PagedReplies()
+    public function PagedReplies(): PaginatedList
     {
         $list = $this->Replies();
 
         // Add pagination
-        $list = new PaginatedList($list, Controller::curr()->getRequest());
+        $list = PaginatedList::create($list, Controller::curr()->getRequest());
         $list->setPaginationGetVar('repliesstart' . $this->ID);
         $list->setPageLength($this->getOption('comments_per_page'));
 
@@ -855,10 +848,8 @@ class Comment extends DataObject
 
     /**
      * Generate a reply form for this comment
-     *
-     * @return Form
      */
-    public function ReplyForm()
+    public function ReplyForm(): ?Form
     {
         // Ensure replies are enabled
         if (!$this->getRepliesEnabled()) {
@@ -867,7 +858,8 @@ class Comment extends DataObject
 
         // Check parent is available
         $parent = $this->Parent();
-        if (!$parent || !$parent->exists()) {
+
+        if (!$parent->exists()) {
             return null;
         }
 
@@ -894,8 +886,10 @@ class Comment extends DataObject
     public function updateDepth()
     {
         $parent = $this->ParentComment();
-        if ($parent && $parent->exists()) {
+
+        if ($parent->exists()) {
             $parent->updateDepth();
+
             $this->Depth = $parent->Depth + 1;
         } else {
             $this->Depth = 1;

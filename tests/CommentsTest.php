@@ -7,12 +7,11 @@ use HTMLPurifier_Config;
 use ReflectionClass;
 use SilverStripe\Comments\Extensions\CommentsExtension;
 use SilverStripe\Comments\Model\Comment;
-use SilverStripe\Comments\Tests\Stubs\CommentableItem;
+use SilverStripe\Comments\Tests\Stubs\ExampleDataObject;
 use SilverStripe\Comments\Tests\Stubs\CommentableItemDisabled;
 use SilverStripe\Comments\Tests\Stubs\CommentableItemEnabled;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\FunctionalTest;
-use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Security;
 
@@ -21,7 +20,7 @@ class CommentsTest extends FunctionalTest
     protected static $fixture_file = 'CommentsTest.yml';
 
     protected static $extra_dataobjects = [
-        CommentableItem::class,
+        ExampleDataObject::class,
         CommentableItemEnabled::class,
         CommentableItemDisabled::class,
     ];
@@ -41,13 +40,14 @@ class CommentsTest extends FunctionalTest
     {
         // comments don't require moderation so unmoderated comments can be
         // shown but not spam posts
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'require_moderation_nonmembers' => false,
             'require_moderation' => false,
             'require_moderation_cms' => false,
         ]);
 
-        $item = $this->objFromFixture(CommentableItem::class, 'spammed');
+        /** @var ExampleDataObject&CommentsExtension $item */
+        $item = $this->objFromFixture(ExampleDataObject::class, 'spammed');
 
         $this->assertListEquals([
             ['Name' => 'Comment 1'],
@@ -55,10 +55,10 @@ class CommentsTest extends FunctionalTest
         ], $item->Comments(), 'Only 2 non spam posts should be shown');
 
         // when moderated, only moderated, non spam posts should be shown.
-        Config::modify()->merge(CommentableItem::class, 'comments', ['require_moderation_nonmembers' => true]);
+        Config::modify()->merge(ExampleDataObject::class, 'comments', ['require_moderation_nonmembers' => true]);
 
         // Check that require_moderation overrides this option
-        Config::modify()->merge(CommentableItem::class, 'comments', ['require_moderation' => true]);
+        Config::modify()->merge(ExampleDataObject::class, 'comments', ['require_moderation' => true]);
 
         $this->assertListEquals(array(
             array('Name' => 'Comment 3')
@@ -66,14 +66,14 @@ class CommentsTest extends FunctionalTest
         $this->assertEquals(1, $item->Comments()->Count());
 
         // require_moderation_nonmembers still filters out unmoderated comments
-        Config::modify()->merge(CommentableItem::class, 'comments', ['require_moderation' => false]);
+        Config::modify()->merge(ExampleDataObject::class, 'comments', ['require_moderation' => false]);
         $this->assertEquals(1, $item->Comments()->Count());
 
-        Config::modify()->merge(CommentableItem::class, 'comments', ['require_moderation_nonmembers' => false]);
+        Config::modify()->merge(ExampleDataObject::class, 'comments', ['require_moderation_nonmembers' => false]);
         $this->assertEquals(2, $item->Comments()->Count());
 
         // With unmoderated comments set to display in frontend
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'require_moderation' => true,
             'frontend_moderation' => true,
         ]);
@@ -83,7 +83,7 @@ class CommentsTest extends FunctionalTest
         $this->assertEquals(2, $item->Comments()->Count());
 
         // With spam comments set to display in frontend
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'require_moderation' => true,
             'frontend_moderation' => false,
             'frontend_spam' => true,
@@ -97,7 +97,7 @@ class CommentsTest extends FunctionalTest
 
 
         // With spam and unmoderated comments set to display in frontend
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'require_moderation' => true,
             'frontend_moderation' => true,
             'frontend_spam' => true,
@@ -115,12 +115,13 @@ class CommentsTest extends FunctionalTest
      */
     public function testCommentCMSModerationList()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'require_moderation' => true,
             'require_moderation_cms' => true,
         ]);
 
-        $item = $this->objFromFixture(CommentableItem::class, 'spammed');
+        /** @var ExampleDataObject&CommentsExtension $item */
+        $item = $this->objFromFixture(ExampleDataObject::class, 'spammed');
 
         $this->assertEquals('None', $item->getModerationRequired());
 
@@ -157,15 +158,16 @@ class CommentsTest extends FunctionalTest
 
     public function testCanPostComment()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'require_login' => false,
             'require_login_cms' => false,
             'required_permission' => false,
         ]);
-        /** @var CommentableItem&CommentsExtension $item */
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
-        /** @var CommentableItem&CommentsExtension $item2 */
-        $item2 = $this->objFromFixture(CommentableItem::class, 'second');
+        /** @var ExampleDataObject&CommentsExtension $item */
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
+
+        /** @var ExampleDataObject&CommentsExtension $item2 */
+        $item2 = $this->objFromFixture(ExampleDataObject::class, 'second');
 
         // Test restriction free commenting
         $this->logOut();
@@ -173,7 +175,7 @@ class CommentsTest extends FunctionalTest
         $this->assertTrue($item->canPostComment());
 
         // Test permission required to post
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'require_login' => true,
             'required_permission' => 'POSTING_PERMISSION',
         ]);
@@ -187,7 +189,7 @@ class CommentsTest extends FunctionalTest
         $this->assertTrue($item->canPostComment());
 
         // Test require login to post, but not any permissions
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'required_permission' => false,
         ]);
         $this->assertTrue($item->CommentsRequireLogin);
@@ -198,7 +200,7 @@ class CommentsTest extends FunctionalTest
         $this->assertTrue($item->canPostComment());
 
         // Test options set via CMS
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'require_login' => true,
             'require_login_cms' => true,
         ]);
@@ -220,15 +222,15 @@ class CommentsTest extends FunctionalTest
         $this->logOut();
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
         $commentID = $comment->ID;
-        $this->assertNull($comment->DeleteLink(), 'No permission to see delete link');
+        $this->assertEmpty($comment->DeleteLink(), 'No permission to see delete link');
         $delete = $this->get('comments/delete/' . $comment->ID . '?ajax=1');
         $this->assertEquals(403, $delete->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $commentID);
+        $check = Comment::get()->byID($commentID);
         $this->assertTrue($check && $check->exists());
 
         // Test non-authenticated user
         $this->logInAs('visitor');
-        $this->assertNull($comment->DeleteLink(), 'No permission to see delete link');
+        $this->assertEmpty($comment->DeleteLink(), 'No permission to see delete link');
 
         // Test authenticated user
         $this->logInAs('commentadmin');
@@ -241,7 +243,7 @@ class CommentsTest extends FunctionalTest
         $this->logInAs('commentadmin2');
         $delete = $this->get($adminComment1Link);
         $this->assertEquals(400, $delete->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $commentID);
+        $check = Comment::get()->byID($commentID);
         $this->assertTrue($check && $check->exists());
 
         // Test that this other admin can delete the comment with their own link
@@ -250,7 +252,7 @@ class CommentsTest extends FunctionalTest
         $this->autoFollowRedirection = false;
         $delete = $this->get($adminComment2Link);
         $this->assertEquals(302, $delete->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $commentID);
+        $check = Comment::get()->byID($commentID);
         $this->assertFalse($check && $check->exists());
     }
 
@@ -260,15 +262,15 @@ class CommentsTest extends FunctionalTest
         $this->logOut();
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
         $commentID = $comment->ID;
-        $this->assertNull($comment->SpamLink(), 'No permission to see mark as spam link');
+        $this->assertEmpty($comment->SpamLink(), 'No permission to see mark as spam link');
         $spam = $this->get('comments/spam/' . $comment->ID . '?ajax=1');
         $this->assertEquals(403, $spam->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $commentID);
+        $check = Comment::get()->byID($commentID);
         $this->assertEquals(0, $check->IsSpam, 'No permission to mark as spam');
 
         // Test non-authenticated user
         $this->logInAs('visitor');
-        $this->assertNull($comment->SpamLink(), 'No permission to see mark as spam link');
+        $this->assertEmpty($comment->SpamLink(), 'No permission to see mark as spam link');
 
         // Test authenticated user
         $this->logInAs('commentadmin');
@@ -281,7 +283,7 @@ class CommentsTest extends FunctionalTest
         $this->logInAs('commentadmin2');
         $spam = $this->get($adminComment1Link);
         $this->assertEquals(400, $spam->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $comment->ID);
+        $check = Comment::get()->byID($comment->ID);
         $this->assertEquals(0, $check->IsSpam, 'No permission to mark as spam');
 
         // Test that this other admin can spam the comment with their own link
@@ -290,11 +292,11 @@ class CommentsTest extends FunctionalTest
         $this->autoFollowRedirection = false;
         $spam = $this->get($adminComment2Link);
         $this->assertEquals(302, $spam->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $commentID);
+        $check = Comment::get()->byID($commentID);
         $this->assertEquals(1, $check->IsSpam);
 
         // Cannot re-spam spammed comment
-        $this->assertNull($check->SpamLink());
+        $this->assertEmpty($check->SpamLink());
     }
 
     public function testHamComment()
@@ -303,15 +305,15 @@ class CommentsTest extends FunctionalTest
         $this->logOut();
         $comment = $this->objFromFixture(Comment::class, 'secondComC');
         $commentID = $comment->ID;
-        $this->assertNull($comment->HamLink(), 'No permission to see mark as ham link');
+        $this->assertEmpty($comment->HamLink(), 'No permission to see mark as ham link');
         $ham = $this->get('comments/ham/' . $comment->ID . '?ajax=1');
         $this->assertEquals(403, $ham->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $commentID);
+        $check = Comment::get()->byID($commentID);
         $this->assertEquals(1, $check->IsSpam, 'No permission to mark as ham');
 
         // Test non-authenticated user
         $this->logInAs('visitor');
-        $this->assertNull($comment->HamLink(), 'No permission to see mark as ham link');
+        $this->assertEmpty($comment->HamLink(), 'No permission to see mark as ham link');
 
         // Test authenticated user
         $this->logInAs('commentadmin');
@@ -324,7 +326,7 @@ class CommentsTest extends FunctionalTest
         $this->logInAs('commentadmin2');
         $ham = $this->get($adminComment1Link);
         $this->assertEquals(400, $ham->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $comment->ID);
+        $check = Comment::get()->byID($comment->ID);
         $this->assertEquals(1, $check->IsSpam, 'No permission to mark as ham');
 
         // Test that this other admin can ham the comment with their own link
@@ -333,11 +335,11 @@ class CommentsTest extends FunctionalTest
         $this->autoFollowRedirection = false;
         $ham = $this->get($adminComment2Link);
         $this->assertEquals(302, $ham->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $commentID);
+        $check = Comment::get()->byID($commentID);
         $this->assertEquals(0, $check->IsSpam);
 
         // Cannot re-ham hammed comment
-        $this->assertNull($check->HamLink());
+        $this->assertEmpty($check->HamLink());
     }
 
     public function testApproveComment()
@@ -346,15 +348,15 @@ class CommentsTest extends FunctionalTest
         $this->logOut();
         $comment = $this->objFromFixture(Comment::class, 'secondComB');
         $commentID = $comment->ID;
-        $this->assertNull($comment->ApproveLink(), 'No permission to see approve link');
+        $this->assertEmpty($comment->ApproveLink(), 'No permission to see approve link');
         $approve = $this->get('comments/approve/' . $comment->ID . '?ajax=1');
         $this->assertEquals(403, $approve->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $commentID);
+        $check = Comment::get()->byID($commentID);
         $this->assertEquals(0, $check->Moderated, 'No permission to approve');
 
         // Test non-authenticated user
         $this->logInAs('visitor');
-        $this->assertNull($comment->ApproveLink(), 'No permission to see approve link');
+        $this->assertEmpty($comment->ApproveLink(), 'No permission to see approve link');
 
         // Test authenticated user
         $this->logInAs('commentadmin');
@@ -367,7 +369,7 @@ class CommentsTest extends FunctionalTest
         $this->logInAs('commentadmin2');
         $approve = $this->get($adminComment1Link);
         $this->assertEquals(400, $approve->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $comment->ID);
+        $check = Comment::get()->byID($comment->ID);
         $this->assertEquals(0, $check->Moderated, 'No permission to approve');
 
         // Test that this other admin can approve the comment with their own link
@@ -376,16 +378,16 @@ class CommentsTest extends FunctionalTest
         $this->autoFollowRedirection = false;
         $approve = $this->get($adminComment2Link);
         $this->assertEquals(302, $approve->getStatusCode());
-        $check = DataObject::get_by_id(Comment::class, $commentID);
+        $check = Comment::get()->byID($commentID);
         $this->assertEquals(1, $check->Moderated);
 
         // Cannot re-approve approved comment
-        $this->assertNull($check->ApproveLink());
+        $this->assertEmpty($check->ApproveLink());
     }
 
     public function testCommenterURLWrite()
     {
-        $comment = new Comment();
+        $comment = Comment::create();
         // We only care about the CommenterURL, so only set that
         // Check a http and https URL. Add more test urls here as needed.
         $protocols = [
@@ -410,14 +412,14 @@ class CommentsTest extends FunctionalTest
 
         // Add p for paragraph
         // NOTE: The config method appears to append to the existing array
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'html_allowed_elements' => ['p'],
         ]);
 
         // Without HTML allowed
-        $comment1 = new Comment();
+        $comment1 = Comment::create();
         $comment1->AllowHtml = false;
-        $comment1->ParentClass = CommentableItem::class;
+        $comment1->ParentClass = ExampleDataObject::class;
         $comment1->Comment = '<p><script>alert("w00t")</script>my comment</p>';
         $comment1->write();
         $this->assertEquals(
@@ -428,9 +430,9 @@ class CommentsTest extends FunctionalTest
         );
 
         // With HTML allowed
-        $comment2 = new Comment();
+        $comment2 = Comment::create();
         $comment2->AllowHtml = true;
-        $comment2->ParentClass = CommentableItem::class;
+        $comment2->ParentClass = ExampleDataObject::class;
         $comment2->Comment = '<p><script>alert("w00t")</script>my comment</p>';
         $comment2->write();
         $this->assertEquals(
@@ -446,19 +448,19 @@ class CommentsTest extends FunctionalTest
             $this->markTestSkipped('HTMLPurifier class not found');
         }
 
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'html_allowed_elements' => ['p'],
         ]);
 
-        $item = new CommentableItem();
+        $item = ExampleDataObject::create();
         $item->write();
 
         // Without HTML allowed
-        $comment = new Comment();
+        $comment = Comment::create();
         $comment->Comment = '<p>my comment</p>';
         $comment->AllowHtml = false;
         $comment->ParentID = $item->ID;
-        $comment->ParentClass = CommentableItem::class;
+        $comment->ParentClass = ExampleDataObject::class;
         $comment->write();
 
         $html = $item->customise(['CommentsEnabled' => true])->renderWith('CommentsInterface');
@@ -482,51 +484,51 @@ class CommentsTest extends FunctionalTest
      */
     public function testDefaultEnabled()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'enabled_cms' => true,
             'require_moderation_cms' => true,
             'require_login_cms' => true,
         ]);
 
         // With default = true
-        $obj = new CommentableItem();
+        $obj = ExampleDataObject::create();
         $this->assertTrue((bool)$obj->getCommentsOption('enabled'), "Default setting is enabled");
         $this->assertTrue((bool)$obj->ProvideComments);
         $this->assertEquals('None', $obj->ModerationRequired);
         $this->assertFalse((bool)$obj->CommentsRequireLogin);
 
-        $obj = new CommentableItemEnabled();
+        $obj = CommentableItemEnabled::create();
         $this->assertTrue((bool)$obj->ProvideComments);
         $this->assertEquals('Required', $obj->ModerationRequired);
         $this->assertTrue((bool)$obj->CommentsRequireLogin);
 
-        $obj = new CommentableItemDisabled();
+        $obj = CommentableItemDisabled::create();
         $this->assertFalse((bool)$obj->ProvideComments);
         $this->assertEquals('None', $obj->ModerationRequired);
         $this->assertFalse((bool)$obj->CommentsRequireLogin);
 
         // With default = false
         // Because of config rules about falsey values, apply config to object directly
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'enabled' => false,
             'require_login' => true,
             'require_moderation' => true,
         ]);
 
-        $obj = new CommentableItem();
+        $obj = ExampleDataObject::create();
 
         $this->assertFalse((bool)$obj->getCommentsOption('enabled'), 'Default setting is disabled');
         $this->assertFalse((bool)$obj->ProvideComments);
         $this->assertEquals('Required', $obj->ModerationRequired);
         $this->assertTrue((bool)$obj->CommentsRequireLogin);
 
-        $obj = new CommentableItemEnabled();
+        $obj = CommentableItemEnabled::create();
 
         $this->assertTrue((bool)$obj->ProvideComments);
         $this->assertEquals('Required', $obj->ModerationRequired);
         $this->assertTrue((bool)$obj->CommentsRequireLogin);
 
-        $obj = new CommentableItemDisabled();
+        $obj = CommentableItemDisabled::create();
 
         $this->assertFalse((bool)$obj->ProvideComments);
         $this->assertEquals('None', $obj->ModerationRequired);
@@ -537,7 +539,7 @@ class CommentsTest extends FunctionalTest
     {
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
 
-        $child = new Comment();
+        $child = Comment::create();
         $child->Name = 'Fred Bloggs';
         $child->Comment = 'Child of firstComA';
         $child->write();
@@ -550,8 +552,8 @@ class CommentsTest extends FunctionalTest
         $comment->delete();
 
         // assert that the new child been deleted
-        $this->assertNull(DataObject::get_by_id(Comment::class, $commentID));
-        $this->assertNull(DataObject::get_by_id(Comment::class, $childCommentID));
+        $this->assertNull(Comment::get()->byID($commentID));
+        $this->assertNull(Comment::get()->byID($childCommentID));
     }
 
     public function testRequireDefaultRecords()
@@ -608,7 +610,7 @@ class CommentsTest extends FunctionalTest
     public function testGetParent()
     {
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $parent = $comment->Parent();
         $this->assertSame($item->getClassName(), $parent->getClassName());
         $this->assertSame($item->ID, $parent->ID);
@@ -631,7 +633,7 @@ class CommentsTest extends FunctionalTest
     {
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
         $className = $comment->getParentClassName();
-        $this->assertEquals(CommentableItem::class, $className);
+        $this->assertEquals(ExampleDataObject::class, $className);
     }
 
     public function testCastingHelper()
@@ -646,7 +648,7 @@ class CommentsTest extends FunctionalTest
 
     public function testIsPreview()
     {
-        $comment = new Comment();
+        $comment = Comment::create();
         $comment->Name = 'Fred Bloggs';
         $comment->Comment = 'this is a test comment';
         $this->assertTrue($comment->isPreview());
@@ -761,9 +763,9 @@ class CommentsTest extends FunctionalTest
         );
 
         // null the names, expect null back
-        $comment->Name = null;
+        $comment->Name = '';
         $comment->AuthorID = 0;
-        $this->assertNull($comment->getAuthorName());
+        $this->assertEmpty($comment->getAuthorName());
     }
 
 
@@ -937,7 +939,7 @@ class CommentsTest extends FunctionalTest
     public function testGravatar()
     {
         // Turn gravatars on
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'use_gravatar' => true,
             'gravatar_size' => 80,
             'gravatar_default' => 'identicon',
@@ -953,7 +955,7 @@ class CommentsTest extends FunctionalTest
         );
 
         // Turn gravatars off
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'use_gravatar' => false,
         ]);
 
@@ -967,14 +969,14 @@ class CommentsTest extends FunctionalTest
 
     public function testGetRepliesEnabled()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => false,
         ]);
 
         $comment = $this->objFromFixture(Comment::class, 'firstComA');
         $this->assertFalse($comment->getRepliesEnabled());
 
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => true,
             'nested_depth' => 4,
         ]);
@@ -986,7 +988,7 @@ class CommentsTest extends FunctionalTest
 
 
         // 0 indicates no limit for nested_depth
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => true,
             'nested_depth' => 0,
         ]);
@@ -1006,7 +1008,7 @@ class CommentsTest extends FunctionalTest
 
     public function testAllReplies()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => true,
             'nested_depth' => 4,
         ]);
@@ -1032,7 +1034,7 @@ class CommentsTest extends FunctionalTest
             $comment->allReplies()->count()
         );
 
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => false,
         ]);
 
@@ -1041,9 +1043,9 @@ class CommentsTest extends FunctionalTest
 
     public function testReplies()
     {
-        CommentableItem::add_extension(CommentsExtension::class);
+        ExampleDataObject::add_extension(CommentsExtension::class);
         $this->logInWithPermission('ADMIN');
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => true,
             'nested_depth' => 4,
         ]);
@@ -1077,7 +1079,7 @@ class CommentsTest extends FunctionalTest
 
 
         // Test moderation required on the front end
-        $item = $this->objFromFixture(CommentableItem::class, 'first');
+        $item = $this->objFromFixture(ExampleDataObject::class, 'first');
         $item->ModerationRequired = 'Required';
         $item->write();
 
@@ -1087,7 +1089,7 @@ class CommentsTest extends FunctionalTest
             'frontend_moderation' => true,
         ]);
 
-        $comment = DataObject::get_by_id(Comment::class, $comment->ID);
+        $comment = Comment::get()->byID($comment->ID);
 
         $this->assertEquals(
             2,
@@ -1095,7 +1097,7 @@ class CommentsTest extends FunctionalTest
         );
 
         // Turn off nesting, empty array should be returned
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => false,
         ]);
 
@@ -1104,12 +1106,12 @@ class CommentsTest extends FunctionalTest
             $comment->Replies()->count()
         );
 
-        CommentableItem::remove_extension(CommentsExtension::class);
+        ExampleDataObject::remove_extension(CommentsExtension::class);
     }
 
     public function testPagedReplies()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => true,
             'nested_depth' => 4,
             'comments_per_page' => 2,
@@ -1128,7 +1130,7 @@ class CommentsTest extends FunctionalTest
             $pagedList->getTotalItems()
         );
 
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => false,
         ]);
 
@@ -1137,7 +1139,7 @@ class CommentsTest extends FunctionalTest
 
     public function testReplyForm()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => false,
             'nested_depth' => 4,
         ]);
@@ -1149,7 +1151,7 @@ class CommentsTest extends FunctionalTest
         $this->assertNull($form);
 
         // parent item so show form
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => true,
             'nested_depth' => 4,
         ]);
@@ -1178,7 +1180,7 @@ class CommentsTest extends FunctionalTest
 
     public function testUpdateDepth()
     {
-        Config::modify()->merge(CommentableItem::class, 'comments', [
+        Config::modify()->merge(ExampleDataObject::class, 'comments', [
             'nested_comments' => true,
             'nested_depth' => 4,
         ]);

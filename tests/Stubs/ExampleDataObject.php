@@ -10,17 +10,17 @@ use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\Security;
 
-class CommentableItem extends DataObject implements TestOnly
+class ExampleDataObject extends DataObject implements TestOnly
 {
-    private static $db = array(
+    private static array $db = [
         'Title' => 'Varchar'
-    );
+    ];
 
-    private static $extensions = array(
+    private static array $extensions = [
         CommentsExtension::class
-    );
+    ];
 
-    private static $table_name = 'CommentableItem';
+    private static string $table_name = 'ExampleDataObject';
 
     public function RelativeLink()
     {
@@ -37,11 +37,9 @@ class CommentableItem extends DataObject implements TestOnly
     {
         if ($member instanceof Member) {
             $memberID = $member->ID;
-        } elseif (is_numeric($member)) {
-            $memberID = $member;
         } else {
             $currentUser = Security::getCurrentUser();
-            $memberID = $currentUser ? $currentUser->ID : 0;
+            $memberID = $currentUser instanceof Member ? $currentUser->ID : 0;
         }
 
         if ($memberID && Permission::checkMember($memberID, array('ADMIN', 'CMS_ACCESS_CommentAdmin'))) {
@@ -60,3 +58,4 @@ class CommentableItem extends DataObject implements TestOnly
         return Director::absoluteURL($this->RelativeLink());
     }
 }
+
