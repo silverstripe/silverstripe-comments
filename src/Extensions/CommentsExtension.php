@@ -592,6 +592,9 @@ class CommentsExtension extends Extension
         $spamCount = '(' . count($spamComments ?? []) . ')';
 
         if ($fields->hasTabSet()) {
+            // Remove scaffolded tab
+            $fields->removeByName('Comments');
+
             $tabs = TabSet::create(
                 'Comments',
                 Tab::create(
